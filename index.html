@@ -1,1658 +1,1639 @@
+@ -0,0 +1,1638 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>元话RWA项目客户资料收集表单</title>
+    <title>元话RWA - 构建现实资产与数字金融的合规桥梁</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
+        /* Base styles */
         body {
-            font-family: 'Microsoft YaHei', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            padding: 20px;
+            font-family: 'Inter', sans-serif;
+            background-color: #f9fafb;
+            /* Light gray background */
+            color: #374151;
+            /* Dark gray text */
+            scroll-behavior: smooth;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-            overflow: hidden;
+        /* Header style */
+        header {
+            background-color: rgba(255, 255, 255, 0.95);
+            /* Slightly less transparent white */
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-bottom: 1px solid #e5e7eb;
+            /* Light border */
         }
 
-        .header {
-            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
-            color: white;
-            padding: 40px;
-            text-align: center;
+        /* Hero Section Background */
+        .hero-fintech-bg {
+            background-color: #f0f4ff;
+            /* Even lighter Indigo background */
+        }
+
+        /* Card styles */
+        .fintech-card {
+            background-color: #ffffff;
+            border: 1px solid #e5e7eb;
+            transition: transform 0.3s ease-out, box-shadow 0.3s ease-out;
+            /* Smoother transition */
+            border-radius: 0.5rem;
+            /* Rounded */
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+        }
+
+        .fintech-card:hover {
+            transform: translateY(-5px);
+            /* Slightly more lift */
+            box-shadow: 0 12px 20px -4px rgba(0, 0, 0, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.04);
+            /* Softer, larger shadow */
+        }
+
+        /* Primary CTA button */
+        .cta-primary-button {
+            background-color: #4f46e5;
+            /* Indigo */
+            color: #ffffff;
+            transition: background-color 0.2s ease-out, transform 0.2s ease-out, box-shadow 0.2s ease-out;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+        }
+
+        .cta-primary-button:hover {
+            background-color: #4338ca;
+            /* Darker Indigo */
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(79, 70, 229, 0.2);
+        }
+
+        /* Secondary button style (Outlined) */
+        .cta-secondary-button {
+            background-color: transparent;
+            border: 1px solid #4f46e5;
+            color: #4f46e5;
+            transition: background-color 0.2s ease-out, color 0.2s ease-out, transform 0.2s ease-out;
+        }
+
+        .cta-secondary-button:hover {
+            background-color: #eef2ff;
+            color: #4338ca;
+            transform: translateY(-1px);
+        }
+
+        /* Link styles */
+        .fintech-link {
+            color: #4f46e5;
+            transition: color 0.2s ease-out;
+            font-weight: 500;
+        }
+
+        .fintech-link:hover {
+            color: #3730a3;
+            /* Darker Indigo */
+            text-decoration: underline;
+        }
+
+        /* Navigation link hover */
+        .nav-link {
+            color: #4b5563;
+            transition: color 0.2s ease-out, border-color 0.2s ease-out;
+            /* Added border-color transition */
+            padding-bottom: 2px;
+            border-bottom: 2px solid transparent;
+        }
+
+        .nav-link:hover {
+            color: #4f46e5;
+            border-bottom-color: #4f46e5;
+            /* Underline effect on hover */
+        }
+
+        /* Language switcher styles */
+        .lang-dropdown {
             position: relative;
+            display: inline-block;
         }
 
-        .header::before {
-            content: "元话RWA";
+        .lang-dropdown-content {
+            display: none;
             position: absolute;
-            top: 10px;
-            right: 20px;
-            font-size: 12px;
-            opacity: 0.7;
+            background-color: #ffffff;
+            min-width: 60px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            z-index: 50;
+            right: 0;
+            border-radius: 0.375rem;
+            border: 1px solid #e5e7eb;
+            padding-top: 4px;
+            padding-bottom: 4px;
         }
 
-        .header h1 {
-            font-size: 2.5rem;
-            margin-bottom: 10px;
-            font-weight: 700;
-        }
-
-        .header p {
-            font-size: 1.1rem;
-            opacity: 0.9;
-        }
-
-        .service-stages {
-            background: rgba(255,255,255,0.1);
-            margin: 20px 0;
-            padding: 15px;
-            border-radius: 10px;
-            font-size: 0.9rem;
-        }
-
-        .form-container {
-            padding: 40px;
-        }
-
-        .section {
-            margin-bottom: 40px;
-            border: 2px solid #f0f0f0;
-            border-radius: 15px;
-            padding: 30px;
-            transition: all 0.3s ease;
-        }
-
-        .section:hover {
-            border-color: #667eea;
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.1);
-        }
-
-        .section-title {
-            font-size: 1.8rem;
-            color: #1e3c72;
-            margin-bottom: 20px;
-            padding-bottom: 10px;
-            border-bottom: 3px solid #667eea;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .stage-indicator {
-            background: #667eea;
-            color: white;
-            padding: 4px 8px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: normal;
-        }
-
-        .form-group {
-            margin-bottom: 25px;
-        }
-
-        .form-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-            margin-bottom: 25px;
-        }
-
-        .form-row.single {
-            grid-template-columns: 1fr;
-        }
-
-        .form-row.triple {
-            grid-template-columns: 1fr 1fr 1fr;
-        }
-
-        label {
+        .lang-dropdown-content a {
+            color: #374151;
+            padding: 6px 12px;
+            text-decoration: none;
             display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-            color: #333;
-            font-size: 1rem;
-        }
-
-        .required {
-            color: #e74c3c;
-        }
-
-        .field-description {
-            font-size: 0.85rem;
-            color: #666;
-            margin-top: 5px;
-            font-style: italic;
-        }
-
-        input, select, textarea {
-            width: 100%;
-            padding: 12px 15px;
-            border: 2px solid #e0e0e0;
-            border-radius: 10px;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-            background: #fafafa;
-        }
-
-        input:focus, select:focus, textarea:focus {
-            outline: none;
-            border-color: #667eea;
-            background: white;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-        }
-
-        textarea {
-            resize: vertical;
-            min-height: 100px;
-        }
-
-        .checkbox-group {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 15px;
-            margin-top: 10px;
-        }
-
-        .checkbox-item {
-            display: flex;
-            align-items: center;
-            padding: 12px;
-            border: 2px solid #e0e0e0;
-            border-radius: 8px;
-            transition: all 0.3s ease;
-            cursor: pointer;
-            background: #fafafa;
-        }
-
-        .checkbox-item:hover {
-            border-color: #667eea;
-            background: #f8f9ff;
-        }
-
-        .checkbox-item input[type="checkbox"] {
-            width: auto;
-            margin-right: 10px;
-            transform: scale(1.2);
-        }
-
-        .radio-group {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 10px;
-            margin-top: 10px;
-        }
-
-        .radio-item {
-            display: flex;
-            align-items: center;
-            padding: 10px;
-            border: 2px solid #e0e0e0;
-            border-radius: 8px;
-            transition: all 0.3s ease;
-            cursor: pointer;
-            background: #fafafa;
-        }
-
-        .radio-item:hover {
-            border-color: #667eea;
-            background: #f8f9ff;
-        }
-
-        .radio-item input[type="radio"] {
-            width: auto;
-            margin-right: 10px;
-            transform: scale(1.2);
-        }
-
-        .submit-section {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            margin: 40px -40px -40px -40px;
-            padding: 40px;
+            font-size: 0.875rem;
             text-align: center;
+            white-space: nowrap;
+            transition: background-color 0.2s ease-out, color 0.2s ease-out;
         }
 
-        .submit-btn {
-            background: white;
-            color: #1e3c72;
-            border: none;
-            padding: 15px 40px;
-            font-size: 1.2rem;
-            font-weight: 600;
-            border-radius: 50px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        .lang-dropdown-content a:hover {
+            background-color: #f3f4f6;
+            color: #1f2937;
         }
 
-        .submit-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+        .lang-dropdown:hover .lang-dropdown-content {
+            display: block;
         }
 
-        .note {
-            background: #fff3cd;
-            border: 1px solid #ffeaa7;
-            border-radius: 10px;
-            padding: 15px;
-            margin-bottom: 20px;
-            color: #856404;
+        .lang-button {
+            border: 1px solid #d1d5db;
+            color: #4b5563;
+            transition: border-color 0.2s ease-out, background-color 0.2s ease-out;
         }
 
-        .warning-note {
-            background: #f8d7da;
-            border: 1px solid #f5c6cb;
-            border-radius: 10px;
-            padding: 15px;
-            margin-bottom: 20px;
-            color: #721c24;
+        .lang-button:hover {
+            border-color: #9ca3af;
+            background-color: #f9fafb;
         }
 
-        .info-box {
-            background: #e7f3ff;
-            border: 2px solid #b3d9ff;
-            border-radius: 10px;
-            padding: 15px;
-            margin: 15px 0;
-            font-size: 0.9rem;
+        .lang-button-text {
+            font-weight: 500;
+            margin-left: 0.25rem;
+            margin-right: 0.125rem;
         }
 
-        .subsection {
-            background: #f8f9fa;
-            border-left: 4px solid #667eea;
-            padding: 20px;
-            margin: 20px 0;
-            border-radius: 0 10px 10px 0;
+        /* Footer style */
+        footer {
+            background-color: #f3f4f6;
+            /* Slightly darker light gray footer */
+            border-top: 1px solid #e5e7eb;
+            color: #4b5563;
         }
 
-        .subsection-title {
-            font-size: 1.2rem;
-            color: #1e3c72;
-            margin-bottom: 15px;
-            font-weight: 600;
+        footer h4 {
+            color: #1f2937;
+        }
+
+        footer a {
+            color: #4b5563;
+            transition: color 0.2s ease-out;
+        }
+
+        footer a:hover {
+            color: #4f46e5;
+        }
+
+        /* Headings and Text */
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+            color: #111827;
+        }
+
+        p,
+        li,
+        label,
+        blockquote footer span:first-child {
+            color: #4b5563;
+        }
+
+        blockquote p {
+            color: #374151;
+        }
+
+        /* Input fields */
+        input,
+        textarea {
+            background-color: #ffffff;
+            border-color: #d1d5db;
+            color: #111827;
+            border-radius: 0.375rem;
+            transition: border-color 0.2s ease-out, box-shadow 0.2s ease-out;
+        }
+
+        input::placeholder,
+        textarea::placeholder {
+            color: #9ca3af;
+        }
+
+        input:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #6366f1;
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15);
+            /* Adjusted ring */
+        }
+
+        hr {
+            border-color: #e5e7eb;
+        }
+
+        /* Section background variations */
+        .section-bg-light {
+            background-color: #f9fafb;
+        }
+
+        .section-bg-white {
+            background-color: #ffffff;
+        }
+
+        .section-bg-accent {
+            background-color: #eef2ff;
+        }
+
+        .section-bg-gradient-light {
+            background: linear-gradient(180deg, #ffffff 0%, #f9fafb 100%);
+        }
+
+        /* Subtle scroll animations */
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+
+        .animate-on-scroll.animated {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Language span visibility */
+        [data-lang] {
+            display: none;
+        }
+
+        html[lang="zh-CN"] [data-lang="zh-CN"],
+        html[lang="en"] [data-lang="en"],
+        html[lang="ja"] [data-lang="ja"],
+        html[lang="ko"] [data-lang="ko"] {
+            display: inline;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 1024px) {
+            .desktop-nav {
+                display: none;
+            }
+
+            .mobile-nav-controls {
+                display: flex;
+            }
+        }
+
+        @media (min-width: 1025px) {
+            .desktop-nav {
+                display: flex;
+            }
+
+            .mobile-nav-controls {
+                display: none;
+            }
+
+            #mobile-menu {
+                display: none !important;
+            }
         }
 
         @media (max-width: 768px) {
-            .form-row, .form-row.triple {
-                grid-template-columns: 1fr;
+            .hero-title {
+                font-size: 2.2rem;
+                line-height: 1.2;
             }
-            
-            .header h1 {
-                font-size: 2rem;
+
+            .hero-subtitle {
+                font-size: 1rem;
             }
-            
-            .form-container {
-                padding: 20px;
+
+            .lang-dropdown {
+                margin-left: auto;
+                margin-right: 1rem;
             }
-            
-            .section {
-                padding: 20px;
-            }
+        }
+
+        /* Logo grid styling */
+        .logo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 2.5rem;
+            /* Increased gap */
+            align-items: center;
+        }
+
+        .logo-item {
+            filter: grayscale(100%) opacity(60%);
+            transition: filter 0.3s ease, opacity 0.3s ease;
+        }
+
+        .logo-item:hover {
+            filter: grayscale(0%) opacity(100%);
+        }
+
+        /* Partnership Program Tier Card Highlight */
+        .tier-highlight {
+            border-color: #4f46e5;
+            box-shadow: 0 6px 12px rgba(79, 70, 229, 0.1);
+            /* Slightly stronger shadow */
+        }
+
+        /* Ensure icons have consistent size and alignment */
+        .icon-feature {
+            width: 4rem;
+            /* 64px */
+            height: 4rem;
+            /* 64px */
+            font-size: 1.875rem;
+            /* text-3xl */
+        }
+
+        .icon-card {
+            width: 2rem;
+            /* 32px */
+            height: 2rem;
+            /* 32px */
+            font-size: 1.25rem;
+            /* text-xl */
+        }
+
+        .icon-list {
+            width: 1em;
+            height: 1em;
+            margin-right: 0.5em;
+            /* space between icon and text */
+            vertical-align: -0.125em;
+            /* Adjust icon vertical alignment */
         }
     </style>
 </head>
-<body>
-    <div class="container">
-        <div class="header">
-            <h1>RWA数字化代币化项目资料收集表单</h1>
-            <p>现实世界资产（RWA）的数字化、代币化全流程服务</p>
-            <div class="service-stages">
-                <strong>服务流程：</strong>
-                第一阶段：咨询规划与法律结构设计 → 第二阶段：技术开发与代币化 → 第三阶段：代币发行与上市 → 第四阶段：链上资产管理与持续服务
+
+<body class="font-sans antialiased">
+
+    <header class="shadow-md sticky top-0 z-50">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="#home" class="text-2xl font-bold text-indigo-600 hover:text-indigo-700 transition-colors">
+                <span data-lang="zh-CN">元话RWA</span>
+                <span data-lang="en">METAKINA RWA</span>
+                <span data-lang="ja">METAKINA RWA</span>
+                <span data-lang="ko">METAKINA RWA</span>
+            </a>
+            <div class="desktop-nav space-x-6 items-center">
+                <a href="#home" class="nav-link"><span data-lang="zh-CN">首页</span><span data-lang="en">Home</span><span
+                        data-lang="ja">ホーム</span><span data-lang="ko">홈</span></a>
+                <a href="#solutions" class="nav-link"><span data-lang="zh-CN">解决方案</span><span
+                        data-lang="en">Solutions</span><span data-lang="ja">ソリューション</span><span
+                        data-lang="ko">솔루션</span></a>
+                <a href="#why-us" class="nav-link"><span data-lang="zh-CN">为何选择我们</span><span data-lang="en">Why
+                        Us</span><span data-lang="ja">選ばれる理由</span><span data-lang="ko">선택 이유</span></a>
+                <a href="#market-access" class="nav-link"><span data-lang="zh-CN">市场对接</span><span data-lang="en">Market
+                        Access</span><span data-lang="ja">市場接続</span><span data-lang="ko">시장 접근</span></a>
+                <a href="#supported-chains" class="nav-link"><span data-lang="zh-CN">支持公链</span><span
+                        data-lang="en">Supported Chains</span><span data-lang="ja">対応チェーン</span><span data-lang="ko">지원
+                        체인</span></a>
+                <a href="#partnership-program" class="nav-link"><span data-lang="zh-CN">数字投行合作</span><span
+                        data-lang="en">Digital IB Partnership</span><span data-lang="ja">デジタル投資銀行パートナーシップ</span><span
+                        data-lang="ko">디지털 IB 파트너십</span></a>
+                <a href="#clients" class="nav-link"><span data-lang="zh-CN">客户成功</span><span
+                        data-lang="en">Clients</span><span data-lang="ja">導入事例</span><span data-lang="ko">고객 성공
+                        사례</span></a>
+                <a href="#resources" class="nav-link"><span data-lang="zh-CN">资源中心</span><span
+                        data-lang="en">Resources</span><span data-lang="ja">リソース</span><span
+                        data-lang="ko">리소스</span></a>
+                <a href="#pricing" class="nav-link"><span data-lang="zh-CN">合作模式</span><span
+                        data-lang="en">Pricing</span><span data-lang="ja">協力モデル</span><span data-lang="ko">협력
+                        모델</span></a>
+                <a href="#apply" class="cta-button cta-secondary-button px-4 py-2 rounded-md text-sm">
+                    <span data-lang="zh-CN">平台注册/申请</span><span data-lang="en">Platform Registration</span><span
+                        data-lang="ja">プラットフォーム登録</span><span data-lang="ko">플랫폼 등록/신청</span>
+                </a>
+                <a href="#contact" class="cta-button cta-primary-button px-4 py-2 rounded-md text-sm font-medium">
+                    <span data-lang="zh-CN">联系我们</span><span data-lang="en">Contact Us</span><span
+                        data-lang="ja">お問い合わせ</span><span data-lang="ko">문의하기</span>
+                </a>
+                <div class="lang-dropdown">
+                    <button class="lang-button flex items-center px-2 py-1 rounded-md hover:bg-gray-100"
+                        aria-haspopup="true" aria-expanded="false" aria-label="Select Language">
+                        <i class="fas fa-globe text-sm text-gray-500"></i>
+                        <span id="current-lang" class="lang-button-text text-sm text-gray-700">中</span>
+                        <i class="fas fa-chevron-down text-xs text-gray-500"></i>
+                    </button>
+                    <div class="lang-dropdown-content">
+                        <a href="#" class="lang-option" data-set-lang="zh-CN">中</a>
+                        <a href="#" class="lang-option" data-set-lang="en">EN</a>
+                        <a href="#" class="lang-option" data-set-lang="ja">日</a>
+                        <a href="#" class="lang-option" data-set-lang="ko">한</a>
+                    </div>
+                </div>
+            </div>
+            <div class="mobile-nav-controls items-center">
+                <div class="lang-dropdown mr-4">
+                    <button class="lang-button flex items-center px-2 py-1 rounded-md hover:bg-gray-100"
+                        aria-haspopup="true" aria-expanded="false" aria-label="Select Language">
+                        <i class="fas fa-globe text-sm text-gray-500"></i>
+                        <span id="current-lang-mobile" class="lang-button-text text-sm text-gray-700">中</span>
+                        <i class="fas fa-chevron-down text-xs text-gray-500"></i>
+                    </button>
+                    <div class="lang-dropdown-content">
+                        <a href="#" class="lang-option" data-set-lang="zh-CN">中</a>
+                        <a href="#" class="lang-option" data-set-lang="en">EN</a>
+                        <a href="#" class="lang-option" data-set-lang="ja">日</a>
+                        <a href="#" class="lang-option" data-set-lang="ko">한</a>
+                    </div>
+                </div>
+                <button id="mobile-menu-button" class="text-gray-600 focus:outline-none" aria-label="Open Menu">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 6h16M4 12h16m-7 6h7"></path>
+                    </svg>
+                </button>
+            </div>
+        </nav>
+        <div id="mobile-menu" class="hidden bg-white border-t border-gray-200 py-2 lg:hidden">
+            <a href="#home" class="block px-6 py-2 text-gray-700 hover:bg-gray-100"><span
+                    data-lang="zh-CN">首页</span><span data-lang="en">Home</span><span data-lang="ja">ホーム</span><span
+                    data-lang="ko">홈</span></a>
+            <a href="#solutions" class="block px-6 py-2 text-gray-700 hover:bg-gray-100"><span
+                    data-lang="zh-CN">解决方案</span><span data-lang="en">Solutions</span><span
+                    data-lang="ja">ソリューション</span><span data-lang="ko">솔루션</span></a>
+            <a href="#why-us" class="block px-6 py-2 text-gray-700 hover:bg-gray-100"><span
+                    data-lang="zh-CN">为何选择我们</span><span data-lang="en">Why Us</span><span
+                    data-lang="ja">選ばれる理由</span><span data-lang="ko">선택 이유</span></a>
+            <a href="#market-access" class="block px-6 py-2 text-gray-700 hover:bg-gray-100"><span
+                    data-lang="zh-CN">市场对接</span><span data-lang="en">Market Access</span><span
+                    data-lang="ja">市場接続</span><span data-lang="ko">시장 접근</span></a>
+            <a href="#supported-chains" class="block px-6 py-2 text-gray-700 hover:bg-gray-100"><span
+                    data-lang="zh-CN">支持公链</span><span data-lang="en">Supported Chains</span><span
+                    data-lang="ja">対応チェーン</span><span data-lang="ko">지원 체인</span></a>
+            <a href="#partnership-program" class="block px-6 py-2 text-gray-700 hover:bg-gray-100"><span
+                    data-lang="zh-CN">数字投行合作</span><span data-lang="en">Digital IB Partnership</span><span
+                    data-lang="ja">デジタル投資銀行パートナーシップ</span><span data-lang="ko">디지털 IB 파트너십</span></a>
+            <a href="#clients" class="block px-6 py-2 text-gray-700 hover:bg-gray-100"><span
+                    data-lang="zh-CN">客户成功</span><span data-lang="en">Clients</span><span
+                    data-lang="ja">導入事例</span><span data-lang="ko">고객 성공 사례</span></a>
+            <a href="#resources" class="block px-6 py-2 text-gray-700 hover:bg-gray-100"><span
+                    data-lang="zh-CN">资源中心</span><span data-lang="en">Resources</span><span
+                    data-lang="ja">リソース</span><span data-lang="ko">리소스</span></a>
+            <a href="#pricing" class="block px-6 py-2 text-gray-700 hover:bg-gray-100"><span
+                    data-lang="zh-CN">合作模式</span><span data-lang="en">Pricing</span><span
+                    data-lang="ja">協力モデル</span><span data-lang="ko">협력 모델</span></a>
+            <a href="#apply" class="block px-6 py-2 text-green-600 hover:bg-gray-100"><span
+                    data-lang="zh-CN">平台注册/申请</span><span data-lang="en">Platform Registration</span><span
+                    data-lang="ja">プラットフォーム登録</span><span data-lang="ko">플랫폼 등록/신청</span></a>
+            <a href="#contact" class="block px-6 py-2 text-indigo-600 hover:bg-gray-100"><span
+                    data-lang="zh-CN">联系我们</span><span data-lang="en">Contact Us</span><span
+                    data-lang="ja">お問い合わせ</span><span data-lang="ko">문의하기</span></a>
+        </div>
+    </header>
+
+    <main>
+        <section id="home" class="hero-fintech-bg py-24 md:py-40 fade-in">
+            <div class="container mx-auto px-6 text-center">
+                <h1 class="text-4xl md:text-5xl font-bold mb-6 hero-title leading-tight tracking-tight text-gray-900">
+                    <span data-lang="zh-CN">元话RWA：盘活万亿资产，合规连接全球资本</span>
+                    <span data-lang="en">Metakina RWA: Unlock Trillion-Dollar Assets, Connect Global Capital
+                        Compliantly</span>
+                    <span data-lang="ja">メタキナRWA：兆ドル規模の資産を活性化し、コンプライアンスに基づきグローバル資本と接続</span>
+                    <span data-lang="ko">메타키나 RWA: 조 단위 자산 활성화, 규정 준수를 통한 글로벌 자본 연결</span>
+                </h1>
+                <p class="text-lg md:text-xl mb-10 text-gray-600 hero-subtitle max-w-3xl mx-auto">
+                    <span data-lang="zh-CN">提供机构级、端到端、合规优先的RWA与数据资产化解决方案，赋能您的资产潜力。</span>
+                    <span data-lang="en">Providing institutional-grade, end-to-end, compliance-first RWA and data
+                        assetization solutions to empower your asset potential.</span>
+                    <span data-lang="ja">機関投資家レベル、エンドツーエンド、コンプライアンス優先のRWAおよびデータ資産化ソリューションを提供し、資産の可能性を最大限に引き出します。</span>
+                    <span data-lang="ko">기관 수준의 엔드투엔드, 규정 준수 우선 RWA 및 데이터 자산화 솔루션을 제공하여 자산 잠재력을 강화합니다.</span>
+                </p>
+                <div
+                    class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 mb-12 max-w-4xl mx-auto text-sm md:text-base">
+                    <div class="fintech-card bg-white p-4 rounded-lg text-center">
+                        <i class="fas fa-shield-alt text-3xl mb-2 text-indigo-600"></i>
+                        <h3 class="font-semibold text-gray-800"><span data-lang="zh-CN">合规跨境融资</span><span
+                                data-lang="en">Compliant Cross-Border Financing</span></h3>
+                        <p class="text-gray-500 text-xs"><span data-lang="zh-CN">精通LPF+QFLP等结构</span><span
+                                data-lang="en">Expertise in LPF+QFLP</span></p>
+                    </div>
+                    <div class="fintech-card bg-white p-4 rounded-lg text-center">
+                        <i class="fas fa-chart-pie text-3xl mb-2 text-indigo-600"></i>
+                        <h3 class="font-semibold text-gray-800"><span data-lang="zh-CN">资产数字化增效</span><span
+                                data-lang="en">Asset Digitization Efficiency</span></h3>
+                        <p class="text-gray-500 text-xs"><span data-lang="zh-CN">提升流动性与管理效率</span><span
+                                data-lang="en">Enhance liquidity & management</span></p>
+                    </div>
+                    <div class="fintech-card bg-white p-4 rounded-lg text-center">
+                        <i class="fas fa-lightbulb text-3xl mb-2 text-indigo-600"></i>
+                        <h3 class="font-semibold text-gray-800"><span data-lang="zh-CN">AI驱动洞察</span><span
+                                data-lang="en">AI-Driven Insights</span></h3>
+                        <p class="text-gray-500 text-xs"><span data-lang="zh-CN">辅助估值与市场预测</span><span
+                                data-lang="en">Assist valuation & forecasting</span></p>
+                    </div>
+                    <div class="fintech-card bg-white p-4 rounded-lg text-center">
+                        <i class="fas fa-tasks text-3xl mb-2 text-indigo-600"></i>
+                        <h3 class="font-semibold text-gray-800"><span data-lang="zh-CN">全流程风险管理</span><span
+                                data-lang="en">End-to-End Risk Management</span></h3>
+                        <p class="text-gray-500 text-xs"><span data-lang="zh-CN">技术、合规、市场全覆盖</span><span
+                                data-lang="en">Tech, compliance, market covered</span></p>
+                    </div>
+                </div>
+                <a href="#contact"
+                    class="cta-button cta-primary-button px-8 py-3 rounded-md text-lg font-semibold inline-block">
+                    <span data-lang="zh-CN">申请免费咨询</span>
+                    <span data-lang="en">Request Free Consultation</span>
+                    <span data-lang="ja">無料相談を申し込む</span>
+                    <span data-lang="ko">무료 상담 신청</span>
+                </a>
+                <div class="mt-16 animate-on-scroll">
+                    <p class="text-gray-500 mb-4 text-sm uppercase tracking-wider">
+                        <span data-lang="zh-CN">深受行业领先者信赖</span>
+                        <span data-lang="en">Trusted by Industry Leaders</span>
+                        <span data-lang="ja">業界リーダーからの信頼</span>
+                        <span data-lang="ko">업계 리더들의 신뢰</span>
+                    </p>
+                    <div class="flex flex-wrap justify-center items-center gap-x-8 gap-y-4 logo-item">
+                        <img src="https://placehold.co/120x40/cccccc/888888?text=Client+1" alt="客户 Logo 1" class="h-8"
+                            width="120" height="40" onerror="this.style.display='none'">
+                        <img src="https://placehold.co/120x40/cccccc/888888?text=Client+2" alt="客户 Logo 2" class="h-8"
+                            width="120" height="40" onerror="this.style.display='none'">
+                        <img src="https://placehold.co/120x40/cccccc/888888?text=Client+3" alt="客户 Logo 3" class="h-8"
+                            width="120" height="40" onerror="this.style.display='none'">
+                        <img src="https://placehold.co/120x40/cccccc/888888?text=Client+4" alt="客户 Logo 4"
+                            class="h-8 hidden md:inline-block" width="120" height="40"
+                            onerror="this.style.display='none'">
+                        <img src="https://placehold.co/120x40/cccccc/888888?text=Client+5" alt="客户 Logo 5"
+                            class="h-8 hidden lg:inline-block" width="120" height="40"
+                            onerror="this.style.display='none'">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="py-20 section-bg-white">
+            <div class="container mx-auto px-6 text-center">
+                <h2 class="text-3xl font-bold mb-4 text-gray-900 animate-on-scroll">
+                    <span data-lang="zh-CN">传统资产与数据资产面临的挑战</span>
+                    <span data-lang="en">Challenges Facing Traditional & Data Assets</span>
+                    <span data-lang="ja">伝統的資産とデータ資産が直面する課題</span>
+                    <span data-lang="ko">전통 자산 및 데이터 자산의 과제</span>
+                </h2>
+                <p class="text-gray-600 mb-12 max-w-3xl mx-auto animate-on-scroll" style="animation-delay: 0.1s;">
+                    <span data-lang="zh-CN">流动性匮乏、融资渠道狭窄、估值确权困难、交易效率低下、合规路径复杂……这些瓶颈限制了数百万亿资产的真正价值。</span>
+                    <span data-lang="en">Lack of liquidity, narrow financing channels, valuation difficulties,
+                        inefficient transactions, complex compliance paths... these bottlenecks limit the true value of
+                        trillions in assets.</span>
+                    <span
+                        data-lang="ja">流動性の欠如、狭い資金調達チャネル、評価の困難さ、非効率な取引、複雑なコンプライアンスパス…これらのボトルネックが数兆ドル規模の資産の真の価値を制限しています。</span>
+                    <span data-lang="ko">유동성 부족, 좁은 자금 조달 채널, 가치 평가 어려움, 비효율적인 거래, 복잡한 규정 준수 경로... 이러한 병목 현상은 수조 달러 자산의
+                        진정한 가치를 제한합니다.</span>
+                </p>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="fintech-card p-6 rounded-lg animate-on-scroll" style="animation-delay: 0.2s;">
+                        <h3 class="text-xl font-semibold mb-2 text-gray-800"><span data-lang="zh-CN">流动性困境</span><span
+                                data-lang="en">Liquidity Dilemma</span></h3>
+                        <p class="text-gray-600"><span data-lang="zh-CN">非标资产难以快速变现，持有成本高。</span><span
+                                data-lang="en">Non-standard assets hard to liquidate, high holding costs.</span></p>
+                    </div>
+                    <div class="fintech-card p-6 rounded-lg animate-on-scroll" style="animation-delay: 0.3s;">
+                        <h3 class="text-xl font-semibold mb-2 text-gray-800"><span data-lang="zh-CN">融资与合规难题</span><span
+                                data-lang="en">Financing & Compliance Hurdles</span></h3>
+                        <p class="text-gray-600"><span data-lang="zh-CN">传统渠道门槛高，跨境、数据资产化合规复杂。</span><span
+                                data-lang="en">High barriers in traditional channels, complex cross-border & data asset
+                                compliance.</span></p>
+                    </div>
+                    <div class="fintech-card p-6 rounded-lg animate-on-scroll" style="animation-delay: 0.4s;">
+                        <h3 class="text-xl font-semibold mb-2 text-gray-800"><span
+                                data-lang="zh-CN">效率与透明度不足</span><span data-lang="en">Lack of Efficiency &
+                                Transparency</span></h3>
+                        <p class="text-gray-600"><span data-lang="zh-CN">交易流程冗长，信息不对称，管理成本高。</span><span
+                                data-lang="en">Lengthy processes, info asymmetry, high admin costs.</span></p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="solutions" class="py-20 section-bg-light">
+            <div class="container mx-auto px-6">
+                <h2 class="text-3xl font-bold text-center mb-12 text-gray-900 animate-on-scroll">
+                    <span data-lang="zh-CN">我们的解决方案：端到端 RWA 与数据资产化服务</span>
+                    <span data-lang="en">Our Solutions: End-to-End RWA & Data Assetization Services</span>
+                    <span data-lang="ja">当社のソリューション：エンドツーエンドのRWAおよびデータ資産化サービス</span>
+                    <span data-lang="ko">우리의 솔루션: 엔드투엔드 RWA 및 데이터 자산화 서비스</span>
+                </h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div class="fintech-card p-6 rounded-lg animate-on-scroll" style="animation-delay: 0.1s;">
+                        <div
+                            class="text-indigo-600 mb-4 icon-card flex items-center justify-center bg-indigo-100 rounded-full w-12 h-12">
+                            <i class="fas fa-digital-tachograph"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-3 text-gray-800"><span
+                                data-lang="zh-CN">资产数字化与价值洞察</span><span data-lang="en">Asset Digitization & Value
+                                Insight</span></h3>
+                        <p class="text-gray-600 mb-4 text-sm"><span data-lang="zh-CN">利用 AI(“元启”)辅助评估，设计精准
+                                Tokenomics，通过安全可靠的智能合约实现资产上链。</span><span data-lang="en">Leverage AI ("Yuanqi")
+                                valuation, design precise Tokenomics, deploy assets on-chain via secure smart
+                                contracts.</span></p>
+                        <a href="#contact" class="inline-block mt-4 fintech-link text-sm"><span
+                                data-lang="zh-CN">了解详情</span><span data-lang="en">Learn More</span> &rarr;</a>
+                    </div>
+                    <div class="fintech-card p-6 rounded-lg animate-on-scroll" style="animation-delay: 0.2s;">
+                        <div
+                            class="text-indigo-600 mb-4 icon-card flex items-center justify-center bg-indigo-100 rounded-full w-12 h-12">
+                            <i class="fas fa-plane-departure"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-3 text-gray-800"><span
+                                data-lang="zh-CN">合规跨境融资促进</span><span data-lang="en">Compliant Cross-Border
+                                Financing</span></h3>
+                        <p class="text-gray-600 mb-4 text-sm"><span
+                                data-lang="zh-CN">设计并执行创新的跨境金融结构（如香港LPF+陕西QFLP），精准对接全球合格投资者网络。</span><span
+                                data-lang="en">Design & execute innovative cross-border structures (e.g., LPF+QFLP),
+                                connect with global qualified investors.</span></p>
+                        <a href="#contact" class="inline-block mt-4 fintech-link text-sm"><span
+                                data-lang="zh-CN">咨询跨境方案</span><span data-lang="en">Inquire Solutions</span> &rarr;</a>
+                    </div>
+                    <div class="fintech-card p-6 rounded-lg animate-on-scroll" style="animation-delay: 0.3s;">
+                        <div
+                            class="text-indigo-600 mb-4 icon-card flex items-center justify-center bg-indigo-100 rounded-full w-12 h-12">
+                            <i class="fas fa-gavel"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-3 text-gray-800"><span data-lang="zh-CN">全流程合规保障</span><span
+                                data-lang="en">End-to-End Compliance Assurance</span></h3>
+                        <p class="text-gray-600 mb-4 text-sm"><span data-lang="zh-CN">基于“合规前置”理念，提供法规解读，整合
+                                KYC/AML/KYB，保障数据安全与隐私。</span><span data-lang="en">"Compliance-by-Design" approach,
+                                regulatory interpretation, KYC/AML/KYB integration, data security & privacy.</span></p>
+                        <a href="#contact" class="inline-block mt-4 fintech-link text-sm"><span
+                                data-lang="zh-CN">了解合规服务</span><span data-lang="en">Explore Services</span> &rarr;</a>
+                    </div>
+                    <div class="fintech-card p-6 rounded-lg animate-on-scroll" style="animation-delay: 0.4s;">
+                        <div
+                            class="text-indigo-600 mb-4 icon-card flex items-center justify-center bg-indigo-100 rounded-full w-12 h-12">
+                            <i class="fas fa-users-cog"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-3 text-gray-800"><span data-lang="zh-CN">生态与市场运营</span><span
+                                data-lang="en">Ecosystem & Market Operations</span></h3>
+                        <p class="text-gray-600 mb-4 text-sm"><span data-lang="zh-CN">利用“元策”AI
+                                进行市场分析，构建和运营社群，协调市场对接，提供持续的技术维护和品牌建设。</span><span data-lang="en">Utilize "Yuance" AI for
+                                market analysis, build & operate communities, coordinate market access, provide ongoing
+                                tech maintenance & branding.</span></p>
+                        <a href="#contact" class="inline-block mt-4 fintech-link text-sm"><span
+                                data-lang="zh-CN">探讨市场策略</span><span data-lang="en">Discuss Strategy</span> &rarr;</a>
+                    </div>
+                    <div class="fintech-card p-6 rounded-lg animate-on-scroll" style="animation-delay: 0.5s;">
+                        <div
+                            class="text-indigo-600 mb-4 icon-card flex items-center justify-center bg-indigo-100 rounded-full w-12 h-12">
+                            <i class="fas fa-database"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-3 text-gray-800"><span data-lang="zh-CN">数据资产金融化</span><span
+                                data-lang="en">Data Asset Financialization</span></h3>
+                        <p class="text-gray-600 mb-4 text-sm"><span
+                                data-lang="zh-CN">紧跟中国“数据资产入表”政策，提供从合规治理到金融化方案设计、市场对接的全流程服务。</span><span
+                                data-lang="en">Aligning with China's "Data Asset Accounting", offering end-to-end
+                                services from compliance to financialization design and market access.</span></p>
+                        <a href="#contact" class="inline-block mt-4 fintech-link text-sm"><span
+                                data-lang="zh-CN">探索数据价值</span><span data-lang="en">Explore Data Value</span> &rarr;</a>
+                    </div>
+                    <div class="fintech-card p-6 rounded-lg bg-indigo-50 animate-on-scroll"
+                        style="animation-delay: 0.6s;">
+                        <div
+                            class="text-indigo-600 mb-4 icon-card flex items-center justify-center bg-indigo-100 rounded-full w-12 h-12">
+                            <i class="fas fa-puzzle-piece"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-3 text-gray-800"><span data-lang="zh-CN">模块化与定制化</span><span
+                                data-lang="en">Modular & Customized</span></h3>
+                        <p class="text-gray-600 mb-4 text-sm"><span
+                                data-lang="zh-CN">根据项目需求和预算，灵活选择服务模块，我们提供高度定制化的解决方案。</span><span data-lang="en">Flexibly
+                                choose service modules based on project needs and budget; we offer highly customized
+                                solutions.</span></p>
+                        <a href="#pricing" class="inline-block mt-4 fintech-link text-sm"><span
+                                data-lang="zh-CN">查看合作模式</span><span data-lang="en">See Partnership Models</span>
+                            &rarr;</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="why-us" class="py-20 section-bg-white">
+            <div class="container mx-auto px-6">
+                <h2 class="text-3xl font-bold text-center mb-12 text-gray-900 animate-on-scroll">
+                    <span data-lang="zh-CN">为何选择元话RWA？</span>
+                    <span data-lang="en">Why Choose Metakina RWA?</span>
+                    <span data-lang="ja">なぜメタキナRWAを選ぶのか？</span>
+                    <span data-lang="ko">왜 메타키나 RWA를 선택해야 하는가?</span>
+                </h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+                    <div class="text-center p-6 animate-on-scroll" style="animation-delay: 0.1s;">
+                        <div
+                            class="bg-indigo-100 text-indigo-600 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-5 shadow-sm icon-feature">
+                            <i class="fas fa-globe-asia"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-2 text-gray-800"><span
+                                data-lang="zh-CN">卓越跨境金融与合规</span><span data-lang="en">Superior Cross-Border Finance &
+                                Compliance</span></h3>
+                        <p class="text-gray-600 text-sm"><span data-lang="zh-CN">精通LPF+QFLP等结构，深刻理解中港及国际法规。</span><span
+                                data-lang="en">Expertise in LPF+QFLP, deep understanding of regulations.</span></p>
+                    </div>
+                    <div class="text-center p-6 animate-on-scroll" style="animation-delay: 0.2s;">
+                        <div
+                            class="bg-indigo-100 text-indigo-600 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-5 shadow-sm icon-feature">
+                            <i class="fas fa-balance-scale-right"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-2 text-gray-800"><span data-lang="zh-CN">深度合规与风控</span><span
+                                data-lang="en">In-depth Compliance & Risk Mgt.</span></h3>
+                        <p class="text-gray-600 text-sm"><span data-lang="zh-CN">“合规前置”实践，全面风险缓释机制。</span><span
+                                data-lang="en">"Compliance-by-Design", comprehensive risk mitigation.</span></p>
+                    </div>
+                    <div class="text-center p-6 animate-on-scroll" style="animation-delay: 0.3s;">
+                        <div
+                            class="bg-indigo-100 text-indigo-600 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-5 shadow-sm icon-feature">
+                            <i class="fas fa-cogs"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-2 text-gray-800"><span
+                                data-lang="zh-CN">领先且合规的技术</span><span data-lang="en">Leading & Compliant Tech</span>
+                        </h3>
+                        <p class="text-gray-600 text-sm"><span data-lang="zh-CN">自主知识产权(达普韦伯)，中国备案基础，平台安全高效。</span><span
+                                data-lang="en">Proprietary IP (Dapuwobo), China registration, secure & efficient
+                                platform.</span></p>
+                    </div>
+                    <div class="text-center p-6 animate-on-scroll" style="animation-delay: 0.4s;">
+                        <div
+                            class="bg-indigo-100 text-indigo-600 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-5 shadow-sm icon-feature">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-2 text-gray-800"><span
+                                data-lang="zh-CN">跨界融合专业团队</span><span data-lang="en">Cross-Disciplinary Expert
+                                Team</span></h3>
+                        <p class="text-gray-600 text-sm"><span data-lang="zh-CN">汇聚金融、技术、法律、市场资深专家。</span><span
+                                data-lang="en">Experts in finance, tech, law, and market operations.</span></p>
+                    </div>
+                    <div class="text-center p-6 animate-on-scroll" style="animation-delay: 0.5s;">
+                        <div
+                            class="bg-indigo-100 text-indigo-600 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-5 shadow-sm icon-feature">
+                            <i class="fas fa-network-wired"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-2 text-gray-800"><span data-lang="zh-CN">强大生态网络</span><span
+                                data-lang="en">Strong Ecosystem Network</span></h3>
+                        <p class="text-gray-600 text-sm"><span data-lang="zh-CN">链接全球与本地顶级技术、金融、法律伙伴。</span><span
+                                data-lang="en">Connecting global & local top tech, finance, legal partners.</span></p>
+                    </div>
+                    <div class="text-center p-6 animate-on-scroll" style="animation-delay: 0.6s;">
+                        <div
+                            class="bg-indigo-100 text-indigo-600 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-5 shadow-sm icon-feature">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-2 text-gray-800"><span data-lang="zh-CN">丰富成功案例</span><span
+                                data-lang="en">Proven Track Record</span></h3>
+                        <p class="text-gray-600 text-sm"><span data-lang="zh-CN">服务多元化资产和机构客户的成功实践。</span><span
+                                data-lang="en">Successful cases across diverse assets and institutional clients.</span>
+                        </p>
+                    </div>
+                </div>
+                <div class="mt-16 text-center animate-on-scroll">
+                    <h3 class="text-2xl font-semibold mb-6 text-gray-900"><span data-lang="zh-CN">我们的核心团队</span><span
+                            data-lang="en">Our Core Team</span></h3>
+                    <div class="flex flex-wrap justify-center gap-8">
+                        <div class="w-full sm:w-1/2 md:w-1/4 lg:w-1/5 text-center">
+                            <img src="https://placehold.co/150x150/e0e7ff/4338ca?text=CEO" alt="团队成员"
+                                class="rounded-full mx-auto mb-3 shadow-md border-2 border-indigo-200" width="150"
+                                height="150" onerror="this.src='https://placehold.co/150x150/e0e7ff/4338ca?text=Error'">
+                            <h4 class="font-semibold text-gray-800">王芳 (CEO)</h4>
+                            <p class="text-sm text-gray-600"><span data-lang="zh-CN">资深金融背景，资产管理与风控专家</span><span
+                                    data-lang="en">Senior finance, asset mgt. & risk expert</span></p>
+                        </div>
+                        <div class="w-full sm:w-1/2 md:w-1/4 lg:w-1/5 text-center">
+                            <img src="https://placehold.co/150x150/e0e7ff/4338ca?text=COO" alt="团队成员"
+                                class="rounded-full mx-auto mb-3 shadow-md border-2 border-indigo-200" width="150"
+                                height="150" onerror="this.src='https://placehold.co/150x150/e0e7ff/4338ca?text=Error'">
+                            <h4 class="font-semibold text-gray-800">张强伟 (COO)</h4>
+                            <p class="text-sm text-gray-600"><span data-lang="zh-CN">运营管理专家，精于流程优化与合规执行</span><span
+                                    data-lang="en">Operations expert, process & compliance</span></p>
+                        </div>
+                        <div class="w-full sm:w-1/2 md:w-1/4 lg:w-1/5 text-center">
+                            <img src="https://placehold.co/150x150/e0e7ff/4338ca?text=CTO" alt="团队成员"
+                                class="rounded-full mx-auto mb-3 shadow-md border-2 border-indigo-200" width="150"
+                                height="150" onerror="this.src='https://placehold.co/150x150/e0e7ff/4338ca?text=Error'">
+                            <h4 class="font-semibold text-gray-800">朱银军 (CTO)</h4>
+                            <p class="text-sm text-gray-600"><span data-lang="zh-CN">技术专家，精通区块链与智能合约安全</span><span
+                                    data-lang="en">Tech expert, blockchain & contract security</span></p>
+                        </div>
+                        <div class="w-full sm:w-1/2 md:w-1/4 lg:w-1/5 text-center">
+                            <img src="https://placehold.co/150x150/e0e7ff/4338ca?text=CMO" alt="团队成员"
+                                class="rounded-full mx-auto mb-3 shadow-md border-2 border-indigo-200" width="150"
+                                height="150" onerror="this.src='https://placehold.co/150x150/e0e7ff/4338ca?text=Error'">
+                            <h4 class="font-semibold text-gray-800">Taylor (CMO)</h4>
+                            <p class="text-sm text-gray-600"><span data-lang="zh-CN">市场营销专家，品牌与市场沟通</span><span
+                                    data-lang="en">Marketing expert, brand & comms</span></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="market-access" class="py-20 section-bg-gradient-light">
+            <div class="container mx-auto px-6">
+                <h2 class="text-3xl font-bold text-center mb-4 text-gray-900 animate-on-scroll">
+                    <span data-lang="zh-CN">广泛的市场对接与强大的生态伙伴</span>
+                    <span data-lang="en">Broad Market Access & Strong Ecosystem Partners</span>
+                    <span data-lang="ja">広範な市場接続と強力なエコシステムパートナー</span>
+                    <span data-lang="ko">광범위한 시장 접근 및 강력한 생태계 파트너</span>
+                </h2>
+                <p class="text-gray-600 text-center mb-12 max-w-3xl mx-auto animate-on-scroll"
+                    style="animation-delay: 0.1s;">
+                    <span data-lang="zh-CN">我们与全球领先的一级市场平台(Launchpads)和二级市场交易所(CEX/DEX)紧密合作，结合强大的技术、金融、法律合作伙伴网络，为您的 RWA
+                        项目提供全方位的市场准入和流动性支持。</span>
+                    <span data-lang="en">We collaborate closely with leading global launchpads and exchanges (CEX/DEX),
+                        combined with a strong network of tech, finance, and legal partners, providing comprehensive
+                        market access and liquidity support for your RWA project.</span>
+                    <span
+                        data-lang="ja">私たちは世界をリードする一次市場プラットフォーム(Launchpads)や二次市場取引所(CEX/DEX)と緊密に連携し、強力な技術、金融、法律パートナーネットワークを組み合わせ、お客様のRWAプロジェクトに包括的な市場アクセスと流動性サポートを提供します。</span>
+                    <span data-lang="ko">우리는 선도적인 글로벌 1차 시장 플랫폼(런치패드) 및 2차 시장 거래소(CEX/DEX)와 긴밀히 협력하며, 강력한 기술, 금융, 법률 파트너
+                        네트워크를 결합하여 귀하의 RWA 프로젝트에 포괄적인 시장 접근 및 유동성 지원을 제공합니다.</span>
+                </p>
+
+                <div class="mb-12 animate-on-scroll" style="animation-delay: 0.2s;">
+                    <h3 class="text-2xl font-semibold text-center mb-6 text-gray-800">
+                        <span data-lang="zh-CN">合作一级市场平台示例</span>
+                        <span data-lang="en">Example Primary Market Platforms</span>
+                        <span data-lang="ja">提携一次市場プラットフォーム例</span>
+                        <span data-lang="ko">협력 1차 시장 플랫폼 예시</span>
+                    </h3>
+                    <div class="logo-grid">
+                        <img src="https://placehold.co/120x40/cccccc/888888?text=DAO+Maker" alt="DAO Maker Logo"
+                            class="h-8 mx-auto logo-item" width="120" height="40" onerror="this.style.display='none'">
+                        <img src="https://placehold.co/120x40/cccccc/888888?text=Polkastarter" alt="Polkastarter Logo"
+                            class="h-8 mx-auto logo-item" width="120" height="40" onerror="this.style.display='none'">
+                        <img src="https://placehold.co/120x40/cccccc/888888?text=Seedify" alt="Seedify Logo"
+                            class="h-8 mx-auto logo-item" width="120" height="40" onerror="this.style.display='none'">
+                        <img src="https://placehold.co/120x40/cccccc/888888?text=GameFi.org" alt="GameFi.org Logo"
+                            class="h-8 mx-auto logo-item" width="120" height="40" onerror="this.style.display='none'">
+                        <img src="https://placehold.co/120x40/cccccc/888888?text=CoinList" alt="CoinList Logo"
+                            class="h-8 mx-auto logo-item" width="120" height="40" onerror="this.style.display='none'">
+                        <img src="https://placehold.co/120x40/cccccc/888888?text=ChainGPT+Pad" alt="ChainGPT Pad Logo"
+                            class="h-8 mx-auto logo-item" width="120" height="40" onerror="this.style.display='none'">
+                    </div>
+                </div>
+
+                <div class="animate-on-scroll" style="animation-delay: 0.3s;">
+                    <h3 class="text-2xl font-semibold text-center mb-6 text-gray-800">
+                        <span data-lang="zh-CN">合作二级交易所示例</span>
+                        <span data-lang="en">Example Secondary Market Exchanges</span>
+                        <span data-lang="ja">提携二次市場取引所例</span>
+                        <span data-lang="ko">협력 2차 시장 거래소 예시</span>
+                    </h3>
+                    <div class="logo-grid">
+                        <img src="https://placehold.co/120x40/cccccc/888888?text=Binance" alt="Binance Logo"
+                            class="h-8 mx-auto logo-item" width="120" height="40" onerror="this.style.display='none'">
+                        <img src="https://placehold.co/120x40/cccccc/888888?text=Coinbase" alt="Coinbase Logo"
+                            class="h-8 mx-auto logo-item" width="120" height="40" onerror="this.style.display='none'">
+                        <img src="https://placehold.co/120x40/cccccc/888888?text=Kraken" alt="Kraken Logo"
+                            class="h-8 mx-auto logo-item" width="120" height="40" onerror="this.style.display='none'">
+                        <img src="https://placehold.co/120x40/cccccc/888888?text=OKX" alt="OKX Logo"
+                            class="h-8 mx-auto logo-item" width="120" height="40" onerror="this.style.display='none'">
+                        <img src="https://placehold.co/120x40/cccccc/888888?text=KuCoin" alt="KuCoin Logo"
+                            class="h-8 mx-auto logo-item" width="120" height="40" onerror="this.style.display='none'">
+                        <img src="https://placehold.co/120x40/cccccc/888888?text=Gate.io" alt="Gate.io Logo"
+                            class="h-8 mx-auto logo-item" width="120" height="40" onerror="this.style.display='none'">
+                        <img src="https://placehold.co/120x40/cccccc/888888?text=Uniswap" alt="Uniswap Logo"
+                            class="h-8 mx-auto logo-item" width="120" height="40" onerror="this.style.display='none'">
+                        <img src="https://placehold.co/120x40/cccccc/888888?text=PancakeSwap" alt="PancakeSwap Logo"
+                            class="h-8 mx-auto logo-item" width="120" height="40" onerror="this.style.display='none'">
+                        <img src="https://placehold.co/120x40/cccccc/888888?text=Curve" alt="Curve Logo"
+                            class="h-8 mx-auto logo-item" width="120" height="40" onerror="this.style.display='none'">
+                        <img src="https://placehold.co/120x40/cccccc/888888?text=Jupiter" alt="Jupiter Logo"
+                            class="h-8 mx-auto logo-item" width="120" height="40" onerror="this.style.display='none'">
+                    </div>
+                </div>
+                <p class="text-center text-sm text-gray-500 mt-8 animate-on-scroll" style="animation-delay: 0.4s;">
+                    <span data-lang="zh-CN">*注：以上仅为示例，实际对接平台将根据项目具体情况和战略目标进行选择。</span>
+                    <span data-lang="en">*Note: The platforms listed are examples; actual platform selection depends on
+                        specific project needs and strategic goals.</span>
+                    <span data-lang="ja">*注：上記は例であり、実際の接続プラットフォームはプロジェクトの具体的な状況と戦略目標に基づいて選択されます。</span>
+                    <span data-lang="ko">*참고: 위에 나열된 플랫폼은 예시이며, 실제 플랫폼 선택은 특정 프로젝트 요구 사항 및 전략적 목표에 따라 달라집니다.</span>
+                </p>
+            </div>
+        </section>
+
+        <section id="supported-chains" class="py-20 section-bg-white">
+            <div class="container mx-auto px-6">
+                <h2 class="text-3xl font-bold text-center mb-4 text-gray-900 animate-on-scroll">
+                    <span data-lang="zh-CN">多链支持与互操作性</span>
+                    <span data-lang="en">Multi-Chain Support & Interoperability</span>
+                    <span data-lang="ja">マルチチェーン対応と相互運用性</span>
+                    <span data-lang="ko">멀티체인 지원 및 상호운용성</span>
+                </h2>
+                <p class="text-gray-600 text-center mb-12 max-w-3xl mx-auto animate-on-scroll"
+                    style="animation-delay: 0.1s;">
+                    <span
+                        data-lang="zh-CN">元话RWA平台采用灵活的多链策略，支持主流公链及联盟链，并通过区块链抽象层简化集成。我们持续关注跨链技术发展，旨在为您的资产提供更广泛的连接性和流动性潜力。</span>
+                    <span data-lang="en">Metakina RWA adopts a flexible multi-chain strategy, supporting mainstream
+                        public and consortium chains, simplified through our blockchain abstraction layer. We
+                        continuously monitor cross-chain developments to offer broader connectivity and liquidity
+                        potential for your assets.</span>
+                    <span
+                        data-lang="ja">メタキナRWAは柔軟なマルチチェーン戦略を採用し、主要なパブリックチェーンとコンソーシアムチェーンをサポートし、ブロックチェーン抽象化レイヤーを通じて統合を簡素化します。クロスチェーン技術の発展を継続的に監視し、お客様の資産により広範な接続性と流動性の可能性を提供することを目指しています。</span>
+                    <span data-lang="ko">메타키나 RWA는 유연한 멀티체인 전략을 채택하여 주류 퍼블릭 및 컨소시엄 체인을 지원하며, 블록체인 추상화 계층을 통해 통합을 간소화합니다.
+                        자산에 대한 더 넓은 연결성과 유동성 잠재력을 제공하기 위해 크로스체인 기술 발전을 지속적으로 모니터링합니다.</span>
+                </p>
+                <div class="animate-on-scroll" style="animation-delay: 0.2s;">
+                    <h3 class="text-2xl font-semibold text-center mb-6 text-gray-800">
+                        <span data-lang="zh-CN">当前支持的主要网络类型</span>
+                        <span data-lang="en">Currently Supported Network Types</span>
+                        <span data-lang="ja">現在サポートされている主なネットワークタイプ</span>
+                        <span data-lang="ko">현재 지원되는 주요 네트워크 유형</span>
+                    </h3>
+                    <div class="logo-grid">
+                        <img src="https://placehold.co/120x40/cccccc/888888?text=Ethereum" alt="Ethereum Logo"
+                            class="h-8 mx-auto logo-item" width="120" height="40" onerror="this.style.display='none'">
+                        <img src="https://placehold.co/120x40/cccccc/888888?text=Polygon" alt="Polygon Logo"
+                            class="h-8 mx-auto logo-item" width="120" height="40" onerror="this.style.display='none'">
+                        <img src="https://placehold.co/120x40/cccccc/888888?text=Avalanche" alt="Avalanche Logo"
+                            class="h-8 mx-auto logo-item" width="120" height="40" onerror="this.style.display='none'">
+                        <img src="https://placehold.co/120x40/cccccc/888888?text=BNB+Chain" alt="BNB Chain Logo"
+                            class="h-8 mx-auto logo-item" width="120" height="40" onerror="this.style.display='none'">
+                        <img src="https://placehold.co/120x40/cccccc/888888?text=Solana" alt="Solana Logo"
+                            class="h-8 mx-auto logo-item" width="120" height="40" onerror="this.style.display='none'">
+                        <img src="https://placehold.co/120x40/cccccc/888888?text=Hyperledger"
+                            alt="Hyperledger Fabric Logo" class="h-8 mx-auto logo-item" width="120" height="40"
+                            onerror="this.style.display='none'">
+                    </div>
+                </div>
+                <p class="text-center text-sm text-gray-500 mt-8 animate-on-scroll" style="animation-delay: 0.3s;">
+                    <span data-lang="zh-CN">*注：支持的网络列表将持续更新。联盟链支持通常根据具体项目需求进行配置。</span>
+                    <span data-lang="en">*Note: The list of supported networks is continuously updated. Consortium chain
+                        support is typically configured based on specific project requirements.</span>
+                    <span data-lang="ja">*注：対応ネットワークのリストは継続的に更新されます。コンソーシアムチェーンのサポートは通常、特定のプロジェクト要件に基づいて構成されます。</span>
+                    <span data-lang="ko">*참고: 지원되는 네트워크 목록은 지속적으로 업데이트됩니다. 컨소시엄 체인 지원은 일반적으로 특정 프로젝트 요구 사항에 따라
+                        구성됩니다.</span>
+                </p>
+            </div>
+        </section>
+
+        <section id="partnership-program" class="py-20 section-bg-light">
+            <div class="container mx-auto px-6">
+                <h2 class="text-3xl font-bold text-center mb-4 text-gray-900 animate-on-scroll">
+                    <span data-lang="zh-CN">元话RWA数字投行合作计划</span>
+                    <span data-lang="en">Metakina RWA Digital Investment Banking Partnership Program</span>
+                    <span data-lang="ja">メタキナRWAデジタル投資銀行パートナーシッププログラム</span>
+                    <span data-lang="ko">메타키나 RWA 디지털 투자 은행 파트너십 프로그램</span>
+                </h2>
+                <p class="text-gray-600 text-center mb-12 max-w-3xl mx-auto animate-on-scroll"
+                    style="animation-delay: 0.1s;">
+                    <span
+                        data-lang="zh-CN">我们诚邀具备资产发行、承销、合规咨询或技术整合能力的机构，加入元话RWA数字投行合作网络。携手利用我们的领先平台、全球资源和专业知识，共同服务资产方，开拓万亿级
+                        RWA 市场，实现价值共创。</span>
+                    <span data-lang="en">We invite institutions with capabilities in asset issuance, underwriting,
+                        compliance consulting, or technology integration to join the Metakina RWA Digital Investment
+                        Banking Partnership Network. Let's leverage our leading platform, global resources, and
+                        expertise together to serve asset owners, explore the trillion-dollar RWA market, and co-create
+                        value.</span>
+                    <span
+                        data-lang="ja">資産発行、引受、コンプライアンスコンサルティング、または技術統合の能力を持つ機関を、メタキナRWAデジタル投資銀行パートナーシップネットワークへの参加にご招待します。当社の主要なプラットフォーム、グローバルリソース、専門知識を共に活用し、資産所有者にサービスを提供し、兆ドル規模のRWA市場を開拓し、価値を共創しましょう。</span>
+                    <span data-lang="ko">자산 발행, 인수, 규정 준수 컨설팅 또는 기술 통합 역량을 갖춘 기관을 메타키나 RWA 디지털 투자 은행 파트너십 네트워크에 초대합니다.
+                        당사의 선도적인 플랫폼, 글로벌 리소스 및 전문 지식을 함께 활용하여 자산 소유자에게 서비스를 제공하고, 조 달러 규모의 RWA 시장을 개척하며 가치를 공동
+                        창출합시다.</span>
+                </p>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-10">
+                    <div class="fintech-card p-6 rounded-lg text-center animate-on-scroll"
+                        style="animation-delay: 0.2s;">
+                        <div class="text-gray-400 mb-3"><i class="fas fa-handshake fa-2x"></i></div>
+                        <h3 class="text-xl font-semibold mb-2 text-gray-800"><span data-lang="zh-CN">注册伙伴</span><span
+                                data-lang="en">Registered</span></h3>
+                        <p class="text-gray-600 text-sm mb-3"><span data-lang="zh-CN">建立联系，获取合作信息与基础资源。</span><span
+                                data-lang="en">Establish contact, access basic info & resources.</span></p>
+                        <span class="text-xs bg-gray-200 text-gray-700 px-2 py-0.5 rounded-full">入门级</span>
+                    </div>
+                    <div class="fintech-card p-6 rounded-lg text-center tier-highlight animate-on-scroll"
+                        style="animation-delay: 0.3s;">
+                        <div class="text-indigo-600 mb-3"><i class="fas fa-certificate fa-2x"></i></div>
+                        <h3 class="text-xl font-semibold mb-2 text-gray-800"><span data-lang="zh-CN">认证伙伴</span><span
+                                data-lang="en">Certified</span></h3>
+                        <p class="text-gray-600 text-sm mb-3"><span
+                                data-lang="zh-CN">获得专业认证，享有专属支持、市场资源与佣金激励。</span><span data-lang="en">Gain
+                                certification, enjoy dedicated support, market resources & commissions.</span></p>
+                        <span class="text-xs bg-indigo-100 text-indigo-700 px-2 py-0.5 rounded-full">核心</span>
+                    </div>
+                    <div class="fintech-card p-6 rounded-lg text-center animate-on-scroll"
+                        style="animation-delay: 0.4s;">
+                        <div class="text-purple-600 mb-3"><i class="fas fa-crown fa-2x"></i></div>
+                        <h3 class="text-xl font-semibold mb-2 text-gray-800"><span data-lang="zh-CN">优选伙伴</span><span
+                                data-lang="en">Premier</span></h3>
+                        <p class="text-gray-600 text-sm mb-3"><span
+                                data-lang="zh-CN">深度战略合作，共享市场资源、最高权益、MDF及独家课程/软件授权。</span><span data-lang="en">Deep
+                                strategic collaboration, share market resources, top benefits, MDF & exclusive
+                                course/software licensing.</span></p>
+                        <span class="text-xs bg-purple-100 text-purple-700 px-2 py-0.5 rounded-full">战略级</span>
+                    </div>
+                </div>
+                <div class="text-center mb-10 animate-on-scroll" style="animation-delay: 0.5s;">
+                    <h4 class="text-lg font-semibold mb-3 text-gray-800"><span
+                            data-lang="zh-CN">成为合作伙伴，您将获得：</span><span data-lang="en">As a Partner, You Will
+                            Receive:</span></h4>
+                    <div
+                        class="max-w-2xl mx-auto grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-2 text-left text-gray-600 text-sm">
+                        <div class="flex items-center"><i class="fas fa-check-circle text-green-500 icon-list"></i>
+                            <span data-lang="zh-CN">领先的技术平台与API/SDK</span><span data-lang="en">Leading Tech Platform &
+                                API/SDK</span>
+                        </div>
+                        <div class="flex items-center"><i class="fas fa-check-circle text-green-500 icon-list"></i>
+                            <span data-lang="zh-CN">系统化培训与专业认证</span><span data-lang="en">Systematic Training &
+                                Certification</span>
+                        </div>
+                        <div class="flex items-center"><i class="fas fa-check-circle text-green-500 icon-list"></i>
+                            <span data-lang="zh-CN">市场与销售资源支持 (含MDF)</span><span data-lang="en">Marketing & Sales
+                                Support (incl. MDF)</span>
+                        </div>
+                        <div class="flex items-center"><i class="fas fa-check-circle text-green-500 icon-list"></i>
+                            <span data-lang="zh-CN">专属技术与商务支持</span><span data-lang="en">Dedicated Tech & Business
+                                Support</span>
+                        </div>
+                        <div class="flex items-center"><i class="fas fa-check-circle text-green-500 icon-list"></i>
+                            <span data-lang="zh-CN">具竞争力的合作回报</span><span data-lang="en">Competitive Partnership
+                                Returns</span>
+                        </div>
+                        <div class="flex items-center"><i class="fas fa-check-circle text-green-500 icon-list"></i>
+                            <span data-lang="zh-CN">**独家课程与软件授权**</span><span data-lang="en">**Exclusive Courses &
+                                Licensing**</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="text-center animate-on-scroll" style="animation-delay: 0.6s;">
+                    <a href="#contact"
+                        class="cta-button cta-primary-button px-8 py-3 rounded-md text-lg font-semibold inline-block">
+                        <span data-lang="zh-CN">申请成为合作伙伴</span>
+                        <span data-lang="en">Apply for Partnership</span>
+                        <span data-lang="ja">パートナーシップを申請</span>
+                        <span data-lang="ko">파트너십 신청</span>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section id="apply" class="py-20 section-bg-accent">
+            <div class="container mx-auto px-6 text-center animate-on-scroll">
+                <h2 class="text-3xl font-bold mb-4 text-gray-900">
+                    <span data-lang="zh-CN">准备好将您的资产带入数字时代了吗？</span>
+                    <span data-lang="en">Ready to Bring Your Assets into the Digital Age?</span>
+                    <span data-lang="ja">資産をデジタル時代へ導く準備はできましたか？</span>
+                    <span data-lang="ko">자산을 디지털 시대로 가져올 준비가 되셨습니까?</span>
+                </h2>
+                <p class="text-lg mb-8 max-w-2xl mx-auto text-gray-600">
+                    <span data-lang="zh-CN">申请使用元话RWA平台，体验安全、合规、高效的资产数字化和金融化服务。</span>
+                    <span data-lang="en">Apply to use the Metakina RWA platform and experience secure, compliant, and
+                        efficient asset digitization and financialization services.</span>
+                    <span data-lang="ja">メタキナRWAプラットフォームの利用を申請し、安全でコンプライアンスに準拠した効率的な資産デジタル化および金融化サービスを体験してください。</span>
+                    <span data-lang="ko">메타키나 RWA 플랫폼 사용을 신청하고 안전하고 규정을 준수하며 효율적인 자산 디지털화 및 금융화 서비스를 경험하십시오.</span>
+                </p>
+                <a href="#contact"
+                    class="cta-button cta-primary-button px-8 py-3 rounded-md text-lg font-semibold inline-block shadow-lg">
+                    <span data-lang="zh-CN">立即申请平台账户</span>
+                    <span data-lang="en">Apply for Platform Account Now</span>
+                    <span data-lang="ja">今すぐプラットフォームアカウントを申請</span>
+                    <span data-lang="ko">지금 플랫폼 계정 신청</span>
+                </a>
+            </div>
+        </section>
+
+        <section id="resources" class="py-20 section-bg-light">
+            <div class="container mx-auto px-6">
+                <h2 class="text-3xl font-bold text-center mb-12 text-gray-900 animate-on-scroll">
+                    <span data-lang="zh-CN">资源中心：洞察、学习与工具</span>
+                    <span data-lang="en">Resource Center: Insights, Learning & Tools</span>
+                    <span data-lang="ja">リソースセンター：洞察、学習、ツール</span>
+                    <span data-lang="ko">리소스 센터: 통찰력, 학습 및 도구</span>
+                </h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                    <div class="fintech-card p-6 rounded-lg animate-on-scroll" style="animation-delay: 0.1s;">
+                        <div class="text-indigo-600 mb-3"><i class="fas fa-file-alt fa-lg"></i></div>
+                        <h3 class="text-xl font-semibold mb-3 text-gray-800"><span data-lang="zh-CN">核心文档</span><span
+                                data-lang="en">Core Documents</span></h3>
+                        <p class="text-gray-600 mb-4 text-sm"><span data-lang="zh-CN">下载白皮书、服务手册、合作计划介绍。</span><span
+                                data-lang="en">Download whitepaper, service manual, partnership info.</span></p>
+                        <a href="#" class="fintech-link text-sm"><span data-lang="zh-CN">下载白皮书</span><span
+                                data-lang="en">Download Whitepaper</span> &rarr;</a> <br>
+                        <a href="#" class="fintech-link text-sm"><span data-lang="zh-CN">下载服务手册</span><span
+                                data-lang="en">Download Service Manual</span> &rarr;</a>
+                    </div>
+                    <div class="fintech-card p-6 rounded-lg animate-on-scroll" style="animation-delay: 0.2s;">
+                        <div class="text-indigo-600 mb-3"><i class="fas fa-chalkboard-teacher fa-lg"></i></div>
+                        <h3 class="text-xl font-semibold mb-3 text-gray-800"><span data-lang="zh-CN">系统教程</span><span
+                                data-lang="en">System Tutorials</span></h3>
+                        <p class="text-gray-600 mb-4 text-sm"><span data-lang="zh-CN">查看平台操作指南和功能详解，高效利用平台。</span><span
+                                data-lang="en">View platform guides & feature explanations.</span></p>
+                        <a href="#" class="fintech-link text-sm"><span data-lang="zh-CN">查看教程 (即将推出)</span><span
+                                data-lang="en">View Tutorials (Soon)</span> &rarr;</a>
+                    </div>
+                    <div class="fintech-card p-6 rounded-lg animate-on-scroll" style="animation-delay: 0.3s;">
+                        <div class="text-indigo-600 mb-3"><i class="fas fa-graduation-cap fa-lg"></i></div>
+                        <h3 class="text-xl font-semibold mb-3 text-gray-800"><span data-lang="zh-CN">学习中心</span><span
+                                data-lang="en">Learning Center</span></h3>
+                        <p class="text-gray-600 mb-4 text-sm"><span data-lang="zh-CN">探索
+                                RWA、数据资产化、区块链金融知识（含独家课程）。</span><span data-lang="en">Explore RWA, data assetization,
+                                blockchain finance (incl. exclusive courses).</span></p>
+                        <a href="#" class="fintech-link text-sm"><span data-lang="zh-CN">开始学习 (即将推出)</span><span
+                                data-lang="en">Start Learning (Soon)</span> &rarr;</a>
+                    </div>
+                    <div class="fintech-card p-6 rounded-lg animate-on-scroll" style="animation-delay: 0.4s;">
+                        <div class="text-indigo-600 mb-3"><i class="fas fa-newspaper fa-lg"></i></div>
+                        <h3 class="text-xl font-semibold mb-3 text-gray-800"><span data-lang="zh-CN">行业洞察与新闻</span><span
+                                data-lang="en">Industry Insights & News</span></h3>
+                        <p class="text-gray-600 mb-4 text-sm"><span data-lang="zh-CN">获取最新 RWA
+                                市场趋势、政策解读与元话观点。</span><span data-lang="en">Get latest RWA trends, policy analysis &
+                                Metakina views.</span></p>
+                        <a href="#" class="fintech-link text-sm"><span data-lang="zh-CN">阅读最新洞察</span><span
+                                data-lang="en">Read Latest Insights</span> &rarr;</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="pricing" class="py-20 section-bg-white">
+            <div class="container mx-auto px-6 text-center">
+                <h2 class="text-3xl font-bold mb-4 text-gray-900 animate-on-scroll"><span
+                        data-lang="zh-CN">灵活的合作模式</span><span data-lang="en">Flexible Partnership Models</span></h2>
+                <p class="text-gray-600 mb-12 max-w-3xl mx-auto animate-on-scroll" style="animation-delay: 0.1s;"><span
+                        data-lang="zh-CN">我们提供透明、灵活、价值驱动的合作方案，支持模块化选择与定制化服务，满足您不同阶段的需求。</span><span data-lang="en">We
+                        offer transparent, flexible, value-driven options, supporting modular selection and
+                        customization for your needs.</span></p>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+                    <div class="fintech-card p-6 rounded-lg animate-on-scroll" style="animation-delay: 0.2s;">
+                        <h3 class="text-xl font-semibold mb-2 text-gray-800"><span data-lang="zh-CN">模块化服务</span><span
+                                data-lang="en">Modular Services</span></h3>
+                        <p class="text-gray-600 text-sm"><span data-lang="zh-CN">按需组合核心服务模块。</span><span
+                                data-lang="en">Combine core service modules as needed.</span></p>
+                    </div>
+                    <div class="fintech-card p-6 rounded-lg border-indigo-500 border-2 animate-on-scroll"
+                        style="animation-delay: 0.3s;">
+                        <h3 class="text-xl font-semibold mb-2 text-gray-800"><span data-lang="zh-CN">定制化解决方案</span><span
+                                data-lang="en">Customized Solutions</span></h3>
+                        <p class="text-gray-600 text-sm"><span data-lang="zh-CN">为特殊资产或大规模项目量身定制。</span><span
+                                data-lang="en">Tailored for special assets or large projects.</span></p>
+                    </div>
+                    <div class="fintech-card p-6 rounded-lg animate-on-scroll" style="animation-delay: 0.4s;">
+                        <h3 class="text-xl font-semibold mb-2 text-gray-800"><span data-lang="zh-CN">透明定价</span><span
+                                data-lang="en">Transparent Pricing</span></h3>
+                        <p class="text-gray-600 text-sm"><span data-lang="zh-CN">详细费用构成，可选里程碑或绩效模式。</span><span
+                                data-lang="en">Detailed costs, optional milestone/performance pay.</span></p>
+                    </div>
+                </div>
+                <h3 class="text-2xl font-semibold mb-6 text-gray-900 animate-on-scroll" style="animation-delay: 0.5s;">
+                    <span data-lang="zh-CN">合作流程</span><span data-lang="en">Partnership Process</span>
+                </h3>
+                <div class="flex flex-col md:flex-row justify-center items-center space-y-4 md:space-y-0 md:space-x-8 text-gray-600 animate-on-scroll"
+                    style="animation-delay: 0.6s;">
+                    <div class="text-center">
+                        <div
+                            class="border-2 border-indigo-500 bg-indigo-50 rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-2 text-indigo-600 font-bold">
+                            1</div>
+                        <p class="text-xs"><span data-lang="zh-CN">初步咨询</span><span data-lang="en">Consult</span></p>
+                    </div>
+                    <div class="text-gray-400 hidden md:block text-xl font-light">&rarr;</div>
+                    <div class="text-center">
+                        <div
+                            class="border-2 border-gray-300 rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-2">
+                            2</div>
+                        <p class="text-xs"><span data-lang="zh-CN">项目评估</span><span data-lang="en">Assess</span></p>
+                    </div>
+                    <div class="text-gray-400 hidden md:block text-xl font-light">&rarr;</div>
+                    <div class="text-center">
+                        <div
+                            class="border-2 border-gray-300 rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-2">
+                            3</div>
+                        <p class="text-xs"><span data-lang="zh-CN">方案设计</span><span data-lang="en">Design</span></p>
+                    </div>
+                    <div class="text-gray-400 hidden md:block text-xl font-light">&rarr;</div>
+                    <div class="text-center">
+                        <div
+                            class="border-2 border-gray-300 rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-2">
+                            4</div>
+                        <p class="text-xs"><span data-lang="zh-CN">协议签署</span><span data-lang="en">Agree</span></p>
+                    </div>
+                    <div class="text-gray-400 hidden md:block text-xl font-light">&rarr;</div>
+                    <div class="text-center">
+                        <div
+                            class="border-2 border-gray-300 rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-2">
+                            5</div>
+                        <p class="text-xs"><span data-lang="zh-CN">执行与运营</span><span data-lang="en">Execute</span></p>
+                    </div>
+                </div>
+                <a href="#contact"
+                    class="cta-button cta-primary-button mt-12 px-8 py-3 rounded-md text-lg font-semibold inline-block animate-on-scroll"
+                    style="animation-delay: 0.7s;">
+                    <span data-lang="zh-CN">获取详细报价与合作方案</span>
+                    <span data-lang="en">Get Detailed Quote & Partnership Plan</span>
+                    <span data-lang="ja">詳細な見積もりと協力プランを入手</span>
+                    <span data-lang="ko">상세 견적 및 협력 방안 받기</span>
+                </a>
+            </div>
+        </section>
+
+        <section id="clients" class="py-20 section-bg-light">
+            <div class="container mx-auto px-6">
+                <h2 class="text-3xl font-bold text-center mb-12 text-gray-900 animate-on-scroll">
+                    <span data-lang="zh-CN">客户成功案例</span>
+                    <span data-lang="en">Client Success Stories</span>
+                    <span data-lang="ja">お客様の成功事例</span>
+                    <span data-lang="ko">고객 성공 사례</span>
+                </h2>
+                <div class="mb-12 animate-on-scroll" style="animation-delay: 0.1s;">
+                    <div class="flex flex-wrap justify-center items-center gap-8 logo-item">
+                        <img src="https://placehold.co/150x50/cccccc/888888?text=Client+A" alt="知名项目方 A Logo"
+                            class="h-10" width="150" height="50" onerror="this.style.display='none'">
+                        <img src="https://placehold.co/150x50/cccccc/888888?text=Client+B" alt="知名项目方 B Logo"
+                            class="h-10" width="150" height="50" onerror="this.style.display='none'">
+                        <img src="https://placehold.co/150x50/cccccc/888888?text=Client+C" alt="知名项目方 C Logo"
+                            class="h-10" width="150" height="50" onerror="this.style.display='none'">
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="fintech-card p-6 rounded-lg animate-on-scroll" style="animation-delay: 0.2s;">
+                        <h3 class="text-xl font-semibold mb-2 text-gray-800"><span data-lang="zh-CN">案例：跨境房地产收益权
+                                RWA</span><span data-lang="en">Case: Cross-Border Real Estate RWA</span></h3>
+                        <p class="text-sm text-gray-500 mb-3"><span data-lang="zh-CN">客户类型：国内房地产开发商</span><span
+                                data-lang="en">Client: Domestic Real Estate Developer</span></p>
+                        <p class="text-gray-600 mb-4 text-sm"><span data-lang="zh-CN">挑战：盘活资产，引入国际资本，合规复杂。</span><span
+                                data-lang="en">Challenge: Activate asset, attract int'l capital, complex
+                                compliance.</span></p>
+                        <p class="text-gray-600 mb-4 text-sm"><span class="font-semibold text-indigo-600"><span
+                                    data-lang="zh-CN">元话方案：</span><span data-lang="en">Solution:</span></span> <span
+                                data-lang="zh-CN">设计LPF+QFLP架构，平台代币化，对接机构投资者。</span><span data-lang="en">LPF+QFLP
+                                structure, platform tokenization, institutional investor access.</span></p>
+                        <p class="font-semibold text-green-600"><span data-lang="zh-CN">成果：打通国际融资通路，降低成本 X%，完成 Y
+                                千万美元募资。</span><span data-lang="en">Result: Opened int'l financing, reduced cost ~X%,
+                                raised $Y million.</span></p>
+                        <a href="#" class="inline-block mt-3 fintech-link text-sm"><span
+                                data-lang="zh-CN">阅读完整案例</span><span data-lang="en">Read Full Case Study</span>
+                            &rarr;</a>
+                    </div>
+                    <div class="fintech-card p-6 rounded-lg animate-on-scroll" style="animation-delay: 0.3s;">
+                        <h3 class="text-xl font-semibold mb-2 text-gray-800"><span data-lang="zh-CN">案例：亚洲私人艺术馆藏品
+                                RWA</span><span data-lang="en">Case: Asian Private Art Collection RWA</span></h3>
+                        <p class="text-sm text-gray-500 mb-3"><span data-lang="zh-CN">客户类型：私人艺术收藏机构</span><span
+                                data-lang="en">Client: Private Art Institution</span></p>
+                        <p class="text-gray-600 mb-4 text-sm"><span data-lang="zh-CN">挑战：艺术品流动性差，估值困难耗时。</span><span
+                                data-lang="en">Challenge: Poor art liquidity, difficult & slow valuation.</span></p>
+                        <p class="text-gray-600 mb-4 text-sm"><span class="font-semibold text-indigo-600"><span
+                                    data-lang="zh-CN">元话方案：</span><span data-lang="en">Solution:</span></span> <span
+                                data-lang="zh-CN">AI 辅助估值，ERC-1155模型，合规框架，对接高净值网络。</span><span data-lang="en">AI
+                                valuation, ERC-1155 model, compliance framework, HNW network access.</span></p>
+                        <p class="font-semibold text-green-600"><span data-lang="zh-CN">成果：发行 Z 百万代币，提升流动性，估值时间缩短
+                                40%。</span><span data-lang="en">Result: Issued Z million tokens, boosted liquidity, cut
+                                valuation time 40%.</span></p>
+                        <a href="#" class="inline-block mt-3 fintech-link text-sm"><span
+                                data-lang="zh-CN">阅读完整案例</span><span data-lang="en">Read Full Case Study</span>
+                            &rarr;</a>
+                    </div>
+                </div>
+                <div class="mt-16 animate-on-scroll" style="animation-delay: 0.4s;">
+                    <h3 class="text-2xl font-semibold text-center mb-8 text-gray-900"><span
+                            data-lang="zh-CN">听听我们的客户怎么说</span><span data-lang="en">What Our Clients Say</span></h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <blockquote class="fintech-card p-6 rounded-lg italic border-l-4 border-indigo-500">
+                            <p class="text-gray-600 mb-4"><span
+                                    data-lang="zh-CN">"元话团队的专业性和对跨境合规的深刻理解，帮助我们成功解决了复杂的融资难题。他们的平台和服务非常可靠。"</span><span
+                                    data-lang="en">"Metakina's professionalism and deep understanding of cross-border
+                                    compliance were key to solving our complex financing challenges. Reliable platform
+                                    and service."</span></p>
+                            <footer class="text-sm">
+                                <span class="font-semibold text-gray-800">张总</span> - <span class="text-gray-500"><span
+                                        data-lang="zh-CN">某知名地产集团 CEO (需授权)</span><span data-lang="en">CEO, Leading Real
+                                        Estate Group (Auth. Req.)</span></span>
+                            </footer>
+                        </blockquote>
+                        <blockquote class="fintech-card p-6 rounded-lg italic border-l-4 border-indigo-500">
+                            <p class="text-gray-600 mb-4"><span
+                                    data-lang="zh-CN">"通过与元话合作，我们的数据资产不仅实现了合规入表，更找到了金融化的路径，AI
+                                    辅助评估也提供了新的价值视角。"</span><span data-lang="en">"With Metakina, our data assets achieved
+                                    compliant accounting and found a path to financialization. AI valuation added a new
+                                    perspective."</span></p>
+                            <footer class="text-sm">
+                                <span class="font-semibold text-gray-800">李博士</span> - <span class="text-gray-500"><span
+                                        data-lang="zh-CN">某领先数据科技公司 CDO (需授权)</span><span data-lang="en">CDO, Leading
+                                        Data Tech Co. (Auth. Req.)</span></span>
+                            </footer>
+                        </blockquote>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" class="py-20 section-bg-white">
+            <div class="container mx-auto px-6">
+                <h2 class="text-3xl font-bold text-center mb-12 text-gray-900 animate-on-scroll">
+                    <span data-lang="zh-CN">联系我们，开启您的 RWA 之旅</span>
+                    <span data-lang="en">Contact Us to Start Your RWA Journey</span>
+                    <span data-lang="ja">お問い合わせいただき、RWAの旅を始めましょう</span>
+                    <span data-lang="ko">문의하여 RWA 여정을 시작하세요</span>
+                </h2>
+                <div class="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10">
+                    <div class="animate-on-scroll" style="animation-delay: 0.1s;">
+                        <h3 class="text-xl font-semibold mb-4 text-gray-800"><span data-lang="zh-CN">发送咨询</span><span
+                                data-lang="en">Send Inquiry</span></h3>
+                        <form action="#" method="POST">
+                            <div class="mb-4">
+                                <label for="name" class="block text-gray-700 mb-1 text-sm"><span
+                                        data-lang="zh-CN">姓名</span><span data-lang="en">Name</span></label>
+                                <input type="text" id="name" name="name" required
+                                    class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-indigo-500 border-gray-300 text-gray-900 placeholder-gray-400">
+                            </div>
+                            <div class="mb-4">
+                                <label for="email" class="block text-gray-700 mb-1 text-sm"><span
+                                        data-lang="zh-CN">邮箱</span><span data-lang="en">Email</span></label>
+                                <input type="email" id="email" name="email" required
+                                    class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-indigo-500 border-gray-300 text-gray-900 placeholder-gray-400">
+                            </div>
+                            <div class="mb-4">
+                                <label for="company" class="block text-gray-700 mb-1 text-sm"><span
+                                        data-lang="zh-CN">公司名称 (可选)</span><span data-lang="en">Company Name
+                                        (Optional)</span></label>
+                                <input type="text" id="company" name="company"
+                                    class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-indigo-500 border-gray-300 text-gray-900 placeholder-gray-400">
+                            </div>
+                            <div class="mb-4">
+                                <label for="message" class="block text-gray-700 mb-1 text-sm"><span
+                                        data-lang="zh-CN">您的需求或问题</span><span data-lang="en">Your Needs or
+                                        Questions</span></label>
+                                <textarea id="message" name="message" rows="4" required
+                                    class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-indigo-500 border-gray-300 text-gray-900 placeholder-gray-400"></textarea>
+                            </div>
+                            <button type="submit"
+                                class="cta-button cta-primary-button w-full px-6 py-3 rounded-md font-semibold">
+                                <span data-lang="zh-CN">提交信息</span><span data-lang="en">Submit Information</span><span
+                                    data-lang="ja">情報を送信</span><span data-lang="ko">정보 제출</span>
+                            </button>
+                        </form>
+                    </div>
+                    <div class="animate-on-scroll" style="animation-delay: 0.2s;">
+                        <h3 class="text-xl font-semibold mb-4 text-gray-800"><span data-lang="zh-CN">联系方式</span><span
+                                data-lang="en">Contact Information</span></h3>
+                        <div class="space-y-5 text-gray-700">
+                            <div>
+                                <h4 class="font-semibold text-gray-900"><span data-lang="zh-CN">香港 METAKINA
+                                        LIMITED</span><span data-lang="en">Hong Kong METAKINA LIMITED</span></h4>
+                                <p class="text-sm"><i class="fas fa-map-marker-alt fa-fw mr-2 text-indigo-600"></i><span
+                                        data-lang="zh-CN">地址: 中国香港特别行政区数码港</span><span data-lang="en">Address:
+                                        Cyberport, Hong Kong SAR</span></p>
+                                <p class="text-sm"><i class="fas fa-envelope fa-fw mr-2 text-indigo-600"></i><span
+                                        data-lang="zh-CN">业务邮箱:</span><span data-lang="en">Email:</span>
+                                    rwa.service@metakina.com</p>
+                                <p class="text-sm"><i class="fas fa-phone-alt fa-fw mr-2 text-indigo-600"></i><span
+                                        data-lang="zh-CN">联系人 (张强伟):</span><span data-lang="en">Contact:</span> +86 177
+                                    0922 4992</p>
+                                <p class="text-sm"><i class="fas fa-globe fa-fw mr-2 text-indigo-600"></i><span
+                                        data-lang="zh-CN">官网:</span><span data-lang="en">Website:</span> <a
+                                        href="https://www.metakina.com" target="_blank"
+                                        class="fintech-link">www.metakina.com</a></p>
+                            </div>
+                            <hr class="border-gray-300">
+                            <div>
+                                <h4 class="font-semibold text-gray-900"><span data-lang="zh-CN">西安达普韦伯
+                                        (技术伙伴)</span><span data-lang="en">Xi'an Dapuwobo (Tech Partner)</span></h4>
+                                <p class="text-sm"><i class="fas fa-map-marker-alt fa-fw mr-2 text-indigo-600"></i><span
+                                        data-lang="zh-CN">地址: 中国陕西省西安市未央区</span><span data-lang="en">Address: Weiyang
+                                        Dist, Xi'an, Shaanxi, China</span></p>
+                                <p class="text-sm"><i class="fas fa-envelope fa-fw mr-2 text-indigo-600"></i><span
+                                        data-lang="zh-CN">技术咨询:</span><span data-lang="en">Tech Inquiry:</span>
+                                    qiangweizhang@dappweb.cn</p>
+                                <p class="text-sm"><i class="fas fa-globe fa-fw mr-2 text-indigo-600"></i><span
+                                        data-lang="zh-CN">官网:</span><span data-lang="en">Website:</span> <a
+                                        href="https://www.dappweb.cn" target="_blank"
+                                        class="fintech-link">www.dappweb.cn</a></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="py-10">
+        <div class="container mx-auto px-6">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+                <div>
+                    <h4 class="text-lg font-semibold mb-3"><span data-lang="zh-CN">关于元话RWA</span><span
+                            data-lang="en">About Metakina RWA</span></h4>
+                    <p class="text-sm"><span data-lang="zh-CN">构建现实资产与数字金融的合规桥梁。</span><span data-lang="en">Building the
+                            compliant bridge between real-world assets and digital finance.</span></p>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-3"><span data-lang="zh-CN">快速链接</span><span data-lang="en">Quick
+                            Links</span></h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="#solutions" class="hover:text-indigo-600"><span data-lang="zh-CN">解决方案</span><span
+                                    data-lang="en">Solutions</span></a></li>
+                        <li><a href="#why-us" class="hover:text-indigo-600"><span data-lang="zh-CN">为何选择我们</span><span
+                                    data-lang="en">Why Us</span></a></li>
+                        <li><a href="#market-access" class="hover:text-indigo-600"><span
+                                    data-lang="zh-CN">市场对接</span><span data-lang="en">Market Access</span></a></li>
+                        <li><a href="#supported-chains" class="hover:text-indigo-600"><span
+                                    data-lang="zh-CN">支持公链</span><span data-lang="en">Supported Chains</span></a></li>
+                        <li><a href="#partnership-program" class="hover:text-indigo-600"><span
+                                    data-lang="zh-CN">数字投行合作</span><span data-lang="en">Digital IB
+                                    Partnership</span></a></li>
+                        <li><a href="#resources" class="hover:text-indigo-600"><span data-lang="zh-CN">资源中心</span><span
+                                    data-lang="en">Resources</span></a></li>
+                        <li><a href="#clients" class="hover:text-indigo-600"><span data-lang="zh-CN">客户成功</span><span
+                                    data-lang="en">Clients</span></a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-3"><span data-lang="zh-CN">资源</span><span
+                            data-lang="en">Resources</span></h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="#" class="hover:text-indigo-600"><span data-lang="zh-CN">白皮书</span><span
+                                    data-lang="en">Whitepaper</span></a></li>
+                        <li><a href="#" class="hover:text-indigo-600"><span data-lang="zh-CN">服务手册</span><span
+                                    data-lang="en">Service Manual</span></a></li>
+                        <li><a href="#" class="hover:text-indigo-600"><span data-lang="zh-CN">行业洞察</span><span
+                                    data-lang="en">Insights</span></a></li>
+                        <li><a href="#" class="hover:text-indigo-600"><span data-lang="zh-CN">常见问题</span><span
+                                    data-lang="en">FAQ</span></a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-3"><span data-lang="zh-CN">关注我们</span><span
+                            data-lang="en">Follow Us</span></h4>
+                    <div class="flex space-x-4">
+                        <a href="#" aria-label="LinkedIn" class="hover:text-indigo-600 transition-colors"><i
+                                class="fab fa-linkedin fa-lg"></i></a>
+                        <a href="#" aria-label="Twitter" class="hover:text-indigo-600 transition-colors"><i
+                                class="fab fa-twitter fa-lg"></i></a>
+                        <a href="#" aria-label="Telegram" class="hover:text-indigo-600 transition-colors"><i
+                                class="fab fa-telegram fa-lg"></i></a>
+                        <a href="#" aria-label="Discord" class="hover:text-indigo-600 transition-colors"><i
+                                class="fab fa-discord fa-lg"></i></a>
+                    </div>
+                </div>
+            </div>
+            <hr class="border-gray-300 my-6">
+            <div class="text-center text-gray-500 text-sm">
+                &copy; 2025 METAKINA LIMITED & 西安达普韦伯网络科技有限责任公司. <span data-lang="zh-CN">保留所有权利.</span><span
+                    data-lang="en">All rights reserved.</span> |
+                <a href="#" class="hover:text-indigo-600"><span data-lang="zh-CN">隐私政策</span><span
+                        data-lang="en">Privacy Policy</span></a> |
+                <a href="#" class="hover:text-indigo-600"><span data-lang="zh-CN">服务条款</span><span data-lang="en">Terms
+                        of Service</span></a>
             </div>
         </div>
-
-        <div class="form-container">
-            <form id="rwaForm">
-                <!-- 第一部分：委托方基本信息 -->
-                <div class="section">
-                    <h2 class="section-title">
-                        📋 委托方（甲方）基本信息
-                        <span class="stage-indicator">基础信息</span>
-                    </h2>
-                    
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="companyName">公司全称或个人姓名 <span class="required">*</span></label>
-                            <input type="text" id="companyName" name="companyName" required>
-                            <div class="field-description">请填写营业执照上的完整公司名称</div>
-                        </div>
-                        <div class="form-group">
-                            <label for="legalPerson">法定代表人或负责人 <span class="required">*</span></label>
-                            <input type="text" id="legalPerson" name="legalPerson" required>
-                        </div>
-                    </div>
-
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="contactPerson">项目联系人 <span class="required">*</span></label>
-                            <input type="text" id="contactPerson" name="contactPerson" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="position">联系人职位</label>
-                            <input type="text" id="position" name="position">
-                        </div>
-                    </div>
-
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="phone">联系电话 <span class="required">*</span></label>
-                            <input type="tel" id="phone" name="phone" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="email">电子邮箱 <span class="required">*</span></label>
-                            <input type="email" id="email" name="email" required>
-                        </div>
-                    </div>
-
-                    <div class="form-row single">
-                        <div class="form-group">
-                            <label for="address">详细地址 <span class="required">*</span></label>
-                            <input type="text" id="address" name="address" required>
-                        </div>
-                    </div>
-
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="businessLicense">营业执照统一社会信用代码</label>
-                            <input type="text" id="businessLicense" name="businessLicense">
-                        </div>
-                        <div class="form-group">
-                            <label for="registeredCapital">注册资本（万元）</label>
-                            <input type="number" id="registeredCapital" name="registeredCapital">
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 第二部分：RWA资产详细信息 -->
-                <div class="section">
-                    <h2 class="section-title">
-                        🏢 RWA资产详细信息
-                        <span class="stage-indicator">第一阶段</span>
-                    </h2>
-
-                    <div class="info-box">
-                        <strong>说明：</strong>请详细填写您的现实世界资产信息，这些信息将用于资产梳理、合规治理、产权确认、价值评估等前期工作。
-                    </div>
-                    
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="assetType">资产类型 <span class="required">*</span></label>
-                            <select id="assetType" name="assetType" required>
-                                <option value="">请选择资产类型</option>
-                                <option value="infrastructure">基础设施（高速公路、桥梁、隧道等）</option>
-                                <option value="real_estate_commercial">商业地产（写字楼、商场、酒店等）</option>
-                                <option value="real_estate_residential">住宅地产</option>
-                                <option value="energy_renewable">可再生能源（风电、光伏等）</option>
-                                <option value="energy_traditional">传统能源（电力、燃气等）</option>
-                                <option value="transportation">交通运输（港口、机场、物流中心）</option>
-                                <option value="utility">公用事业（供水、供电、通信）</option>
-                                <option value="industrial">工业资产（厂房、设备、产线）</option>
-                                <option value="agricultural">农业资产（土地、农场、林地）</option>
-                                <option value="commodity">大宗商品（贵金属、原材料等）</option>
-                                <option value="financial">金融资产（债权、收益权等）</option>
-                                <option value="intellectual">知识产权（专利、商标、版权）</option>
-                                <option value="other">其他</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="assetSubtype">资产子类型详述</label>
-                            <input type="text" id="assetSubtype" name="assetSubtype" placeholder="如：京秦高速某段、商业综合体、光伏电站等">
-                        </div>
-                    </div>
-
-                    <div class="form-row single">
-                        <div class="form-group">
-                            <label for="assetDescription">资产详细描述 <span class="required">*</span></label>
-                            <textarea id="assetDescription" name="assetDescription" required placeholder="请详细描述资产的地理位置、建设规模、运营状况、收益模式、市场地位等信息"></textarea>
-                        </div>
-                    </div>
-
-                    <div class="subsection">
-                        <div class="subsection-title">资产价值与财务信息</div>
-                        <div class="form-row triple">
-                            <div class="form-group">
-                                <label for="assetValue">最新评估价值（万元） <span class="required">*</span></label>
-                                <input type="number" id="assetValue" name="assetValue" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="valuationDate">评估日期</label>
-                                <input type="date" id="valuationDate" name="valuationDate">
-                            </div>
-                            <div class="form-group">
-                                <label for="valuationMethod">评估方法</label>
-                                <select id="valuationMethod" name="valuationMethod">
-                                    <option value="">请选择</option>
-                                    <option value="cost_approach">成本法</option>
-                                    <option value="income_approach">收益法</option>
-                                    <option value="market_approach">市场法</option>
-                                    <option value="dcf">现金流折现法</option>
-                                    <option value="multiple">多种方法综合</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="annualRevenue">年营业收入（万元）</label>
-                                <input type="number" id="annualRevenue" name="annualRevenue">
-                            </div>
-                            <div class="form-group">
-                                <label for="annualProfit">年净利润（万元）</label>
-                                <input type="number" id="annualProfit" name="annualProfit">
-                            </div>
-                        </div>
-
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="annualReturn">年化收益率（%）</label>
-                                <input type="number" id="annualReturn" name="annualReturn" step="0.01">
-                            </div>
-                            <div class="form-group">
-                                <label for="operationPeriod">运营期限</label>
-                                <select id="operationPeriod" name="operationPeriod">
-                                    <option value="">请选择</option>
-                                    <option value="5_years">5年以内</option>
-                                    <option value="5_10_years">5-10年</option>
-                                    <option value="10_20_years">10-20年</option>
-                                    <option value="20_30_years">20-30年</option>
-                                    <option value="over_30_years">30年以上</option>
-                                    <option value="permanent">永久运营</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="subsection">
-                        <div class="subsection-title">产权与法律状况</div>
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="ownershipStatus">产权状态 <span class="required">*</span></label>
-                                <div class="radio-group">
-                                    <div class="radio-item">
-                                        <input type="radio" id="ownership_full" name="ownershipStatus" value="full_ownership">
-                                        <label for="ownership_full">完全产权/所有权</label>
-                                    </div>
-                                    <div class="radio-item">
-                                        <input type="radio" id="ownership_partial" name="ownershipStatus" value="partial_ownership">
-                                        <label for="ownership_partial">部分产权/共有产权</label>
-                                    </div>
-                                    <div class="radio-item">
-                                        <input type="radio" id="ownership_usage" name="ownershipStatus" value="usage_rights">
-                                        <label for="ownership_usage">使用权/特许经营权</label>
-                                    </div>
-                                    <div class="radio-item">
-                                        <input type="radio" id="ownership_pending" name="ownershipStatus" value="pending">
-                                        <label for="ownership_pending">产权办理中</label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="ownershipRatio">持有比例（%）</label>
-                                <input type="number" id="ownershipRatio" name="ownershipRatio" max="100" min="0">
-                                <div class="field-description">如为部分产权，请填写持有比例</div>
-                            </div>
-                            <div class="form-group">
-                                <label for="encumbrance">是否存在抵押、质押等权利限制</label>
-                                <div class="radio-group">
-                                    <div class="radio-item">
-                                        <input type="radio" id="encumbrance_no" name="encumbrance" value="no">
-                                        <label for="encumbrance_no">无权利限制</label>
-                                    </div>
-                                    <div class="radio-item">
-                                        <input type="radio" id="encumbrance_yes" name="encumbrance" value="yes">
-                                        <label for="encumbrance_yes">存在权利限制</label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-row single">
-                            <div class="form-group">
-                                <label for="encumbranceDetails">权利限制详情</label>
-                                <textarea id="encumbranceDetails" name="encumbranceDetails" placeholder="如存在抵押、质押等情况，请详细说明"></textarea>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="subsection">
-                        <div class="subsection-title">现有资产证明文件</div>
-                        <div class="form-group">
-                            <label>已具备的资产证明文件</label>
-                            <div class="checkbox-group">
-                                <div class="checkbox-item">
-                                    <input type="checkbox" id="propertyDeed" name="assetDocuments" value="property_deed">
-                                    <label for="propertyDeed">产权证书/不动产权证</label>
-                                </div>
-                                <div class="checkbox-item">
-                                    <input type="checkbox" id="businessLicenseDoc" name="assetDocuments" value="business_license">
-                                    <label for="businessLicenseDoc">营业执照/经营许可证</label>
-                                </div>
-                                <div class="checkbox-item">
-                                    <input type="checkbox" id="valuationReport" name="assetDocuments" value="valuation_report">
-                                    <label for="valuationReport">资产评估报告</label>
-                                </div>
-                                <div class="checkbox-item">
-                                    <input type="checkbox" id="financialStatements" name="assetDocuments" value="financial_statements">
-                                    <label for="financialStatements">财务报表（近3年）</label>
-                                </div>
-                                <div class="checkbox-item">
-                                    <input type="checkbox" id="auditReport" name="assetDocuments" value="audit_report">
-                                    <label for="auditReport">审计报告</label>
-                                </div>
-                                <div class="checkbox-item">
-                                    <input type="checkbox" id="legalOpinion" name="assetDocuments" value="legal_opinion">
-                                    <label for="legalOpinion">法律意见书</label>
-                                </div>
-                                <div class="checkbox-item">
-                                    <input type="checkbox" id="insurance" name="assetDocuments" value="insurance">
-                                    <label for="insurance">保险合同/保单</label>
-                                </div>
-                                <div class="checkbox-item">
-                                    <input type="checkbox" id="environmentalAssessment" name="assetDocuments" value="environmental">
-                                    <label for="environmentalAssessment">环评报告</label>
-                                </div>
-                                <div class="checkbox-item">
-                                    <input type="checkbox" id="operationContract" name="assetDocuments" value="operation_contract">
-                                    <label for="operationContract">运营管理合同</label>
-                                </div>
-                                <div class="checkbox-item">
-                                    <input type="checkbox" id="revenueContract" name="assetDocuments" value="revenue_contract">
-                                    <label for="revenueContract">收益权证明文件</label>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 第三部分：代币化需求与目标 -->
-                <div class="section">
-                    <h2 class="section-title">
-                        🎯 代币化需求与项目目标
-                        <span class="stage-indicator">第一阶段</span>
-                    </h2>
-
-                    <div class="info-box">
-                        <strong>说明：</strong>本部分信息将用于代币经济模型（Tokenomics）设计和金融结构设计。
-                    </div>
-                    
-                    <div class="subsection">
-                        <div class="subsection-title">项目核心目标</div>
-                        <div class="form-group">
-                            <label>代币化主要目标（可多选） <span class="required">*</span></label>
-                            <div class="checkbox-group">
-                                <div class="checkbox-item">
-                                    <input type="checkbox" id="increaseLiquidity" name="projectGoals" value="increase_liquidity">
-                                    <label for="increaseLiquidity">提升资产流动性</label>
-                                </div>
-                                <div class="checkbox-item">
-                                    <input type="checkbox" id="expandFunding" name="projectGoals" value="expand_funding">
-                                    <label for="expandFunding">拓展融资渠道</label>
-                                </div>
-                                <div class="checkbox-item">
-                                    <input type="checkbox" id="simplifyManagement" name="projectGoals" value="simplify_management">
-                                    <label for="simplifyManagement">简化资产管理</label>
-                                </div>
-                                <div class="checkbox-item">
-                                    <input type="checkbox" id="attractInvestors" name="projectGoals" value="attract_investors">
-                                    <label for="attractInvestors">吸引更多投资者</label>
-                                </div>
-                                <div class="checkbox-item">
-                                    <input type="checkbox" id="transparentOperation" name="projectGoals" value="transparent_operation">
-                                    <label for="transparentOperation">实现透明化运营</label>
-                                </div>
-                                <div class="checkbox-item">
-                                    <input type="checkbox" id="fractionalOwnership" name="projectGoals" value="fractional_ownership">
-                                    <label for="fractionalOwnership">实现分割所有权</label>
-                                </div>
-                                <div class="checkbox-item">
-                                    <input type="checkbox" id="globalAccess" name="projectGoals" value="global_access">
-                                    <label for="globalAccess">面向全球投资者</label>
-                                </div>
-                                <div class="checkbox-item">
-                                    <input type="checkbox" id="automaticDividend" name="projectGoals" value="automatic_dividend">
-                                    <label for="automaticDividend">自动化收益分配</label>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="subsection">
-                        <div class="subsection-title">融资与投资者定位</div>
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="fundingTarget">融资目标（万元）</label>
-                                <input type="number" id="fundingTarget" name="fundingTarget">
-                            </div>
-                            <div class="form-group">
-                                <label for="tokenPercent">拟代币化资产比例（%）</label>
-                                <input type="number" id="tokenPercent" name="tokenPercent" max="100" min="1">
-                                <div class="field-description">计划将多少比例的资产进行代币化</div>
-                            </div>
-                        </div>
-
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="targetInvestors">目标投资者群体</label>
-                                <div class="radio-group">
-                                    <div class="radio-item">
-                                        <input type="radio" id="investors_institutional" name="targetInvestors" value="institutional">
-                                        <label for="investors_institutional">机构投资者</label>
-                                    </div>
-                                    <div class="radio-item">
-                                        <input type="radio" id="investors_high_net" name="targetInvestors" value="high_net_worth">
-                                        <label for="investors_high_net">高净值个人</label>
-                                    </div>
-                                    <div class="radio-item">
-                                        <input type="radio" id="investors_retail" name="targetInvestors" value="retail">
-                                        <label for="investors_retail">个人投资者</label>
-                                    </div>
-                                    <div class="radio-item">
-                                        <input type="radio" id="investors_mixed" name="targetInvestors" value="mixed">
-                                        <label for="investors_mixed">混合投资者</label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="minInvestment">最小投资金额（万元）</label>
-                                <input type="number" id="minInvestment" name="minInvestment">
-                            </div>
-                            <div class="form-group">
-                                <label for="maxInvestors">最大投资者数量</label>
-                                <input type="number" id="maxInvestors" name="maxInvestors">
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="subsection">
-                        <div class="subsection-title">代币权益设计偏好</div>
-                        <div class="form-group">
-                            <label>代币持有者权益（可多选）</label>
-                            <div class="checkbox-group">
-                                <div class="checkbox-item">
-                                    <input type="checkbox" id="revenue_share" name="tokenRights" value="revenue_share">
-                                    <label for="revenue_share">收益分红权</label>
-                                </div>
-                                <div class="checkbox-item">
-                                    <input type="checkbox" id="voting_rights" name="tokenRights" value="voting_rights">
-                                    <label for="voting_rights">治理投票权</label>
-                                </div>
-                                <div class="checkbox-item">
-                                    <input type="checkbox" id="transfer_rights" name="tokenRights" value="transfer_rights">
-                                    <label for="transfer_rights">转让交易权</label>
-                                </div>
-                                <div class="checkbox-item">
-                                    <input type="checkbox" id="redemption_rights" name="tokenRights" value="redemption_rights">
-                                    <label for="redemption_rights">赎回权</label>
-                                </div>
-                                <div class="checkbox-item">
-                                    <input type="checkbox" id="information_rights" name="tokenRights" value="information_rights">
-                                    <label for="information_rights">信息知情权</label>
-                                </div>
-                                <div class="checkbox-item">
-                                    <input type="checkbox" id="liquidation_rights" name="tokenRights" value="liquidation_rights">
-                                    <label for="liquidation_rights">清算分配权</label>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="dividendFrequency">收益分配频率</label>
-                                <select id="dividendFrequency" name="dividendFrequency">
-                                    <option value="">请选择</option>
-                                    <option value="monthly">按月分配</option>
-                                    <option value="quarterly">按季分配</option>
-                                    <option value="semi_annually">按半年分配</option>
-                                    <option value="annually">按年分配</option>
-                                    <option value="event_based">基于特定事件</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="dividendRatio">拟分配收益比例（%）</label>
-                                <input type="number" id="dividendRatio" name="dividendRatio" max="100" min="0">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 第四部分：技术开发需求 -->
-                <div class="section">
-                    <h2 class="section-title">
-                        ⚙️ 技术开发需求
-                        <span class="stage-indicator">第二阶段</span>
-                    </h2>
-
-                    <div class="info-box">
-                        <strong>说明：</strong>根据合同约定，我们将进行技术方案设计、智能合约开发、安全审计协调等工作。
-                    </div>
-
-                    <div class="subsection">
-                        <div class="subsection-title">区块链技术选择</div>
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="blockchainPreference">区块链平台偏好</label>
-                                <div class="radio-group">
-                                    <div class="radio-item">
-                                        <input type="radio" id="blockchain_consortium" name="blockchainPreference" value="consortium">
-                                        <label for="blockchain_consortium">联盟链（优先推荐）</label>
-                                    </div>
-                                    <div class="radio-item">
-                                        <input type="radio" id="blockchain_ethereum" name="blockchainPreference" value="ethereum">
-                                        <label for="blockchain_ethereum">以太坊主网</label>
-                                    </div>
-                                    <div class="radio-item">
-                                        <input type="radio" id="blockchain_polygon" name="blockchainPreference" value="polygon">
-                                        <label for="blockchain_polygon">Polygon</label>
-                                    </div>
-                                    <div class="radio-item">
-                                        <input type="radio" id="blockchain_bsc" name="blockchainPreference" value="bsc">
-                                        <label for="blockchain_bsc">BSC币安智能链</label>
-                                    </div>
-                                    <div class="radio-item">
-                                        <input type="radio" id="blockchain_custom" name="blockchainPreference" value="custom">
-                                        <label for="blockchain_custom">定制化方案</label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="tokenStandard">智能合约代币标准偏好</label>
-                                <div class="radio-group">
-                                    <div class="radio-item">
-                                        <input type="radio" id="standard_erc3643" name="tokenStandard" value="erc3643">
-                                        <label for="standard_erc3643">ERC-3643（合规标准推荐）</label>
-                                    </div>
-                                    <div class="radio-item">
-                                        <input type="radio" id="standard_erc1400" name="tokenStandard" value="erc1400">
-                                        <label for="standard_erc1400">ERC-1400（证券型代币）</label>
-                                    </div>
-                                    <div class="radio-item">
-                                        <input type="radio" id="standard_erc20" name="tokenStandard" value="erc20">
-                                        <label for="standard_erc20">ERC-20（标准代币）</label>
-                                    </div>
-                                    <div class="radio-item">
-                                        <input type="radio" id="standard_custom" name="tokenStandard" value="custom">
-                                        <label for="standard_custom">定制化合约标准</label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="subsection">
-                        <div class="subsection-title">平台功能需求</div>
-                        <div class="form-group">
-                            <label>数字资产管理平台核心功能（可多选） <span class="required">*</span></label>
-                            <div class="checkbox-group">
-                                <div class="checkbox-item">
-                                    <input type="checkbox" id="user_management" name="platformFeatures" value="user_management">
-                                    <label for="user_management">用户管理（注册/登录/KYC）</label>
-                                </div>
-                                <div class="checkbox-item">
-                                    <input type="checkbox" id="wallet_management" name="platformFeatures" value="wallet_management">
-                                    <label for="wallet_management">钱包连接与管理</label>
-                                </div>
-                                <div class="checkbox-item">
-                                    <input type="checkbox" id="asset_tracking" name="platformFeatures" value="asset_tracking">
-                                    <label for="asset_tracking">链上资产状态同步</label>
-                                </div>
-                                <div class="checkbox-item">
-                                    <input type="checkbox" id="token_management" name="platformFeatures" value="token_management">
-                                    <label for="token_management">代币转账/接收功能</label>
-                                </div>
-                                <div class="checkbox-item">
-                                    <input type="checkbox" id="dividend_distribution" name="platformFeatures" value="dividend_distribution">
-                                    <label for="dividend_distribution">自动化收益分配</label>
-                                </div>
-                                <div class="checkbox-item">
-                                    <input type="checkbox" id="compliance_module" name="platformFeatures" value="compliance_module">
-                                    <label for="compliance_module">合规功能（白名单管理等）</label>
-                                </div>
-                                <div class="checkbox-item">
-                                    <input type="checkbox" id="reporting_dashboard" name="platformFeatures" value="reporting_dashboard">
-                                    <label for="reporting_dashboard">数据看板与报告生成</label>
-                                </div>
-                                <div class="checkbox-item">
-                                    <input type="checkbox" id="document_management" name="platformFeatures" value="document_management">
-                                    <label for="document_management">资产相关文档管理</label>
-                                </div>
-                                <div class="checkbox-item">
-                                    <input type="checkbox" id="notification_system" name="platformFeatures" value="notification_system">
-                                    <label for="notification_system">通知提醒系统</label>
-                                </div>
-                                <div class="checkbox-item">
-                                    <input type="checkbox" id="otc_trading" name="platformFeatures" value="otc_trading">
-                                    <label for="otc_trading">场外交易功能（可选）</label>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="subsection">
-                        <div class="subsection-title">数据集成与验证需求</div>
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="dataSource">资产数据来源</label>
-                                <div class="checkbox-group">
-                                    <div class="checkbox-item">
-                                        <input type="checkbox" id="manual_input" name="dataSource" value="manual_input">
-                                        <label for="manual_input">人工录入</label>
-                                    </div>
-                                    <div class="checkbox-item">
-                                        <input type="checkbox" id="erp_integration" name="dataSource" value="erp_integration">
-                                        <label for="erp_integration">ERP系统对接</label>
-                                    </div>
-                                    <div class="checkbox-item">
-                                        <input type="checkbox" id="iot_sensors" name="dataSource" value="iot_sensors">
-                                        <label for="iot_sensors">IoT传感器数据</label>
-                                    </div>
-                                    <div class="checkbox-item">
-                                        <input type="checkbox" id="third_party_api" name="dataSource" value="third_party_api">
-                                        <label for="third_party_api">第三方数据API</label>
-                                    </div>
-                                    <div class="checkbox-item">
-                                        <input type="checkbox" id="oracle_service" name="dataSource" value="oracle_service">
-                                        <label for="oracle_service">预言机服务</label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="updateFrequency">数据更新频率要求</label>
-                                <select id="updateFrequency" name="updateFrequency">
-                                    <option value="">请选择</option>
-                                    <option value="real_time">实时更新</option>
-                                    <option value="daily">每日更新</option>
-                                    <option value="weekly">每周更新</option>
-                                    <option value="monthly">每月更新</option>
-                                    <option value="quarterly">每季度更新</option>
-                                    <option value="event_driven">事件驱动更新</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="needAudit">是否需要第三方安全审计</label>
-                                <div class="radio-group">
-                                    <div class="radio-item">
-                                        <input type="radio" id="audit_yes" name="needAudit" value="yes">
-                                        <label for="audit_yes">需要（推荐）</label>
-                                    </div>
-                                    <div class="radio-item">
-                                        <input type="radio" id="audit_no" name="needAudit" value="no">
-                                        <label for="audit_no">暂不需要</label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 第五部分：发行与上市需求 -->
-                <div class="section">
-                    <h2 class="section-title">
-                        📈 代币发行与市场对接需求
-                        <span class="stage-indicator">第三阶段</span>
-                    </h2>
-
-                    <div class="info-box">
-                        <strong>说明：</strong>根据合同约定，我们将协助您完成一级市场发行、二级市场上市以及市场推广等工作。注意：上市决定权和费用由交易所决定。
-                    </div>
-
-                    <div class="subsection">
-                        <div class="subsection-title">一级市场发行策略</div>
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="primaryMarket">一级市场发行方式偏好</label>
-                                <div class="radio-group">
-                                    <div class="radio-item">
-                                        <input type="radio" id="primary_sto" name="primaryMarket" value="sto">
-                                        <label for="primary_sto">STO（证券型代币发行）</label>
-                                    </div>
-                                    <div class="radio-item">
-                                        <input type="radio" id="primary_private" name="primaryMarket" value="private_sale">
-                                        <label for="primary_private">私募发行</label>
-                                    </div>
-                                    <div class="radio-item">
-                                        <input type="radio" id="primary_ieo" name="primaryMarket" value="ieo">
-                                        <label for="primary_ieo">IEO（交易所首次发行）</label>
-                                    </div>
-                                    <div class="radio-item">
-                                        <input type="radio" id="primary_ido" name="primaryMarket" value="ido">
-                                        <label for="primary_ido">IDO（去中心化首次发行）</label>
-                                    </div>
-                                    <div class="radio-item">
-                                        <input type="radio" id="primary_mixed" name="primaryMarket" value="mixed">
-                                        <label for="primary_mixed">混合发行模式</label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="launchpadPreference">Launchpad平台偏好</label>
-                                <select id="launchpadPreference" name="launchpadPreference">
-                                    <option value="">请选择平台类型</option>
-                                    <option value="tier1">一线平台（Binance Launchpad等）</option>
-                                    <option value="tier2">二线知名平台</option>
-                                    <option value="specialized">专业化RWA平台</option>
-                                    <option value="decentralized">去中心化发行平台</option>
-                                    <option value="multiple">多平台同步发行</option>
-                                    <option value="no_preference">无特殊偏好</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="issuePrice">预期发行价格（USDT）</label>
-                                <input type="number" id="issuePrice" name="issuePrice" step="0.01">
-                            </div>
-                        </div>
-
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="kycRequirement">KYC/AML合规要求</label>
-                                <div class="radio-group">
-                                    <div class="radio-item">
-                                        <input type="radio" id="kyc_strict" name="kycRequirement" value="strict">
-                                        <label for="kyc_strict">严格KYC（机构级）</label>
-                                    </div>
-                                    <div class="radio-item">
-                                        <input type="radio" id="kyc_standard" name="kycRequirement" value="standard">
-                                        <label for="kyc_standard">标准KYC</label>
-                                    </div>
-                                    <div class="radio-item">
-                                        <input type="radio" id="kyc_basic" name="kycRequirement" value="basic">
-                                        <label for="kyc_basic">基础KYC</label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="subsection">
-                        <div class="subsection-title">二级市场交易所对接</div>
-                        <div class="form-group">
-                            <label>目标交易所类型（可多选）</label>
-                            <div class="checkbox-group">
-                                <div class="checkbox-item">
-                                    <input type="checkbox" id="cex_tier1" name="exchangePreference" value="cex_tier1">
-                                    <label for="cex_tier1">一线中心化交易所</label>
-                                </div>
-                                <div class="checkbox-item">
-                                    <input type="checkbox" id="cex_tier2" name="exchangePreference" value="cex_tier2">
-                                    <label for="cex_tier2">二线中心化交易所</label>
-                                </div>
-                                <div class="checkbox-item">
-                                    <input type="checkbox" id="dex_uniswap" name="exchangePreference" value="dex_uniswap">
-                                    <label for="dex_uniswap">Uniswap类DEX</label>
-                                </div>
-                                <div class="checkbox-item">
-                                    <input type="checkbox" id="dex_curve" name="exchangePreference" value="dex_curve">
-                                    <label for="dex_curve">Curve类稳定币DEX</label>
-                                </div>
-                                <div class="checkbox-item">
-                                    <input type="checkbox" id="specialized_rwa" name="exchangePreference" value="specialized_rwa">
-                                    <label for="specialized_rwa">专业RWA交易平台</label>
-                                </div>
-                                <div class="checkbox-item">
-                                    <input type="checkbox" id="regional_exchange" name="exchangePreference" value="regional">
-                                    <label for="regional_exchange">区域性交易所</label>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="liquidityStrategy">流动性策略偏好</label>
-                                <div class="checkbox-group">
-                                    <div class="checkbox-item">
-                                        <input type="checkbox" id="market_maker" name="liquidityStrategy" value="market_maker">
-                                        <label for="market_maker">专业做市商服务</label>
-                                    </div>
-                                    <div class="checkbox-item">
-                                        <input type="checkbox" id="liquidity_pool" name="liquidityStrategy" value="liquidity_pool">
-                                        <label for="liquidity_pool">DEX流动性池</label>
-                                    </div>
-                                    <div class="checkbox-item">
-                                        <input type="checkbox" id="incentive_program" name="liquidityStrategy" value="incentive_program">
-                                        <label for="incentive_program">流动性激励计划</label>
-                                    </div>
-                                    <div class="checkbox-item">
-                                        <input type="checkbox" id="treasury_management" name="liquidityStrategy" value="treasury_management">
-                                        <label for="treasury_management">国库管理策略</label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="subsection">
-                        <div class="subsection-title">市场推广需求</div>
-                        <div class="form-group">
-                            <label>市场营销与PR支持需求（可多选）</label>
-                            <div class="checkbox-group">
-                                <div class="checkbox-item">
-                                    <input type="checkbox" id="whitepaper" name="marketingSupport" value="whitepaper">
-                                    <label for="whitepaper">白皮书撰写优化</label>
-                                </div>
-                                <div class="checkbox-item">
-                                    <input type="checkbox" id="tokenomics_design" name="marketingSupport" value="tokenomics_design">
-                                    <label for="tokenomics_design">Tokenomics可视化设计</label>
-                                </div>
-                                <div class="checkbox-item">
-                                    <input type="checkbox" id="community_building" name="marketingSupport" value="community_building">
-                                    <label for="community_building">社区建设管理</label>
-                                </div>
-                                <div class="checkbox-item">
-                                    <input type="checkbox" id="pr_services" name="marketingSupport" value="pr_services">
-                                    <label for="pr_services">PR公关服务</label>
-                                </div>
-                                <div class="checkbox-item">
-                                    <input type="checkbox" id="ama_events" name="marketingSupport" value="ama_events">
-                                    <label for="ama_events">AMA活动策划</label>
-                                </div>
-                                <div class="checkbox-item">
-                                    <input type="checkbox" id="roadshow" name="marketingSupport" value="roadshow">
-                                    <label for="roadshow">投资者路演</label>
-                                </div>
-                                <div class="checkbox-item">
-                                    <input type="checkbox" id="media_coverage" name="marketingSupport" value="media_coverage">
-                                    <label for="media_coverage">媒体报道推广</label>
-                                </div>
-                                <div class="checkbox-item">
-                                    <input type="checkbox" id="influencer_marketing" name="marketingSupport" value="influencer_marketing">
-                                    <label for="influencer_marketing">KOL合作推广</label>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="marketingBudget">市场推广预算（万元）</label>
-                                <select id="marketingBudget" name="marketingBudget">
-                                    <option value="">请选择预算范围</option>
-                                    <option value="under_50">50万以下</option>
-                                    <option value="50_100">50-100万</option>
-                                    <option value="100_200">100-200万</option>
-                                    <option value="200_500">200-500万</option>
-                                    <option value="over_500">500万以上</option>
-                                    <option value="flexible">预算灵活</option>
-                                </select>
-                                <div class="field-description">用于广告投放、KOL宣传、社区活动等执行费用</div>
-                            </div>
-                            <div class="form-group">
-                                <label for="marketingTimeline">推广时间周期</label>
-                                <select id="marketingTimeline" name="marketingTimeline">
-                                    <option value="">请选择</option>
-                                    <option value="pre_launch">发行前预热（1-2个月）</option>
-                                    <option value="launch_period">发行期间（1个月）</option>
-                                    <option value="post_launch">发行后维护（3-6个月）</option>
-                                    <option value="long_term">长期推广（1年以上）</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 第六部分：合规与法律要求 -->
-                <div class="section">
-                    <h2 class="section-title">
-                        ⚖️ 合规与法律要求
-                        <span class="stage-indicator">全阶段</span>
-                    </h2>
-
-                    <div class="warning-note">
-                        <strong>重要提示：</strong>代币化项目必须严格遵守相关法律法规。请确保您已充分了解项目涉及地区的监管要求。
-                    </div>
-
-                    <div class="subsection">
-                        <div class="subsection-title">司法管辖与合规要求</div>
-                        <div class="form-group">
-                            <label>项目涉及的司法管辖区（可多选） <span class="required">*</span></label>
-                            <div class="checkbox-group">
-                                <div class="checkbox-item">
-                                    <input type="checkbox" id="china_mainland" name="jurisdictions" value="china_mainland">
-                                    <label for="china_mainland">中国大陆</label>
-                                </div>
-                                <div class="checkbox-item">
-                                    <input type="checkbox" id="hongkong" name="jurisdictions" value="hongkong">
-                                    <label for="hongkong">香港特别行政区</label>
-                                </div>
-                                <div class="checkbox-item">
-                                    <input type="checkbox" id="singapore" name="jurisdictions" value="singapore">
-                                    <label for="singapore">新加坡</label>
-                                </div>
-                                <div class="checkbox-item">
-                                    <input type="checkbox" id="usa" name="jurisdictions" value="usa">
-                                    <label for="usa">美国</label>
-                                </div>
-                                <div class="checkbox-item">
-                                    <input type="checkbox" id="eu" name="jurisdictions" value="eu">
-                                    <label for="eu">欧盟</label>
-                                </div>
-                                <div class="checkbox-item">
-                                    <input type="checkbox" id="japan" name="jurisdictions" value="japan">
-                                    <label for="japan">日本</label>
-                                </div>
-                                <div class="checkbox-item">
-                                    <input type="checkbox" id="south_korea" name="jurisdictions" value="south_korea">
-                                    <label for="south_korea">韩国</label>
-                                </div>
-                                <div class="checkbox-item">
-                                    <input type="checkbox" id="other_regions" name="jurisdictions" value="other">
-                                    <label for="other_regions">其他地区</label>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="legalStructure">拟采用的法律结构</label>
-                                <div class="radio-group">
-                                    <div class="radio-item">
-                                        <input type="radio" id="legal_spv" name="legalStructure" value="spv">
-                                        <label for="legal_spv">SPV（特殊目的载体）</label>
-                                    </div>
-                                    <div class="radio-item">
-                                        <input type="radio" id="legal_trust" name="legalStructure" value="trust">
-                                        <label for="legal_trust">信托结构</label>
-                                    </div>
-                                    <div class="radio-item">
-                                        <input type="radio" id="legal_fund" name="legalStructure" value="fund">
-                                        <label for="legal_fund">基金结构</label>
-                                    </div>
-                                    <div class="radio-item">
-                                        <input type="radio" id="legal_company" name="legalStructure" value="company">
-                                        <label for="legal_company">公司直接发行</label>
-                                    </div>
-                                    <div class="radio-item">
-                                        <input type="radio" id="legal_uncertain" name="legalStructure" value="uncertain">
-                                        <label for="legal_uncertain">需要专业建议</label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="subsection">
-                        <div class="subsection-title">现有法律与合规准备</div>
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="complianceExperience">合规经验水平</label>
-                                <div class="radio-group">
-                                    <div class="radio-item">
-                                        <input type="radio" id="compliance_expert" name="complianceExperience" value="expert">
-                                        <label for="compliance_expert">丰富的数字资产合规经验</label>
-                                    </div>
-                                    <div class="radio-item">
-                                        <input type="radio" id="compliance_some" name="complianceExperience" value="some">
-                                        <label for="compliance_some">有传统金融合规经验</label>
-                                    </div>
-                                    <div class="radio-item">
-                                        <input type="radio" id="compliance_limited" name="complianceExperience" value="limited">
-                                        <label for="compliance_limited">合规经验有限</label>
-                                    </div>
-                                    <div class="radio-item">
-                                        <input type="radio" id="compliance_none" name="complianceExperience" value="none">
-                                        <label for="compliance_none">无相关合规经验</label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="legalSupport">现有法律支持情况</label>
-                                <div class="radio-group">
-                                    <div class="radio-item">
-                                        <input type="radio" id="legal_have" name="legalSupport" value="have_lawyers">
-                                        <label for="legal_have">已有专业律师团队</label>
-                                    </div>
-                                    <div class="radio-item">
-                                        <input type="radio" id="legal_partial" name="legalSupport" value="partial_support">
-                                        <label for="legal_partial">部分法律支持</label>
-                                    </div>
-                                    <div class="radio-item">
-                                        <input type="radio" id="legal_need" name="legalSupport" value="need_lawyers">
-                                        <label for="legal_need">需要法律支持</label>
-                                    </div>
-                                    <div class="radio-item">
-                                        <input type="radio" id="legal_unsure" name="legalSupport" value="unsure">
-                                        <label for="legal_unsure">不确定</label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-row single">
-                            <div class="form-group">
-                                <label for="existingLicenses">已获得的相关许可证或牌照</label>
-                                <textarea id="existingLicenses" name="existingLicenses" placeholder="如金融服务牌照、数字资产交易许可等"></textarea>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="subsection">
-                        <div class="subsection-title">风险评估与声明</div>
-                        <div class="form-group">
-                            <label>风险认知与承担能力</label>
-                            <div class="checkbox-group">
-                                <div class="checkbox-item">
-                                    <input type="checkbox" id="risk_policy" name="riskAcknowledgment" value="policy_risk" required>
-                                    <label for="risk_policy">已充分了解政策风险</label>
-                                </div>
-                                <div class="checkbox-item">
-                                    <input type="checkbox" id="risk_market" name="riskAcknowledgment" value="market_risk" required>
-                                    <label for="risk_market">已充分了解市场风险</label>
-                                </div>
-                                <div class="checkbox-item">
-                                    <input type="checkbox" id="risk_technical" name="riskAcknowledgment" value="technical_risk" required>
-                                    <label for="risk_technical">已充分了解技术风险</label>
-                                </div>
-                                <div class="checkbox-item">
-                                    <input type="checkbox" id="risk_compliance" name="riskAcknowledgment" value="compliance_risk" required>
-                                    <label for="risk_compliance">已充分了解合规风险</label>
-                                </div>
-                                <div class="checkbox-item">
-                                    <input type="checkbox" id="risk_responsibility" name="riskAcknowledgment" value="responsibility" required>
-                                    <label for="risk_responsibility">承诺独立承担项目风险</label>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 第七部分：持续服务需求 -->
-                <div class="section">
-                    <h2 class="section-title">
-                        🔄 链上资产管理与持续服务需求
-                        <span class="stage-indicator">第四阶段</span>
-                    </h2>
-
-                    <div class="info-box">
-                        <strong>说明：</strong>第四阶段服务确保代币化资产的长期价值维护和投资者关系管理。
-                    </div>
-
-                    <div class="subsection">
-                        <div class="subsection-title">链上资产管理需求</div>
-                        <div class="form-group">
-                            <label>链上资产管理服务需求（可多选）</label>
-                            <div class="checkbox-group">
-                                <div class="checkbox-item">
-                                    <input type="checkbox" id="asset_monitoring" name="onchainServices" value="asset_monitoring">
-                                    <label for="asset_monitoring">链上资产数据监控</label>
-                                </div>
-                                <div class="checkbox-item">
-                                    <input type="checkbox" id="automated_distribution" name="onchainServices" value="automated_distribution">
-                                    <label for="automated_distribution">自动化收益分配执行</label>
-                                </div>
-                                <div class="checkbox-item">
-                                    <input type="checkbox" id="compliance_monitoring" name="onchainServices" value="compliance_monitoring">
-                                    <label for="compliance_monitoring">持续合规监控</label>
-                                </div>
-                                <div class="checkbox-item">
-                                    <input type="checkbox" id="platform_maintenance" name="onchainServices" value="platform_maintenance">
-                                    <label for="platform_maintenance">技术平台维护</label>
-                                </div>
-                                <div class="checkbox-item">
-                                    <input type="checkbox" id="security_updates" name="onchainServices" value="security_updates">
-                                    <label for="security_updates">安全更新与技术支持</label>
-                                </div>
-                                <div class="checkbox-item">
-                                    <input type="checkbox" id="investor_relations" name="onchainServices" value="investor_relations">
-                                    <label for="investor_relations">投资者关系管理</label>
-                                </div>
-                                <div class="checkbox-item">
-                                    <input type="checkbox" id="community_management" name="onchainServices" value="community_management">
-                                    <label for="community_management">社区管理支持</label>
-                                </div>
-                                <div class="checkbox-item">
-                                    <input type="checkbox" id="reporting_services" name="onchainServices" value="reporting_services">
-                                    <label for="reporting_services">定期报告生成</label>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="serviceLevel">服务水平要求</label>
-                                <select id="serviceLevel" name="serviceLevel">
-                                    <option value="">请选择服务等级</option>
-                                    <option value="basic">基础服务（月度报告）</option>
-                                    <option value="standard">标准服务（周度监控）</option>
-                                    <option value="premium">高级服务（实时监控）</option>
-                                    <option value="enterprise">企业级服务（7x24支持）</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="serviceDuration">预期服务期限</label>
-                                <select id="serviceDuration" name="serviceDuration">
-                                    <option value="">请选择</option>
-                                    <option value="1_year">1年</option>
-                                    <option value="2_years">2年</option>
-                                    <option value="3_years">3年</option>
-                                    <option value="5_years">5年</option>
-                                    <option value="long_term">长期合作</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 第八部分：预算与时间安排 -->
-                <div class="section">
-                    <h2 class="section-title">
-                        💰 预算与时间安排
-                    </h2>
-
-                    <div class="note">
-                        <strong>参考报价：</strong>根据合同约定，完整的四阶段服务总费用为105万元人民币（不含第三方费用）。具体费用将根据您的实际需求进行调整。
-                    </div>
-
-                    <div class="subsection">
-                        <div class="subsection-title">预算安排</div>
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="totalBudget">项目总预算范围（万元）</label>
-                                <select id="totalBudget" name="totalBudget">
-                                    <option value="">请选择预算范围</option>
-                                    <option value="50_100">50-100万</option>
-                                    <option value="100_150">100-150万（标准配置）</option>
-                                    <option value="150_200">150-200万</option>
-                                    <option value="200_300">200-300万</option>
-                                    <option value="over_300">300万以上</option>
-                                    <option value="flexible">预算灵活，依据需求确定</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="thirdPartyBudget">第三方费用预算（万元）</label>
-                                <input type="number" id="thirdPartyBudget" name="thirdPartyBudget">
-                                <div class="field-description">包括交易所上市费、审计费、法律费用等</div>
-                            </div>
-                        </div>
-
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="paymentPreference">付款方式偏好</label>
-                                <div class="radio-group">
-                                    <div class="radio-item">
-                                        <input type="radio" id="payment_milestone" name="paymentPreference" value="milestone">
-                                        <label for="payment_milestone">按里程碑分期付款（推荐）</label>
-                                    </div>
-                                    <div class="radio-item">
-                                        <input type="radio" id="payment_stage" name="paymentPreference" value="stage">
-                                        <label for="payment_stage">按服务阶段付款</label>
-                                    </div>
-                                    <div class="radio-item">
-                                        <input type="radio" id="payment_monthly" name="paymentPreference" value="monthly">
-                                        <label for="payment_monthly">按月付款</label>
-                                    </div>
-                                    <div class="radio-item">
-                                        <input type="radio" id="payment_custom" name="paymentPreference" value="custom">
-                                        <label for="payment_custom">自定义付款方式</label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="subsection">
-                        <div class="subsection-title">时间安排</div>
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="projectTimeline">期望项目完成时间</label>
-                                <select id="projectTimeline" name="projectTimeline">
-                                    <option value="">请选择时间周期</option>
-                                    <option value="3_months">3个月内</option>
-                                    <option value="4_months">4个月（标准周期）</option>
-                                    <option value="6_months">6个月内</option>
-                                    <option value="12_months">12个月内</option>
-                                    <option value="flexible">时间灵活</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="urgency">项目紧急程度</label>
-                                <div class="radio-group">
-                                    <div class="radio-item">
-                                        <input type="radio" id="urgency_normal" name="urgency" value="normal">
-                                        <label for="urgency_normal">正常进度</label>
-                                    </div>
-                                    <div class="radio-item">
-                                        <input type="radio" id="urgency_urgent" name="urgency" value="urgent">
-                                        <label for="urgency_urgent">较为紧急</label>
-                                    </div>
-                                    <div class="radio-item">
-                                        <input type="radio" id="urgency_very" name="urgency" value="very_urgent">
-                                        <label for="urgency_very">非常紧急</label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="preferredStartDate">希望开始日期</label>
-                                <input type="date" id="preferredStartDate" name="preferredStartDate">
-                            </div>
-                            <div class="form-group">
-                                <label for="targetLaunchDate">目标发行日期</label>
-                                <input type="date" id="targetLaunchDate" name="targetLaunchDate">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 第九部分：补充信息 -->
-                <div class="section">
-                    <h2 class="section-title">
-                        📝 补充信息与特殊需求
-                    </h2>
-
-                    <div class="form-row single">
-                        <div class="form-group">
-                            <label for="specialRequirements">特殊需求或定制化要求</label>
-                            <textarea id="specialRequirements" name="specialRequirements" placeholder="请描述任何特殊的技术需求、合规要求、时间安排或其他定制化需求"></textarea>
-                        </div>
-                    </div>
-
-                    <div class="form-row single">
-                        <div class="form-group">
-                            <label for="concernsQuestions">主要关注点或疑问</label>
-                            <textarea id="concernsQuestions" name="concernsQuestions" placeholder="请描述您在项目实施过程中最关心的问题或需要我们重点关注的方面"></textarea>
-                        </div>
-                    </div>
-
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="hearAboutUs">如何了解到我们的服务？</label>
-                            <select id="hearAboutUs" name="hearAboutUs">
-                                <option value="">请选择</option>
-                                <option value="referral">朋友/合作伙伴推荐</option>
-                                <option value="search_engine">搜索引擎</option>
-                                <option value="social_media">社交媒体</option>
-                                <option value="industry_event">行业会议/活动</option>
-                                <option value="media_report">媒体报道</option>
-                                <option value="business_partner">商业伙伴介绍</option>
-                                <option value="other">其他</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="existingProjects">是否有其他RWA项目经验</label>
-                            <div class="radio-group">
-                                <div class="radio-item">
-                                    <input type="radio" id="experience_yes" name="existingProjects" value="yes">
-                                    <label for="experience_yes">有相关经验</label>
-                                </div>
-                                <div class="radio-item">
-                                    <input type="radio" id="experience_no" name="existingProjects" value="no">
-                                    <label for="experience_no">这是首个项目</label>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="form-row single">
-                        <div class="form-group">
-                            <label for="additionalInfo">其他补充信息</label>
-                            <textarea id="additionalInfo" name="additionalInfo" placeholder="任何其他您希望我们了解的信息"></textarea>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="note">
-                    <strong>信息安全承诺：</strong> 我们承诺严格保护您提供的所有信息，仅用于项目评估和方案设计。所有资料将按照保密协议要求进行处理。
-                </div>
-
-                <div class="submit-section">
-                    <button type="submit" class="submit-btn">提交项目申请</button>
-                    <p style="color: white; margin-top: 15px; opacity: 0.9;">
-                        提交后，我们的专业团队将在24小时内与您联系，进行项目初步评估
-                    </p>
-                    <p style="color: white; margin-top: 10px; opacity: 0.8; font-size: 0.9rem;">
-                        服务热线：17709224992 | 邮箱：[服务邮箱]
-                    </p>
-                </div>
-            </form>
-        </div>
-    </div>
+    </footer>
 
     <script>
-        document.getElementById('rwaForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            // 收集表单数据
-            const formData = new FormData(this);
-            const data = {};
-            
-            // 处理复选框数据
-            const checkboxGroups = [
-                'assetDocuments', 'projectGoals', 'tokenRights', 'platformFeatures', 
-                'dataSource', 'exchangePreference', 'liquidityStrategy', 'marketingSupport', 
-                'jurisdictions', 'riskAcknowledgment', 'onchainServices'
-            ];
-            
-            checkboxGroups.forEach(group => {
-                data[group] = [];
+        // Mobile Menu Toggle
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        mobileMenuButton.addEventListener('click', () => {
+            const isHidden = mobileMenu.classList.contains('hidden');
+            mobileMenu.classList.toggle('hidden');
+            mobileMenuButton.setAttribute('aria-expanded', !isHidden);
+        });
+
+        const mobileLinks = mobileMenu.querySelectorAll('a');
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', (e) => { // Add event parameter
+                mobileMenu.classList.add('hidden');
+                mobileMenuButton.setAttribute('aria-expanded', 'false');
+                // Smooth scroll to anchor only if it's an anchor link
+                const targetId = link.getAttribute('href');
+                if (targetId && targetId.startsWith('#')) {
+                    e.preventDefault(); // Prevent default jump only for anchor links
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        const headerOffset = document.querySelector('header').offsetHeight;
+                        const elementPosition = targetElement.getBoundingClientRect().top;
+                        const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+                        window.scrollTo({ top: offsetPosition, behavior: "smooth" });
+                    }
+                }
             });
-            
-            for (let [key, value] of formData.entries()) {
-                if (checkboxGroups.includes(key)) {
-                    data[key].push(value);
-                } else {
-                    data[key] = value;
-                }
-            }
-            
-            // 验证必填字段
-            const requiredFields = [
-                'companyName', 'legalPerson', 'contactPerson', 'phone', 'email', 'address',
-                'assetType', 'assetValue', 'assetDescription', 'ownershipStatus'
-            ];
-            
-            const missingFields = requiredFields.filter(field => !data[field]);
-            
-            if (missingFields.length > 0) {
-                alert('请填写所有必填字段');
-                // 滚动到第一个未填写的必填字段
-                const firstMissingField = document.getElementById(missingFields[0]);
-                if (firstMissingField) {
-                    firstMissingField.scrollIntoView({ behavior: 'smooth' });
-                    firstMissingField.focus();
-                }
-                return;
-            }
-            
-            // 验证风险认知
-            if (data.riskAcknowledgment.length < 5) {
-                alert('请确认所有风险认知选项');
-                return;
-            }
-            
-            // 验证司法管辖区
-            if (data.jurisdictions.length === 0) {
-                alert('请至少选择一个司法管辖区');
-                return;
-            }
-            
-            // 模拟提交成功
-            alert('表单提交成功！\n\n我们的专业团队将在24小时内与您联系，进行项目初步评估和需求确认。\n\n感谢您选择我们的RWA数字化代币化服务！');
-            
-            // 在实际应用中，这里会将数据发送到后端服务器
-            console.log('客户RWA项目资料:', data);
-            
-            // 可以添加数据导出功能
-            // exportToJSON(data);
         });
-        
-        // 数据导出函数（可选）
-        function exportToJSON(data) {
-            const dataStr = JSON.stringify(data, null, 2);
-            const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
-            
-            const exportFileDefaultName = `RWA_Project_${data.companyName || 'Unknown'}_${new Date().toISOString().split('T')[0]}.json`;
-            
-            const linkElement = document.createElement('a');
-            linkElement.setAttribute('href', dataUri);
-            linkElement.setAttribute('download', exportFileDefaultName);
-            linkElement.click();
-        }
-        
-        // 动态显示相关字段
-        document.getElementById('assetType').addEventListener('change', function() {
-            const assetType = this.value;
-            // 根据资产类型显示相关的特定字段
-            // 这里可以添加动态字段显示逻辑
+
+        // Smooth scroll for desktop links
+        const desktopLinks = document.querySelectorAll('.desktop-nav a[href^="#"]');
+        desktopLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = link.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    const headerOffset = document.querySelector('header').offsetHeight;
+                    const elementPosition = targetElement.getBoundingClientRect().top;
+                    const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+                    window.scrollTo({ top: offsetPosition, behavior: "smooth" });
+                }
+            });
         });
-        
-        // 自动保存功能（可选）
-        function autoSave() {
-            const formData = new FormData(document.getElementById('rwaForm'));
-            const data = {};
-            for (let [key, value] of formData.entries()) {
-                data[key] = value;
+
+
+        // --- Basic Language Switching Simulation ---
+        const langOptions = document.querySelectorAll('.lang-option');
+        const currentLangDisplays = [document.getElementById('current-lang'), document.getElementById('current-lang-mobile')];
+        const htmlTag = document.documentElement;
+        // Select the logo anchor tag
+        const logoLink = document.querySelector('header > nav > a:first-child');
+
+        function setLanguage(langCode) {
+            if (!langCode || !['zh-CN', 'en', 'ja', 'ko'].includes(langCode)) {
+                console.warn("Invalid or missing language code:", langCode);
+                return;
             }
-            sessionStorage.setItem('rwaFormData', JSON.stringify(data));
-        }
-        
-        // 每30秒自动保存一次
-        setInterval(autoSave, 30000);
-        
-        // 页面加载时恢复数据
-        window.addEventListener('load', function() {
-            const savedData = sessionStorage.getItem('rwaFormData');
-            if (savedData) {
-                const data = JSON.parse(savedData);
-                for (let [key, value] of Object.entries(data)) {
-                    const field = document.getElementById(key) || document.querySelector(`[name="${key}"]`);
-                    if (field) {
-                        field.value = value;
+
+            htmlTag.lang = langCode;
+
+            let langButtonText = '中'; // Default
+            if (langCode === 'en') langButtonText = 'EN';
+            if (langCode === 'ja') langButtonText = '日';
+            if (langCode === 'ko') langButtonText = '한';
+
+            currentLangDisplays.forEach(display => {
+                if (display) display.textContent = langButtonText;
+            });
+
+            // Update logo text based on language
+            if (logoLink) {
+                const zhLogo = logoLink.querySelector('[data-lang="zh-CN"]');
+                const enLogo = logoLink.querySelector('[data-lang="en"]');
+                // Add other languages if needed
+                if (zhLogo && enLogo) {
+                    if (langCode === 'zh-CN') {
+                        zhLogo.style.display = 'inline';
+                        enLogo.style.display = 'none';
+                    } else {
+                        zhLogo.style.display = 'none';
+                        enLogo.style.display = 'inline';
                     }
                 }
             }
+
+
+            console.log(`Language switched to: ${langCode}. UI updated via CSS.`);
+        }
+
+        langOptions.forEach(option => {
+            option.addEventListener('click', (event) => {
+                event.preventDefault();
+                const selectedLang = option.getAttribute('data-set-lang');
+                if (selectedLang) {
+                    setLanguage(selectedLang);
+                    try {
+                        localStorage.setItem('preferredLang', selectedLang);
+                    } catch (e) {
+                        console.error("LocalStorage not available:", e);
+                    }
+                }
+            });
         });
+
+        // Load preferred language on page load
+        let preferredLang = 'zh-CN'; // Default language
+        try {
+            const storedLang = localStorage.getItem('preferredLang');
+            if (storedLang && ['zh-CN', 'en', 'ja', 'ko'].includes(storedLang)) {
+                preferredLang = storedLang;
+            }
+        } catch (e) {
+            console.error("LocalStorage not available:", e);
+        }
+        // Initialize language on load
+        // Need to wrap the logo update in DOMContentLoaded if script runs before body
+        document.addEventListener('DOMContentLoaded', () => {
+            setLanguage(preferredLang); // Set initial language after DOM is ready
+        });
+
+
+        // --- Intersection Observer for Scroll Animations ---
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1
+        };
+
+        const observerCallback = (entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animated');
+                    // Optional: Unobserve after first animation
+                    // observer.unobserve(entry.target);
+                }
+            });
+        };
+
+        const observer = new IntersectionObserver(observerCallback, observerOptions);
+        const targets = document.querySelectorAll('.animate-on-scroll');
+        targets.forEach(target => observer.observe(target));
+
     </script>
+    <script src="https://analytics.dappweb.cn/api/script.js" data-site-id="2" defer></script>
+
+
 </body>
+
 </html>

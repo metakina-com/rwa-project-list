@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>元话RWA项目客户资料收集表单</title>
+    <title>RWA项目设置向导</title>
     <style>
         * {
             margin: 0;
@@ -12,14 +12,14 @@
         }
 
         body {
-            font-family: 'Microsoft YaHei', sans-serif;
+            font-family: 'Microsoft YaHei', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
             padding: 20px;
         }
 
-        .container {
-            max-width: 1200px;
+        .setup-container {
+            max-width: 900px;
             margin: 0 auto;
             background: white;
             border-radius: 20px;
@@ -27,78 +27,219 @@
             overflow: hidden;
         }
 
-        .header {
+        .setup-header {
             background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
             color: white;
-            padding: 40px;
+            padding: 30px;
             text-align: center;
             position: relative;
         }
 
-        .header::before {
+        .setup-header::before {
             content: "元话RWA";
             position: absolute;
-            top: 10px;
-            right: 20px;
+            top: 15px;
+            right: 25px;
             font-size: 12px;
             opacity: 0.7;
         }
 
-        .header h1 {
-            font-size: 2.5rem;
-            margin-bottom: 10px;
+        .setup-header h1 {
+            font-size: 2.2rem;
+            margin-bottom: 8px;
             font-weight: 700;
         }
 
-        .header p {
-            font-size: 1.1rem;
+        .setup-header p {
+            font-size: 1rem;
             opacity: 0.9;
         }
 
-        .service-stages {
-            background: rgba(255,255,255,0.1);
-            margin: 20px 0;
-            padding: 15px;
-            border-radius: 10px;
-            font-size: 0.9rem;
+        /* 进度指示器 */
+        .progress-container {
+            background: white;
+            padding: 30px 40px;
+            border-bottom: 1px solid #e0e0e0;
         }
 
-        .form-container {
-            padding: 40px;
+        .progress-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            margin-bottom: 20px;
         }
 
-        .section {
-            margin-bottom: 40px;
-            border: 2px solid #f0f0f0;
-            border-radius: 15px;
-            padding: 30px;
+        .progress-line {
+            position: absolute;
+            top: 20px;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: #e0e0e0;
+            z-index: 1;
+        }
+
+        .progress-line-active {
+            position: absolute;
+            top: 20px;
+            left: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            z-index: 2;
+            transition: width 0.5s ease;
+        }
+
+        .step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            z-index: 3;
+        }
+
+        .step-circle {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #e0e0e0;
+            color: #999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 14px;
             transition: all 0.3s ease;
+            margin-bottom: 8px;
         }
 
-        .section:hover {
-            border-color: #667eea;
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.1);
+        .step.active .step-circle {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            transform: scale(1.1);
         }
 
-        .section-title {
+        .step.completed .step-circle {
+            background: #28a745;
+            color: white;
+        }
+
+        .step-label {
+            font-size: 12px;
+            color: #666;
+            text-align: center;
+            max-width: 80px;
+            line-height: 1.2;
+        }
+
+        .step.active .step-label {
+            color: #1e3c72;
+            font-weight: 600;
+        }
+
+        /* 步骤内容区域 */
+        .step-content {
+            padding: 40px;
+            min-height: 500px;
+        }
+
+        .step-panel {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .step-panel.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .step-title {
             font-size: 1.8rem;
             color: #1e3c72;
-            margin-bottom: 20px;
-            padding-bottom: 10px;
-            border-bottom: 3px solid #667eea;
+            margin-bottom: 8px;
             font-weight: 600;
             display: flex;
             align-items: center;
             gap: 10px;
         }
 
-        .stage-indicator {
-            background: #667eea;
+        .step-subtitle {
+            font-size: 1rem;
+            color: #666;
+            margin-bottom: 30px;
+            line-height: 1.5;
+        }
+
+        .step-icon {
+            font-size: 1.5rem;
+        }
+
+        /* 导航按钮 */
+        .step-navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 30px 40px;
+            background: #f8f9fa;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .nav-btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-width: 100px;
+        }
+
+        .btn-prev {
+            background: #6c757d;
             color: white;
-            padding: 4px 8px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: normal;
+        }
+
+        .btn-prev:hover {
+            background: #5a6268;
+            transform: translateY(-1px);
+        }
+
+        .btn-next {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .btn-next:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-submit {
+            background: linear-gradient(135deg, #28a745, #20c997);
+            color: white;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
+        }
+
+        .btn-disabled {
+            background: #e9ecef !important;
+            color: #6c757d !important;
+            cursor: not-allowed !important;
+            transform: none !important;
+        }
+
+        .step-info {
+            text-align: center;
+            color: #666;
+            font-size: 0.9rem;
         }
 
         .form-group {
@@ -133,10 +274,14 @@
         }
 
         .field-description {
-            font-size: 0.85rem;
+            font-size: 12px;
             color: #666;
             margin-top: 5px;
-            font-style: italic;
+            padding: 8px 12px;
+            background: #f8f9fa;
+            border-left: 3px solid #007bff;
+            border-radius: 0 4px 4px 0;
+            line-height: 1.4;
         }
 
         input, select, textarea {
@@ -306,87 +451,164 @@
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <h1>RWA数字化代币化项目资料收集表单</h1>
-            <p>现实世界资产（RWA）的数字化、代币化全流程服务</p>
-            <div class="service-stages">
-                <strong>服务流程：</strong>
-                第一阶段：咨询规划与法律结构设计 → 第二阶段：技术开发与代币化 → 第三阶段：代币发行与上市 → 第四阶段：链上资产管理与持续服务
+    <div class="setup-container">
+        <div class="setup-header">
+            <h1>🚀 RWA项目设置向导</h1>
+            <p>让我们一步步完成您的现实世界资产数字化项目配置</p>
+        </div>
+
+        <!-- 进度指示器 -->
+        <div class="progress-container">
+            <div class="progress-bar">
+                <div class="progress-line"></div>
+                <div class="progress-line-active" id="progressLine"></div>
+                
+                <div class="step active" data-step="1">
+                    <div class="step-circle">1</div>
+                    <div class="step-label">项目基础</div>
+                </div>
+                <div class="step" data-step="2">
+                    <div class="step-circle">2</div>
+                    <div class="step-label">资产信息</div>
+                </div>
+                <div class="step" data-step="3">
+                    <div class="step-circle">3</div>
+                    <div class="step-label">财务规划</div>
+                </div>
+                <div class="step" data-step="4">
+                    <div class="step-circle">4</div>
+                    <div class="step-label">代币设计</div>
+                </div>
+                <div class="step" data-step="5">
+                    <div class="step-circle">5</div>
+                    <div class="step-label">合规要求</div>
+                </div>
+                <div class="step" data-step="6">
+                    <div class="step-circle">6</div>
+                    <div class="step-label">完成设置</div>
+                </div>
             </div>
         </div>
 
-        <div class="form-container">
-            <form id="rwaForm">
-                <!-- 第一部分：委托方基本信息 -->
-                <div class="section">
-                    <h2 class="section-title">
-                        📋 委托方（甲方）基本信息
-                        <span class="stage-indicator">基础信息</span>
-                    </h2>
+        <!-- 步骤内容区域 -->
+        <div class="step-content">
+            <form id="rwaSetupForm">
+                <!-- 步骤1：项目基础信息 -->
+                <div class="step-panel active" id="step1">
+                    <div class="step-title">
+                        <span class="step-icon">📋</span>
+                        项目基础信息
+                    </div>
+                    <div class="step-subtitle">
+                        首先，让我们了解您的项目基本情况。这些信息将帮助我们为您量身定制最适合的RWA解决方案。
+                    </div>
                     
                     <div class="form-row">
                         <div class="form-group">
-                            <label for="companyName">公司全称或个人姓名 <span class="required">*</span></label>
-                            <input type="text" id="companyName" name="companyName" required>
-                            <div class="field-description">请填写营业执照上的完整公司名称</div>
+                            <label for="projectName">项目名称 <span class="required">*</span></label>
+                            <input type="text" id="projectName" name="projectName" required placeholder="例如：绿色能源产业园项目">
+                            <div class="field-description">请填写您的RWA项目完整名称</div>
                         </div>
                         <div class="form-group">
-                            <label for="legalPerson">法定代表人或负责人 <span class="required">*</span></label>
-                            <input type="text" id="legalPerson" name="legalPerson" required>
-                        </div>
-                    </div>
-
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="contactPerson">项目联系人 <span class="required">*</span></label>
-                            <input type="text" id="contactPerson" name="contactPerson" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="position">联系人职位</label>
-                            <input type="text" id="position" name="position">
-                        </div>
-                    </div>
-
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="phone">联系电话 <span class="required">*</span></label>
-                            <input type="tel" id="phone" name="phone" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="email">电子邮箱 <span class="required">*</span></label>
-                            <input type="email" id="email" name="email" required>
+                            <label for="projectType">项目类型 <span class="required">*</span></label>
+                            <select id="projectType" name="projectType" required>
+                                <option value="">请选择项目类型</option>
+                                <option value="real_estate">🏢 房地产项目</option>
+                                <option value="infrastructure">🏗️ 基础设施项目</option>
+                                <option value="energy">⚡ 能源项目</option>
+                                <option value="industrial">🏭 工业项目</option>
+                                <option value="financial">💰 金融资产项目</option>
+                                <option value="other">📦 其他项目</option>
+                            </select>
+                            <div class="field-description">选择您的RWA项目所属的主要行业类别</div>
                         </div>
                     </div>
 
                     <div class="form-row single">
                         <div class="form-group">
-                            <label for="address">详细地址 <span class="required">*</span></label>
-                            <input type="text" id="address" name="address" required>
+                            <label for="projectDescription">项目简介 <span class="required">*</span></label>
+                            <textarea id="projectDescription" name="projectDescription" required placeholder="请详细描述您的项目背景、目标和预期收益..."></textarea>
+                            <div class="field-description">详细说明项目的商业模式、盈利点和市场前景，有助于我们更好地为您设计代币化方案</div>
                         </div>
                     </div>
 
                     <div class="form-row">
                         <div class="form-group">
-                            <label for="businessLicense">营业执照统一社会信用代码</label>
-                            <input type="text" id="businessLicense" name="businessLicense">
+                            <label for="projectLocation">项目所在地 <span class="required">*</span></label>
+                            <input type="text" id="projectLocation" name="projectLocation" required placeholder="例如：上海市浦东新区">
+                            <div class="field-description">项目资产的具体地理位置</div>
                         </div>
                         <div class="form-group">
-                            <label for="registeredCapital">注册资本（万元）</label>
-                            <input type="number" id="registeredCapital" name="registeredCapital">
+                            <label for="projectStage">项目阶段 <span class="required">*</span></label>
+                            <select id="projectStage" name="projectStage" required>
+                                <option value="">请选择当前阶段</option>
+                                <option value="planning">📋 规划阶段</option>
+                                <option value="construction">🚧 建设阶段</option>
+                                <option value="operation">🔄 运营阶段</option>
+                                <option value="mature">✅ 成熟运营</option>
+                            </select>
+                            <div class="field-description">项目当前所处的发展阶段，影响代币化的时机和策略</div>
+                        </div>
+                    </div>
+
+                    <div class="info-box">
+                        <strong>💡 提示：</strong>请确保项目信息准确完整，这将影响后续的法律结构设计和合规方案制定。
+                    </div>
+
+                    <div class="subsection">
+                        <div class="subsection-title">📞 联系信息</div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="contactPerson">项目联系人 <span class="required">*</span></label>
+                                <input type="text" id="contactPerson" name="contactPerson" required placeholder="张先生">
+                            </div>
+                            <div class="form-group">
+                                <label for="position">联系人职位</label>
+                                <input type="text" id="position" name="position" placeholder="项目总监">
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="phone">联系电话 <span class="required">*</span></label>
+                                <input type="tel" id="phone" name="phone" required placeholder="138-0000-0000">
+                            </div>
+                            <div class="form-group">
+                                <label for="email">电子邮箱 <span class="required">*</span></label>
+                                <input type="email" id="email" name="email" required placeholder="contact@company.com">
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="sponsorName">发起方名称 <span class="required">*</span></label>
+                                <input type="text" id="sponsorName" name="sponsorName" required placeholder="XX投资有限公司">
+                                <div class="field-description">项目发起的公司或机构名称</div>
+                            </div>
+                            <div class="form-group">
+                                <label for="sponsorType">发起方类型</label>
+                                <select id="sponsorType" name="sponsorType" required>
+                                <option value="">请选择发起方类型</option>
+                                <option value="private_company">🏢 私人企业</option>
+                                <option value="public_company">🏛️ 上市公司</option>
+                                <option value="fund">💼 投资基金</option>
+                                <option value="individual">👤 个人投资者</option>
+                                <option value="other">📦 其他机构</option>
+                            </select>
+                            <div class="field-description">选择项目发起方的主体类型，影响合规要求</div>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- 第二部分：RWA资产详细信息 -->
-                <div class="section">
-                    <h2 class="section-title">
-                        🏢 RWA资产详细信息
-                        <span class="stage-indicator">第一阶段</span>
-                    </h2>
-
-                    <div class="info-box">
-                        <strong>说明：</strong>请详细填写您的现实世界资产信息，这些信息将用于资产梳理、合规治理、产权确认、价值评估等前期工作。
+                <!-- 步骤2：资产信息 -->
+                <div class="step-panel" id="step2">
+                    <div class="step-title">
+                        <span class="step-icon">🏢</span>
+                        资产详细信息
+                    </div>
+                    <div class="step-subtitle">
+                        请详细描述您要进行数字化的现实世界资产，这些信息将用于资产评估和代币化方案设计。
                     </div>
                     
                     <div class="form-row">
@@ -394,20 +616,14 @@
                             <label for="assetType">资产类型 <span class="required">*</span></label>
                             <select id="assetType" name="assetType" required>
                                 <option value="">请选择资产类型</option>
-                                <option value="infrastructure">基础设施（高速公路、桥梁、隧道等）</option>
-                                <option value="real_estate_commercial">商业地产（写字楼、商场、酒店等）</option>
-                                <option value="real_estate_residential">住宅地产</option>
-                                <option value="energy_renewable">可再生能源（风电、光伏等）</option>
-                                <option value="energy_traditional">传统能源（电力、燃气等）</option>
-                                <option value="transportation">交通运输（港口、机场、物流中心）</option>
-                                <option value="utility">公用事业（供水、供电、通信）</option>
-                                <option value="industrial">工业资产（厂房、设备、产线）</option>
-                                <option value="agricultural">农业资产（土地、农场、林地）</option>
-                                <option value="commodity">大宗商品（贵金属、原材料等）</option>
-                                <option value="financial">金融资产（债权、收益权等）</option>
-                                <option value="intellectual">知识产权（专利、商标、版权）</option>
-                                <option value="other">其他</option>
+                                <option value="real_estate">🏢 房地产（商业地产、住宅等）</option>
+                                <option value="infrastructure">🏗️ 基础设施（道路、桥梁、公用设施）</option>
+                                <option value="energy">⚡ 能源项目（风电、光伏、传统能源）</option>
+                                <option value="industrial">🏭 工业资产（厂房、设备、产线）</option>
+                                <option value="financial">💰 金融资产（债权、收益权）</option>
+                                <option value="other">📦 其他类型</option>
                             </select>
+                            <div class="field-description">选择最符合您项目的主要资产类型</div>
                         </div>
                         <div class="form-group">
                             <label for="assetSubtype">资产子类型详述</label>
@@ -418,1130 +634,375 @@
                     <div class="form-row single">
                         <div class="form-group">
                             <label for="assetDescription">资产详细描述 <span class="required">*</span></label>
-                            <textarea id="assetDescription" name="assetDescription" required placeholder="请详细描述资产的地理位置、建设规模、运营状况、收益模式、市场地位等信息"></textarea>
+                            <textarea id="assetDescription" name="assetDescription" required placeholder="请详细描述资产的地理位置、建设规模、运营状况、收益模式、市场地位等信息..."></textarea>
+                            <div class="field-description">包括资产的物理特征、地理位置、技术参数、收益来源等关键信息</div>
                         </div>
                     </div>
 
-                    <div class="subsection">
-                        <div class="subsection-title">资产价值与财务信息</div>
-                        <div class="form-row triple">
-                            <div class="form-group">
-                                <label for="assetValue">最新评估价值（万元） <span class="required">*</span></label>
-                                <input type="number" id="assetValue" name="assetValue" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="valuationDate">评估日期</label>
-                                <input type="date" id="valuationDate" name="valuationDate">
-                            </div>
-                            <div class="form-group">
-                                <label for="valuationMethod">评估方法</label>
-                                <select id="valuationMethod" name="valuationMethod">
-                                    <option value="">请选择</option>
-                                    <option value="cost_approach">成本法</option>
-                                    <option value="income_approach">收益法</option>
-                                    <option value="market_approach">市场法</option>
-                                    <option value="dcf">现金流折现法</option>
-                                    <option value="multiple">多种方法综合</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="annualRevenue">年营业收入（万元）</label>
-                                <input type="number" id="annualRevenue" name="annualRevenue">
-                            </div>
-                            <div class="form-group">
-                                <label for="annualProfit">年净利润（万元）</label>
-                                <input type="number" id="annualProfit" name="annualProfit">
-                            </div>
-                        </div>
-
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="annualReturn">年化收益率（%）</label>
-                                <input type="number" id="annualReturn" name="annualReturn" step="0.01">
-                            </div>
-                            <div class="form-group">
-                                <label for="operationPeriod">运营期限</label>
-                                <select id="operationPeriod" name="operationPeriod">
-                                    <option value="">请选择</option>
-                                    <option value="5_years">5年以内</option>
-                                    <option value="5_10_years">5-10年</option>
-                                    <option value="10_20_years">10-20年</option>
-                                    <option value="20_30_years">20-30年</option>
-                                    <option value="over_30_years">30年以上</option>
-                                    <option value="permanent">永久运营</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="subsection">
-                        <div class="subsection-title">产权与法律状况</div>
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="ownershipStatus">产权状态 <span class="required">*</span></label>
-                                <div class="radio-group">
-                                    <div class="radio-item">
-                                        <input type="radio" id="ownership_full" name="ownershipStatus" value="full_ownership">
-                                        <label for="ownership_full">完全产权/所有权</label>
-                                    </div>
-                                    <div class="radio-item">
-                                        <input type="radio" id="ownership_partial" name="ownershipStatus" value="partial_ownership">
-                                        <label for="ownership_partial">部分产权/共有产权</label>
-                                    </div>
-                                    <div class="radio-item">
-                                        <input type="radio" id="ownership_usage" name="ownershipStatus" value="usage_rights">
-                                        <label for="ownership_usage">使用权/特许经营权</label>
-                                    </div>
-                                    <div class="radio-item">
-                                        <input type="radio" id="ownership_pending" name="ownershipStatus" value="pending">
-                                        <label for="ownership_pending">产权办理中</label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="ownershipRatio">持有比例（%）</label>
-                                <input type="number" id="ownershipRatio" name="ownershipRatio" max="100" min="0">
-                                <div class="field-description">如为部分产权，请填写持有比例</div>
-                            </div>
-                            <div class="form-group">
-                                <label for="encumbrance">是否存在抵押、质押等权利限制</label>
-                                <div class="radio-group">
-                                    <div class="radio-item">
-                                        <input type="radio" id="encumbrance_no" name="encumbrance" value="no">
-                                        <label for="encumbrance_no">无权利限制</label>
-                                    </div>
-                                    <div class="radio-item">
-                                        <input type="radio" id="encumbrance_yes" name="encumbrance" value="yes">
-                                        <label for="encumbrance_yes">存在权利限制</label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-row single">
-                            <div class="form-group">
-                                <label for="encumbranceDetails">权利限制详情</label>
-                                <textarea id="encumbranceDetails" name="encumbranceDetails" placeholder="如存在抵押、质押等情况，请详细说明"></textarea>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="subsection">
-                        <div class="subsection-title">现有资产证明文件</div>
+                    <div class="form-row triple">
                         <div class="form-group">
-                            <label>已具备的资产证明文件</label>
-                            <div class="checkbox-group">
-                                <div class="checkbox-item">
-                                    <input type="checkbox" id="propertyDeed" name="assetDocuments" value="property_deed">
-                                    <label for="propertyDeed">产权证书/不动产权证</label>
-                                </div>
-                                <div class="checkbox-item">
-                                    <input type="checkbox" id="businessLicenseDoc" name="assetDocuments" value="business_license">
-                                    <label for="businessLicenseDoc">营业执照/经营许可证</label>
-                                </div>
-                                <div class="checkbox-item">
-                                    <input type="checkbox" id="valuationReport" name="assetDocuments" value="valuation_report">
-                                    <label for="valuationReport">资产评估报告</label>
-                                </div>
-                                <div class="checkbox-item">
-                                    <input type="checkbox" id="financialStatements" name="assetDocuments" value="financial_statements">
-                                    <label for="financialStatements">财务报表（近3年）</label>
-                                </div>
-                                <div class="checkbox-item">
-                                    <input type="checkbox" id="auditReport" name="assetDocuments" value="audit_report">
-                                    <label for="auditReport">审计报告</label>
-                                </div>
-                                <div class="checkbox-item">
-                                    <input type="checkbox" id="legalOpinion" name="assetDocuments" value="legal_opinion">
-                                    <label for="legalOpinion">法律意见书</label>
-                                </div>
-                                <div class="checkbox-item">
-                                    <input type="checkbox" id="insurance" name="assetDocuments" value="insurance">
-                                    <label for="insurance">保险合同/保单</label>
-                                </div>
-                                <div class="checkbox-item">
-                                    <input type="checkbox" id="environmentalAssessment" name="assetDocuments" value="environmental">
-                                    <label for="environmentalAssessment">环评报告</label>
-                                </div>
-                                <div class="checkbox-item">
-                                    <input type="checkbox" id="operationContract" name="assetDocuments" value="operation_contract">
-                                    <label for="operationContract">运营管理合同</label>
-                                </div>
-                                <div class="checkbox-item">
-                                    <input type="checkbox" id="revenueContract" name="assetDocuments" value="revenue_contract">
-                                    <label for="revenueContract">收益权证明文件</label>
-                                </div>
-                            </div>
+                            <label for="assetValue">最新评估价值（万元） <span class="required">*</span></label>
+                            <input type="number" id="assetValue" name="assetValue" required placeholder="10000">
+                            <div class="field-description">请提供最新的专业评估价值，如无专业评估可提供市场参考价</div>
+                        </div>
+                        <div class="form-group">
+                            <label for="valuationDate">评估日期</label>
+                            <input type="date" id="valuationDate" name="valuationDate">
+                            <div class="field-description">估值报告的出具日期或评估基准日</div>
+                        </div>
+                        <div class="form-group">
+                            <label for="valuationMethod">评估方法</label>
+                            <select id="valuationMethod" name="valuationMethod">
+                                <option value="">请选择</option>
+                                <option value="cost_approach">📊 成本法（重置成本扣减折旧）</option>
+                                <option value="income_approach">💹 收益法（基于预期收益折现）</option>
+                                <option value="market_approach">🏪 市场法（参考同类资产交易价格）</option>
+                                <option value="multiple">🔄 多种方法综合</option>
+                            </select>
+                            <div class="field-description">选择用于确定资产价值的主要评估方法</div>
                         </div>
                     </div>
                 </div>
-
-                <!-- 第三部分：代币化需求与目标 -->
-                <div class="section">
-                    <h2 class="section-title">
-                        🎯 代币化需求与项目目标
-                        <span class="stage-indicator">第一阶段</span>
-                    </h2>
-
-                    <div class="info-box">
-                        <strong>说明：</strong>本部分信息将用于代币经济模型（Tokenomics）设计和金融结构设计。
+                <!-- 步骤3：财务规划 -->
+                <div class="step-panel" id="step3">
+                    <div class="step-title">
+                        <span class="step-icon">💰</span>
+                        财务规划与收益模式
                     </div>
-                    
-                    <div class="subsection">
-                        <div class="subsection-title">项目核心目标</div>
+                    <div class="step-subtitle">
+                        请提供资产的财务数据和收益预期，这将帮助我们设计合适的代币经济模型。
+                    </div>
+
+                    <div class="form-row triple">
                         <div class="form-group">
-                            <label>代币化主要目标（可多选） <span class="required">*</span></label>
-                            <div class="checkbox-group">
-                                <div class="checkbox-item">
-                                    <input type="checkbox" id="increaseLiquidity" name="projectGoals" value="increase_liquidity">
-                                    <label for="increaseLiquidity">提升资产流动性</label>
-                                </div>
-                                <div class="checkbox-item">
-                                    <input type="checkbox" id="expandFunding" name="projectGoals" value="expand_funding">
-                                    <label for="expandFunding">拓展融资渠道</label>
-                                </div>
-                                <div class="checkbox-item">
-                                    <input type="checkbox" id="simplifyManagement" name="projectGoals" value="simplify_management">
-                                    <label for="simplifyManagement">简化资产管理</label>
-                                </div>
-                                <div class="checkbox-item">
-                                    <input type="checkbox" id="attractInvestors" name="projectGoals" value="attract_investors">
-                                    <label for="attractInvestors">吸引更多投资者</label>
-                                </div>
-                                <div class="checkbox-item">
-                                    <input type="checkbox" id="transparentOperation" name="projectGoals" value="transparent_operation">
-                                    <label for="transparentOperation">实现透明化运营</label>
-                                </div>
-                                <div class="checkbox-item">
-                                    <input type="checkbox" id="fractionalOwnership" name="projectGoals" value="fractional_ownership">
-                                    <label for="fractionalOwnership">实现分割所有权</label>
-                                </div>
-                                <div class="checkbox-item">
-                                    <input type="checkbox" id="globalAccess" name="projectGoals" value="global_access">
-                                    <label for="globalAccess">面向全球投资者</label>
-                                </div>
-                                <div class="checkbox-item">
-                                    <input type="checkbox" id="automaticDividend" name="projectGoals" value="automatic_dividend">
-                                    <label for="automaticDividend">自动化收益分配</label>
-                                </div>
-                            </div>
+                            <label for="assetValue">💎 资产评估价值（万元） <span class="required">*</span></label>
+                            <input type="number" id="assetValue" name="assetValue" required placeholder="请输入最新评估价值">
+                            <div class="field-description">与步骤2中的评估价值保持一致</div>
                         </div>
-                    </div>
-
-                    <div class="subsection">
-                        <div class="subsection-title">融资与投资者定位</div>
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="fundingTarget">融资目标（万元）</label>
-                                <input type="number" id="fundingTarget" name="fundingTarget">
-                            </div>
-                            <div class="form-group">
-                                <label for="tokenPercent">拟代币化资产比例（%）</label>
-                                <input type="number" id="tokenPercent" name="tokenPercent" max="100" min="1">
-                                <div class="field-description">计划将多少比例的资产进行代币化</div>
-                            </div>
-                        </div>
-
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="targetInvestors">目标投资者群体</label>
-                                <div class="radio-group">
-                                    <div class="radio-item">
-                                        <input type="radio" id="investors_institutional" name="targetInvestors" value="institutional">
-                                        <label for="investors_institutional">机构投资者</label>
-                                    </div>
-                                    <div class="radio-item">
-                                        <input type="radio" id="investors_high_net" name="targetInvestors" value="high_net_worth">
-                                        <label for="investors_high_net">高净值个人</label>
-                                    </div>
-                                    <div class="radio-item">
-                                        <input type="radio" id="investors_retail" name="targetInvestors" value="retail">
-                                        <label for="investors_retail">个人投资者</label>
-                                    </div>
-                                    <div class="radio-item">
-                                        <input type="radio" id="investors_mixed" name="targetInvestors" value="mixed">
-                                        <label for="investors_mixed">混合投资者</label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="minInvestment">最小投资金额（万元）</label>
-                                <input type="number" id="minInvestment" name="minInvestment">
-                            </div>
-                            <div class="form-group">
-                                <label for="maxInvestors">最大投资者数量</label>
-                                <input type="number" id="maxInvestors" name="maxInvestors">
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="subsection">
-                        <div class="subsection-title">代币权益设计偏好</div>
                         <div class="form-group">
-                            <label>代币持有者权益（可多选）</label>
-                            <div class="checkbox-group">
-                                <div class="checkbox-item">
-                                    <input type="checkbox" id="revenue_share" name="tokenRights" value="revenue_share">
-                                    <label for="revenue_share">收益分红权</label>
-                                </div>
-                                <div class="checkbox-item">
-                                    <input type="checkbox" id="voting_rights" name="tokenRights" value="voting_rights">
-                                    <label for="voting_rights">治理投票权</label>
-                                </div>
-                                <div class="checkbox-item">
-                                    <input type="checkbox" id="transfer_rights" name="tokenRights" value="transfer_rights">
-                                    <label for="transfer_rights">转让交易权</label>
-                                </div>
-                                <div class="checkbox-item">
-                                    <input type="checkbox" id="redemption_rights" name="tokenRights" value="redemption_rights">
-                                    <label for="redemption_rights">赎回权</label>
-                                </div>
-                                <div class="checkbox-item">
-                                    <input type="checkbox" id="information_rights" name="tokenRights" value="information_rights">
-                                    <label for="information_rights">信息知情权</label>
-                                </div>
-                                <div class="checkbox-item">
-                                    <input type="checkbox" id="liquidation_rights" name="tokenRights" value="liquidation_rights">
-                                    <label for="liquidation_rights">清算分配权</label>
-                                </div>
-                            </div>
+                            <label for="annualRevenue">📈 年收入（万元）</label>
+                            <input type="number" id="annualRevenue" name="annualRevenue" placeholder="预期年收入">
+                            <div class="field-description">资产每年产生的总收入，如租金、服务费等</div>
                         </div>
-
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="dividendFrequency">收益分配频率</label>
-                                <select id="dividendFrequency" name="dividendFrequency">
-                                    <option value="">请选择</option>
-                                    <option value="monthly">按月分配</option>
-                                    <option value="quarterly">按季分配</option>
-                                    <option value="semi_annually">按半年分配</option>
-                                    <option value="annually">按年分配</option>
-                                    <option value="event_based">基于特定事件</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="dividendRatio">拟分配收益比例（%）</label>
-                                <input type="number" id="dividendRatio" name="dividendRatio" max="100" min="0">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 第四部分：技术开发需求 -->
-                <div class="section">
-                    <h2 class="section-title">
-                        ⚙️ 技术开发需求
-                        <span class="stage-indicator">第二阶段</span>
-                    </h2>
-
-                    <div class="info-box">
-                        <strong>说明：</strong>根据合同约定，我们将进行技术方案设计、智能合约开发、安全审计协调等工作。
-                    </div>
-
-                    <div class="subsection">
-                        <div class="subsection-title">区块链技术选择</div>
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="blockchainPreference">区块链平台偏好</label>
-                                <div class="radio-group">
-                                    <div class="radio-item">
-                                        <input type="radio" id="blockchain_consortium" name="blockchainPreference" value="consortium">
-                                        <label for="blockchain_consortium">联盟链（优先推荐）</label>
-                                    </div>
-                                    <div class="radio-item">
-                                        <input type="radio" id="blockchain_ethereum" name="blockchainPreference" value="ethereum">
-                                        <label for="blockchain_ethereum">以太坊主网</label>
-                                    </div>
-                                    <div class="radio-item">
-                                        <input type="radio" id="blockchain_polygon" name="blockchainPreference" value="polygon">
-                                        <label for="blockchain_polygon">Polygon</label>
-                                    </div>
-                                    <div class="radio-item">
-                                        <input type="radio" id="blockchain_bsc" name="blockchainPreference" value="bsc">
-                                        <label for="blockchain_bsc">BSC币安智能链</label>
-                                    </div>
-                                    <div class="radio-item">
-                                        <input type="radio" id="blockchain_custom" name="blockchainPreference" value="custom">
-                                        <label for="blockchain_custom">定制化方案</label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="tokenStandard">智能合约代币标准偏好</label>
-                                <div class="radio-group">
-                                    <div class="radio-item">
-                                        <input type="radio" id="standard_erc3643" name="tokenStandard" value="erc3643">
-                                        <label for="standard_erc3643">ERC-3643（合规标准推荐）</label>
-                                    </div>
-                                    <div class="radio-item">
-                                        <input type="radio" id="standard_erc1400" name="tokenStandard" value="erc1400">
-                                        <label for="standard_erc1400">ERC-1400（证券型代币）</label>
-                                    </div>
-                                    <div class="radio-item">
-                                        <input type="radio" id="standard_erc20" name="tokenStandard" value="erc20">
-                                        <label for="standard_erc20">ERC-20（标准代币）</label>
-                                    </div>
-                                    <div class="radio-item">
-                                        <input type="radio" id="standard_custom" name="tokenStandard" value="custom">
-                                        <label for="standard_custom">定制化合约标准</label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="subsection">
-                        <div class="subsection-title">平台功能需求</div>
                         <div class="form-group">
-                            <label>数字资产管理平台核心功能（可多选） <span class="required">*</span></label>
-                            <div class="checkbox-group">
-                                <div class="checkbox-item">
-                                    <input type="checkbox" id="user_management" name="platformFeatures" value="user_management">
-                                    <label for="user_management">用户管理（注册/登录/KYC）</label>
-                                </div>
-                                <div class="checkbox-item">
-                                    <input type="checkbox" id="wallet_management" name="platformFeatures" value="wallet_management">
-                                    <label for="wallet_management">钱包连接与管理</label>
-                                </div>
-                                <div class="checkbox-item">
-                                    <input type="checkbox" id="asset_tracking" name="platformFeatures" value="asset_tracking">
-                                    <label for="asset_tracking">链上资产状态同步</label>
-                                </div>
-                                <div class="checkbox-item">
-                                    <input type="checkbox" id="token_management" name="platformFeatures" value="token_management">
-                                    <label for="token_management">代币转账/接收功能</label>
-                                </div>
-                                <div class="checkbox-item">
-                                    <input type="checkbox" id="dividend_distribution" name="platformFeatures" value="dividend_distribution">
-                                    <label for="dividend_distribution">自动化收益分配</label>
-                                </div>
-                                <div class="checkbox-item">
-                                    <input type="checkbox" id="compliance_module" name="platformFeatures" value="compliance_module">
-                                    <label for="compliance_module">合规功能（白名单管理等）</label>
-                                </div>
-                                <div class="checkbox-item">
-                                    <input type="checkbox" id="reporting_dashboard" name="platformFeatures" value="reporting_dashboard">
-                                    <label for="reporting_dashboard">数据看板与报告生成</label>
-                                </div>
-                                <div class="checkbox-item">
-                                    <input type="checkbox" id="document_management" name="platformFeatures" value="document_management">
-                                    <label for="document_management">资产相关文档管理</label>
-                                </div>
-                                <div class="checkbox-item">
-                                    <input type="checkbox" id="notification_system" name="platformFeatures" value="notification_system">
-                                    <label for="notification_system">通知提醒系统</label>
-                                </div>
-                                <div class="checkbox-item">
-                                    <input type="checkbox" id="otc_trading" name="platformFeatures" value="otc_trading">
-                                    <label for="otc_trading">场外交易功能（可选）</label>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="subsection">
-                        <div class="subsection-title">数据集成与验证需求</div>
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="dataSource">资产数据来源</label>
-                                <div class="checkbox-group">
-                                    <div class="checkbox-item">
-                                        <input type="checkbox" id="manual_input" name="dataSource" value="manual_input">
-                                        <label for="manual_input">人工录入</label>
-                                    </div>
-                                    <div class="checkbox-item">
-                                        <input type="checkbox" id="erp_integration" name="dataSource" value="erp_integration">
-                                        <label for="erp_integration">ERP系统对接</label>
-                                    </div>
-                                    <div class="checkbox-item">
-                                        <input type="checkbox" id="iot_sensors" name="dataSource" value="iot_sensors">
-                                        <label for="iot_sensors">IoT传感器数据</label>
-                                    </div>
-                                    <div class="checkbox-item">
-                                        <input type="checkbox" id="third_party_api" name="dataSource" value="third_party_api">
-                                        <label for="third_party_api">第三方数据API</label>
-                                    </div>
-                                    <div class="checkbox-item">
-                                        <input type="checkbox" id="oracle_service" name="dataSource" value="oracle_service">
-                                        <label for="oracle_service">预言机服务</label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="updateFrequency">数据更新频率要求</label>
-                                <select id="updateFrequency" name="updateFrequency">
-                                    <option value="">请选择</option>
-                                    <option value="real_time">实时更新</option>
-                                    <option value="daily">每日更新</option>
-                                    <option value="weekly">每周更新</option>
-                                    <option value="monthly">每月更新</option>
-                                    <option value="quarterly">每季度更新</option>
-                                    <option value="event_driven">事件驱动更新</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="needAudit">是否需要第三方安全审计</label>
-                                <div class="radio-group">
-                                    <div class="radio-item">
-                                        <input type="radio" id="audit_yes" name="needAudit" value="yes">
-                                        <label for="audit_yes">需要（推荐）</label>
-                                    </div>
-                                    <div class="radio-item">
-                                        <input type="radio" id="audit_no" name="needAudit" value="no">
-                                        <label for="audit_no">暂不需要</label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 第五部分：发行与上市需求 -->
-                <div class="section">
-                    <h2 class="section-title">
-                        📈 代币发行与市场对接需求
-                        <span class="stage-indicator">第三阶段</span>
-                    </h2>
-
-                    <div class="info-box">
-                        <strong>说明：</strong>根据合同约定，我们将协助您完成一级市场发行、二级市场上市以及市场推广等工作。注意：上市决定权和费用由交易所决定。
-                    </div>
-
-                    <div class="subsection">
-                        <div class="subsection-title">一级市场发行策略</div>
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="primaryMarket">一级市场发行方式偏好</label>
-                                <div class="radio-group">
-                                    <div class="radio-item">
-                                        <input type="radio" id="primary_sto" name="primaryMarket" value="sto">
-                                        <label for="primary_sto">STO（证券型代币发行）</label>
-                                    </div>
-                                    <div class="radio-item">
-                                        <input type="radio" id="primary_private" name="primaryMarket" value="private_sale">
-                                        <label for="primary_private">私募发行</label>
-                                    </div>
-                                    <div class="radio-item">
-                                        <input type="radio" id="primary_ieo" name="primaryMarket" value="ieo">
-                                        <label for="primary_ieo">IEO（交易所首次发行）</label>
-                                    </div>
-                                    <div class="radio-item">
-                                        <input type="radio" id="primary_ido" name="primaryMarket" value="ido">
-                                        <label for="primary_ido">IDO（去中心化首次发行）</label>
-                                    </div>
-                                    <div class="radio-item">
-                                        <input type="radio" id="primary_mixed" name="primaryMarket" value="mixed">
-                                        <label for="primary_mixed">混合发行模式</label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="launchpadPreference">Launchpad平台偏好</label>
-                                <select id="launchpadPreference" name="launchpadPreference">
-                                    <option value="">请选择平台类型</option>
-                                    <option value="tier1">一线平台（Binance Launchpad等）</option>
-                                    <option value="tier2">二线知名平台</option>
-                                    <option value="specialized">专业化RWA平台</option>
-                                    <option value="decentralized">去中心化发行平台</option>
-                                    <option value="multiple">多平台同步发行</option>
-                                    <option value="no_preference">无特殊偏好</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="issuePrice">预期发行价格（USDT）</label>
-                                <input type="number" id="issuePrice" name="issuePrice" step="0.01">
-                            </div>
-                        </div>
-
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="kycRequirement">KYC/AML合规要求</label>
-                                <div class="radio-group">
-                                    <div class="radio-item">
-                                        <input type="radio" id="kyc_strict" name="kycRequirement" value="strict">
-                                        <label for="kyc_strict">严格KYC（机构级）</label>
-                                    </div>
-                                    <div class="radio-item">
-                                        <input type="radio" id="kyc_standard" name="kycRequirement" value="standard">
-                                        <label for="kyc_standard">标准KYC</label>
-                                    </div>
-                                    <div class="radio-item">
-                                        <input type="radio" id="kyc_basic" name="kycRequirement" value="basic">
-                                        <label for="kyc_basic">基础KYC</label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="subsection">
-                        <div class="subsection-title">二级市场交易所对接</div>
-                        <div class="form-group">
-                            <label>目标交易所类型（可多选）</label>
-                            <div class="checkbox-group">
-                                <div class="checkbox-item">
-                                    <input type="checkbox" id="cex_tier1" name="exchangePreference" value="cex_tier1">
-                                    <label for="cex_tier1">一线中心化交易所</label>
-                                </div>
-                                <div class="checkbox-item">
-                                    <input type="checkbox" id="cex_tier2" name="exchangePreference" value="cex_tier2">
-                                    <label for="cex_tier2">二线中心化交易所</label>
-                                </div>
-                                <div class="checkbox-item">
-                                    <input type="checkbox" id="dex_uniswap" name="exchangePreference" value="dex_uniswap">
-                                    <label for="dex_uniswap">Uniswap类DEX</label>
-                                </div>
-                                <div class="checkbox-item">
-                                    <input type="checkbox" id="dex_curve" name="exchangePreference" value="dex_curve">
-                                    <label for="dex_curve">Curve类稳定币DEX</label>
-                                </div>
-                                <div class="checkbox-item">
-                                    <input type="checkbox" id="specialized_rwa" name="exchangePreference" value="specialized_rwa">
-                                    <label for="specialized_rwa">专业RWA交易平台</label>
-                                </div>
-                                <div class="checkbox-item">
-                                    <input type="checkbox" id="regional_exchange" name="exchangePreference" value="regional">
-                                    <label for="regional_exchange">区域性交易所</label>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="liquidityStrategy">流动性策略偏好</label>
-                                <div class="checkbox-group">
-                                    <div class="checkbox-item">
-                                        <input type="checkbox" id="market_maker" name="liquidityStrategy" value="market_maker">
-                                        <label for="market_maker">专业做市商服务</label>
-                                    </div>
-                                    <div class="checkbox-item">
-                                        <input type="checkbox" id="liquidity_pool" name="liquidityStrategy" value="liquidity_pool">
-                                        <label for="liquidity_pool">DEX流动性池</label>
-                                    </div>
-                                    <div class="checkbox-item">
-                                        <input type="checkbox" id="incentive_program" name="liquidityStrategy" value="incentive_program">
-                                        <label for="incentive_program">流动性激励计划</label>
-                                    </div>
-                                    <div class="checkbox-item">
-                                        <input type="checkbox" id="treasury_management" name="liquidityStrategy" value="treasury_management">
-                                        <label for="treasury_management">国库管理策略</label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="subsection">
-                        <div class="subsection-title">市场推广需求</div>
-                        <div class="form-group">
-                            <label>市场营销与PR支持需求（可多选）</label>
-                            <div class="checkbox-group">
-                                <div class="checkbox-item">
-                                    <input type="checkbox" id="whitepaper" name="marketingSupport" value="whitepaper">
-                                    <label for="whitepaper">白皮书撰写优化</label>
-                                </div>
-                                <div class="checkbox-item">
-                                    <input type="checkbox" id="tokenomics_design" name="marketingSupport" value="tokenomics_design">
-                                    <label for="tokenomics_design">Tokenomics可视化设计</label>
-                                </div>
-                                <div class="checkbox-item">
-                                    <input type="checkbox" id="community_building" name="marketingSupport" value="community_building">
-                                    <label for="community_building">社区建设管理</label>
-                                </div>
-                                <div class="checkbox-item">
-                                    <input type="checkbox" id="pr_services" name="marketingSupport" value="pr_services">
-                                    <label for="pr_services">PR公关服务</label>
-                                </div>
-                                <div class="checkbox-item">
-                                    <input type="checkbox" id="ama_events" name="marketingSupport" value="ama_events">
-                                    <label for="ama_events">AMA活动策划</label>
-                                </div>
-                                <div class="checkbox-item">
-                                    <input type="checkbox" id="roadshow" name="marketingSupport" value="roadshow">
-                                    <label for="roadshow">投资者路演</label>
-                                </div>
-                                <div class="checkbox-item">
-                                    <input type="checkbox" id="media_coverage" name="marketingSupport" value="media_coverage">
-                                    <label for="media_coverage">媒体报道推广</label>
-                                </div>
-                                <div class="checkbox-item">
-                                    <input type="checkbox" id="influencer_marketing" name="marketingSupport" value="influencer_marketing">
-                                    <label for="influencer_marketing">KOL合作推广</label>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="marketingBudget">市场推广预算（万元）</label>
-                                <select id="marketingBudget" name="marketingBudget">
-                                    <option value="">请选择预算范围</option>
-                                    <option value="under_50">50万以下</option>
-                                    <option value="50_100">50-100万</option>
-                                    <option value="100_200">100-200万</option>
-                                    <option value="200_500">200-500万</option>
-                                    <option value="over_500">500万以上</option>
-                                    <option value="flexible">预算灵活</option>
-                                </select>
-                                <div class="field-description">用于广告投放、KOL宣传、社区活动等执行费用</div>
-                            </div>
-                            <div class="form-group">
-                                <label for="marketingTimeline">推广时间周期</label>
-                                <select id="marketingTimeline" name="marketingTimeline">
-                                    <option value="">请选择</option>
-                                    <option value="pre_launch">发行前预热（1-2个月）</option>
-                                    <option value="launch_period">发行期间（1个月）</option>
-                                    <option value="post_launch">发行后维护（3-6个月）</option>
-                                    <option value="long_term">长期推广（1年以上）</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 第六部分：合规与法律要求 -->
-                <div class="section">
-                    <h2 class="section-title">
-                        ⚖️ 合规与法律要求
-                        <span class="stage-indicator">全阶段</span>
-                    </h2>
-
-                    <div class="warning-note">
-                        <strong>重要提示：</strong>代币化项目必须严格遵守相关法律法规。请确保您已充分了解项目涉及地区的监管要求。
-                    </div>
-
-                    <div class="subsection">
-                        <div class="subsection-title">司法管辖与合规要求</div>
-                        <div class="form-group">
-                            <label>项目涉及的司法管辖区（可多选） <span class="required">*</span></label>
-                            <div class="checkbox-group">
-                                <div class="checkbox-item">
-                                    <input type="checkbox" id="china_mainland" name="jurisdictions" value="china_mainland">
-                                    <label for="china_mainland">中国大陆</label>
-                                </div>
-                                <div class="checkbox-item">
-                                    <input type="checkbox" id="hongkong" name="jurisdictions" value="hongkong">
-                                    <label for="hongkong">香港特别行政区</label>
-                                </div>
-                                <div class="checkbox-item">
-                                    <input type="checkbox" id="singapore" name="jurisdictions" value="singapore">
-                                    <label for="singapore">新加坡</label>
-                                </div>
-                                <div class="checkbox-item">
-                                    <input type="checkbox" id="usa" name="jurisdictions" value="usa">
-                                    <label for="usa">美国</label>
-                                </div>
-                                <div class="checkbox-item">
-                                    <input type="checkbox" id="eu" name="jurisdictions" value="eu">
-                                    <label for="eu">欧盟</label>
-                                </div>
-                                <div class="checkbox-item">
-                                    <input type="checkbox" id="japan" name="jurisdictions" value="japan">
-                                    <label for="japan">日本</label>
-                                </div>
-                                <div class="checkbox-item">
-                                    <input type="checkbox" id="south_korea" name="jurisdictions" value="south_korea">
-                                    <label for="south_korea">韩国</label>
-                                </div>
-                                <div class="checkbox-item">
-                                    <input type="checkbox" id="other_regions" name="jurisdictions" value="other">
-                                    <label for="other_regions">其他地区</label>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="legalStructure">拟采用的法律结构</label>
-                                <div class="radio-group">
-                                    <div class="radio-item">
-                                        <input type="radio" id="legal_spv" name="legalStructure" value="spv">
-                                        <label for="legal_spv">SPV（特殊目的载体）</label>
-                                    </div>
-                                    <div class="radio-item">
-                                        <input type="radio" id="legal_trust" name="legalStructure" value="trust">
-                                        <label for="legal_trust">信托结构</label>
-                                    </div>
-                                    <div class="radio-item">
-                                        <input type="radio" id="legal_fund" name="legalStructure" value="fund">
-                                        <label for="legal_fund">基金结构</label>
-                                    </div>
-                                    <div class="radio-item">
-                                        <input type="radio" id="legal_company" name="legalStructure" value="company">
-                                        <label for="legal_company">公司直接发行</label>
-                                    </div>
-                                    <div class="radio-item">
-                                        <input type="radio" id="legal_uncertain" name="legalStructure" value="uncertain">
-                                        <label for="legal_uncertain">需要专业建议</label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="subsection">
-                        <div class="subsection-title">现有法律与合规准备</div>
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="complianceExperience">合规经验水平</label>
-                                <div class="radio-group">
-                                    <div class="radio-item">
-                                        <input type="radio" id="compliance_expert" name="complianceExperience" value="expert">
-                                        <label for="compliance_expert">丰富的数字资产合规经验</label>
-                                    </div>
-                                    <div class="radio-item">
-                                        <input type="radio" id="compliance_some" name="complianceExperience" value="some">
-                                        <label for="compliance_some">有传统金融合规经验</label>
-                                    </div>
-                                    <div class="radio-item">
-                                        <input type="radio" id="compliance_limited" name="complianceExperience" value="limited">
-                                        <label for="compliance_limited">合规经验有限</label>
-                                    </div>
-                                    <div class="radio-item">
-                                        <input type="radio" id="compliance_none" name="complianceExperience" value="none">
-                                        <label for="compliance_none">无相关合规经验</label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="legalSupport">现有法律支持情况</label>
-                                <div class="radio-group">
-                                    <div class="radio-item">
-                                        <input type="radio" id="legal_have" name="legalSupport" value="have_lawyers">
-                                        <label for="legal_have">已有专业律师团队</label>
-                                    </div>
-                                    <div class="radio-item">
-                                        <input type="radio" id="legal_partial" name="legalSupport" value="partial_support">
-                                        <label for="legal_partial">部分法律支持</label>
-                                    </div>
-                                    <div class="radio-item">
-                                        <input type="radio" id="legal_need" name="legalSupport" value="need_lawyers">
-                                        <label for="legal_need">需要法律支持</label>
-                                    </div>
-                                    <div class="radio-item">
-                                        <input type="radio" id="legal_unsure" name="legalSupport" value="unsure">
-                                        <label for="legal_unsure">不确定</label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-row single">
-                            <div class="form-group">
-                                <label for="existingLicenses">已获得的相关许可证或牌照</label>
-                                <textarea id="existingLicenses" name="existingLicenses" placeholder="如金融服务牌照、数字资产交易许可等"></textarea>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="subsection">
-                        <div class="subsection-title">风险评估与声明</div>
-                        <div class="form-group">
-                            <label>风险认知与承担能力</label>
-                            <div class="checkbox-group">
-                                <div class="checkbox-item">
-                                    <input type="checkbox" id="risk_policy" name="riskAcknowledgment" value="policy_risk" required>
-                                    <label for="risk_policy">已充分了解政策风险</label>
-                                </div>
-                                <div class="checkbox-item">
-                                    <input type="checkbox" id="risk_market" name="riskAcknowledgment" value="market_risk" required>
-                                    <label for="risk_market">已充分了解市场风险</label>
-                                </div>
-                                <div class="checkbox-item">
-                                    <input type="checkbox" id="risk_technical" name="riskAcknowledgment" value="technical_risk" required>
-                                    <label for="risk_technical">已充分了解技术风险</label>
-                                </div>
-                                <div class="checkbox-item">
-                                    <input type="checkbox" id="risk_compliance" name="riskAcknowledgment" value="compliance_risk" required>
-                                    <label for="risk_compliance">已充分了解合规风险</label>
-                                </div>
-                                <div class="checkbox-item">
-                                    <input type="checkbox" id="risk_responsibility" name="riskAcknowledgment" value="responsibility" required>
-                                    <label for="risk_responsibility">承诺独立承担项目风险</label>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 第七部分：持续服务需求 -->
-                <div class="section">
-                    <h2 class="section-title">
-                        🔄 链上资产管理与持续服务需求
-                        <span class="stage-indicator">第四阶段</span>
-                    </h2>
-
-                    <div class="info-box">
-                        <strong>说明：</strong>第四阶段服务确保代币化资产的长期价值维护和投资者关系管理。
-                    </div>
-
-                    <div class="subsection">
-                        <div class="subsection-title">链上资产管理需求</div>
-                        <div class="form-group">
-                            <label>链上资产管理服务需求（可多选）</label>
-                            <div class="checkbox-group">
-                                <div class="checkbox-item">
-                                    <input type="checkbox" id="asset_monitoring" name="onchainServices" value="asset_monitoring">
-                                    <label for="asset_monitoring">链上资产数据监控</label>
-                                </div>
-                                <div class="checkbox-item">
-                                    <input type="checkbox" id="automated_distribution" name="onchainServices" value="automated_distribution">
-                                    <label for="automated_distribution">自动化收益分配执行</label>
-                                </div>
-                                <div class="checkbox-item">
-                                    <input type="checkbox" id="compliance_monitoring" name="onchainServices" value="compliance_monitoring">
-                                    <label for="compliance_monitoring">持续合规监控</label>
-                                </div>
-                                <div class="checkbox-item">
-                                    <input type="checkbox" id="platform_maintenance" name="onchainServices" value="platform_maintenance">
-                                    <label for="platform_maintenance">技术平台维护</label>
-                                </div>
-                                <div class="checkbox-item">
-                                    <input type="checkbox" id="security_updates" name="onchainServices" value="security_updates">
-                                    <label for="security_updates">安全更新与技术支持</label>
-                                </div>
-                                <div class="checkbox-item">
-                                    <input type="checkbox" id="investor_relations" name="onchainServices" value="investor_relations">
-                                    <label for="investor_relations">投资者关系管理</label>
-                                </div>
-                                <div class="checkbox-item">
-                                    <input type="checkbox" id="community_management" name="onchainServices" value="community_management">
-                                    <label for="community_management">社区管理支持</label>
-                                </div>
-                                <div class="checkbox-item">
-                                    <input type="checkbox" id="reporting_services" name="onchainServices" value="reporting_services">
-                                    <label for="reporting_services">定期报告生成</label>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="serviceLevel">服务水平要求</label>
-                                <select id="serviceLevel" name="serviceLevel">
-                                    <option value="">请选择服务等级</option>
-                                    <option value="basic">基础服务（月度报告）</option>
-                                    <option value="standard">标准服务（周度监控）</option>
-                                    <option value="premium">高级服务（实时监控）</option>
-                                    <option value="enterprise">企业级服务（7x24支持）</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="serviceDuration">预期服务期限</label>
-                                <select id="serviceDuration" name="serviceDuration">
-                                    <option value="">请选择</option>
-                                    <option value="1_year">1年</option>
-                                    <option value="2_years">2年</option>
-                                    <option value="3_years">3年</option>
-                                    <option value="5_years">5年</option>
-                                    <option value="long_term">长期合作</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 第八部分：预算与时间安排 -->
-                <div class="section">
-                    <h2 class="section-title">
-                        💰 预算与时间安排
-                    </h2>
-
-                    <div class="note">
-                        <strong>参考报价：</strong>根据合同约定，完整的四阶段服务总费用为105万元人民币（不含第三方费用）。具体费用将根据您的实际需求进行调整。
-                    </div>
-
-                    <div class="subsection">
-                        <div class="subsection-title">预算安排</div>
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="totalBudget">项目总预算范围（万元）</label>
-                                <select id="totalBudget" name="totalBudget">
-                                    <option value="">请选择预算范围</option>
-                                    <option value="50_100">50-100万</option>
-                                    <option value="100_150">100-150万（标准配置）</option>
-                                    <option value="150_200">150-200万</option>
-                                    <option value="200_300">200-300万</option>
-                                    <option value="over_300">300万以上</option>
-                                    <option value="flexible">预算灵活，依据需求确定</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="thirdPartyBudget">第三方费用预算（万元）</label>
-                                <input type="number" id="thirdPartyBudget" name="thirdPartyBudget">
-                                <div class="field-description">包括交易所上市费、审计费、法律费用等</div>
-                            </div>
-                        </div>
-
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="paymentPreference">付款方式偏好</label>
-                                <div class="radio-group">
-                                    <div class="radio-item">
-                                        <input type="radio" id="payment_milestone" name="paymentPreference" value="milestone">
-                                        <label for="payment_milestone">按里程碑分期付款（推荐）</label>
-                                    </div>
-                                    <div class="radio-item">
-                                        <input type="radio" id="payment_stage" name="paymentPreference" value="stage">
-                                        <label for="payment_stage">按服务阶段付款</label>
-                                    </div>
-                                    <div class="radio-item">
-                                        <input type="radio" id="payment_monthly" name="paymentPreference" value="monthly">
-                                        <label for="payment_monthly">按月付款</label>
-                                    </div>
-                                    <div class="radio-item">
-                                        <input type="radio" id="payment_custom" name="paymentPreference" value="custom">
-                                        <label for="payment_custom">自定义付款方式</label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="subsection">
-                        <div class="subsection-title">时间安排</div>
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="projectTimeline">期望项目完成时间</label>
-                                <select id="projectTimeline" name="projectTimeline">
-                                    <option value="">请选择时间周期</option>
-                                    <option value="3_months">3个月内</option>
-                                    <option value="4_months">4个月（标准周期）</option>
-                                    <option value="6_months">6个月内</option>
-                                    <option value="12_months">12个月内</option>
-                                    <option value="flexible">时间灵活</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="urgency">项目紧急程度</label>
-                                <div class="radio-group">
-                                    <div class="radio-item">
-                                        <input type="radio" id="urgency_normal" name="urgency" value="normal">
-                                        <label for="urgency_normal">正常进度</label>
-                                    </div>
-                                    <div class="radio-item">
-                                        <input type="radio" id="urgency_urgent" name="urgency" value="urgent">
-                                        <label for="urgency_urgent">较为紧急</label>
-                                    </div>
-                                    <div class="radio-item">
-                                        <input type="radio" id="urgency_very" name="urgency" value="very_urgent">
-                                        <label for="urgency_very">非常紧急</label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="preferredStartDate">希望开始日期</label>
-                                <input type="date" id="preferredStartDate" name="preferredStartDate">
-                            </div>
-                            <div class="form-group">
-                                <label for="targetLaunchDate">目标发行日期</label>
-                                <input type="date" id="targetLaunchDate" name="targetLaunchDate">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 第九部分：补充信息 -->
-                <div class="section">
-                    <h2 class="section-title">
-                        📝 补充信息与特殊需求
-                    </h2>
-
-                    <div class="form-row single">
-                        <div class="form-group">
-                            <label for="specialRequirements">特殊需求或定制化要求</label>
-                            <textarea id="specialRequirements" name="specialRequirements" placeholder="请描述任何特殊的技术需求、合规要求、时间安排或其他定制化需求"></textarea>
-                        </div>
-                    </div>
-
-                    <div class="form-row single">
-                        <div class="form-group">
-                            <label for="concernsQuestions">主要关注点或疑问</label>
-                            <textarea id="concernsQuestions" name="concernsQuestions" placeholder="请描述您在项目实施过程中最关心的问题或需要我们重点关注的方面"></textarea>
+                            <label for="annualProfit">💰 年净利润（万元）</label>
+                            <input type="number" id="annualProfit" name="annualProfit" placeholder="预期年净利润">
+                            <div class="field-description">扣除运营成本、税费后的净收益</div>
                         </div>
                     </div>
 
                     <div class="form-row">
                         <div class="form-group">
-                            <label for="hearAboutUs">如何了解到我们的服务？</label>
-                            <select id="hearAboutUs" name="hearAboutUs">
-                                <option value="">请选择</option>
-                                <option value="referral">朋友/合作伙伴推荐</option>
-                                <option value="search_engine">搜索引擎</option>
-                                <option value="social_media">社交媒体</option>
-                                <option value="industry_event">行业会议/活动</option>
-                                <option value="media_report">媒体报道</option>
-                                <option value="business_partner">商业伙伴介绍</option>
-                                <option value="other">其他</option>
-                            </select>
+                            <label for="annualReturn">📊 年化收益率（%）</label>
+                            <input type="number" id="annualReturn" name="annualReturn" step="0.01" placeholder="预期年化收益率">
+                            <div class="field-description">净利润/资产价值×100%，用于评估投资回报率</div>
                         </div>
                         <div class="form-group">
-                            <label for="existingProjects">是否有其他RWA项目经验</label>
-                            <div class="radio-group">
-                                <div class="radio-item">
-                                    <input type="radio" id="experience_yes" name="existingProjects" value="yes">
-                                    <label for="experience_yes">有相关经验</label>
+                            <label for="operationPeriod">⏰ 运营期限</label>
+                            <select id="operationPeriod" name="operationPeriod">
+                                <option value="">请选择运营期限</option>
+                                <option value="short_term">🔸 短期（5年以内）</option>
+                                <option value="medium_term">🔹 中期（5-15年）</option>
+                                <option value="long_term">🔶 长期（15-30年）</option>
+                                <option value="permanent">♾️ 永久运营</option>
+                            </select>
+                            <div class="field-description">资产预期的运营周期，影响代币的投资期限设计</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 步骤4：代币设计 -->
+                <div class="step-panel" id="step4">
+                    <div class="step-title">
+                        <span class="step-icon">🪙</span>
+                        代币权利设计偏好
+                    </div>
+                    <div class="step-subtitle">
+                        请选择您希望代币持有者享有的权利，这将影响代币的价值和流动性。
+                    </div>
+
+                    <div class="form-group">
+                        <label>🎯 代币持有者权利（可多选）</label>
+                        <div class="field-description">选择代币持有者应享有的核心权利，建议至少选择收益分配权</div>
+                        <div class="checkbox-group">
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="revenue_share" name="tokenRights" value="revenue_share">
+                                <label for="revenue_share">💰 收益分配权（按比例分享资产收益）</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="voting_rights" name="tokenRights" value="voting_rights">
+                                <label for="voting_rights">🗳️ 治理投票权（参与重大决策投票）</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="transfer_rights" name="tokenRights" value="transfer_rights">
+                                <label for="transfer_rights">🔄 转让流通权（可在二级市场交易）</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="info_rights" name="tokenRights" value="info_rights">
+                                <label for="info_rights">📊 信息知情权（获取运营财务报告）</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="subsection">
+                        <div class="subsection-title">🎁 NFT发行模块需求</div>
+                        <div class="form-group">
+                            <label>NFT类型偏好（可多选）</label>
+                            <div class="field-description">选择您希望发行的NFT类型，可作为代币的补充或独立发行</div>
+                            <div class="checkbox-group">
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="ownership_nft" name="nftTypes" value="ownership_nft">
+                                    <label for="ownership_nft">🏠 所有权凭证NFT（证明资产所有权）</label>
                                 </div>
-                                <div class="radio-item">
-                                    <input type="radio" id="experience_no" name="existingProjects" value="no">
-                                    <label for="experience_no">这是首个项目</label>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="revenue_nft" name="nftTypes" value="revenue_nft">
+                                    <label for="revenue_nft">💎 收益权NFT（享有收益分配权）</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="access_nft" name="nftTypes" value="access_nft">
+                                    <label for="access_nft">🔑 使用权NFT（享有资产使用权）</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="commemorative_nft" name="nftTypes" value="commemorative_nft">
+                                    <label for="commemorative_nft">🎖️ 纪念版NFT（收藏纪念价值）</label>
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 步骤5：合规要求 -->
+                <div class="step-panel" id="step5">
+                    <div class="step-title">
+                        <span class="step-icon">⚖️</span>
+                        合规与法律要求
+                    </div>
+                    <div class="step-subtitle">
+                        请提供合规相关信息，确保项目符合相关法律法规要求。
+                    </div>
+
+                    <div class="form-group">
+                        <label for="targetJurisdictions">🌍 目标司法管辖区（可多选）</label>
+                        <div class="field-description">选择代币发行和交易的目标地区，影响合规要求和法律框架</div>
+                        <div class="checkbox-group">
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="hongkong" name="targetJurisdictions" value="hongkong">
+                                <label for="hongkong">🇭🇰 香港（相对宽松的数字资产政策）</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="singapore" name="targetJurisdictions" value="singapore">
+                                <label for="singapore">🇸🇬 新加坡（完善的数字资产监管框架）</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="usa" name="targetJurisdictions" value="usa">
+                                <label for="usa">🇺🇸 美国（严格的证券法规要求）</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="eu" name="targetJurisdictions" value="eu">
+                                <label for="eu">🇪🇺 欧盟（MiCA法规框架）</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="other_jurisdiction" name="targetJurisdictions" value="other">
+                                <label for="other_jurisdiction">🌐 其他地区</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="kycLevel">🔍 KYC合规等级偏好</label>
+                            <select id="kycLevel" name="kycLevel">
+                                <option value="">请选择KYC等级</option>
+                                <option value="basic">🟢 基础级（基本身份验证）</option>
+                                <option value="standard">🟡 标准级（增强身份验证）</option>
+                                <option value="enhanced">🔴 增强级（全面尽职调查）</option>
+                            </select>
+                            <div class="field-description">等级越高，投资者准入门槛越高，但合规性更强</div>
+                        </div>
+                        <div class="form-group">
+                            <label for="amlCompliance">🛡️ AML反洗钱要求</label>
+                            <select id="amlCompliance" name="amlCompliance">
+                                <option value="">请选择AML要求</option>
+                                <option value="basic">📋 基础监控（适用于小额交易）</option>
+                                <option value="enhanced">🔍 增强监控（适用于大额交易）</option>
+                                <option value="institutional">🏛️ 机构级监控（适用于机构投资者）</option>
+                            </select>
+                            <div class="field-description">根据目标投资者类型和交易规模选择合适的监控等级</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 步骤6：完成设置 -->
+                <div class="step-panel" id="step6">
+                    <div class="step-title">
+                        <span class="step-icon">✅</span>
+                        确认与提交
+                    </div>
+                    <div class="step-subtitle">
+                        请确认您的设置信息，我们将根据您的需求为您定制RWA项目方案。
+                    </div>
+
+                    <div class="info-box">
+                        <strong>📋 提交前确认清单：</strong>
+                        <ul style="margin: 10px 0; padding-left: 20px;">
+                            <li>✓ 项目基础信息已完整填写</li>
+                            <li>✓ 资产信息已详细描述</li>
+                            <li>✓ 财务规划已明确设定</li>
+                            <li>✓ 代币权利设计已选择</li>
+                            <li>✓ 合规要求已确认</li>
+                        </ul>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="riskAcknowledgment" name="riskAcknowledgment" value="acknowledged" required>
+                            <label for="riskAcknowledgment">
+                                <strong>⚠️ 风险确认：</strong>我已了解RWA项目涉及的相关风险，包括但不限于市场风险、技术风险、合规风险等，并同意承担相应责任。
+                            </label>
                         </div>
                     </div>
 
                     <div class="form-row single">
                         <div class="form-group">
-                            <label for="additionalInfo">其他补充信息</label>
-                            <textarea id="additionalInfo" name="additionalInfo" placeholder="任何其他您希望我们了解的信息"></textarea>
+                            <label for="additionalRequirements">💭 其他特殊需求或备注</label>
+                            <textarea id="additionalRequirements" name="additionalRequirements" placeholder="请描述任何其他特殊需求、期望或需要我们了解的信息..."></textarea>
+                            <div class="field-description">如有特殊的技术要求、时间安排、预算限制等，请在此说明</div>
                         </div>
                     </div>
                 </div>
 
-                <div class="note">
-                    <strong>信息安全承诺：</strong> 我们承诺严格保护您提供的所有信息，仅用于项目评估和方案设计。所有资料将按照保密协议要求进行处理。
-                </div>
-
-                <div class="submit-section">
-                    <button type="submit" class="submit-btn">提交项目申请</button>
-                    <p style="color: white; margin-top: 15px; opacity: 0.9;">
-                        提交后，我们的专业团队将在24小时内与您联系，进行项目初步评估
-                    </p>
-                    <p style="color: white; margin-top: 10px; opacity: 0.8; font-size: 0.9rem;">
-                        服务热线：17709224992 | 邮箱：[服务邮箱]
-                    </p>
+                <!-- 导航按钮 -->
+                <div class="step-navigation">
+                    <button type="button" class="nav-btn btn-prev" id="prevBtn" onclick="changeStep(-1)">⬅️ 上一步</button>
+                    <button type="button" class="nav-btn btn-next" id="nextBtn" onclick="changeStep(1)">下一步 ➡️</button>
+                    <button type="submit" class="nav-btn btn-submit" id="submitBtn" style="display: none;">🚀 提交设置</button>
                 </div>
             </form>
         </div>
     </div>
 
     <script>
-        document.getElementById('rwaForm').addEventListener('submit', function(e) {
+        // 当前步骤
+        let currentStep = 1;
+        const totalSteps = 6;
+
+        // 步骤切换函数
+        function changeStep(direction) {
+            const newStep = currentStep + direction;
+            
+            // 验证步骤范围
+            if (newStep < 1 || newStep > totalSteps) {
+                return;
+            }
+            
+            // 如果是前进，验证当前步骤的必填字段
+            if (direction > 0 && !validateCurrentStep()) {
+                return;
+            }
+            
+            // 隐藏当前步骤
+            document.getElementById(`step${currentStep}`).classList.remove('active');
+            document.querySelector(`[data-step="${currentStep}"]`).classList.remove('active');
+            
+            // 标记已完成的步骤
+            if (direction > 0) {
+                document.querySelector(`[data-step="${currentStep}"]`).classList.add('completed');
+            }
+            
+            // 更新当前步骤
+            currentStep = newStep;
+            
+            // 显示新步骤
+            document.getElementById(`step${currentStep}`).classList.add('active');
+            document.querySelector(`[data-step="${currentStep}"]`).classList.add('active');
+            
+            // 更新进度条
+            updateProgressBar();
+            
+            // 更新按钮状态
+            updateNavigationButtons();
+            
+            // 滚动到顶部
+            document.querySelector('.step-content').scrollTop = 0;
+        }
+
+        // 验证当前步骤
+        function validateCurrentStep() {
+            const stepRequiredFields = {
+                1: ['projectName', 'projectType', 'projectDescription', 'projectLocation', 'contactPerson', 'phone', 'email', 'sponsorName'],
+                2: ['assetType', 'assetDescription', 'assetValue'],
+                3: [], // 财务规划步骤没有必填字段
+                4: [], // 代币设计步骤没有必填字段
+                5: [], // 合规要求步骤没有必填字段
+                6: ['riskAcknowledgment'] // 最后一步需要确认风险
+            };
+            
+            const requiredFields = stepRequiredFields[currentStep] || [];
+            const missingFields = [];
+            
+            requiredFields.forEach(fieldName => {
+                const field = document.getElementById(fieldName) || document.querySelector(`[name="${fieldName}"]`);
+                if (field) {
+                    if (field.type === 'checkbox') {
+                        if (!field.checked) {
+                            missingFields.push(fieldName);
+                        }
+                    } else if (!field.value.trim()) {
+                        missingFields.push(fieldName);
+                    }
+                }
+            });
+            
+            if (missingFields.length > 0) {
+                alert('请填写当前步骤的所有必填字段后再继续');
+                // 聚焦到第一个未填写的字段
+                const firstMissingField = document.getElementById(missingFields[0]) || document.querySelector(`[name="${missingFields[0]}"]`);
+                if (firstMissingField) {
+                    firstMissingField.focus();
+                }
+                return false;
+            }
+            
+            return true;
+        }
+
+        // 更新进度条
+        function updateProgressBar() {
+            const progressPercentage = ((currentStep - 1) / (totalSteps - 1)) * 100;
+            document.getElementById('progressLine').style.width = progressPercentage + '%';
+        }
+
+        // 更新导航按钮
+        function updateNavigationButtons() {
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const submitBtn = document.getElementById('submitBtn');
+            
+            // 上一步按钮
+            if (currentStep === 1) {
+                prevBtn.style.display = 'none';
+            } else {
+                prevBtn.style.display = 'inline-block';
+            }
+            
+            // 下一步/提交按钮
+            if (currentStep === totalSteps) {
+                nextBtn.style.display = 'none';
+                submitBtn.style.display = 'inline-block';
+            } else {
+                nextBtn.style.display = 'inline-block';
+                submitBtn.style.display = 'none';
+            }
+        }
+
+        // 表单提交处理
+        document.getElementById('rwaSetupForm').addEventListener('submit', function(e) {
             e.preventDefault();
+            
+            // 最终验证
+            if (!validateCurrentStep()) {
+                return;
+            }
             
             // 收集表单数据
             const formData = new FormData(this);
@@ -1549,9 +1010,7 @@
             
             // 处理复选框数据
             const checkboxGroups = [
-                'assetDocuments', 'projectGoals', 'tokenRights', 'platformFeatures', 
-                'dataSource', 'exchangePreference', 'liquidityStrategy', 'marketingSupport', 
-                'jurisdictions', 'riskAcknowledgment', 'onchainServices'
+                'tokenRights', 'nftTypes', 'targetJurisdictions'
             ];
             
             checkboxGroups.forEach(group => {
@@ -1566,53 +1025,29 @@
                 }
             }
             
-            // 验证必填字段
-            const requiredFields = [
-                'companyName', 'legalPerson', 'contactPerson', 'phone', 'email', 'address',
-                'assetType', 'assetValue', 'assetDescription', 'ownershipStatus'
-            ];
-            
-            const missingFields = requiredFields.filter(field => !data[field]);
-            
-            if (missingFields.length > 0) {
-                alert('请填写所有必填字段');
-                // 滚动到第一个未填写的必填字段
-                const firstMissingField = document.getElementById(missingFields[0]);
-                if (firstMissingField) {
-                    firstMissingField.scrollIntoView({ behavior: 'smooth' });
-                    firstMissingField.focus();
-                }
-                return;
-            }
-            
-            // 验证风险认知
-            if (data.riskAcknowledgment.length < 5) {
-                alert('请确认所有风险认知选项');
-                return;
-            }
-            
             // 验证司法管辖区
-            if (data.jurisdictions.length === 0) {
-                alert('请至少选择一个司法管辖区');
+            if (data.targetJurisdictions && data.targetJurisdictions.length === 0) {
+                alert('请至少选择一个目标司法管辖区');
+                changeStep(-1); // 回到合规步骤
                 return;
             }
             
             // 模拟提交成功
-            alert('表单提交成功！\n\n我们的专业团队将在24小时内与您联系，进行项目初步评估和需求确认。\n\n感谢您选择我们的RWA数字化代币化服务！');
+            alert('🎉 设置向导完成！\n\n我们的专业团队将在24小时内与您联系，进行项目初步评估和需求确认。\n\n感谢您选择我们的RWA数字化代币化服务！');
             
             // 在实际应用中，这里会将数据发送到后端服务器
-            console.log('客户RWA项目资料:', data);
+            console.log('RWA项目设置数据:', data);
             
             // 可以添加数据导出功能
-            // exportToJSON(data);
+            exportToJSON(data);
         });
         
-        // 数据导出函数（可选）
+        // 数据导出函数
         function exportToJSON(data) {
             const dataStr = JSON.stringify(data, null, 2);
             const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
             
-            const exportFileDefaultName = `RWA_Project_${data.companyName || 'Unknown'}_${new Date().toISOString().split('T')[0]}.json`;
+            const exportFileDefaultName = `RWA_Setup_${data.projectName || 'Project'}_${new Date().toISOString().split('T')[0]}.json`;
             
             const linkElement = document.createElement('a');
             linkElement.setAttribute('href', dataUri);
@@ -1620,39 +1055,114 @@
             linkElement.click();
         }
         
-        // 动态显示相关字段
-        document.getElementById('assetType').addEventListener('change', function() {
-            const assetType = this.value;
-            // 根据资产类型显示相关的特定字段
-            // 这里可以添加动态字段显示逻辑
-        });
-        
-        // 自动保存功能（可选）
+        // 自动保存功能
         function autoSave() {
-            const formData = new FormData(document.getElementById('rwaForm'));
+            const formData = new FormData(document.getElementById('rwaSetupForm'));
             const data = {};
             for (let [key, value] of formData.entries()) {
                 data[key] = value;
             }
-            sessionStorage.setItem('rwaFormData', JSON.stringify(data));
+            data.currentStep = currentStep;
+            sessionStorage.setItem('rwaSetupData', JSON.stringify(data));
         }
         
         // 每30秒自动保存一次
         setInterval(autoSave, 30000);
         
-        // 页面加载时恢复数据
+        // 页面加载时恢复数据和步骤
         window.addEventListener('load', function() {
-            const savedData = sessionStorage.getItem('rwaFormData');
+            const savedData = sessionStorage.getItem('rwaSetupData');
             if (savedData) {
                 const data = JSON.parse(savedData);
+                
+                // 恢复表单数据
                 for (let [key, value] of Object.entries(data)) {
+                    if (key === 'currentStep') continue;
+                    
                     const field = document.getElementById(key) || document.querySelector(`[name="${key}"]`);
                     if (field) {
-                        field.value = value;
+                        if (field.type === 'checkbox' || field.type === 'radio') {
+                            field.checked = field.value === value;
+                        } else {
+                            field.value = value;
+                        }
                     }
                 }
+                
+                // 恢复步骤位置
+                if (data.currentStep && data.currentStep > 1) {
+                    // 隐藏当前步骤
+                    document.getElementById(`step${currentStep}`).classList.remove('active');
+                    document.querySelector(`[data-step="${currentStep}"]`).classList.remove('active');
+                    
+                    // 设置保存的步骤
+                    currentStep = data.currentStep;
+                    
+                    // 显示保存的步骤
+                    document.getElementById(`step${currentStep}`).classList.add('active');
+                    document.querySelector(`[data-step="${currentStep}"]`).classList.add('active');
+                    
+                    // 标记之前的步骤为已完成
+                    for (let i = 1; i < currentStep; i++) {
+                        document.querySelector(`[data-step="${i}"]`).classList.add('completed');
+                    }
+                    
+                    updateProgressBar();
+                    updateNavigationButtons();
+                }
             }
+            
+            // 初始化按钮状态
+            updateNavigationButtons();
+        });
+        
+        // 添加字段帮助提示功能
+        function showFieldHelp(fieldId, helpText) {
+            const field = document.getElementById(fieldId);
+            if (field) {
+                // 创建帮助提示元素
+                const helpDiv = document.createElement('div');
+                helpDiv.className = 'field-help';
+                helpDiv.innerHTML = `💡 ${helpText}`;
+                helpDiv.style.cssText = `
+                    background: #e7f3ff;
+                    border: 1px solid #b3d9ff;
+                    border-radius: 5px;
+                    padding: 8px 12px;
+                    margin-top: 5px;
+                    font-size: 0.85rem;
+                    color: #0066cc;
+                    display: none;
+                `;
+                
+                // 插入帮助提示
+                field.parentNode.appendChild(helpDiv);
+                
+                // 添加焦点事件
+                field.addEventListener('focus', () => {
+                    helpDiv.style.display = 'block';
+                });
+                
+                field.addEventListener('blur', () => {
+                    setTimeout(() => {
+                        helpDiv.style.display = 'none';
+                    }, 3000);
+                });
+            }
+        }
+        
+        // 初始化字段帮助提示
+        document.addEventListener('DOMContentLoaded', function() {
+            // 为复杂字段添加帮助提示
+            showFieldHelp('projectDescription', '请详细描述项目的商业模式、盈利方式、市场前景等，建议200字以上');
+            showFieldHelp('assetDescription', '请描述资产的具体情况，包括地理位置、规模、现状、收益来源等关键信息');
+            showFieldHelp('assetValue', '请提供最新的专业评估价值，如无专业评估可填写预估价值');
+            showFieldHelp('annualReturn', '请填写预期的年化收益率，可参考同类资产的市场表现');
+            showFieldHelp('kycLevel', '基础级适用于小额投资，标准级适用于中等投资，增强级适用于大额或机构投资');
         });
     </script>
+    
+    <!-- 引入表单处理脚本 -->
+    <script src="form_processor.js"></script>
 </body>
 </html>
