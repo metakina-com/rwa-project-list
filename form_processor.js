@@ -73,7 +73,7 @@ class RWAFormProcessor {
             projectDescription: document.getElementById('projectDescription')?.value || '',
             
             // 发起方信息
-            initiatorType: document.getElementById('initiatorType')?.value || '',
+            initiatorType: document.getElementById('sponsorType')?.value || '',
             companyName: document.getElementById('sponsorName')?.value || '',
             contactPerson: document.getElementById('contactPerson')?.value || '',
             contactPhone: document.getElementById('phone')?.value || '',
