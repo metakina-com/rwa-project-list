@@ -995,52 +995,18 @@
             }
         }
 
-        // 表单提交处理
-        document.getElementById('rwaSetupForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
+        // 表单提交处理现在由form_processor.js处理
+        // 这里只保留验证逻辑
+        function handleFormSubmission() {
             // 最终验证
             if (!validateCurrentStep()) {
-                return;
+                return false;
             }
-            
-            // 收集表单数据
-            const formData = new FormData(this);
-            const data = {};
-            
-            // 处理复选框数据
-            const checkboxGroups = [
-                'tokenRights', 'nftTypes', 'targetJurisdictions'
-            ];
-            
-            checkboxGroups.forEach(group => {
-                data[group] = [];
-            });
-            
-            for (let [key, value] of formData.entries()) {
-                if (checkboxGroups.includes(key)) {
-                    data[key].push(value);
-                } else {
-                    data[key] = value;
-                }
-            }
-            
-            // 验证司法管辖区
-            if (data.targetJurisdictions && data.targetJurisdictions.length === 0) {
-                alert('请至少选择一个目标司法管辖区');
-                changeStep(-1); // 回到合规步骤
-                return;
-            }
-            
-            // 模拟提交成功
-            alert('🎉 设置向导完成！\n\n我们的专业团队将在24小时内与您联系，进行项目初步评估和需求确认。\n\n感谢您选择我们的RWA数字化代币化服务！');
-            
-            // 在实际应用中，这里会将数据发送到后端服务器
-            console.log('RWA项目设置数据:', data);
-            
-            // 可以添加数据导出功能
-            exportToJSON(data);
-        });
+            return true;
+        }
+        
+        // 为form_processor.js提供验证函数
+        window.validateCurrentStep = validateCurrentStep;
         
         // 数据导出函数
         function exportToJSON(data) {

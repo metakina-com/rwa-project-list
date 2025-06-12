@@ -15,7 +15,7 @@ class RWAFormProcessor {
 
     // 绑定表单提交事件
     bindFormSubmission() {
-        const form = document.getElementById('rwaClientForm');
+        const form = document.getElementById('rwaSetupForm');
         if (form) {
             form.addEventListener('submit', (e) => {
                 e.preventDefault();
@@ -34,6 +34,10 @@ class RWAFormProcessor {
             const formData = this.collectFormData();
             
             // 验证表单数据
+            if (window.validateCurrentStep && !window.validateCurrentStep()) {
+                throw new Error('表单数据验证失败');
+            }
+            
             if (!this.validateFormData(formData)) {
                 throw new Error('表单数据验证失败');
             }
@@ -65,15 +69,15 @@ class RWAFormProcessor {
             projectName: document.getElementById('projectName')?.value || '',
             assetType: document.getElementById('assetType')?.value || '',
             projectType: document.getElementById('projectType')?.value || '',
-            assetLocation: document.getElementById('assetLocation')?.value || '',
+            assetLocation: document.getElementById('projectLocation')?.value || '',
             projectDescription: document.getElementById('projectDescription')?.value || '',
             
             // 发起方信息
             initiatorType: document.getElementById('initiatorType')?.value || '',
-            companyName: document.getElementById('companyName')?.value || '',
+            companyName: document.getElementById('sponsorName')?.value || '',
             contactPerson: document.getElementById('contactPerson')?.value || '',
-            contactPhone: document.getElementById('contactPhone')?.value || '',
-            contactEmail: document.getElementById('contactEmail')?.value || '',
+            contactPhone: document.getElementById('phone')?.value || '',
+            contactEmail: document.getElementById('email')?.value || '',
             
             // 财务规划
             assetValue: parseFloat(document.getElementById('assetValue')?.value) || 0,
