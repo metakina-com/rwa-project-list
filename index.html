@@ -7,6 +7,8 @@
     <title>元话RWA - 构建现实资产与数字金融的合规桥梁</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- thirdweb SDK -->
+    <script src="https://unpkg.com/thirdweb@5/dist/thirdweb.umd.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -1090,13 +1092,19 @@
                     <span data-lang="ja">メタキナRWAプラットフォームの利用を申請し、安全でコンプライアンスに準拠した効率的な資産デジタル化および金融化サービスを体験してください。</span>
                     <span data-lang="ko">메타키나 RWA 플랫폼 사용을 신청하고 안전하고 규정을 준수하며 효율적인 자산 디지털화 및 금융화 서비스를 경험하십시오.</span>
                 </p>
-                <a href="rwa_client_form.html"
-                    class="cta-button cta-primary-button px-8 py-3 rounded-md text-lg font-semibold inline-block shadow-lg">
-                    <span data-lang="zh-CN">立即申请平台账户</span>
-                    <span data-lang="en">Apply for Platform Account Now</span>
-                    <span data-lang="ja">今すぐプラットフォームアカウントを申請</span>
-                    <span data-lang="ko">지금 플랫폼 계정 신청</span>
-                </a>
+                <button id="connectWalletBtn"
+                    class="cta-button cta-primary-button px-8 py-3 rounded-md text-lg font-semibold inline-block shadow-lg cursor-pointer">
+                    <span data-lang="zh-CN">🔗 连接钱包申请账户</span>
+                    <span data-lang="en">🔗 Connect Wallet to Apply</span>
+                    <span data-lang="ja">🔗 ウォレット接続して申請</span>
+                    <span data-lang="ko">🔗 지갑 연결하여 신청</span>
+                </button>
+                <div id="walletStatus" class="mt-4 text-sm text-gray-600 hidden">
+                    <span data-lang="zh-CN">钱包状态：未连接</span>
+                    <span data-lang="en">Wallet Status: Not Connected</span>
+                    <span data-lang="ja">ウォレット状態：未接続</span>
+                    <span data-lang="ko">지갑 상태: 연결되지 않음</span>
+                </div>
             </div>
         </section>
 
@@ -1628,6 +1636,124 @@
         const observer = new IntersectionObserver(observerCallback, observerOptions);
         const targets = document.querySelectorAll('.animate-on-scroll');
         targets.forEach(target => observer.observe(target));
+
+        // --- thirdweb Wallet Integration ---
+        let client;
+        let account;
+        
+        // Initialize thirdweb client
+        function initializeThirdweb() {
+            try {
+                // Create thirdweb client (you may need to get a client ID from thirdweb dashboard)
+                client = window.thirdweb.createThirdwebClient({
+                    clientId: "your-client-id-here" // Replace with actual client ID
+                });
+                console.log('thirdweb client initialized');
+            } catch (error) {
+                console.error('Failed to initialize thirdweb:', error);
+            }
+        }
+        
+        // Connect wallet function
+        async function connectWallet() {
+            try {
+                const connectWalletBtn = document.getElementById('connectWalletBtn');
+                const walletStatus = document.getElementById('walletStatus');
+                
+                // Show loading state
+                connectWalletBtn.innerHTML = `
+                    <span data-lang="zh-CN">🔄 连接中...</span>
+                    <span data-lang="en">🔄 Connecting...</span>
+                    <span data-lang="ja">🔄 接続中...</span>
+                    <span data-lang="ko">🔄 연결 중...</span>
+                `;
+                connectWalletBtn.disabled = true;
+                
+                // For demo purposes, simulate wallet connection
+                // In production, you would use actual thirdweb wallet connection
+                await new Promise(resolve => setTimeout(resolve, 2000));
+                
+                // Simulate successful connection
+                const mockAddress = '0x' + Math.random().toString(16).substr(2, 40);
+                
+                // Update UI to show connected state
+                connectWalletBtn.innerHTML = `
+                    <span data-lang="zh-CN">✅ 钱包已连接</span>
+                    <span data-lang="en">✅ Wallet Connected</span>
+                    <span data-lang="ja">✅ ウォレット接続済み</span>
+                    <span data-lang="ko">✅ 지갑 연결됨</span>
+                `;
+                
+                walletStatus.innerHTML = `
+                    <span data-lang="zh-CN">钱包地址：${mockAddress.substring(0, 10)}...${mockAddress.substring(mockAddress.length - 8)}</span>
+                    <span data-lang="en">Wallet Address: ${mockAddress.substring(0, 10)}...${mockAddress.substring(mockAddress.length - 8)}</span>
+                    <span data-lang="ja">ウォレットアドレス：${mockAddress.substring(0, 10)}...${mockAddress.substring(mockAddress.length - 8)}</span>
+                    <span data-lang="ko">지갑 주소: ${mockAddress.substring(0, 10)}...${mockAddress.substring(mockAddress.length - 8)}</span>
+                `;
+                walletStatus.classList.remove('hidden');
+                
+                // Store wallet info in localStorage
+                localStorage.setItem('walletAddress', mockAddress);
+                localStorage.setItem('walletConnected', 'true');
+                
+                // Wait a moment then redirect to form
+                setTimeout(() => {
+                    window.location.href = 'rwa_client_form.html';
+                }, 1500);
+                
+            } catch (error) {
+                console.error('Wallet connection failed:', error);
+                
+                // Reset button on error
+                const connectWalletBtn = document.getElementById('connectWalletBtn');
+                connectWalletBtn.innerHTML = `
+                    <span data-lang="zh-CN">❌ 连接失败，重试</span>
+                    <span data-lang="en">❌ Connection Failed, Retry</span>
+                    <span data-lang="ja">❌ 接続失敗、再試行</span>
+                    <span data-lang="ko">❌ 연결 실패, 재시도</span>
+                `;
+                connectWalletBtn.disabled = false;
+            }
+        }
+        
+        // Initialize wallet connection on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            initializeThirdweb();
+            
+            // Add click event to connect wallet button
+            const connectWalletBtn = document.getElementById('connectWalletBtn');
+            if (connectWalletBtn) {
+                connectWalletBtn.addEventListener('click', connectWallet);
+            }
+            
+            // Check if wallet is already connected
+            const isWalletConnected = localStorage.getItem('walletConnected');
+            const walletAddress = localStorage.getItem('walletAddress');
+            
+            if (isWalletConnected === 'true' && walletAddress) {
+                const walletStatus = document.getElementById('walletStatus');
+                connectWalletBtn.innerHTML = `
+                    <span data-lang="zh-CN">✅ 钱包已连接 - 进入表单</span>
+                    <span data-lang="en">✅ Wallet Connected - Enter Form</span>
+                    <span data-lang="ja">✅ ウォレット接続済み - フォームへ</span>
+                    <span data-lang="ko">✅ 지갑 연결됨 - 양식으로</span>
+                `;
+                
+                walletStatus.innerHTML = `
+                    <span data-lang="zh-CN">钱包地址：${walletAddress.substring(0, 10)}...${walletAddress.substring(walletAddress.length - 8)}</span>
+                    <span data-lang="en">Wallet Address: ${walletAddress.substring(0, 10)}...${walletAddress.substring(walletAddress.length - 8)}</span>
+                    <span data-lang="ja">ウォレットアドレス：${walletAddress.substring(0, 10)}...${walletAddress.substring(walletAddress.length - 8)}</span>
+                    <span data-lang="ko">지갑 주소: ${walletAddress.substring(0, 10)}...${walletAddress.substring(walletAddress.length - 8)}</span>
+                `;
+                walletStatus.classList.remove('hidden');
+                
+                // Change button behavior to direct navigation
+                connectWalletBtn.removeEventListener('click', connectWallet);
+                connectWalletBtn.addEventListener('click', () => {
+                    window.location.href = 'rwa_client_form.html';
+                });
+            }
+        });
 
     </script>
     <script src="https://analytics.dappweb.cn/api/script.js" data-site-id="2" defer></script>

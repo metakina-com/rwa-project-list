@@ -88,6 +88,9 @@ class RWAFormProcessor {
             
             // 代币权利设计
             tokenRights: this.getCheckedValues('tokenRights'),
+            
+            // 钱包信息
+            walletAddress: document.getElementById('walletAddress')?.value || '',
             nftTypes: this.getCheckedValues('nftTypes'),
             
             // 合规要求
@@ -167,8 +170,9 @@ class RWAFormProcessor {
                 type: formData.initiatorType,
                 companyName: formData.companyName,
                 contactPerson: formData.contactPerson,
-                contactPhone: formData.contactPhone,
-                contactEmail: formData.contactEmail
+            contactPhone: formData.contactPhone,
+            contactEmail: formData.contactEmail,
+            walletAddress: formData.walletAddress
             },
             
             financial: {

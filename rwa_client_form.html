@@ -49,6 +49,32 @@
             margin-bottom: 8px;
             font-weight: 700;
         }
+        
+        .wallet-status {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 10px 15px;
+            margin-top: 15px;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .wallet-status.connected {
+            background: rgba(34, 197, 94, 0.2);
+            border: 1px solid rgba(34, 197, 94, 0.3);
+        }
+        
+        .wallet-status.not-connected {
+            background: rgba(239, 68, 68, 0.2);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+        }
+        
+        .wallet-icon {
+            font-size: 1.1rem;
+        }
 
         .setup-header p {
             font-size: 1rem;
@@ -455,6 +481,10 @@
         <div class="setup-header">
             <h1>🚀 RWA项目设置向导</h1>
             <p>让我们一步步完成您的现实世界资产数字化项目配置</p>
+            <div id="walletStatusForm" class="wallet-status">
+                <span class="wallet-icon">🔗</span>
+                <span id="walletStatusText">检查钱包连接状态...</span>
+            </div>
         </div>
 
         <!-- 进度指示器 -->
@@ -1117,8 +1147,44 @@
             }
         }
         
+        // 检查钱包连接状态
+        function checkWalletStatus() {
+            const walletStatusForm = document.getElementById('walletStatusForm');
+            const walletStatusText = document.getElementById('walletStatusText');
+            const isWalletConnected = localStorage.getItem('walletConnected');
+            const walletAddress = localStorage.getItem('walletAddress');
+            
+            if (isWalletConnected === 'true' && walletAddress) {
+                walletStatusForm.classList.add('connected');
+                walletStatusForm.classList.remove('not-connected');
+                walletStatusText.textContent = `钱包已连接: ${walletAddress.substring(0, 8)}...${walletAddress.substring(walletAddress.length - 6)}`;
+                
+                // 在表单数据中添加钱包地址
+                const walletAddressInput = document.createElement('input');
+                walletAddressInput.type = 'hidden';
+                walletAddressInput.id = 'walletAddress';
+                walletAddressInput.name = 'walletAddress';
+                walletAddressInput.value = walletAddress;
+                document.getElementById('rwaSetupForm').appendChild(walletAddressInput);
+            } else {
+                walletStatusForm.classList.add('not-connected');
+                walletStatusForm.classList.remove('connected');
+                walletStatusText.textContent = '钱包未连接 - 建议先连接钱包';
+                
+                // 显示警告信息
+                setTimeout(() => {
+                    if (confirm('检测到您尚未连接钱包，是否返回首页连接钱包？')) {
+                        window.location.href = 'index.html';
+                    }
+                }, 2000);
+            }
+        }
+        
         // 初始化字段帮助提示
         document.addEventListener('DOMContentLoaded', function() {
+            // 检查钱包状态
+            checkWalletStatus();
+            
             // 为复杂字段添加帮助提示
             showFieldHelp('projectDescription', '请详细描述项目的商业模式、盈利方式、市场前景等，建议200字以上');
             showFieldHelp('assetDescription', '请描述资产的具体情况，包括地理位置、规模、现状、收益来源等关键信息');
