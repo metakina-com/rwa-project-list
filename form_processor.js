@@ -26,6 +26,18 @@ class RWAFormProcessor {
 
     // 处理表单提交
     async processFormSubmission() {
+        // 清除之前的验证状态
+        this.clearValidationStates();
+        
+        // 禁用提交按钮并显示加载状态
+        const submitButton = document.querySelector('button[type="submit"]');
+        if (submitButton) {
+            submitButton.disabled = true;
+            submitButton.classList.add('loading');
+            const originalText = submitButton.textContent;
+            submitButton.textContent = '处理中...';
+        }
+        
         try {
             // 显示处理中状态
             this.showProcessingStatus();
@@ -42,6 +54,9 @@ class RWAFormProcessor {
                 throw new Error('表单数据验证失败');
             }
             
+            // 模拟网络延迟，实际项目中可以删除
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            
             // 生成项目数据
             const projectData = await this.generateProjectData(formData);
             
@@ -51,6 +66,9 @@ class RWAFormProcessor {
             // 显示成功消息
             this.showSuccessMessage();
             
+            // 完成表单的当前步骤
+            this.markStepAsCompleted();
+            
             // 延迟跳转到资产管理界面
             setTimeout(() => {
                 this.redirectToAssetManagement(projectData.projectId);
@@ -59,6 +77,27 @@ class RWAFormProcessor {
         } catch (error) {
             console.error('表单处理失败:', error);
             this.showErrorMessage(error.message);
+            
+            // 滚动到错误消息位置
+            const errorElement = document.querySelector('.form-group.error');
+            if (errorElement) {
+                errorElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        } finally {
+            // 恢复提交按钮状态
+            if (submitButton) {
+                submitButton.disabled = false;
+                submitButton.classList.remove('loading');
+                submitButton.textContent = originalText || '提交';
+            }
+        }
+    }
+    
+    // 标记当前步骤为已完成
+    markStepAsCompleted() {
+        const activeStep = document.querySelector('.step.active');
+        if (activeStep) {
+            activeStep.classList.add('completed');
         }
     }
 
@@ -122,30 +161,100 @@ class RWAFormProcessor {
             'contactEmail', 'assetValue', 'operationPeriod'
         ];
         
+        const fieldNames = {
+            'projectName': '项目名称',
+            'assetType': '资产类型',
+            'projectType': '项目类型',
+            'assetLocation': '资产位置',
+            'initiatorType': '发起方类型',
+            'companyName': '公司名称',
+            'contactPerson': '联系人',
+            'contactPhone': '联系电话',
+            'contactEmail': '联系邮箱',
+            'assetValue': '资产价值',
+            'operationPeriod': '运营期限'
+        };
+        
+        // 验证必填字段
         for (const field of requiredFields) {
             if (!formData[field] || formData[field] === '') {
-                throw new Error(`必填字段 ${field} 不能为空`);
+                this.showFieldError(field, `${fieldNames[field]}不能为空`);
+                throw new Error(`${fieldNames[field]}不能为空`);
+            } else {
+                this.showFieldSuccess(field);
             }
         }
         
         // 验证邮箱格式
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailRegex.test(formData.contactEmail)) {
+            this.showFieldError('contactEmail', '邮箱格式不正确');
             throw new Error('邮箱格式不正确');
         }
         
         // 验证手机号格式
         const phoneRegex = /^1[3-9]\d{9}$/;
         if (!phoneRegex.test(formData.contactPhone)) {
+            this.showFieldError('contactPhone', '手机号格式不正确');
             throw new Error('手机号格式不正确');
         }
         
         // 验证资产价值
-        if (formData.assetValue <= 0) {
+        if (isNaN(formData.assetValue) || formData.assetValue <= 0) {
+            this.showFieldError('assetValue', '资产评估价值必须大于0');
             throw new Error('资产评估价值必须大于0');
         }
         
         return true;
+    }
+    
+    // 显示字段错误
+    showFieldError(fieldId, message) {
+        const field = document.getElementById(fieldId);
+        if (field) {
+            const formGroup = field.closest('.form-group');
+            if (formGroup) {
+                formGroup.classList.add('error');
+                formGroup.classList.remove('success');
+                
+                let errorElement = formGroup.querySelector('.error-message');
+                if (!errorElement) {
+                    errorElement = document.createElement('div');
+                    errorElement.className = 'error-message';
+                    formGroup.appendChild(errorElement);
+                }
+                errorElement.textContent = message;
+            }
+        }
+    }
+    
+    // 显示字段成功
+    showFieldSuccess(fieldId) {
+        const field = document.getElementById(fieldId);
+        if (field) {
+            const formGroup = field.closest('.form-group');
+            if (formGroup) {
+                formGroup.classList.add('success');
+                formGroup.classList.remove('error');
+                
+                const errorElement = formGroup.querySelector('.error-message');
+                if (errorElement) {
+                    errorElement.style.display = 'none';
+                }
+            }
+        }
+    }
+    
+    // 清除所有验证状态
+    clearValidationStates() {
+        const formGroups = document.querySelectorAll('.form-group');
+        formGroups.forEach(group => {
+            group.classList.remove('error', 'success');
+            const errorElement = group.querySelector('.error-message');
+            if (errorElement) {
+                errorElement.style.display = 'none';
+            }
+        });
     }
 
     // 生成项目数据

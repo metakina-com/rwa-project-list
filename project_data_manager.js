@@ -111,29 +111,100 @@ class ProjectDataManager {
 
     // 更新统计卡片
     updateStatCard(section, index, value) {
-        const panels = document.querySelectorAll('.panel');
-        panels.forEach(panel => {
-            const title = panel.querySelector('h2');
-            if (title && title.textContent.includes(section.split('管理')[0])) {
-                const statCards = panel.querySelectorAll('.stat-card h3');
-                if (statCards[index]) {
-                    statCards[index].textContent = value;
+        try {
+            const panels = document.querySelectorAll('.panel');
+            panels.forEach(panel => {
+                const title = panel.querySelector('h2');
+                if (title && title.textContent.includes(section.split('管理')[0])) {
+                    const statCards = panel.querySelectorAll('.stat-card h3');
+                    if (statCards[index]) {
+                        // 添加数字动画效果
+                        this.animateNumber(statCards[index], value);
+                    }
                 }
+            });
+        } catch (error) {
+            console.error('更新统计卡片失败:', error);
+        }
+    }
+    
+    // 数字动画效果
+    animateNumber(element, targetValue) {
+        const currentValue = element.textContent.replace(/[^\d.-]/g, '') || '0';
+        const current = parseFloat(currentValue);
+        const target = parseFloat(targetValue.toString().replace(/[^\d.-]/g, ''));
+        
+        if (isNaN(current) || isNaN(target)) {
+            element.textContent = targetValue;
+            return;
+        }
+        
+        const duration = 1000; // 1秒动画
+        const startTime = performance.now();
+        const difference = target - current;
+        
+        const animate = (currentTime) => {
+            const elapsed = currentTime - startTime;
+            const progress = Math.min(elapsed / duration, 1);
+            
+            // 使用缓动函数
+            const easeOutQuart = 1 - Math.pow(1 - progress, 4);
+            const currentNumber = current + (difference * easeOutQuart);
+            
+            // 保持原有格式
+            if (targetValue.toString().includes('¥')) {
+                element.textContent = `¥${currentNumber.toFixed(2)}`;
+            } else if (targetValue.toString().includes('%')) {
+                element.textContent = `${currentNumber.toFixed(1)}%`;
+            } else {
+                element.textContent = Math.round(currentNumber).toLocaleString();
             }
-        });
+            
+            if (progress < 1) {
+                requestAnimationFrame(animate);
+            } else {
+                element.textContent = targetValue;
+            }
+        };
+        
+        requestAnimationFrame(animate);
     }
 
     // 更新表格数据
     updateTables() {
-        if (!this.currentProject) return;
+        if (!this.currentProject) {
+            console.warn('没有项目数据，跳过表格更新');
+            return;
+        }
 
-        this.updateTokenIssuanceTable();
-        this.updateTokenHoldersTable();
-        this.updateNFTCollectionsDisplay();
-        this.updateNFTTransactionTable();
-        this.updateDocumentsTable();
-        this.updateValuationTable();
-        this.updateComplianceTable();
+        // 使用 requestAnimationFrame 优化性能
+        requestAnimationFrame(() => {
+            try {
+                this.updateTokenIssuanceTable();
+                this.updateTokenHoldersTable();
+            } catch (error) {
+                console.error('更新代币相关表格失败:', error);
+            }
+        });
+        
+        requestAnimationFrame(() => {
+            try {
+                this.updateNFTCollectionsDisplay();
+                this.updateNFTTransactionTable();
+            } catch (error) {
+                console.error('更新NFT相关表格失败:', error);
+            }
+        });
+        
+        requestAnimationFrame(() => {
+            try {
+                this.updateDocumentsTable();
+                this.updateValuationTable();
+                this.updateComplianceTable();
+            } catch (error) {
+                console.error('更新其他表格失败:', error);
+            }
+        });
     }
 
     // 更新代币发行记录表

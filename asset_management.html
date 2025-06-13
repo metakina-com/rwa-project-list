@@ -321,6 +321,368 @@
             transition: width 0.3s ease;
         }
 
+        /* 系统导航样式 */
+        .system-navigation {
+            margin: 25px 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 15px;
+            border: 1px solid #dee2e6;
+        }
+        
+        .system-navigation h3 {
+            color: #495057;
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 1.3rem;
+        }
+        
+        .nav-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+        
+        .nav-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+        
+        .nav-card:hover {
+            transform: translateY(-5px);
+            border-color: #007bff;
+            box-shadow: 0 8px 25px rgba(0,123,255,0.15);
+        }
+        
+        .nav-icon {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .nav-card h4 {
+            color: #2c3e50;
+            margin-bottom: 8px;
+            font-size: 1rem;
+        }
+        
+        .nav-card p {
+            color: #6c757d;
+            font-size: 0.85rem;
+            line-height: 1.4;
+        }
+        
+        /* 预言机数据面板样式 */
+        .oracle-panel {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+        }
+        
+        .oracle-panel h2 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.5rem;
+        }
+        
+        .oracle-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        
+        .oracle-card {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 12px;
+            padding: 20px;
+            border-left: 4px solid #17a2b8;
+        }
+        
+        .oracle-card h4 {
+            color: #495057;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .oracle-data {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .data-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid #dee2e6;
+        }
+        
+        .data-item:last-child {
+            border-bottom: none;
+        }
+        
+        .data-item .label {
+            font-weight: 600;
+            color: #495057;
+        }
+        
+        .data-item .value {
+            font-weight: 700;
+            color: #2c3e50;
+        }
+        
+        .data-item .change {
+            font-size: 0.85rem;
+            font-weight: 600;
+            padding: 2px 8px;
+            border-radius: 12px;
+        }
+        
+        .change.positive {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .change.negative {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        
+        /* AI智能分析面板样式 */
+        .ai-panel {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+        }
+        
+        .ai-panel h2 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.5rem;
+        }
+        
+        .ai-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 20px;
+        }
+        
+        .ai-card {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 12px;
+            padding: 20px;
+            border-left: 4px solid #6f42c1;
+        }
+        
+        .ai-card h4 {
+            color: #495057;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .ai-content {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .chart-placeholder {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 40px 20px;
+            border-radius: 8px;
+            text-align: center;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+        
+        .risk-meter {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            padding: 15px;
+            background: white;
+            border-radius: 8px;
+        }
+        
+        .risk-level {
+            padding: 8px 16px;
+            border-radius: 20px;
+            text-align: center;
+            font-weight: 600;
+        }
+        
+        .risk-level.low {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .risk-score {
+            text-align: center;
+            font-weight: 600;
+            color: #495057;
+        }
+        
+        .ai-insights {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+        }
+        
+        .ai-insights p {
+            margin-bottom: 8px;
+            line-height: 1.5;
+            color: #495057;
+        }
+        
+        .recommendations {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .recommendation {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            background: white;
+            border-radius: 8px;
+            border-left: 3px solid #28a745;
+        }
+        
+        .rec-icon {
+            font-size: 1.2rem;
+        }
+        
+        .rec-text {
+            color: #495057;
+            font-weight: 500;
+        }
+        
+        /* 通知样式 */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: white;
+            border-radius: 10px;
+            padding: 15px 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            z-index: 10000;
+            transform: translateX(400px);
+            opacity: 0;
+            transition: all 0.3s ease;
+            max-width: 350px;
+            border-left: 4px solid #007bff;
+        }
+        
+        .notification.show {
+            transform: translateX(0);
+            opacity: 1;
+        }
+        
+        .notification.success {
+            border-left-color: #28a745;
+        }
+        
+        .notification.error {
+            border-left-color: #dc3545;
+        }
+        
+        .notification i {
+            margin-right: 10px;
+            font-size: 1.1rem;
+        }
+        
+        .notification.success i {
+            color: #28a745;
+        }
+        
+        .notification.error i {
+            color: #dc3545;
+        }
+        
+        /* 高亮效果 */
+        .highlight {
+            animation: highlight 2s ease;
+        }
+        
+        @keyframes highlight {
+            0% { background: rgba(0, 123, 255, 0.1); }
+            50% { background: rgba(0, 123, 255, 0.2); }
+            100% { background: rgba(0, 123, 255, 0.1); }
+        }
+        
+        /* 改进的按钮样式 */
+        .action-button {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .action-button::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+        
+        .action-button:active::before {
+            width: 300px;
+            height: 300px;
+        }
+        
+        /* 改进的卡片悬停效果 */
+        .oracle-card,
+        .ai-card {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .oracle-card:hover,
+        .ai-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+        }
+        
+        @media (max-width: 1200px) {
+            .container {
+                max-width: 100%;
+                padding: 15px;
+            }
+            
+            .nav-grid {
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                gap: 15px;
+            }
+        }
+        
         @media (max-width: 768px) {
             .dashboard {
                 grid-template-columns: 1fr;
@@ -333,6 +695,82 @@
             .action-buttons {
                 flex-direction: column;
             }
+            
+            .nav-grid {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            }
+            
+            .oracle-grid,
+            .ai-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .project-info {
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                gap: 15px;
+            }
+            
+            .nav-card {
+                padding: 15px;
+            }
+            
+            .nav-card h4 {
+                font-size: 0.9rem;
+            }
+            
+            .nav-card p {
+                font-size: 0.8rem;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .panel {
+                padding: 20px;
+            }
+            
+            .notification {
+                right: 10px;
+                left: 10px;
+                max-width: none;
+                transform: translateY(-100px);
+            }
+            
+            .notification.show {
+                transform: translateY(0);
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .header {
+                padding: 20px;
+            }
+            
+            .project-info {
+                grid-template-columns: 1fr;
+            }
+            
+            .nav-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .action-button {
+                width: 100%;
+            }
         }
     </style>
 </head>
@@ -341,6 +779,54 @@
         <!-- 项目头部信息 -->
         <div class="header">
             <h1>🏢 智慧商业综合体RWA项目</h1>
+            
+            <!-- 系统入口导航 -->
+            <div class="system-navigation">
+                <h3>🚀 系统管理中心</h3>
+                <div class="nav-grid">
+                    <div class="nav-card" onclick="navigateToSystem('project')">
+                        <div class="nav-icon">📊</div>
+                        <h4>项目管理系统</h4>
+                        <p>项目进度、里程碑、团队管理</p>
+                    </div>
+                    <div class="nav-card" onclick="navigateToSystem('token')">
+                        <div class="nav-icon">🪙</div>
+                        <h4>代币管理系统</h4>
+                        <p>代币发行、流通、价格管理</p>
+                    </div>
+                    <div class="nav-card" onclick="navigateToSystem('nft')">
+                        <div class="nav-icon">🎨</div>
+                        <h4>NFT管理系统</h4>
+                        <p>NFT创建、销售、交易管理</p>
+                    </div>
+                    <div class="nav-card" onclick="navigateToSystem('data')">
+                        <div class="nav-icon">📋</div>
+                        <h4>资料管理系统</h4>
+                        <p>文档存储、版本控制、审核</p>
+                    </div>
+                    <div class="nav-card" onclick="navigateToSystem('compliance')">
+                        <div class="nav-icon">⚖️</div>
+                        <h4>合规性管理系统</h4>
+                        <p>法规遵循、风险评估、审计</p>
+                    </div>
+                    <div class="nav-card" onclick="navigateToSystem('market')">
+                        <div class="nav-icon">📈</div>
+                        <h4>一二级市场管理</h4>
+                        <p>发行市场、交易市场、流动性</p>
+                    </div>
+                    <div class="nav-card" onclick="navigateToSystem('oracle')">
+                        <div class="nav-icon">🔮</div>
+                        <h4>预言机数据集成</h4>
+                        <p>实时数据、价格feeds、外部API</p>
+                    </div>
+                    <div class="nav-card" onclick="navigateToSystem('ai')">
+                        <div class="nav-icon">🤖</div>
+                        <h4>AI智能模块</h4>
+                        <p>智能分析、风险预测、决策支持</p>
+                    </div>
+                </div>
+            </div>
+            
             <div class="project-info">
                 <div class="info-card">
                     <h3>项目状态</h3>
@@ -365,6 +851,123 @@
                 <div class="info-card">
                     <h3>持有人数量</h3>
                     <p>1,247人</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 预言机数据面板 -->
+        <div class="oracle-panel">
+            <h2>🔮 预言机数据中心</h2>
+            <div class="oracle-grid">
+                <div class="oracle-card">
+                    <h4>📊 市场数据</h4>
+                    <div class="oracle-data">
+                        <div class="data-item">
+                            <span class="label">ETH/USD:</span>
+                            <span class="value">$2,345.67</span>
+                            <span class="change positive">+2.34%</span>
+                        </div>
+                        <div class="data-item">
+                            <span class="label">BTC/USD:</span>
+                            <span class="value">$43,210.89</span>
+                            <span class="change negative">-1.23%</span>
+                        </div>
+                        <div class="data-item">
+                            <span class="label">房地产指数:</span>
+                            <span class="value">1,234.56</span>
+                            <span class="change positive">+0.89%</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="oracle-card">
+                    <h4>🏢 资产数据</h4>
+                    <div class="oracle-data">
+                        <div class="data-item">
+                            <span class="label">租金收入:</span>
+                            <span class="value">¥2,345,678</span>
+                            <span class="change positive">+5.67%</span>
+                        </div>
+                        <div class="data-item">
+                            <span class="label">入住率:</span>
+                            <span class="value">95.6%</span>
+                            <span class="change positive">+2.1%</span>
+                        </div>
+                        <div class="data-item">
+                            <span class="label">资产估值:</span>
+                            <span class="value">¥500,000,000</span>
+                            <span class="change positive">+3.45%</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="oracle-card">
+                    <h4>⚡ 实时状态</h4>
+                    <div class="oracle-data">
+                        <div class="data-item">
+                            <span class="label">数据更新:</span>
+                            <span class="value status-active">实时</span>
+                        </div>
+                        <div class="data-item">
+                            <span class="label">API状态:</span>
+                            <span class="value status-active">正常</span>
+                        </div>
+                        <div class="data-item">
+                            <span class="label">最后同步:</span>
+                            <span class="value">2分钟前</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- AI智能分析面板 -->
+        <div class="ai-panel">
+            <h2>🤖 AI智能分析中心</h2>
+            <div class="ai-grid">
+                <div class="ai-card">
+                    <h4>📈 收益预测</h4>
+                    <div class="ai-content">
+                        <div class="prediction-chart">
+                            <div class="chart-placeholder">📊 收益趋势图</div>
+                        </div>
+                        <div class="ai-insights">
+                            <p><strong>AI预测:</strong> 未来6个月预期收益率为8.7%</p>
+                            <p><strong>置信度:</strong> 87%</p>
+                            <p><strong>关键因素:</strong> 市场需求上升、租金增长</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="ai-card">
+                    <h4>⚠️ 风险评估</h4>
+                    <div class="ai-content">
+                        <div class="risk-meter">
+                            <div class="risk-level low">低风险</div>
+                            <div class="risk-score">风险评分: 2.3/10</div>
+                        </div>
+                        <div class="ai-insights">
+                            <p><strong>主要风险:</strong> 市场波动、政策变化</p>
+                            <p><strong>建议:</strong> 保持当前投资策略</p>
+                            <p><strong>监控指标:</strong> 入住率、租金水平</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="ai-card">
+                    <h4>💡 智能建议</h4>
+                    <div class="ai-content">
+                        <div class="recommendations">
+                            <div class="recommendation">
+                                <span class="rec-icon">💰</span>
+                                <span class="rec-text">建议增加代币流动性池</span>
+                            </div>
+                            <div class="recommendation">
+                                <span class="rec-icon">🎯</span>
+                                <span class="rec-text">优化NFT定价策略</span>
+                            </div>
+                            <div class="recommendation">
+                                <span class="rec-icon">📊</span>
+                                <span class="rec-text">扩大市场推广范围</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -2073,12 +2676,139 @@
             observer.observe(el);
         });
         
+        // System navigation functions
+        function navigateToSystem(systemType) {
+            // 这里可以根据实际需求跳转到不同的管理系统页面
+            switch(systemType) {
+                case 'project':
+                    // 跳转到项目管理系统
+                    window.location.href = 'project_management.html';
+                    break;
+                case 'token':
+                    // 跳转到代币管理系统
+                    window.location.href = 'token_management.html';
+                    break;
+                case 'nft':
+                    // 跳转到NFT管理系统
+                    window.location.href = 'nft_management.html';
+                    break;
+                case 'data':
+                    // 跳转到资料管理系统
+                    window.location.href = 'data_management.html';
+                    break;
+                case 'compliance':
+                    // 跳转到合规性管理系统
+                    window.location.href = 'compliance_management.html';
+                    break;
+                case 'market':
+                    // 跳转到一二级市场管理系统
+                    window.location.href = 'market_management.html';
+                    break;
+                case 'oracle':
+                    // 显示预言机数据详情
+                    showOracleDetails();
+                    break;
+                case 'ai':
+                    // 显示AI分析详情
+                    showAIAnalysis();
+                    break;
+                default:
+                    console.log('未知的系统类型:', systemType);
+            }
+        }
+        
+        // 显示预言机数据详情
+        function showOracleDetails() {
+            // 这里可以展开预言机数据面板或跳转到详细页面
+            const oraclePanel = document.getElementById('oracle-panel');
+            if (oraclePanel) {
+                oraclePanel.scrollIntoView({ behavior: 'smooth' });
+                oraclePanel.classList.add('highlight');
+                setTimeout(() => {
+                    oraclePanel.classList.remove('highlight');
+                }, 2000);
+            }
+        }
+        
+        // 显示AI分析详情
+        function showAIAnalysis() {
+            // 这里可以展开AI分析面板或跳转到详细页面
+            const aiPanel = document.getElementById('ai-panel');
+            if (aiPanel) {
+                aiPanel.scrollIntoView({ behavior: 'smooth' });
+                aiPanel.classList.add('highlight');
+                setTimeout(() => {
+                    aiPanel.classList.remove('highlight');
+                }, 2000);
+            }
+        }
+        
+        // 刷新预言机数据
+        function refreshOracleData() {
+            // 模拟数据刷新
+            const refreshBtn = event.target;
+            refreshBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 刷新中...';
+            refreshBtn.disabled = true;
+            
+            setTimeout(() => {
+                // 这里可以调用实际的API来获取最新数据
+                refreshBtn.innerHTML = '<i class="fas fa-sync-alt"></i> 刷新数据';
+                refreshBtn.disabled = false;
+                
+                // 显示成功提示
+                showNotification('预言机数据已更新', 'success');
+            }, 2000);
+        }
+        
+        // 生成AI报告
+        function generateAIReport() {
+            const generateBtn = event.target;
+            generateBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 生成中...';
+            generateBtn.disabled = true;
+            
+            setTimeout(() => {
+                generateBtn.innerHTML = '<i class="fas fa-chart-line"></i> 生成报告';
+                generateBtn.disabled = false;
+                
+                // 显示成功提示
+                showNotification('AI分析报告已生成', 'success');
+            }, 3000);
+        }
+        
+        // 显示通知
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.innerHTML = `
+                <i class="fas fa-${type === 'success' ? 'check-circle' : 'info-circle'}"></i>
+                <span>${message}</span>
+            `;
+            
+            document.body.appendChild(notification);
+            
+            // 显示动画
+            setTimeout(() => {
+                notification.classList.add('show');
+            }, 100);
+            
+            // 自动隐藏
+            setTimeout(() => {
+                notification.classList.remove('show');
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 300);
+            }, 3000);
+        }
+        
         // Initialize animations
         document.addEventListener('DOMContentLoaded', function() {
             // Add fade-in class to elements
             document.querySelectorAll('.stats-card, .info-card, .dashboard-panel').forEach(el => {
                 el.classList.add('fade-in');
             });
+            
+            // 系统导航卡片已经通过onclick属性绑定了点击事件
+             // 无需额外的事件监听器
         });
     </script>
 </body>
