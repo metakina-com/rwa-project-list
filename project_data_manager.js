@@ -5,6 +5,7 @@ class ProjectDataManager {
     constructor() {
         this.currentProject = null;
         this.projectId = null;
+        this.cachedElements = {};
         this.initializeManager();
     }
 
@@ -13,7 +14,37 @@ class ProjectDataManager {
         console.log('项目数据管理器已初始化');
         this.extractProjectId();
         this.loadProjectData();
+        this.cacheTableElements();
         this.bindEventListeners();
+    }
+
+    cacheTableElements() {
+        try {
+            this.cachedElements = {
+                tokenIssuanceTable: document.querySelector('#token-issue .data-table tbody'),
+                tokenHoldersTable: document.querySelector('#token-holders .data-table tbody'),
+                nftCollectionsContainer: document.querySelector('#nft-collections > div[style*="grid"]'),
+                nftTransactionTable: document.querySelector('#nft-marketplace .data-table tbody'),
+                documentsTable: document.querySelector('#project-documents .data-table tbody'),
+                valuationTable: document.querySelector('#project-valuation .data-table tbody'),
+                complianceTable: document.querySelector('#compliance-kyc .data-table tbody')
+            };
+        } catch (error) {
+            console.warn('Failed to cache some table elements:', error);
+            this.cachedElements = {};
+        }
+    }
+
+    getCachedElement(key, fallbackSelector) {
+        if (this.cachedElements[key] && document.contains(this.cachedElements[key])) {
+            return this.cachedElements[key];
+        }
+        
+        const element = document.querySelector(fallbackSelector);
+        if (element) {
+            this.cachedElements[key] = element;
+        }
+        return element;
     }
 
     // 从URL参数中提取项目ID
@@ -209,7 +240,7 @@ class ProjectDataManager {
 
     // 更新代币发行记录表
     updateTokenIssuanceTable() {
-        const table = document.querySelector('#token-issue .data-table tbody');
+        const table = this.getCachedElement('tokenIssuanceTable', '#token-issue .data-table tbody');
         if (!table) return;
 
         // 生成模拟发行记录
@@ -230,7 +261,7 @@ class ProjectDataManager {
 
     // 更新代币持有人表
     updateTokenHoldersTable() {
-        const table = document.querySelector('#token-holders .data-table tbody');
+        const table = this.getCachedElement('tokenHoldersTable', '#token-holders .data-table tbody');
         if (!table) return;
 
         // 生成模拟持有人数据
@@ -251,7 +282,7 @@ class ProjectDataManager {
 
     // 更新NFT系列显示
     updateNFTCollectionsDisplay() {
-        const container = document.querySelector('#nft-collections > div[style*="grid"]');
+        const container = this.getCachedElement('nftCollectionsContainer', '#nft-collections > div[style*="grid"]');
         if (!container || !this.currentProject.nft.collections) return;
 
         container.innerHTML = '';
@@ -276,7 +307,7 @@ class ProjectDataManager {
 
     // 更新NFT交易记录表
     updateNFTTransactionTable() {
-        const table = document.querySelector('#nft-marketplace .data-table tbody');
+        const table = this.getCachedElement('nftTransactionTable', '#nft-marketplace .data-table tbody');
         if (!table) return;
 
         // 生成模拟交易记录
@@ -298,7 +329,7 @@ class ProjectDataManager {
 
     // 更新文档表
     updateDocumentsTable() {
-        const table = document.querySelector('#project-documents .data-table tbody');
+        const table = this.getCachedElement('documentsTable', '#project-documents .data-table tbody');
         if (!table) return;
 
         // 生成文档记录
@@ -320,7 +351,7 @@ class ProjectDataManager {
 
     // 更新估值表
     updateValuationTable() {
-        const table = document.querySelector('#project-valuation .data-table tbody');
+        const table = this.getCachedElement('valuationTable', '#project-valuation .data-table tbody');
         if (!table) return;
 
         // 生成估值记录
@@ -342,7 +373,7 @@ class ProjectDataManager {
 
     // 更新合规表
     updateComplianceTable() {
-        const table = document.querySelector('#compliance-kyc .data-table tbody');
+        const table = this.getCachedElement('complianceTable', '#compliance-kyc .data-table tbody');
         if (!table) return;
 
         // 生成合规记录
