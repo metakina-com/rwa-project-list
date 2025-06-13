@@ -3,14 +3,121 @@
 
 class ProjectDataManager {
     constructor() {
+        this.projectId = this.getProjectIdFromUrl() || this.getProjectIdFromStorage();
+        this.projectData = null;
         this.currentProject = null;
-        this.projectId = null;
+        this.init();
+    }
+    
+    // 加载所有项目
+    loadAllProjects() {
+        const projectList = JSON.parse(localStorage.getItem('projectList') || '[]');
+        return projectList;
+    }
+    
+    // 渲染项目列表
+    renderProjectsList() {
+        const projects = this.loadAllProjects();
+        const projectsGrid = document.getElementById('projects-grid');
+        const emptyState = document.getElementById('empty-state');
+        
+        if (!projectsGrid) return;
+        
+        if (projects.length === 0) {
+            projectsGrid.style.display = 'none';
+            if (emptyState) emptyState.style.display = 'block';
+            return;
+        }
+        
+        if (emptyState) emptyState.style.display = 'none';
+        projectsGrid.style.display = 'flex';
+        
+        projectsGrid.innerHTML = projects.map((project, index) => {
+            const createdDate = new Date(project.createdAt).toLocaleDateString('zh-CN');
+            const statusClass = this.getStatusClass(project.status);
+            const statusText = this.getStatusDisplay(project.status);
+            const isSelected = this.projectId === project.id;
+            
+            return `
+                <div class="project-card ${isSelected ? 'selected' : ''}" onclick="window.projectManager.selectProject('${project.id}')">
+                    <h3>
+                        🏢 ${project.name.length > 12 ? project.name.substring(0, 12) + '...' : project.name}
+                        <span class="status-badge ${statusClass}">${statusText}</span>
+                    </h3>
+                    <div class="project-meta">
+                        <div class="meta-item">
+                            <span class="meta-label">项目ID</span>
+                            <span class="meta-value">${project.id.substring(0, 8)}...</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-label">创建时间</span>
+                            <span class="meta-value">${createdDate}</span>
+                        </div>
+                    </div>
+                    <div class="project-actions">
+                        <button class="action-button btn-small" onclick="event.stopPropagation(); window.open('project_detail.html?projectId=${project.id}', '_blank')">
+                            📊 详情
+                        </button>
+                        <button class="action-button secondary btn-small" onclick="event.stopPropagation(); window.projectManager.selectProject('${project.id}')">
+                            🎯 管理
+                        </button>
+                    </div>
+                </div>
+            `;
+        }).join('');
+    }
+    
+    // 选择项目
+    selectProject(projectId) {
+        this.projectId = projectId;
+        localStorage.setItem('currentProjectId', projectId);
+        this.loadProjectData();
+        this.updateProjectDisplay();
+        this.renderProjectsList(); // 重新渲染项目列表以显示选中状态
+        
+        // 滚动到项目信息区域
+        const projectInfoSection = document.querySelector('.project-info');
+        if (projectInfoSection) {
+            projectInfoSection.scrollIntoView({ behavior: 'smooth' });
+        }
+    }
+    
+    // 获取状态样式类
+    getStatusClass(status) {
+        const statusMap = {
+            'draft': 'status-draft',
+            'pending': 'status-pending', 
+            'active': 'status-active',
+            'completed': 'status-completed',
+            'suspended': 'status-suspended'
+        };
+        return statusMap[status] || 'status-draft';
+    }
+    
+    // 从URL获取项目ID
+    getProjectIdFromUrl() {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get('projectId');
+    }
+    
+    // 从存储获取项目ID
+    getProjectIdFromStorage() {
+        const projectList = JSON.parse(localStorage.getItem('rwa_project_list') || '[]');
+        if (projectList.length > 0) {
+            return projectList[projectList.length - 1].projectId;
+        }
+        return null;
+    }
+    
+    // 初始化方法
+    init() {
         this.initializeManager();
     }
 
     // 初始化管理器
     initializeManager() {
         console.log('项目数据管理器已初始化');
+        this.renderProjectsList(); // 首先渲染项目列表
         this.extractProjectId();
         this.loadProjectData();
         this.bindEventListeners();
