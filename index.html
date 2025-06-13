@@ -1669,12 +1669,48 @@
                 `;
                 connectWalletBtn.disabled = true;
                 
-                // For demo purposes, simulate wallet connection
-                // In production, you would use actual thirdweb wallet connection
-                await new Promise(resolve => setTimeout(resolve, 2000));
+                let walletAddress;
                 
-                // Simulate successful connection
-                const mockAddress = '0x' + Math.random().toString(16).substr(2, 40);
+                // Try to connect with MetaMask if available
+                if (typeof window.ethereum !== 'undefined') {
+                    try {
+                        // Request account access
+                        const accounts = await window.ethereum.request({
+                            method: 'eth_requestAccounts'
+                        });
+                        
+                        if (accounts.length > 0) {
+                            walletAddress = accounts[0];
+                            console.log('Connected to MetaMask:', walletAddress);
+                            
+                            // Listen for account changes
+                            window.ethereum.on('accountsChanged', (accounts) => {
+                                if (accounts.length === 0) {
+                                    // User disconnected wallet
+                                    localStorage.removeItem('walletAddress');
+                                    localStorage.removeItem('walletConnected');
+                                    location.reload();
+                                } else {
+                                    // User switched accounts
+                                    localStorage.setItem('walletAddress', accounts[0]);
+                                    location.reload();
+                                }
+                            });
+                        }
+                    } catch (metamaskError) {
+                        console.error('MetaMask connection failed:', metamaskError);
+                        if (metamaskError.code === 4001) {
+                            // User rejected the request
+                            throw new Error('用户拒绝了连接请求');
+                        }
+                        throw metamaskError;
+                    }
+                } else {
+                    // Fallback: simulate wallet connection for demo
+                    await new Promise(resolve => setTimeout(resolve, 2000));
+                    walletAddress = '0x' + Math.random().toString(16).substr(2, 40);
+                    console.log('Using simulated wallet address (MetaMask not detected):', walletAddress);
+                }
                 
                 // Update UI to show connected state
                 connectWalletBtn.innerHTML = `
@@ -1684,16 +1720,17 @@
                     <span data-lang="ko">✅ 지갑 연결됨</span>
                 `;
                 
+                const truncatedAddress = `${walletAddress.substring(0, 10)}...${walletAddress.substring(walletAddress.length - 8)}`;
                 walletStatus.innerHTML = `
-                    <span data-lang="zh-CN">钱包地址：${mockAddress.substring(0, 10)}...${mockAddress.substring(mockAddress.length - 8)}</span>
-                    <span data-lang="en">Wallet Address: ${mockAddress.substring(0, 10)}...${mockAddress.substring(mockAddress.length - 8)}</span>
-                    <span data-lang="ja">ウォレットアドレス：${mockAddress.substring(0, 10)}...${mockAddress.substring(mockAddress.length - 8)}</span>
-                    <span data-lang="ko">지갑 주소: ${mockAddress.substring(0, 10)}...${mockAddress.substring(mockAddress.length - 8)}</span>
+                    <span data-lang="zh-CN">钱包地址：${truncatedAddress}</span>
+                    <span data-lang="en">Wallet Address: ${truncatedAddress}</span>
+                    <span data-lang="ja">ウォレットアドレス：${truncatedAddress}</span>
+                    <span data-lang="ko">지갑 주소: ${truncatedAddress}</span>
                 `;
                 walletStatus.classList.remove('hidden');
                 
                 // Store wallet info in localStorage
-                localStorage.setItem('walletAddress', mockAddress);
+                localStorage.setItem('walletAddress', walletAddress);
                 localStorage.setItem('walletConnected', 'true');
                 
                 // Wait a moment then redirect to form
@@ -1706,8 +1743,13 @@
                 
                 // Reset button on error
                 const connectWalletBtn = document.getElementById('connectWalletBtn');
+                let errorMessage = '连接失败，重试';
+                if (error.message.includes('用户拒绝')) {
+                    errorMessage = '用户取消连接';
+                }
+                
                 connectWalletBtn.innerHTML = `
-                    <span data-lang="zh-CN">❌ 连接失败，重试</span>
+                    <span data-lang="zh-CN">❌ ${errorMessage}</span>
                     <span data-lang="en">❌ Connection Failed, Retry</span>
                     <span data-lang="ja">❌ 接続失敗、再試行</span>
                     <span data-lang="ko">❌ 연결 실패, 재시도</span>
@@ -1716,9 +1758,34 @@
             }
         }
         
+        // Check MetaMask installation status
+        function checkMetaMaskStatus() {
+            const connectWalletBtn = document.getElementById('connectWalletBtn');
+            const walletStatus = document.getElementById('walletStatus');
+            
+            if (typeof window.ethereum === 'undefined') {
+                // MetaMask not installed, show install prompt
+                walletStatus.innerHTML = `
+                    <span data-lang="zh-CN">⚠️ 未检测到MetaMask，将使用模拟钱包进行演示</span>
+                    <span data-lang="en">⚠️ MetaMask not detected, using simulated wallet for demo</span>
+                    <span data-lang="ja">⚠️ MetaMaskが検出されません、デモ用のシミュレートウォレットを使用</span>
+                    <span data-lang="ko">⚠️ MetaMask가 감지되지 않음, 데모용 시뮬레이션 지갑 사용</span>
+                `;
+                walletStatus.classList.remove('hidden');
+                
+                connectWalletBtn.innerHTML = `
+                    <span data-lang="zh-CN">🔗 连接钱包申请账户 (演示模式)</span>
+                    <span data-lang="en">🔗 Connect Wallet to Apply (Demo Mode)</span>
+                    <span data-lang="ja">🔗 ウォレット接続して申請 (デモモード)</span>
+                    <span data-lang="ko">🔗 지갑 연결하여 신청 (데모 모드)</span>
+                `;
+            }
+        }
+        
         // Initialize wallet connection on page load
         document.addEventListener('DOMContentLoaded', () => {
             initializeThirdweb();
+            checkMetaMaskStatus();
             
             // Add click event to connect wallet button
             const connectWalletBtn = document.getElementById('connectWalletBtn');
@@ -1739,11 +1806,12 @@
                     <span data-lang="ko">✅ 지갑 연결됨 - 양식으로</span>
                 `;
                 
+                const truncatedAddress = `${walletAddress.substring(0, 10)}...${walletAddress.substring(walletAddress.length - 8)}`;
                 walletStatus.innerHTML = `
-                    <span data-lang="zh-CN">钱包地址：${walletAddress.substring(0, 10)}...${walletAddress.substring(walletAddress.length - 8)}</span>
-                    <span data-lang="en">Wallet Address: ${walletAddress.substring(0, 10)}...${walletAddress.substring(walletAddress.length - 8)}</span>
-                    <span data-lang="ja">ウォレットアドレス：${walletAddress.substring(0, 10)}...${walletAddress.substring(walletAddress.length - 8)}</span>
-                    <span data-lang="ko">지갑 주소: ${walletAddress.substring(0, 10)}...${walletAddress.substring(walletAddress.length - 8)}</span>
+                    <span data-lang="zh-CN">钱包地址：${truncatedAddress}</span>
+                    <span data-lang="en">Wallet Address: ${truncatedAddress}</span>
+                    <span data-lang="ja">ウォレットアドレス：${truncatedAddress}</span>
+                    <span data-lang="ko">지갑 주소: ${truncatedAddress}</span>
                 `;
                 walletStatus.classList.remove('hidden');
                 
