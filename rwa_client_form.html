@@ -33,21 +33,66 @@
             padding: 30px;
             text-align: center;
             position: relative;
+            overflow: hidden;
+        }
+        
+        .setup-header::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            animation: headerShimmer 3s infinite;
+        }
+        
+        @keyframes headerShimmer {
+            0% { left: -100%; }
+            100% { left: 100%; }
         }
 
         .setup-header::before {
-            content: "元话RWA";
+            content: "🏢 元话RWA";
             position: absolute;
             top: 15px;
             right: 25px;
             font-size: 12px;
             opacity: 0.7;
+            z-index: 1;
         }
 
         .setup-header h1 {
             font-size: 2.2rem;
             margin-bottom: 8px;
             font-weight: 700;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .breadcrumb {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 10px 20px;
+            border-radius: 25px;
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .breadcrumb a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .breadcrumb a:hover {
+            color: white;
+        }
+        
+        .breadcrumb span {
+            margin: 0 8px;
+            opacity: 0.6;
         }
         
         .wallet-status {
@@ -1657,13 +1702,14 @@
         
         // 显示字段错误
         function showFieldError(field, message) {
+            field.classList.remove('success');
             field.classList.add('error');
             
-            // 移除已存在的错误消息
+            // 移除已存在的错误消息和成功图标
             const existingError = field.parentNode.querySelector('.error-message');
-            if (existingError) {
-                existingError.remove();
-            }
+            const existingSuccess = field.parentNode.querySelector('.field-success-icon');
+            if (existingError) existingError.remove();
+            if (existingSuccess) existingSuccess.remove();
             
             // 添加新的错误消息
             const errorDiv = document.createElement('div');
@@ -1673,12 +1719,41 @@
             field.parentNode.appendChild(errorDiv);
         }
         
+        // 显示字段成功状态
+        function showFieldSuccess(field) {
+            field.classList.remove('error');
+            field.classList.add('success');
+            
+            // 移除错误消息
+            const existingError = field.parentNode.querySelector('.error-message');
+            if (existingError) existingError.remove();
+            
+            // 添加成功图标
+            const existingSuccess = field.parentNode.querySelector('.field-success-icon');
+            if (!existingSuccess && field.parentNode.style.position !== 'relative') {
+                field.parentNode.style.position = 'relative';
+                const successIcon = document.createElement('span');
+                successIcon.className = 'field-success-icon';
+                successIcon.innerHTML = '✓';
+                field.parentNode.appendChild(successIcon);
+            }
+        }
+        
         // 清除字段错误
         function clearFieldError(field) {
             field.classList.remove('error');
             const errorMessage = field.parentNode.querySelector('.error-message');
             if (errorMessage) {
                 errorMessage.remove();
+            }
+            
+            // 如果字段有值，显示成功状态
+            if (field.value.trim()) {
+                showFieldSuccess(field);
+            } else {
+                field.classList.remove('success');
+                const successIcon = field.parentNode.querySelector('.field-success-icon');
+                if (successIcon) successIcon.remove();
             }
         }
         
@@ -1746,11 +1821,7 @@
             const allInputs = document.querySelectorAll('input, select, textarea');
             allInputs.forEach(input => {
                 input.addEventListener('blur', function() {
-                    if (this.hasAttribute('required') && !this.value.trim()) {
-                        showFieldError(this, '此字段为必填项');
-                    } else {
-                        clearFieldError(this);
-                    }
+                    validateField(this);
                 });
                 
                 input.addEventListener('input', function() {
@@ -1758,7 +1829,60 @@
                         clearFieldError(this);
                     }
                 });
+                
+                // 添加焦点效果
+                input.addEventListener('focus', function() {
+                    this.parentNode.classList.add('focused');
+                });
+                
+                input.addEventListener('blur', function() {
+                    this.parentNode.classList.remove('focused');
+                });
             });
+            
+            // 字段验证函数
+            function validateField(field) {
+                const value = field.value.trim();
+                const fieldType = field.type;
+                const fieldName = field.name || field.id;
+                
+                if (field.hasAttribute('required') && !value) {
+                    showFieldError(field, '此字段为必填项');
+                    return false;
+                }
+                
+                if (value) {
+                    // 邮箱验证
+                    if (fieldType === 'email' || fieldName.includes('email')) {
+                        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                        if (!emailRegex.test(value)) {
+                            showFieldError(field, '请输入有效的邮箱地址');
+                            return false;
+                        }
+                    }
+                    
+                    // 电话验证
+                    if (fieldType === 'tel' || fieldName.includes('phone') || fieldName.includes('tel')) {
+                        const phoneRegex = /^[\d\s\-\+\(\)]{10,}$/;
+                        if (!phoneRegex.test(value)) {
+                            showFieldError(field, '请输入有效的电话号码');
+                            return false;
+                        }
+                    }
+                    
+                    // 数字验证
+                    if (fieldType === 'number') {
+                        if (isNaN(value) || value <= 0) {
+                            showFieldError(field, '请输入有效的数字');
+                            return false;
+                        }
+                    }
+                    
+                    showFieldSuccess(field);
+                }
+                
+                return true;
+            }
         });
     </script>
 </body>

@@ -606,42 +606,147 @@ class ProjectDataManager {
 
     // 显示错误消息
     createDemoProject() {
-        const demoProject = {
-            projectId: this.projectId,
-            basicInfo: {
-                name: "智慧城市基础设施RWA项目",
-                status: "active",
-                description: "基于区块链技术的智慧城市基础设施资产数字化项目",
-                createdAt: new Date().toISOString()
-            },
-            financial: {
-                assetValue: 50000000,
-                annualReturn: 8.5,
-                totalInvestment: 45000000,
-                currentValue: 52000000
-            },
-            tokenomics: {
-                tokenSymbol: "SCIT",
-                totalSupply: 1000000,
-                circulatingSupply: 850000,
-                tokenPrice: 50.0
-            },
-            nft: {
-                totalSupply: 500,
-                collections: [
-                    { name: "基础设施权益NFT", count: 200, floor: 5000 },
-                    { name: "收益分配NFT", count: 300, floor: 3000 }
-                ]
+        const demoProjects = [
+            {
+                projectId: this.projectId,
+                basicInfo: {
+                    name: "智慧城市基础设施RWA项目",
+                    status: "active",
+                    description: "基于区块链技术的智慧城市基础设施资产数字化项目",
+                    createdAt: new Date().toISOString(),
+                    location: "上海市浦东新区",
+                    category: "基础设施",
+                    totalArea: "50,000平方米"
+                },
+                financial: {
+                    assetValue: 500000000,
+                    annualReturn: 8.5,
+                    totalInvestment: 450000000,
+                    currentValue: 520000000,
+                    monthlyRevenue: 3500000,
+                    operatingCosts: 1200000,
+                    netIncome: 2300000,
+                    roi: 12.5,
+                    irr: 15.2
+                },
+                tokenomics: {
+                    tokenSymbol: "SCIT",
+                    tokenName: "Smart City Infrastructure Token",
+                    totalSupply: 10000000,
+                    circulatingSupply: 8500000,
+                    tokenPrice: 52.0,
+                    marketCap: 442000000,
+                    holders: 1247,
+                    tradingVolume24h: 2500000
+                },
+                nft: {
+                    totalSupply: 500,
+                    minted: 485,
+                    collections: [
+                        { 
+                            name: "基础设施权益NFT", 
+                            count: 200, 
+                            floor: 5000, 
+                            volume: 1200000,
+                            owners: 156
+                        },
+                        { 
+                            name: "收益分配NFT", 
+                            count: 300, 
+                            floor: 3000,
+                            volume: 850000,
+                            owners: 234
+                        }
+                    ]
+                },
+                performance: {
+                    occupancyRate: 95.5,
+                    averageRent: 180,
+                    tenantSatisfaction: 4.7,
+                    maintenanceScore: 92,
+                    energyEfficiency: 88,
+                    sustainabilityRating: "A+"
+                },
+                transactions: this.generateTransactionHistory(),
+                compliance: {
+                    status: "合规",
+                    lastAudit: "2024-05-15",
+                    nextAudit: "2024-11-15",
+                    certifications: ["ISO 14001", "LEED Gold", "SOC 2"],
+                    riskLevel: "低风险"
+                },
+                ai: {
+                    predictedReturn: 9.2,
+                    riskScore: 2.1,
+                    marketSentiment: "积极",
+                    recommendations: [
+                        "建议增加可再生能源投资",
+                        "优化租户组合以提高收益",
+                        "考虑扩展智能化设施"
+                    ]
+                }
             }
-        };
+        ];
         
-        localStorage.setItem(`rwa_project_${this.projectId}`, JSON.stringify(demoProject));
+        const selectedProject = demoProjects[0];
+        localStorage.setItem(`rwa_project_${this.projectId}`, JSON.stringify(selectedProject));
         
         const projectList = JSON.parse(localStorage.getItem('rwa_project_list') || '[]');
-        projectList.push({ projectId: this.projectId, name: demoProject.basicInfo.name });
-        localStorage.setItem('rwa_project_list', JSON.stringify(projectList));
+        const existingProject = projectList.find(p => p.projectId === this.projectId);
+        if (!existingProject) {
+            projectList.push({ 
+                projectId: this.projectId, 
+                name: selectedProject.basicInfo.name,
+                status: selectedProject.basicInfo.status,
+                createdAt: selectedProject.basicInfo.createdAt
+            });
+            localStorage.setItem('rwa_project_list', JSON.stringify(projectList));
+        }
         
-        console.log('演示项目数据已创建:', demoProject);
+        console.log('演示项目数据已创建:', selectedProject);
+    }
+    
+    generateTransactionHistory() {
+        const transactions = [];
+        const now = new Date();
+        
+        for (let i = 0; i < 50; i++) {
+            const date = new Date(now.getTime() - (i * 24 * 60 * 60 * 1000));
+            const types = ['租金收入', '维护费用', '代币交易', 'NFT销售', '管理费用'];
+            const type = types[Math.floor(Math.random() * types.length)];
+            
+            let amount = 0;
+            let direction = '';
+            
+            switch(type) {
+                case '租金收入':
+                    amount = Math.random() * 50000 + 10000;
+                    direction = 'in';
+                    break;
+                case '维护费用':
+                case '管理费用':
+                    amount = Math.random() * 20000 + 5000;
+                    direction = 'out';
+                    break;
+                case '代币交易':
+                case 'NFT销售':
+                    amount = Math.random() * 100000 + 20000;
+                    direction = Math.random() > 0.5 ? 'in' : 'out';
+                    break;
+            }
+            
+            transactions.push({
+                id: `tx_${Date.now()}_${i}`,
+                date: date.toISOString(),
+                type: type,
+                amount: Math.round(amount),
+                direction: direction,
+                description: `${type} - ${date.toLocaleDateString('zh-CN')}`,
+                status: 'completed'
+            });
+        }
+        
+        return transactions.sort((a, b) => new Date(b.date) - new Date(a.date));
     }
 
     showErrorMessage(message) {

@@ -35,6 +35,27 @@
             margin-bottom: 25px;
             box-shadow: 0 8px 32px rgba(0,0,0,0.1);
         }
+        
+        .breadcrumb-nav {
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+            color: #6b7280;
+        }
+        
+        .breadcrumb-nav a {
+            color: #4f46e5;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .breadcrumb-nav a:hover {
+            color: #3730a3;
+        }
+        
+        .breadcrumb-nav span {
+            margin: 0 8px;
+            opacity: 0.6;
+        }
 
         .header h1 {
             color: #2c3e50;
@@ -893,7 +914,14 @@
     <div class="container">
         <!-- 项目头部信息 -->
         <div class="header">
-            <h1>🏢 智慧商业综合体RWA项目</h1>
+            <div class="breadcrumb-nav">
+                <a href="index.html">🏠 首页</a>
+                <span>></span>
+                <a href="rwa_client_form.html">项目申请</a>
+                <span>></span>
+                <span>资产管理</span>
+            </div>
+            <h1 id="projectTitle">🏢 智慧商业综合体RWA项目</h1>
             
             <!-- 系统入口导航 -->
             <div class="system-navigation">

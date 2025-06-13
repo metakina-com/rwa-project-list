@@ -20,6 +20,44 @@
             color: #333;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        body.loading {
+            overflow: hidden;
+        }
+        
+        .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease;
+        }
+        
+        .loading-screen.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+        
+        .loading-spinner {
+            width: 60px;
+            height: 60px;
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-top: 4px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
         
         .container {
@@ -46,6 +84,23 @@
             justify-content: space-between;
             align-items: center;
             padding: 1rem 0;
+        }
+        
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .nav-link-secondary {
+            color: #6b7280;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+        
+        .nav-link-secondary:hover {
+            color: #4f46e5;
         }
         
         .logo {
@@ -119,6 +174,23 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
+            animation: fadeInUp 1s ease 0.5s both;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes countUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
         
         .hero p {
@@ -502,18 +574,26 @@
     </style>
 </head>
 <body>
+    <!-- Loading Screen -->
+    <div class="loading-screen" id="loadingScreen">
+        <div class="loading-spinner"></div>
+    </div>
+
     <!-- Header -->
     <header class="header">
         <div class="container">
             <nav class="nav">
-                <a href="#" class="logo">元话RWA</a>
+                <a href="#" class="logo">🏢 元话RWA</a>
                 <ul class="nav-links">
                     <li><a href="#features">产品特色</a></li>
-                    <li><a href="#solutions">解决方案</a></li>
-                    <li><a href="#about">关于我们</a></li>
+                    <li><a href="#stats">数据统计</a></li>
+                    <li><a href="#testimonials">客户案例</a></li>
                     <li><a href="#contact">联系我们</a></li>
                 </ul>
-                <a href="rwa_client_form.html" class="cta-button">立即申请</a>
+                <div class="nav-actions">
+                    <a href="asset_management.html" class="nav-link-secondary">资产管理</a>
+                    <a href="rwa_client_form.html" class="cta-button">立即申请</a>
+                </div>
                 <button class="mobile-menu-btn">
                     <i class="fas fa-bars"></i>
                 </button>
@@ -571,24 +651,74 @@
     </section>
 
     <!-- Stats Section -->
-    <section class="stats">
+    <section id="stats" class="stats">
         <div class="container">
+            <h2 class="section-title fade-in" style="color: white; text-align: center; margin-bottom: 3rem;">平台数据概览</h2>
             <div class="stats-grid">
-                <div class="stat-item fade-in">
-                    <h3>$2.5B+</h3>
+                <div class="stat-item fade-in" data-target="2500000000" data-prefix="$" data-suffix="+" data-duration="2000">
+                    <h3 class="stat-number">$0</h3>
                     <p>管理资产规模</p>
+                    <small style="opacity: 0.7;">累计管理资产总值</small>
                 </div>
-                <div class="stat-item fade-in">
-                    <h3>500+</h3>
+                <div class="stat-item fade-in" data-target="500" data-suffix="+" data-duration="1500">
+                    <h3 class="stat-number">0</h3>
                     <p>合作伙伴</p>
+                    <small style="opacity: 0.7;">全球战略合作机构</small>
                 </div>
-                <div class="stat-item fade-in">
-                    <h3>50+</h3>
+                <div class="stat-item fade-in" data-target="50" data-suffix="+" data-duration="1800">
+                    <h3 class="stat-number">0</h3>
                     <p>成功项目</p>
+                    <small style="opacity: 0.7;">已完成RWA项目</small>
                 </div>
-                <div class="stat-item fade-in">
-                    <h3>99.9%</h3>
+                <div class="stat-item fade-in" data-target="99.9" data-suffix="%" data-duration="2200">
+                    <h3 class="stat-number">0</h3>
                     <p>系统稳定性</p>
+                    <small style="opacity: 0.7;">平台运行可靠性</small>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section id="testimonials" class="testimonials">
+        <div class="container">
+            <h2 class="section-title fade-in">客户成功案例</h2>
+            <div class="testimonials-grid">
+                <div class="testimonial-card fade-in">
+                    <div class="testimonial-content">
+                        <p>"通过元话RWA平台，我们成功将价值5000万的商业地产进行了数字化，流动性提升了300%，为投资者创造了稳定的收益。"</p>
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">🏢</div>
+                        <div class="author-info">
+                            <h4>张总</h4>
+                            <p>上海商业地产集团 CEO</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card fade-in">
+                    <div class="testimonial-content">
+                        <p>"AI驱动的风险评估系统帮助我们精准识别投资机会，投资回报率较传统方式提升了40%，合规性也得到了充分保障。"</p>
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">💼</div>
+                        <div class="author-info">
+                            <h4>李总</h4>
+                            <p>深圳投资基金 投资总监</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card fade-in">
+                    <div class="testimonial-content">
+                        <p>"从项目申请到资产管理，整个流程非常顺畅。专业的团队支持和先进的技术平台让我们的基础设施项目快速实现了数字化转型。"</p>
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">🚀</div>
+                        <div class="author-info">
+                            <h4>王总</h4>
+                            <p>智慧城市建设公司 项目经理</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -731,9 +861,77 @@
         
         images.forEach(img => imageObserver.observe(img));
         
-        // Add loading animation
+        // Loading screen management
         window.addEventListener('load', () => {
-            document.body.classList.add('loaded');
+            setTimeout(() => {
+                const loadingScreen = document.getElementById('loadingScreen');
+                if (loadingScreen) {
+                    loadingScreen.classList.add('hidden');
+                    setTimeout(() => {
+                        loadingScreen.remove();
+                        document.body.classList.remove('loading');
+                    }, 500);
+                }
+            }, 1000);
+        });
+
+        // Animated counter for statistics
+        function animateCounter(element, target, duration, prefix = '', suffix = '') {
+            let start = 0;
+            const increment = target / (duration / 16);
+            
+            function updateCounter() {
+                start += increment;
+                if (start < target) {
+                    let displayValue = Math.floor(start);
+                    if (target >= 1000000000) {
+                        displayValue = (displayValue / 1000000000).toFixed(1) + 'B';
+                    } else if (target >= 1000000) {
+                        displayValue = (displayValue / 1000000).toFixed(1) + 'M';
+                    } else if (target >= 1000) {
+                        displayValue = (displayValue / 1000).toFixed(1) + 'K';
+                    }
+                    element.textContent = prefix + displayValue + suffix;
+                    requestAnimationFrame(updateCounter);
+                } else {
+                    let finalValue = target;
+                    if (target >= 1000000000) {
+                        finalValue = (target / 1000000000).toFixed(1) + 'B';
+                    } else if (target >= 1000000) {
+                        finalValue = (target / 1000000).toFixed(1) + 'M';
+                    } else if (target >= 1000) {
+                        finalValue = (target / 1000).toFixed(1) + 'K';
+                    }
+                    element.textContent = prefix + finalValue + suffix;
+                }
+            }
+            updateCounter();
+        }
+
+        // Initialize counters when stats section is visible
+        const statsObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const statItems = entry.target.querySelectorAll('.stat-item');
+                    statItems.forEach(item => {
+                        const numberElement = item.querySelector('.stat-number');
+                        const target = parseFloat(item.dataset.target);
+                        const duration = parseInt(item.dataset.duration) || 2000;
+                        const prefix = item.dataset.prefix || '';
+                        const suffix = item.dataset.suffix || '';
+                        
+                        animateCounter(numberElement, target, duration, prefix, suffix);
+                    });
+                    statsObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.5 });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const statsSection = document.querySelector('.stats');
+            if (statsSection) {
+                statsObserver.observe(statsSection);
+            }
         });
     </script>
 </body>
