@@ -912,286 +912,508 @@
     </div>
 
     <script>
-        // 当前步骤
-        let currentStep = 1;
-        const totalSteps = 6;
-
-        // 步骤切换函数
-        function changeStep(direction) {
-            const newStep = currentStep + direction;
-            
-            // 验证步骤范围
-            if (newStep < 1 || newStep > totalSteps) {
-                return;
-            }
-            
-            // 如果是前进，验证当前步骤的必填字段
-            if (direction > 0 && !validateCurrentStep()) {
-                return;
-            }
-            
-            // 隐藏当前步骤
-            document.getElementById(`step${currentStep}`).classList.remove('active');
-            document.querySelector(`[data-step="${currentStep}"]`).classList.remove('active');
-            
-            // 标记已完成的步骤
-            if (direction > 0) {
-                document.querySelector(`[data-step="${currentStep}"]`).classList.add('completed');
-            }
-            
-            // 更新当前步骤
-            currentStep = newStep;
-            
-            // 显示新步骤
-            document.getElementById(`step${currentStep}`).classList.add('active');
-            document.querySelector(`[data-step="${currentStep}"]`).classList.add('active');
-            
-            // 更新进度条
-            updateProgressBar();
-            
-            // 更新按钮状态
-            updateNavigationButtons();
-            
-            // 滚动到顶部
-            document.querySelector('.step-content').scrollTop = 0;
-        }
-
-        // 验证当前步骤
-        function validateCurrentStep() {
-            const stepRequiredFields = {
-                1: ['projectName', 'projectType', 'projectDescription', 'projectLocation', 'contactPerson', 'phone', 'email', 'sponsorName'],
-                2: ['assetType', 'assetDescription', 'assetValue'],
-                3: [], // 财务规划步骤没有必填字段
-                4: [], // 代币设计步骤没有必填字段
-                5: [], // 合规要求步骤没有必填字段
-                6: ['riskAcknowledgment'] // 最后一步需要确认风险
-            };
-            
-            const requiredFields = stepRequiredFields[currentStep] || [];
-            const missingFields = [];
-            
-            requiredFields.forEach(fieldName => {
-                const field = document.getElementById(fieldName) || document.querySelector(`[name="${fieldName}"]`);
-                if (field) {
-                    if (field.type === 'checkbox') {
-                        if (!field.checked) {
-                            missingFields.push(fieldName);
-                        }
-                    } else if (!field.value.trim()) {
-                        missingFields.push(fieldName);
-                    }
-                }
-            });
-            
-            if (missingFields.length > 0) {
-                alert('请填写当前步骤的所有必填字段后再继续');
-                // 聚焦到第一个未填写的字段
-                const firstMissingField = document.getElementById(missingFields[0]) || document.querySelector(`[name="${missingFields[0]}"]`);
-                if (firstMissingField) {
-                    firstMissingField.focus();
-                }
-                return false;
-            }
-            
-            return true;
-        }
-
-        // 更新进度条
-        function updateProgressBar() {
-            const progressPercentage = ((currentStep - 1) / (totalSteps - 1)) * 100;
-            document.getElementById('progressLine').style.width = progressPercentage + '%';
-        }
-
-        // 更新导航按钮
-        function updateNavigationButtons() {
-            const prevBtn = document.getElementById('prevBtn');
-            const nextBtn = document.getElementById('nextBtn');
-            const submitBtn = document.getElementById('submitBtn');
-            
-            // 上一步按钮
-            if (currentStep === 1) {
-                prevBtn.style.display = 'none';
-            } else {
-                prevBtn.style.display = 'inline-block';
-            }
-            
-            // 下一步/提交按钮
-            if (currentStep === totalSteps) {
-                nextBtn.style.display = 'none';
-                submitBtn.style.display = 'inline-block';
-            } else {
-                nextBtn.style.display = 'inline-block';
-                submitBtn.style.display = 'none';
-            }
-        }
-
-        // 表单提交处理现在由form_processor.js处理
-        // 这里只保留验证逻辑
-        function handleFormSubmission() {
-            // 最终验证
-            if (!validateCurrentStep()) {
-                return false;
-            }
-            return true;
+        /* Enhanced Styles for Better UX */
+        .form-container {
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            border-radius: 20px;
+            padding: 2.5rem;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
         }
         
-        // 为form_processor.js提供验证函数
-        window.validateCurrentStep = validateCurrentStep;
-        
-        // 数据导出函数
-        function exportToJSON(data) {
-            const dataStr = JSON.stringify(data, null, 2);
-            const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
-            
-            const exportFileDefaultName = `RWA_Setup_${data.projectName || 'Project'}_${new Date().toISOString().split('T')[0]}.json`;
-            
-            const linkElement = document.createElement('a');
-            linkElement.setAttribute('href', dataUri);
-            linkElement.setAttribute('download', exportFileDefaultName);
-            linkElement.click();
+        .form-container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
         }
         
-        // 自动保存功能
-        function autoSave() {
-            const formData = new FormData(document.getElementById('rwaSetupForm'));
-            const data = {};
-            for (let [key, value] of formData.entries()) {
-                data[key] = value;
-            }
-            data.currentStep = currentStep;
-            sessionStorage.setItem('rwaSetupData', JSON.stringify(data));
+        .form-group {
+            margin-bottom: 2rem;
+            position: relative;
         }
         
-        // 每30秒自动保存一次
-        setInterval(autoSave, 30000);
+        .form-label {
+            display: block;
+            margin-bottom: 0.75rem;
+            font-weight: 600;
+            color: #374151;
+            font-size: 1rem;
+            transition: color 0.3s ease;
+        }
         
-        // 页面加载时恢复数据和步骤
-        window.addEventListener('load', function() {
-            const savedData = sessionStorage.getItem('rwaSetupData');
-            if (savedData) {
-                const data = JSON.parse(savedData);
-                
-                // 恢复表单数据
-                for (let [key, value] of Object.entries(data)) {
-                    if (key === 'currentStep') continue;
-                    
-                    const field = document.getElementById(key) || document.querySelector(`[name="${key}"]`);
-                    if (field) {
-                        if (field.type === 'checkbox' || field.type === 'radio') {
-                            field.checked = field.value === value;
-                        } else {
-                            field.value = value;
-                        }
-                    }
-                }
-                
-                // 恢复步骤位置
-                if (data.currentStep && data.currentStep > 1) {
-                    // 隐藏当前步骤
-                    document.getElementById(`step${currentStep}`).classList.remove('active');
-                    document.querySelector(`[data-step="${currentStep}"]`).classList.remove('active');
-                    
-                    // 设置保存的步骤
-                    currentStep = data.currentStep;
-                    
-                    // 显示保存的步骤
-                    document.getElementById(`step${currentStep}`).classList.add('active');
-                    document.querySelector(`[data-step="${currentStep}"]`).classList.add('active');
-                    
-                    // 标记之前的步骤为已完成
-                    for (let i = 1; i < currentStep; i++) {
-                        document.querySelector(`[data-step="${i}"]`).classList.add('completed');
-                    }
-                    
-                    updateProgressBar();
-                    updateNavigationButtons();
-                }
+        .form-input, .form-select, .form-textarea {
+            width: 100%;
+            padding: 1rem 1.25rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: white;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+        
+        .form-input:focus, .form-select:focus, .form-textarea:focus {
+            outline: none;
+            border-color: #4f46e5;
+            box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1), 0 4px 12px rgba(0, 0, 0, 0.1);
+            transform: translateY(-2px);
+        }
+        
+        .form-input:hover, .form-select:hover, .form-textarea:hover {
+            border-color: #a855f7;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+        
+        .form-textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+        
+        .form-checkbox {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-checkbox input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            border: 2px solid #e2e8f0;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .form-checkbox input[type="checkbox"]:checked {
+            background: linear-gradient(135deg, #4f46e5, #7c3aed);
+            border-color: #4f46e5;
+        }
+        
+        .form-checkbox label {
+            color: #64748b;
+            font-size: 0.95rem;
+            cursor: pointer;
+            line-height: 1.5;
+        }
+        
+        .submit-btn {
+            background: linear-gradient(135deg, #4f46e5, #7c3aed);
+            color: white;
+            border: none;
+            padding: 1rem 2.5rem;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 20px rgba(79, 70, 229, 0.3);
+            width: 100%;
+            margin-top: 1rem;
+        }
+        
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(79, 70, 229, 0.4);
+            background: linear-gradient(135deg, #5b21b6, #4f46e5);
+        }
+        
+        .submit-btn:active {
+            transform: translateY(-1px);
+        }
+        
+        .submit-btn:disabled {
+            background: #9ca3af;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .progress-indicator {
+            background: white;
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        }
+        
+        .progress-bar {
+            background: #f1f5f9;
+            border-radius: 50px;
+            height: 8px;
+            overflow: hidden;
+            margin-bottom: 1rem;
+        }
+        
+        .progress-fill {
+            background: linear-gradient(135deg, #4f46e5, #7c3aed);
+            height: 100%;
+            border-radius: 50px;
+            transition: width 0.6s ease;
+        }
+        
+        .progress-steps {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 1rem;
+        }
+        
+        .step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            flex: 1;
+            position: relative;
+        }
+        
+        .step-number {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #e2e8f0;
+            color: #64748b;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+        
+        .step.active .step-number {
+            background: linear-gradient(135deg, #4f46e5, #7c3aed);
+            color: white;
+            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+        }
+        
+        .step.completed .step-number {
+            background: #10b981;
+            color: white;
+        }
+        
+        .step-label {
+            font-size: 0.85rem;
+            color: #64748b;
+            font-weight: 500;
+            text-align: center;
+        }
+        
+        .step.active .step-label {
+            color: #4f46e5;
+            font-weight: 600;
+        }
+        
+        .step.completed .step-label {
+            color: #10b981;
+        }
+        
+        .step-line {
+            position: absolute;
+            top: 16px;
+            left: 50%;
+            width: 100%;
+            height: 2px;
+            background: #e2e8f0;
+            z-index: -1;
+        }
+        
+        .step:last-child .step-line {
+            display: none;
+        }
+        
+        .step.completed .step-line {
+            background: #10b981;
+        }
+        
+        .form-section {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            border: 1px solid #f1f5f9;
+            transition: all 0.3s ease;
+        }
+        
+        .form-section:hover {
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+            transform: translateY(-2px);
+        }
+        
+        .section-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid #f1f5f9;
+            position: relative;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 60px;
+            height: 2px;
+            background: linear-gradient(135deg, #4f46e5, #7c3aed);
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-row.single {
+            grid-template-columns: 1fr;
+        }
+        
+        .file-upload {
+            position: relative;
+            display: inline-block;
+            width: 100%;
+        }
+        
+        .file-upload input[type="file"] {
+            position: absolute;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+        
+        .file-upload-label {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            padding: 1.5rem;
+            border: 2px dashed #e2e8f0;
+            border-radius: 12px;
+            background: #f8fafc;
+            color: #64748b;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .file-upload:hover .file-upload-label {
+            border-color: #4f46e5;
+            background: rgba(79, 70, 229, 0.05);
+            color: #4f46e5;
+        }
+        
+        .file-upload.has-file .file-upload-label {
+            border-color: #10b981;
+            background: rgba(16, 185, 129, 0.05);
+            color: #10b981;
+        }
+        
+        .error-message {
+            color: #dc2626;
+            font-size: 0.875rem;
+            margin-top: 0.5rem;
+            display: none;
+        }
+        
+        .success-message {
+            color: #10b981;
+            font-size: 0.875rem;
+            margin-top: 0.5rem;
+            display: none;
+        }
+        
+        .form-help {
+            font-size: 0.875rem;
+            color: #6b7280;
+            margin-top: 0.5rem;
+            line-height: 1.4;
+        }
+        
+        .required {
+            color: #dc2626;
+        }
+        
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .loading-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #4f46e5;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: white;
+            border-radius: 12px;
+            padding: 1rem 1.5rem;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+            border-left: 4px solid #4f46e5;
+            z-index: 1000;
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
+            max-width: 350px;
+        }
+        
+        .notification.show {
+            transform: translateX(0);
+        }
+        
+        .notification.success {
+            border-left-color: #10b981;
+        }
+        
+        .notification.error {
+            border-left-color: #dc2626;
+        }
+        
+        .notification.warning {
+            border-left-color: #f59e0b;
+        }
+        
+        /* Animation Classes */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.6s ease;
+        }
+        
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .slide-in-left {
+            opacity: 0;
+            transform: translateX(-30px);
+            transition: all 0.6s ease;
+        }
+        
+        .slide-in-left.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        
+        .slide-in-right {
+            opacity: 0;
+            transform: translateX(30px);
+            transition: all 0.6s ease;
+        }
+        
+        .slide-in-right.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 1rem;
             }
             
-            // 初始化按钮状态
-            updateNavigationButtons();
-        });
-        
-        // 添加字段帮助提示功能
-        function showFieldHelp(fieldId, helpText) {
-            const field = document.getElementById(fieldId);
-            if (field) {
-                // 创建帮助提示元素
-                const helpDiv = document.createElement('div');
-                helpDiv.className = 'field-help';
-                helpDiv.innerHTML = `💡 ${helpText}`;
-                helpDiv.style.cssText = `
-                    background: #e7f3ff;
-                    border: 1px solid #b3d9ff;
-                    border-radius: 5px;
-                    padding: 8px 12px;
-                    margin-top: 5px;
-                    font-size: 0.85rem;
-                    color: #0066cc;
-                    display: none;
-                `;
-                
-                // 插入帮助提示
-                field.parentNode.appendChild(helpDiv);
-                
-                // 添加焦点事件
-                field.addEventListener('focus', () => {
-                    helpDiv.style.display = 'block';
-                });
-                
-                field.addEventListener('blur', () => {
-                    setTimeout(() => {
-                        helpDiv.style.display = 'none';
-                    }, 3000);
-                });
+            .form-container {
+                padding: 1.5rem;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            
+            .progress-steps {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .step {
+                flex-direction: row;
+                justify-content: flex-start;
+                width: 100%;
+            }
+            
+            .step-line {
+                display: none;
+            }
+            
+            .submit-btn {
+                padding: 0.875rem 2rem;
+                font-size: 1rem;
             }
         }
         
-        // 检查钱包连接状态
-        function checkWalletStatus() {
-            const walletStatusForm = document.getElementById('walletStatusForm');
-            const walletStatusText = document.getElementById('walletStatusText');
-            const isWalletConnected = localStorage.getItem('walletConnected');
-            const walletAddress = localStorage.getItem('walletAddress');
+        @media (max-width: 480px) {
+            .form-container {
+                padding: 1rem;
+            }
             
-            if (isWalletConnected === 'true' && walletAddress) {
-                walletStatusForm.classList.add('connected');
-                walletStatusForm.classList.remove('not-connected');
-                walletStatusText.textContent = `钱包已连接: ${walletAddress.substring(0, 8)}...${walletAddress.substring(walletAddress.length - 6)}`;
-                
-                // 在表单数据中添加钱包地址
-                const walletAddressInput = document.createElement('input');
-                walletAddressInput.type = 'hidden';
-                walletAddressInput.id = 'walletAddress';
-                walletAddressInput.name = 'walletAddress';
-                walletAddressInput.value = walletAddress;
-                document.getElementById('rwaSetupForm').appendChild(walletAddressInput);
-            } else {
-                walletStatusForm.classList.add('not-connected');
-                walletStatusForm.classList.remove('connected');
-                walletStatusText.textContent = '钱包未连接 - 建议先连接钱包';
-                
-                // 显示警告信息
-                setTimeout(() => {
-                    if (confirm('检测到您尚未连接钱包，是否返回首页连接钱包？')) {
-                        window.location.href = 'index.html';
-                    }
-                }, 2000);
+            .form-section {
+                padding: 1.5rem;
+            }
+            
+            .section-title {
+                font-size: 1.1rem;
             }
         }
         
-        // 初始化字段帮助提示
-        document.addEventListener('DOMContentLoaded', function() {
-            // 检查钱包状态
-            checkWalletStatus();
+        /* Dark mode support */
+        @media (prefers-color-scheme: dark) {
+            .form-container {
+                background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
+                color: #f9fafb;
+            }
             
-            // 为复杂字段添加帮助提示
-            showFieldHelp('projectDescription', '请详细描述项目的商业模式、盈利方式、市场前景等，建议200字以上');
-            showFieldHelp('assetDescription', '请描述资产的具体情况，包括地理位置、规模、现状、收益来源等关键信息');
-            showFieldHelp('assetValue', '请提供最新的专业评估价值，如无专业评估可填写预估价值');
-            showFieldHelp('annualReturn', '请填写预期的年化收益率，可参考同类资产的市场表现');
-            showFieldHelp('kycLevel', '基础级适用于小额投资，标准级适用于中等投资，增强级适用于大额或机构投资');
-        });
+            .form-section {
+                background: #374151;
+                border-color: #4b5563;
+            }
+            
+            .form-input, .form-select, .form-textarea {
+                background: #4b5563;
+                border-color: #6b7280;
+                color: #f9fafb;
+            }
+            
+            .form-label {
+                color: #f3f4f6;
+            }
+            
+            .section-title {
+                color: #f9fafb;
+            }
+        }
     </script>
     
     <!-- 引入表单处理脚本 -->
