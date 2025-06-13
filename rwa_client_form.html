@@ -1373,6 +1373,16 @@
             display: none;
         }
         
+        .form-input.error, .form-select.error, .form-textarea.error {
+            border-color: #dc2626 !important;
+            box-shadow: 0 0 0 4px rgba(220, 38, 38, 0.1) !important;
+        }
+        
+        .form-input.error:focus, .form-select.error:focus, .form-textarea.error:focus {
+            border-color: #dc2626 !important;
+            box-shadow: 0 0 0 4px rgba(220, 38, 38, 0.2) !important;
+        }
+        
         .success-message {
             color: #10b981;
             font-size: 0.875rem;
@@ -1571,5 +1581,185 @@
     
     <!-- 引入表单处理脚本 -->
     <script src="form_processor.js"></script>
+    
+    <!-- 步骤切换功能脚本 -->
+    <script>
+        // 当前步骤
+        let currentStep = 1;
+        const totalSteps = 6;
+        
+        // 步骤切换函数
+        function changeStep(direction) {
+            const newStep = currentStep + direction;
+            
+            // 检查步骤范围
+            if (newStep < 1 || newStep > totalSteps) {
+                return;
+            }
+            
+            // 如果是前进，验证当前步骤
+            if (direction > 0 && !validateCurrentStep()) {
+                return;
+            }
+            
+            // 隐藏当前步骤
+            const currentPanel = document.getElementById(`step${currentStep}`);
+            if (currentPanel) {
+                currentPanel.style.display = 'none';
+            }
+            
+            // 更新当前步骤
+            currentStep = newStep;
+            
+            // 显示新步骤
+            const newPanel = document.getElementById(`step${currentStep}`);
+            if (newPanel) {
+                newPanel.style.display = 'block';
+                newPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+            
+            // 更新进度指示器
+            updateProgressIndicator();
+            
+            // 更新按钮状态
+            updateNavigationButtons();
+        }
+        
+        // 验证当前步骤
+        function validateCurrentStep() {
+            const currentPanel = document.getElementById(`step${currentStep}`);
+            if (!currentPanel) return true;
+            
+            const requiredFields = currentPanel.querySelectorAll('[required]');
+            let isValid = true;
+            
+            requiredFields.forEach(field => {
+                if (!field.value.trim()) {
+                    // 显示错误提示
+                    showFieldError(field, '此字段为必填项');
+                    isValid = false;
+                } else {
+                    // 清除错误提示
+                    clearFieldError(field);
+                }
+            });
+            
+            if (!isValid) {
+                // 滚动到第一个错误字段
+                const firstError = currentPanel.querySelector('.error');
+                if (firstError) {
+                    firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+            }
+            
+            return isValid;
+        }
+        
+        // 显示字段错误
+        function showFieldError(field, message) {
+            field.classList.add('error');
+            
+            // 移除已存在的错误消息
+            const existingError = field.parentNode.querySelector('.error-message');
+            if (existingError) {
+                existingError.remove();
+            }
+            
+            // 添加新的错误消息
+            const errorDiv = document.createElement('div');
+            errorDiv.className = 'error-message';
+            errorDiv.textContent = message;
+            errorDiv.style.display = 'block';
+            field.parentNode.appendChild(errorDiv);
+        }
+        
+        // 清除字段错误
+        function clearFieldError(field) {
+            field.classList.remove('error');
+            const errorMessage = field.parentNode.querySelector('.error-message');
+            if (errorMessage) {
+                errorMessage.remove();
+            }
+        }
+        
+        // 更新进度指示器
+        function updateProgressIndicator() {
+            // 更新进度条
+            const progressFill = document.querySelector('.progress-fill');
+            if (progressFill) {
+                const progress = (currentStep / totalSteps) * 100;
+                progressFill.style.width = `${progress}%`;
+            }
+            
+            // 更新步骤状态
+            for (let i = 1; i <= totalSteps; i++) {
+                const step = document.querySelector(`.step:nth-child(${i})`);
+                if (step) {
+                    step.classList.remove('active', 'completed');
+                    
+                    if (i < currentStep) {
+                        step.classList.add('completed');
+                    } else if (i === currentStep) {
+                        step.classList.add('active');
+                    }
+                }
+            }
+        }
+        
+        // 更新导航按钮状态
+        function updateNavigationButtons() {
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const submitBtn = document.getElementById('submitBtn');
+            
+            // 上一步按钮
+            if (prevBtn) {
+                prevBtn.style.display = currentStep === 1 ? 'none' : 'inline-block';
+            }
+            
+            // 下一步按钮
+            if (nextBtn) {
+                nextBtn.style.display = currentStep === totalSteps ? 'none' : 'inline-block';
+            }
+            
+            // 提交按钮
+            if (submitBtn) {
+                submitBtn.style.display = currentStep === totalSteps ? 'inline-block' : 'none';
+            }
+        }
+        
+        // 页面加载完成后初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            // 隐藏所有步骤面板
+            for (let i = 1; i <= totalSteps; i++) {
+                const panel = document.getElementById(`step${i}`);
+                if (panel) {
+                    panel.style.display = i === 1 ? 'block' : 'none';
+                }
+            }
+            
+            // 初始化进度指示器和按钮状态
+            updateProgressIndicator();
+            updateNavigationButtons();
+            
+            // 为输入字段添加实时验证
+            const allInputs = document.querySelectorAll('input, select, textarea');
+            allInputs.forEach(input => {
+                input.addEventListener('blur', function() {
+                    if (this.hasAttribute('required') && !this.value.trim()) {
+                        showFieldError(this, '此字段为必填项');
+                    } else {
+                        clearFieldError(this);
+                    }
+                });
+                
+                input.addEventListener('input', function() {
+                    if (this.classList.contains('error') && this.value.trim()) {
+                        clearFieldError(this);
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 </html>
