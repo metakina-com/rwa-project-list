@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RWA资产管理系统</title>
+    <!-- Chart.js for data visualization -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.js"></script>
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
             margin: 0;
@@ -516,6 +520,117 @@
             font-weight: 600;
         }
         
+        .chart-container {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 15px 0;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            position: relative;
+            height: 300px;
+        }
+        
+        .chart-container canvas {
+            max-width: 100% !important;
+            height: 250px !important;
+        }
+        
+        .chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #e9ecef;
+        }
+        
+        .chart-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+        
+        .chart-controls {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .chart-btn {
+            padding: 5px 12px;
+            border: 1px solid #dee2e6;
+            border-radius: 6px;
+            background: white;
+            color: #6c757d;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .chart-btn:hover {
+            background: #f8f9fa;
+            border-color: #007bff;
+            color: #007bff;
+        }
+        
+        .chart-btn.active {
+            background: #007bff;
+            border-color: #007bff;
+            color: white;
+        }
+        
+        .loading-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            z-index: 10;
+        }
+        
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #007bff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .data-refresh-btn {
+            background: linear-gradient(135deg, #28a745, #20c997);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .data-refresh-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
+        }
+        
+        .data-refresh-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
         .risk-meter {
             display: flex;
             flex-direction: column;
@@ -856,26 +971,44 @@
         </div>
 
         <!-- 预言机数据面板 -->
-        <div class="oracle-panel">
-            <h2>🔮 预言机数据中心</h2>
+        <div class="oracle-panel" id="oracle-panel">
+            <h2>🔮 预言机数据中心 
+                <button class="data-refresh-btn" onclick="refreshOracleData()">
+                    <i class="fas fa-sync-alt"></i> 刷新数据
+                </button>
+            </h2>
             <div class="oracle-grid">
                 <div class="oracle-card">
                     <h4>📊 市场数据</h4>
                     <div class="oracle-data">
                         <div class="data-item">
                             <span class="label">ETH/USD:</span>
-                            <span class="value">$2,345.67</span>
-                            <span class="change positive">+2.34%</span>
+                            <span class="value" id="ethPrice">$2,345.67</span>
+                            <span class="change positive" id="ethChange">+2.34%</span>
                         </div>
                         <div class="data-item">
                             <span class="label">BTC/USD:</span>
-                            <span class="value">$43,210.89</span>
-                            <span class="change negative">-1.23%</span>
+                            <span class="value" id="btcPrice">$43,210.89</span>
+                            <span class="change negative" id="btcChange">-1.23%</span>
                         </div>
                         <div class="data-item">
                             <span class="label">房地产指数:</span>
-                            <span class="value">1,234.56</span>
-                            <span class="change positive">+0.89%</span>
+                            <span class="value" id="realEstateIndex">1,234.56</span>
+                            <span class="change positive" id="realEstateChange">+0.89%</span>
+                        </div>
+                    </div>
+                    <div class="chart-container">
+                        <div class="chart-header">
+                            <div class="chart-title">市场价格趋势</div>
+                            <div class="chart-controls">
+                                <button class="chart-btn active" onclick="updateMarketChart('24h')">24H</button>
+                                <button class="chart-btn" onclick="updateMarketChart('7d')">7D</button>
+                                <button class="chart-btn" onclick="updateMarketChart('30d')">30D</button>
+                            </div>
+                        </div>
+                        <canvas id="marketChart"></canvas>
+                        <div id="marketChartLoading" class="loading-overlay" style="display: none;">
+                            <div class="loading-spinner"></div>
                         </div>
                     </div>
                 </div>
@@ -884,18 +1017,27 @@
                     <div class="oracle-data">
                         <div class="data-item">
                             <span class="label">租金收入:</span>
-                            <span class="value">¥2,345,678</span>
-                            <span class="change positive">+5.67%</span>
+                            <span class="value" id="rentalIncome">¥2,345,678</span>
+                            <span class="change positive" id="rentalChange">+5.67%</span>
                         </div>
                         <div class="data-item">
                             <span class="label">入住率:</span>
-                            <span class="value">95.6%</span>
-                            <span class="change positive">+2.1%</span>
+                            <span class="value" id="occupancyRate">95.6%</span>
+                            <span class="change positive" id="occupancyChange">+2.1%</span>
                         </div>
                         <div class="data-item">
                             <span class="label">资产估值:</span>
-                            <span class="value">¥500,000,000</span>
-                            <span class="change positive">+3.45%</span>
+                            <span class="value" id="assetValuation">¥500,000,000</span>
+                            <span class="change positive" id="valuationChange">+3.45%</span>
+                        </div>
+                    </div>
+                    <div class="chart-container">
+                        <div class="chart-header">
+                            <div class="chart-title">资产表现分析</div>
+                        </div>
+                        <canvas id="assetChart"></canvas>
+                        <div id="assetChartLoading" class="loading-overlay" style="display: none;">
+                            <div class="loading-spinner"></div>
                         </div>
                     </div>
                 </div>
@@ -904,15 +1046,24 @@
                     <div class="oracle-data">
                         <div class="data-item">
                             <span class="label">数据更新:</span>
-                            <span class="value status-active">实时</span>
+                            <span class="value status-active" id="dataStatus">实时</span>
                         </div>
                         <div class="data-item">
                             <span class="label">API状态:</span>
-                            <span class="value status-active">正常</span>
+                            <span class="value status-active" id="apiStatus">正常</span>
                         </div>
                         <div class="data-item">
                             <span class="label">最后同步:</span>
-                            <span class="value">2分钟前</span>
+                            <span class="value" id="lastSync">2分钟前</span>
+                        </div>
+                    </div>
+                    <div class="chart-container">
+                        <div class="chart-header">
+                            <div class="chart-title">系统性能监控</div>
+                        </div>
+                        <canvas id="systemChart"></canvas>
+                        <div id="systemChartLoading" class="loading-overlay" style="display: none;">
+                            <div class="loading-spinner"></div>
                         </div>
                     </div>
                 </div>
@@ -926,13 +1077,24 @@
                 <div class="ai-card">
                     <h4>📈 收益预测</h4>
                     <div class="ai-content">
-                        <div class="prediction-chart">
-                            <div class="chart-placeholder">📊 收益趋势图</div>
+                        <div class="chart-container">
+                            <div class="chart-header">
+                                <div class="chart-title">收益趋势预测</div>
+                                <div class="chart-controls">
+                                    <button class="chart-btn active" onclick="updateRevenueChart('6m')">6个月</button>
+                                    <button class="chart-btn" onclick="updateRevenueChart('1y')">1年</button>
+                                    <button class="chart-btn" onclick="updateRevenueChart('2y')">2年</button>
+                                </div>
+                            </div>
+                            <canvas id="revenueChart"></canvas>
+                            <div id="revenueChartLoading" class="loading-overlay" style="display: none;">
+                                <div class="loading-spinner"></div>
+                            </div>
                         </div>
                         <div class="ai-insights">
-                            <p><strong>AI预测:</strong> 未来6个月预期收益率为8.7%</p>
-                            <p><strong>置信度:</strong> 87%</p>
-                            <p><strong>关键因素:</strong> 市场需求上升、租金增长</p>
+                            <p><strong>AI预测:</strong> 未来6个月预期收益率为<span id="predictedReturn">8.7%</span></p>
+                            <p><strong>置信度:</strong> <span id="confidenceLevel">87%</span></p>
+                            <p><strong>关键因素:</strong> <span id="keyFactors">市场需求上升、租金增长</span></p>
                         </div>
                     </div>
                 </div>
@@ -951,20 +1113,36 @@
                     </div>
                 </div>
                 <div class="ai-card">
-                    <h4>💡 智能建议</h4>
+                    <h4>💡 智能建议 
+                        <button class="data-refresh-btn" onclick="generateAIReport()" style="font-size: 0.8rem; padding: 4px 8px;">
+                            <i class="fas fa-chart-line"></i> 生成报告
+                        </button>
+                    </h4>
                     <div class="ai-content">
-                        <div class="recommendations">
+                        <div class="recommendations" id="aiRecommendations">
                             <div class="recommendation">
                                 <span class="rec-icon">💰</span>
                                 <span class="rec-text">建议增加代币流动性池</span>
+                                <span class="rec-priority" style="margin-left: auto; padding: 2px 8px; background: #28a745; color: white; border-radius: 12px; font-size: 0.7rem;">高</span>
                             </div>
                             <div class="recommendation">
                                 <span class="rec-icon">🎯</span>
                                 <span class="rec-text">优化NFT定价策略</span>
+                                <span class="rec-priority" style="margin-left: auto; padding: 2px 8px; background: #ffc107; color: #212529; border-radius: 12px; font-size: 0.7rem;">中</span>
                             </div>
                             <div class="recommendation">
                                 <span class="rec-icon">📊</span>
                                 <span class="rec-text">扩大市场推广范围</span>
+                                <span class="rec-priority" style="margin-left: auto; padding: 2px 8px; background: #17a2b8; color: white; border-radius: 12px; font-size: 0.7rem;">低</span>
+                            </div>
+                        </div>
+                        <div class="chart-container">
+                            <div class="chart-header">
+                                <div class="chart-title">投资组合优化建议</div>
+                            </div>
+                            <canvas id="portfolioChart"></canvas>
+                            <div id="portfolioChartLoading" class="loading-overlay" style="display: none;">
+                                <div class="loading-spinner"></div>
                             </div>
                         </div>
                     </div>
@@ -1914,6 +2092,12 @@
             padding: 1.5rem;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
             margin-top: 1.5rem;
+            min-height: 300px;
+        }
+        
+        .chart-container canvas {
+            max-width: 100% !important;
+            height: 250px !important;
         }
         
         .loading-spinner {
@@ -2762,16 +2946,95 @@
         
         // 生成AI报告
         function generateAIReport() {
-            const generateBtn = event.target;
+            const generateBtn = event.target.closest('.data-refresh-btn');
+            const originalHTML = generateBtn.innerHTML;
+            
             generateBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 生成中...';
             generateBtn.disabled = true;
             
+            // Show loading on portfolio chart
+            document.getElementById('portfolioChartLoading').style.display = 'flex';
+            
             setTimeout(() => {
-                generateBtn.innerHTML = '<i class="fas fa-chart-line"></i> 生成报告';
+                // Update AI recommendations
+                const recommendations = [
+                    {
+                        icon: '💰',
+                        text: '建议增加代币流动性池至目标水平',
+                        priority: '高',
+                        color: '#dc3545'
+                    },
+                    {
+                        icon: '📈',
+                        text: '优化收益分配机制提升投资者满意度',
+                        priority: '高',
+                        color: '#dc3545'
+                    },
+                    {
+                        icon: '🎯',
+                        text: '调整NFT定价策略以提高销售转化率',
+                        priority: '中',
+                        color: '#ffc107'
+                    },
+                    {
+                        icon: '🔒',
+                        text: '加强风险管控措施',
+                        priority: '中',
+                        color: '#ffc107'
+                    },
+                    {
+                        icon: '📊',
+                        text: '扩大市场推广范围增加用户基数',
+                        priority: '低',
+                        color: '#17a2b8'
+                    }
+                ];
+                
+                const recommendationsContainer = document.getElementById('aiRecommendations');
+                recommendationsContainer.innerHTML = '';
+                
+                recommendations.forEach(rec => {
+                    const recElement = document.createElement('div');
+                    recElement.className = 'recommendation';
+                    recElement.innerHTML = `
+                        <span class="rec-icon">${rec.icon}</span>
+                        <span class="rec-text">${rec.text}</span>
+                        <span class="rec-priority" style="margin-left: auto; padding: 2px 8px; background: ${rec.color}; color: ${rec.color === '#ffc107' ? '#212529' : 'white'}; border-radius: 12px; font-size: 0.7rem;">${rec.priority}</span>
+                    `;
+                    recommendationsContainer.appendChild(recElement);
+                });
+                
+                // Update portfolio chart with new data
+                if (portfolioChart) {
+                    const newCurrentData = [
+                        75 + Math.random() * 10,
+                        85 + Math.random() * 10,
+                        90 + Math.random() * 5,
+                        70 + Math.random() * 15,
+                        95 + Math.random() * 5,
+                        80 + Math.random() * 10
+                    ];
+                    
+                    const newTargetData = [
+                        85 + Math.random() * 10,
+                        90 + Math.random() * 8,
+                        95 + Math.random() * 5,
+                        85 + Math.random() * 10,
+                        98 + Math.random() * 2,
+                        90 + Math.random() * 8
+                    ];
+                    
+                    portfolioChart.data.datasets[0].data = newCurrentData;
+                    portfolioChart.data.datasets[1].data = newTargetData;
+                    portfolioChart.update();
+                }
+                
+                document.getElementById('portfolioChartLoading').style.display = 'none';
+                generateBtn.innerHTML = originalHTML;
                 generateBtn.disabled = false;
                 
                 // 显示成功提示
-                showNotification('AI分析报告已生成', 'success');
+                showNotification('AI分析报告已生成，发现5项优化建议', 'success');
             }, 3000);
         }
         
@@ -2800,16 +3063,640 @@
             }, 3000);
         }
         
-        // Initialize animations
+        // Chart instances
+        let revenueChart = null;
+        let marketChart = null;
+        let assetChart = null;
+        let systemChart = null;
+        let portfolioChart = null;
+        
+        // Chart data generators
+        function generateRevenueData(period) {
+            const periods = {
+                '6m': { months: 6, label: '月' },
+                '1y': { months: 12, label: '月' },
+                '2y': { months: 24, label: '月' }
+            };
+            
+            const config = periods[period];
+            const labels = [];
+            const actualData = [];
+            const predictedData = [];
+            
+            for (let i = 0; i < config.months; i++) {
+                const date = new Date();
+                date.setMonth(date.getMonth() - (config.months - 1 - i));
+                labels.push(date.toLocaleDateString('zh-CN', { month: 'short' }));
+                
+                if (i < config.months - 3) {
+                    // Historical data
+                    actualData.push(Math.random() * 100000 + 200000);
+                    predictedData.push(null);
+                } else {
+                    // Predicted data
+                    actualData.push(null);
+                    predictedData.push(Math.random() * 120000 + 220000);
+                }
+            }
+            
+            return { labels, actualData, predictedData };
+        }
+        
+        function generateMarketData(period) {
+            const periods = {
+                '24h': { points: 24, label: '小时' },
+                '7d': { points: 7, label: '天' },
+                '30d': { points: 30, label: '天' }
+            };
+            
+            const config = periods[period];
+            const labels = [];
+            const ethData = [];
+            const btcData = [];
+            const realEstateData = [];
+            
+            for (let i = 0; i < config.points; i++) {
+                if (period === '24h') {
+                    labels.push(`${i}:00`);
+                } else {
+                    const date = new Date();
+                    date.setDate(date.getDate() - (config.points - 1 - i));
+                    labels.push(date.toLocaleDateString('zh-CN', { month: 'short', day: 'numeric' }));
+                }
+                
+                ethData.push(2300 + Math.random() * 100);
+                btcData.push(42000 + Math.random() * 2000);
+                realEstateData.push(1200 + Math.random() * 100);
+            }
+            
+            return { labels, ethData, btcData, realEstateData };
+        }
+        
+        // Initialize charts
+        function initializeCharts() {
+            // Revenue Chart
+            const revenueCtx = document.getElementById('revenueChart').getContext('2d');
+            const revenueData = generateRevenueData('6m');
+            
+            revenueChart = new Chart(revenueCtx, {
+                type: 'line',
+                data: {
+                    labels: revenueData.labels,
+                    datasets: [{
+                        label: '实际收益',
+                        data: revenueData.actualData,
+                        borderColor: '#28a745',
+                        backgroundColor: 'rgba(40, 167, 69, 0.1)',
+                        tension: 0.4,
+                        fill: true
+                    }, {
+                        label: 'AI预测',
+                        data: revenueData.predictedData,
+                        borderColor: '#007bff',
+                        backgroundColor: 'rgba(0, 123, 255, 0.1)',
+                        borderDash: [5, 5],
+                        tension: 0.4,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: false,
+                            ticks: {
+                                callback: function(value) {
+                                    return '¥' + (value / 1000).toFixed(0) + 'K';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+            
+            // Market Chart
+            const marketCtx = document.getElementById('marketChart').getContext('2d');
+            const marketData = generateMarketData('24h');
+            
+            marketChart = new Chart(marketCtx, {
+                type: 'line',
+                data: {
+                    labels: marketData.labels,
+                    datasets: [{
+                        label: 'ETH/USD',
+                        data: marketData.ethData,
+                        borderColor: '#627eea',
+                        backgroundColor: 'rgba(98, 126, 234, 0.1)',
+                        tension: 0.4
+                    }, {
+                        label: 'BTC/USD',
+                        data: marketData.btcData,
+                        borderColor: '#f7931a',
+                        backgroundColor: 'rgba(247, 147, 26, 0.1)',
+                        tension: 0.4,
+                        yAxisID: 'y1'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        }
+                    },
+                    scales: {
+                        y: {
+                            type: 'linear',
+                            display: true,
+                            position: 'left',
+                            ticks: {
+                                callback: function(value) {
+                                    return '$' + value.toFixed(0);
+                                }
+                            }
+                        },
+                        y1: {
+                            type: 'linear',
+                            display: true,
+                            position: 'right',
+                            ticks: {
+                                callback: function(value) {
+                                    return '$' + (value / 1000).toFixed(0) + 'K';
+                                }
+                            },
+                            grid: {
+                                drawOnChartArea: false,
+                            },
+                        }
+                    }
+                }
+            });
+            
+            // Asset Chart (Doughnut)
+            const assetCtx = document.getElementById('assetChart').getContext('2d');
+            
+            assetChart = new Chart(assetCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['租金收入', '资本增值', '其他收入'],
+                    datasets: [{
+                        data: [65, 25, 10],
+                        backgroundColor: [
+                            '#28a745',
+                            '#007bff',
+                            '#ffc107'
+                        ],
+                        borderWidth: 2,
+                        borderColor: '#fff'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                        }
+                    }
+                }
+            });
+            
+            // System Chart (Bar)
+            const systemCtx = document.getElementById('systemChart').getContext('2d');
+            
+            systemChart = new Chart(systemCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['API响应', 'CPU使用率', '内存使用率', '网络延迟'],
+                    datasets: [{
+                        label: '系统性能',
+                        data: [98, 45, 62, 15],
+                        backgroundColor: [
+                            '#28a745',
+                            '#ffc107',
+                            '#17a2b8',
+                            '#28a745'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 100,
+                            ticks: {
+                                callback: function(value) {
+                                    return value + '%';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        
+        // Chart update functions
+        function updateRevenueChart(period) {
+            if (!revenueChart) return;
+            
+            // Update button states
+            document.querySelectorAll('.ai-card .chart-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // Show loading
+            document.getElementById('revenueChartLoading').style.display = 'flex';
+            
+            setTimeout(() => {
+                const data = generateRevenueData(period);
+                revenueChart.data.labels = data.labels;
+                revenueChart.data.datasets[0].data = data.actualData;
+                revenueChart.data.datasets[1].data = data.predictedData;
+                revenueChart.update();
+                
+                // Update AI insights
+                const predictions = {
+                    '6m': { return: '8.7%', confidence: '87%', factors: '市场需求上升、租金增长' },
+                    '1y': { return: '12.3%', confidence: '82%', factors: '长期增值潜力、区域发展' },
+                    '2y': { return: '18.5%', confidence: '75%', factors: '市场周期、政策支持' }
+                };
+                
+                const pred = predictions[period];
+                document.getElementById('predictedReturn').textContent = pred.return;
+                document.getElementById('confidenceLevel').textContent = pred.confidence;
+                document.getElementById('keyFactors').textContent = pred.factors;
+                
+                document.getElementById('revenueChartLoading').style.display = 'none';
+            }, 1000);
+        }
+        
+        function updateMarketChart(period) {
+            if (!marketChart) return;
+            
+            // Update button states
+            document.querySelectorAll('.oracle-card .chart-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // Show loading
+            document.getElementById('marketChartLoading').style.display = 'flex';
+            
+            setTimeout(() => {
+                const data = generateMarketData(period);
+                marketChart.data.labels = data.labels;
+                marketChart.data.datasets[0].data = data.ethData;
+                marketChart.data.datasets[1].data = data.btcData;
+                marketChart.update();
+                
+                document.getElementById('marketChartLoading').style.display = 'none';
+            }, 800);
+        }
+        
+        // Enhanced refresh function
+        function refreshOracleData() {
+            const refreshBtn = event.target.closest('.data-refresh-btn');
+            const originalHTML = refreshBtn.innerHTML;
+            
+            refreshBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 刷新中...';
+            refreshBtn.disabled = true;
+            
+            // Simulate API calls
+            setTimeout(() => {
+                // Update prices with random variations
+                const ethPrice = 2300 + Math.random() * 200;
+                const btcPrice = 42000 + Math.random() * 3000;
+                const realEstateIndex = 1200 + Math.random() * 100;
+                
+                document.getElementById('ethPrice').textContent = '$' + ethPrice.toFixed(2);
+                document.getElementById('btcPrice').textContent = '$' + btcPrice.toFixed(2);
+                document.getElementById('realEstateIndex').textContent = realEstateIndex.toFixed(2);
+                
+                // Update change indicators
+                const ethChange = (Math.random() - 0.5) * 10;
+                const btcChange = (Math.random() - 0.5) * 8;
+                const realEstateChange = (Math.random() - 0.5) * 5;
+                
+                updateChangeIndicator('ethChange', ethChange);
+                updateChangeIndicator('btcChange', btcChange);
+                updateChangeIndicator('realEstateChange', realEstateChange);
+                
+                // Update asset data
+                const rentalIncome = 2000000 + Math.random() * 500000;
+                const occupancyRate = 90 + Math.random() * 10;
+                const assetValuation = 480000000 + Math.random() * 40000000;
+                
+                document.getElementById('rentalIncome').textContent = '¥' + rentalIncome.toLocaleString();
+                document.getElementById('occupancyRate').textContent = occupancyRate.toFixed(1) + '%';
+                document.getElementById('assetValuation').textContent = '¥' + assetValuation.toLocaleString();
+                
+                // Update last sync time
+                document.getElementById('lastSync').textContent = '刚刚';
+                
+                // Refresh charts
+                if (marketChart) {
+                    const data = generateMarketData('24h');
+                    marketChart.data.datasets[0].data = data.ethData;
+                    marketChart.data.datasets[1].data = data.btcData;
+                    marketChart.update();
+                }
+                
+                refreshBtn.innerHTML = originalHTML;
+                refreshBtn.disabled = false;
+                
+                showNotification('预言机数据已更新', 'success');
+            }, 2000);
+        }
+        
+        function updateChangeIndicator(elementId, change) {
+            const element = document.getElementById(elementId);
+            const isPositive = change >= 0;
+            
+            element.textContent = (isPositive ? '+' : '') + change.toFixed(2) + '%';
+            element.className = 'change ' + (isPositive ? 'positive' : 'negative');
+        }
+        
+        // Initialize charts
+        function initializeCharts() {
+            console.log('Initializing charts...');
+            
+            // Revenue Chart
+            const revenueCtx = document.getElementById('revenueChart');
+            if (revenueCtx) {
+                const revenueData = generateRevenueData('6m');
+                
+                window.revenueChart = new Chart(revenueCtx, {
+                    type: 'line',
+                    data: {
+                        labels: revenueData.labels,
+                        datasets: [{
+                            label: '实际收益',
+                            data: revenueData.actualData,
+                            borderColor: '#28a745',
+                            backgroundColor: 'rgba(40, 167, 69, 0.1)',
+                            tension: 0.4,
+                            fill: true
+                        }, {
+                            label: 'AI预测',
+                            data: revenueData.predictedData,
+                            borderColor: '#007bff',
+                            backgroundColor: 'rgba(0, 123, 255, 0.1)',
+                            borderDash: [5, 5],
+                            tension: 0.4,
+                            fill: true
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'top',
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: false,
+                                ticks: {
+                                    callback: function(value) {
+                                        return '¥' + (value / 1000).toFixed(0) + 'K';
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+                console.log('Revenue chart initialized');
+            }
+            
+            // Market Chart
+            const marketCtx = document.getElementById('marketChart');
+            if (marketCtx) {
+                const marketData = generateMarketData('24h');
+                
+                window.marketChart = new Chart(marketCtx, {
+                    type: 'line',
+                    data: {
+                        labels: marketData.labels,
+                        datasets: [{
+                            label: 'ETH/USD',
+                            data: marketData.ethData,
+                            borderColor: '#627eea',
+                            backgroundColor: 'rgba(98, 126, 234, 0.1)',
+                            tension: 0.4
+                        }, {
+                            label: 'BTC/USD',
+                            data: marketData.btcData,
+                            borderColor: '#f7931a',
+                            backgroundColor: 'rgba(247, 147, 26, 0.1)',
+                            tension: 0.4,
+                            yAxisID: 'y1'
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'top',
+                            }
+                        },
+                        scales: {
+                            y: {
+                                type: 'linear',
+                                display: true,
+                                position: 'left',
+                                ticks: {
+                                    callback: function(value) {
+                                        return '$' + value.toFixed(0);
+                                    }
+                                }
+                            },
+                            y1: {
+                                type: 'linear',
+                                display: true,
+                                position: 'right',
+                                ticks: {
+                                    callback: function(value) {
+                                        return '$' + (value / 1000).toFixed(0) + 'K';
+                                    }
+                                },
+                                grid: {
+                                    drawOnChartArea: false,
+                                },
+                            }
+                        }
+                    }
+                });
+                console.log('Market chart initialized');
+            }
+            
+            // Asset Chart (Doughnut)
+            const assetCtx = document.getElementById('assetChart');
+            if (assetCtx) {
+                window.assetChart = new Chart(assetCtx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['租金收入', '资本增值', '其他收入'],
+                        datasets: [{
+                            data: [65, 25, 10],
+                            backgroundColor: [
+                                '#28a745',
+                                '#007bff',
+                                '#ffc107'
+                            ],
+                            borderWidth: 2,
+                            borderColor: '#fff'
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'bottom',
+                            }
+                        }
+                    }
+                });
+                console.log('Asset chart initialized');
+            }
+            
+            // System Chart (Bar)
+            const systemCtx = document.getElementById('systemChart');
+            if (systemCtx) {
+                window.systemChart = new Chart(systemCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['API响应', 'CPU使用率', '内存使用率', '网络延迟'],
+                        datasets: [{
+                            label: '系统性能',
+                            data: [98, 45, 62, 15],
+                            backgroundColor: [
+                                '#28a745',
+                                '#ffc107',
+                                '#17a2b8',
+                                '#28a745'
+                            ],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: false
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                max: 100,
+                                ticks: {
+                                    callback: function(value) {
+                                        return value + '%';
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+                console.log('System chart initialized');
+            }
+            
+            // Portfolio Chart (Radar)
+            const portfolioCtx = document.getElementById('portfolioChart');
+            if (portfolioCtx) {
+                window.portfolioChart = new Chart(portfolioCtx, {
+                    type: 'radar',
+                    data: {
+                        labels: ['流动性', '收益率', '风险控制', '市场表现', '合规性', '技术指标'],
+                        datasets: [{
+                            label: '当前表现',
+                            data: [75, 85, 90, 70, 95, 80],
+                            borderColor: '#007bff',
+                            backgroundColor: 'rgba(0, 123, 255, 0.2)',
+                            pointBackgroundColor: '#007bff',
+                            pointBorderColor: '#fff',
+                            pointHoverBackgroundColor: '#fff',
+                            pointHoverBorderColor: '#007bff'
+                        }, {
+                            label: 'AI建议目标',
+                            data: [85, 90, 95, 85, 98, 90],
+                            borderColor: '#28a745',
+                            backgroundColor: 'rgba(40, 167, 69, 0.2)',
+                            pointBackgroundColor: '#28a745',
+                            pointBorderColor: '#fff',
+                            pointHoverBackgroundColor: '#fff',
+                            pointHoverBorderColor: '#28a745'
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'bottom',
+                            }
+                        },
+                        scales: {
+                            r: {
+                                beginAtZero: true,
+                                max: 100,
+                                ticks: {
+                                    stepSize: 20
+                                }
+                            }
+                        }
+                    }
+                });
+                console.log('Portfolio chart initialized');
+            }
+        }
+
+        // Initialize animations and charts
         document.addEventListener('DOMContentLoaded', function() {
             // Add fade-in class to elements
             document.querySelectorAll('.stats-card, .info-card, .dashboard-panel').forEach(el => {
                 el.classList.add('fade-in');
             });
             
+            // Check if Chart.js is loaded and initialize charts
+            function checkAndInitializeCharts() {
+                if (typeof Chart !== 'undefined') {
+                    console.log('Chart.js loaded successfully, initializing charts...');
+                    initializeCharts();
+                } else {
+                    console.log('Chart.js not loaded yet, retrying in 500ms...');
+                    setTimeout(checkAndInitializeCharts, 500);
+                }
+            }
+            
+            // Start checking for Chart.js after a short delay
+            setTimeout(checkAndInitializeCharts, 100);
+            
             // 系统导航卡片已经通过onclick属性绑定了点击事件
              // 无需额外的事件监听器
         });
+        
+
     </script>
 </body>
 </html>

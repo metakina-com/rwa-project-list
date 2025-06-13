@@ -26,6 +26,9 @@ class ProjectDataManager {
             const projectList = JSON.parse(localStorage.getItem('rwa_project_list') || '[]');
             if (projectList.length > 0) {
                 this.projectId = projectList[projectList.length - 1].projectId;
+            } else {
+                this.projectId = 'demo-project-' + Date.now();
+                this.createDemoProject();
             }
         }
     }
@@ -602,6 +605,45 @@ class ProjectDataManager {
     }
 
     // 显示错误消息
+    createDemoProject() {
+        const demoProject = {
+            projectId: this.projectId,
+            basicInfo: {
+                name: "智慧城市基础设施RWA项目",
+                status: "active",
+                description: "基于区块链技术的智慧城市基础设施资产数字化项目",
+                createdAt: new Date().toISOString()
+            },
+            financial: {
+                assetValue: 50000000,
+                annualReturn: 8.5,
+                totalInvestment: 45000000,
+                currentValue: 52000000
+            },
+            tokenomics: {
+                tokenSymbol: "SCIT",
+                totalSupply: 1000000,
+                circulatingSupply: 850000,
+                tokenPrice: 50.0
+            },
+            nft: {
+                totalSupply: 500,
+                collections: [
+                    { name: "基础设施权益NFT", count: 200, floor: 5000 },
+                    { name: "收益分配NFT", count: 300, floor: 3000 }
+                ]
+            }
+        };
+        
+        localStorage.setItem(`rwa_project_${this.projectId}`, JSON.stringify(demoProject));
+        
+        const projectList = JSON.parse(localStorage.getItem('rwa_project_list') || '[]');
+        projectList.push({ projectId: this.projectId, name: demoProject.basicInfo.name });
+        localStorage.setItem('rwa_project_list', JSON.stringify(projectList));
+        
+        console.log('演示项目数据已创建:', demoProject);
+    }
+
     showErrorMessage(message) {
         const notification = document.createElement('div');
         notification.style.cssText = `
