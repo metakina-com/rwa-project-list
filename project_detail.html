@@ -591,10 +591,16 @@
                 try {
                     const projectDataStr = localStorage.getItem(`rwa_project_${this.projectId}`);
                     if (!projectDataStr) {
-                        throw new Error('未找到项目数据');
+                        // 如果localStorage中没有数据，使用示例数据
+                        const projectsData = this.getProjectsData();
+                        this.projectData = projectsData[this.projectId];
+                        if (!this.projectData) {
+                            throw new Error('未找到项目数据');
+                        }
+                    } else {
+                        this.projectData = JSON.parse(projectDataStr);
                     }
 
-                    this.projectData = JSON.parse(projectDataStr);
                     this.renderProjectDetail();
                 } catch (error) {
                     console.error('加载项目数据失败:', error);
@@ -863,6 +869,101 @@
                     });
                 }
                 return holders;
+            }
+
+            generateMockNFTs() {
+                const nfts = [];
+                const types = ['所有权凭证', '收益权', '使用权', '纪念版'];
+                for (let i = 1; i <= 8; i++) {
+                    nfts.push({
+                        id: i.toString().padStart(4, '0'),
+                        owner: `0x${Math.random().toString(16).substr(2, 8)}...${Math.random().toString(16).substr(2, 4)}`,
+                        type: types[Math.floor(Math.random() * types.length)],
+                        mintTime: new Date(Date.now() - Math.random() * 30 * 24 * 60 * 60 * 1000).toLocaleDateString(),
+                        status: Math.random() > 0.9 ? 'pending' : 'active',
+                        statusText: Math.random() > 0.9 ? '铸造中' : '已铸造'
+                    });
+                }
+                return nfts;
+            }
+
+            // 示例项目数据 - 与RWA交易市场数据保持一致
+            getProjectsData() {
+                return {
+                    'project-001': {
+                        name: '智慧商业综合体RWA项目',
+                        type: 'real-estate',
+                        status: 'active',
+                        location: '上海陆家嘴',
+                        totalValue: 50000000,
+                        description: '位于上海陆家嘴核心区域的高端商业综合体项目',
+                        completionRate: 75,
+                        expectedYield: '8.5%',
+                        riskLevel: 'medium',
+                        startDate: '2024-01-15',
+                        expectedCompletion: '2025-06-30',
+                        tokenSymbol: 'SCBT',
+                        tokenSupply: 1000000,
+                        tokenPrice: 50,
+                        nftCollection: 'Smart Complex NFTs',
+                        nftCount: 500,
+                        nftFloorPrice: 0.5
+                    },
+                    'asset-001': {
+                        name: '上海陆家嘴商业综合体',
+                        type: 'real-estate',
+                        status: 'active',
+                        location: '上海',
+                        totalValue: 50000000,
+                        description: '位于上海陆家嘴核心区域的高端商业综合体，包含办公楼、购物中心和酒店。',
+                        completionRate: 85,
+                        expectedYield: '6.8%',
+                        riskLevel: 'low',
+                        startDate: '2023-06-01',
+                        expectedCompletion: '2024-12-31',
+                        tokenSymbol: 'LJZC',
+                        tokenSupply: 1000000,
+                        tokenPrice: 50,
+                        availableShares: 1000,
+                        pricePerShare: 50000
+                    },
+                    'asset-002': {
+                        name: '深圳前海金融中心',
+                        type: 'real-estate',
+                        status: 'active',
+                        location: '深圳',
+                        totalValue: 80000000,
+                        description: '深圳前海自贸区核心地段的甲级写字楼，租户为知名金融机构。',
+                        completionRate: 90,
+                        expectedYield: '7.2%',
+                        riskLevel: 'low',
+                        startDate: '2023-03-01',
+                        expectedCompletion: '2024-08-31',
+                        tokenSymbol: 'QHFC',
+                        tokenSupply: 800000,
+                        tokenPrice: 100,
+                        availableShares: 800,
+                        pricePerShare: 100000
+                    },
+                    'asset-003': {
+                        name: '京沪高铁基础设施',
+                        type: 'infrastructure',
+                        status: 'pending',
+                        location: '北京-上海',
+                        totalValue: 120000000,
+                        description: '京沪高铁沿线基础设施投资项目，包含车站、信号系统等关键设施。',
+                        completionRate: 45,
+                        expectedYield: '5.5%',
+                        riskLevel: 'medium',
+                        startDate: '2024-01-01',
+                        expectedCompletion: '2026-12-31',
+                        tokenSymbol: 'JHGR',
+                        tokenSupply: 600000,
+                        tokenPrice: 200,
+                        availableShares: 600,
+                        pricePerShare: 200000
+                    }
+                };
             }
 
             generateMockNFTs() {
