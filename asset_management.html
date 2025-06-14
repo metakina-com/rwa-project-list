@@ -1097,49 +1097,49 @@
                 <h3>🚀 系统管理</h3>
                 <ul class="nav-menu">
                     <li class="nav-item">
-                        <a class="nav-link active" onclick="showModule('overview')" data-module="overview">
+                        <a class="nav-link active" onclick="showModule('overview-module')" data-module="overview-module">
                             <span class="nav-icon">📊</span>
                             <span class="nav-text">项目概览</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" onclick="showModule('oracle')" data-module="oracle">
+                        <a class="nav-link" onclick="showModule('oracle-module')" data-module="oracle-module">
                             <span class="nav-icon">🔮</span>
                             <span class="nav-text">预言机数据</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" onclick="showModule('ai')" data-module="ai">
+                        <a class="nav-link" onclick="showModule('ai-module')" data-module="ai-module">
                             <span class="nav-icon">🤖</span>
                             <span class="nav-text">AI智能分析</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" onclick="showModule('token')" data-module="token">
+                        <a class="nav-link" onclick="showModule('token-module')" data-module="token-module">
                             <span class="nav-icon">🪙</span>
                             <span class="nav-text">代币管理</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" onclick="showModule('nft')" data-module="nft">
+                        <a class="nav-link" onclick="showModule('nft-module')" data-module="nft-module">
                             <span class="nav-icon">🎨</span>
                             <span class="nav-text">NFT管理</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" onclick="showModule('compliance')" data-module="compliance">
+                        <a class="nav-link" onclick="showModule('compliance-module')" data-module="compliance-module">
                             <span class="nav-icon">⚖️</span>
                             <span class="nav-text">合规管理</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" onclick="showModule('market')" data-module="market">
+                        <a class="nav-link" onclick="showModule('market-module')" data-module="market-module">
                             <span class="nav-icon">📈</span>
                             <span class="nav-text">市场管理</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" onclick="showModule('data')" data-module="data">
+                        <a class="nav-link" onclick="showModule('data-module')" data-module="data-module">
                             <span class="nav-icon">📋</span>
                             <span class="nav-text">资料管理</span>
                         </a>
@@ -1710,6 +1710,147 @@
                                 </tbody>
                             </table>
                         </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- NFT管理模块 -->
+            <div id="nft-module" class="content-module">
+                <div class="module-header">
+                    <h1>🎨 NFT管理系统</h1>
+                    <p class="module-description">NFT发行、交易管理和收藏品展示</p>
+                </div>
+                <div class="nft-management">
+                    <div class="nft-stats">
+                        <div class="stat-card">
+                            <h3>总发行量</h3>
+                            <p class="stat-value">500 NFT</p>
+                            <span class="stat-change positive">+12.5%</span>
+                        </div>
+                        <div class="stat-card">
+                            <h3>已售出</h3>
+                            <p class="stat-value">387 NFT</p>
+                            <span class="stat-change positive">+8.3%</span>
+                        </div>
+                        <div class="stat-card">
+                            <h3>平均价格</h3>
+                            <p class="stat-value">0.25 ETH</p>
+                            <span class="stat-change positive">+15.2%</span>
+                        </div>
+                        <div class="stat-card">
+                            <h3>总交易额</h3>
+                            <p class="stat-value">96.75 ETH</p>
+                            <span class="stat-change positive">+22.1%</span>
+                        </div>
+                    </div>
+                    <div class="nft-actions">
+                        <button class="action-btn primary">发行新NFT</button>
+                        <button class="action-btn secondary">批量管理</button>
+                        <button class="action-btn secondary">交易记录</button>
+                    </div>
+                    <div class="nft-collection">
+                        <h3>NFT收藏品展示</h3>
+                        <div class="nft-grid">
+                            <div class="nft-card">
+                                <div class="nft-image">🏢</div>
+                                <h4>智慧大厦 #001</h4>
+                                <p>价格: 0.3 ETH</p>
+                                <span class="nft-status sold">已售出</span>
+                            </div>
+                            <div class="nft-card">
+                                <div class="nft-image">🌆</div>
+                                <h4>城市景观 #002</h4>
+                                <p>价格: 0.25 ETH</p>
+                                <span class="nft-status available">可购买</span>
+                            </div>
+                            <div class="nft-card">
+                                <div class="nft-image">🏗️</div>
+                                <h4>建设进程 #003</h4>
+                                <p>价格: 0.2 ETH</p>
+                                <span class="nft-status available">可购买</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 市场管理模块 -->
+            <div id="market-module" class="content-module">
+                <div class="module-header">
+                    <h1>📈 市场管理系统</h1>
+                    <p class="module-description">市场分析、交易监控和流动性管理</p>
+                </div>
+                <div class="market-management">
+                    <div class="market-overview">
+                        <div class="market-card">
+                            <h3>📊 市场概况</h3>
+                            <div class="market-data">
+                                <div class="data-item">
+                                    <span class="label">总市值:</span>
+                                    <span class="value">¥5.2亿</span>
+                                    <span class="change positive">+3.2%</span>
+                                </div>
+                                <div class="data-item">
+                                    <span class="label">24H交易量:</span>
+                                    <span class="value">¥1,250万</span>
+                                    <span class="change positive">+8.7%</span>
+                                </div>
+                                <div class="data-item">
+                                    <span class="label">活跃交易者:</span>
+                                    <span class="value">1,247人</span>
+                                    <span class="change positive">+5.1%</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="market-card">
+                            <h3>💹 价格走势</h3>
+                            <div class="price-chart">
+                                <canvas id="priceChart" width="400" height="200"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="trading-controls">
+                        <button class="action-btn primary">开启交易</button>
+                        <button class="action-btn secondary">暂停交易</button>
+                        <button class="action-btn secondary">设置价格</button>
+                        <button class="action-btn secondary">流动性管理</button>
+                    </div>
+                    <div class="recent-trades">
+                        <h3>最近交易</h3>
+                        <table class="trades-table">
+                            <thead>
+                                <tr>
+                                    <th>时间</th>
+                                    <th>类型</th>
+                                    <th>数量</th>
+                                    <th>价格</th>
+                                    <th>状态</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>14:32</td>
+                                    <td>买入</td>
+                                    <td>1,000 SCIT</td>
+                                    <td>¥10.25</td>
+                                    <td><span class="status success">完成</span></td>
+                                </tr>
+                                <tr>
+                                    <td>14:28</td>
+                                    <td>卖出</td>
+                                    <td>500 SCIT</td>
+                                    <td>¥10.30</td>
+                                    <td><span class="status success">完成</span></td>
+                                </tr>
+                                <tr>
+                                    <td>14:25</td>
+                                    <td>买入</td>
+                                    <td>2,000 SCIT</td>
+                                    <td>¥10.20</td>
+                                    <td><span class="status pending">处理中</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
@@ -4070,6 +4211,8 @@
         
         // 显示指定模块
         function showModule(moduleId) {
+            console.log('Switching to module:', moduleId);
+            
             // 隐藏所有模块
             const modules = document.querySelectorAll('.content-module');
             modules.forEach(module => {
@@ -4082,16 +4225,20 @@
                 link.classList.remove('active');
             });
             
-            // 显示指定模块
-            const targetModule = document.getElementById(moduleId + '-module');
+            // 显示指定模块 (moduleId already includes '-module' suffix)
+            const targetModule = document.getElementById(moduleId);
             if (targetModule) {
                 targetModule.classList.add('active');
+                console.log('Module displayed:', moduleId);
+            } else {
+                console.log('Module not found:', moduleId);
             }
             
             // 激活对应的导航链接
             const activeLink = document.querySelector(`[data-module="${moduleId}"]`);
             if (activeLink) {
                 activeLink.classList.add('active');
+                console.log('Nav link activated');
             }
         }
         
@@ -4103,7 +4250,7 @@
         // 页面加载完成后初始化
         document.addEventListener('DOMContentLoaded', function() {
             // 默认显示项目概览模块
-            showModule('overview');
+            showModule('overview-module');
         });
         
 
