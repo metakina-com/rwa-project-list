@@ -4247,6 +4247,10 @@
             showModule(system);
         }
         
+        // 确保函数在全局作用域中可用
+        window.showModule = showModule;
+        window.navigateToSystem = navigateToSystem;
+        
         // 页面加载完成后初始化
         document.addEventListener('DOMContentLoaded', function() {
             // 默认显示项目概览模块
