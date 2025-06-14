@@ -26,6 +26,26 @@
             max-width: 1400px;
             margin: 0 auto;
             padding: 20px;
+            display: flex;
+            gap: 20px;
+            min-height: calc(100vh - 40px);
+        }
+        
+        .left-sidebar {
+            width: 300px;
+            flex-shrink: 0;
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            height: fit-content;
+            position: sticky;
+            top: 20px;
+        }
+        
+        .main-content {
+            flex: 1;
+            min-width: 0;
         }
 
         .header {
@@ -92,6 +112,151 @@
             color: #2c3e50;
             font-size: 1.1rem;
             font-weight: 600;
+        }
+
+        .sidebar-header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #e9ecef;
+        }
+        
+        .sidebar-header h2 {
+            color: #2c3e50;
+            font-size: 1.4rem;
+            margin-bottom: 10px;
+        }
+        
+        .sidebar-header .project-status {
+            display: inline-block;
+            background: #28a745;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .sidebar-navigation {
+            margin-bottom: 30px;
+        }
+
+        .sidebar-navigation h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-menu {
+            list-style: none;
+        }
+
+        .nav-item {
+            margin-bottom: 8px;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 15px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            text-decoration: none;
+            color: #495057;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            background: #007bff;
+            color: white;
+            transform: translateX(5px);
+            border-color: #0056b3;
+        }
+
+        .nav-icon {
+            font-size: 1.2rem;
+            width: 20px;
+            text-align: center;
+        }
+
+        .nav-text {
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+        
+        .sidebar-stats {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+        
+        .sidebar-stats h4 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 1rem;
+        }
+        
+        .stat-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            padding: 8px 0;
+            border-bottom: 1px solid #e9ecef;
+        }
+        
+        .stat-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+        
+        .stat-label {
+            font-size: 0.85rem;
+            color: #6c757d;
+        }
+        
+        .stat-value {
+            font-weight: 600;
+            color: #2c3e50;
+            font-size: 0.9rem;
+        }
+        
+        .content-module {
+            display: none;
+        }
+        
+        .content-module.active {
+            display: block;
+        }
+        
+        .module-header {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+        }
+        
+        .module-header h1 {
+            color: #2c3e50;
+            font-size: 2rem;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .module-description {
+            color: #6c757d;
+            font-size: 1.1rem;
+            line-height: 1.6;
         }
 
         .dashboard {
@@ -912,94 +1077,144 @@
 </head>
 <body>
     <div class="container">
-        <!-- 项目头部信息 -->
-        <div class="header">
-            <div class="breadcrumb-nav">
-                <a href="index.html">🏠 首页</a>
-                <span>></span>
-                <a href="rwa_client_form.html">项目申请</a>
-                <span>></span>
-                <span>资产管理</span>
-            </div>
-            <h1 id="projectTitle">🏢 智慧商业综合体RWA项目</h1>
-            
-            <!-- 系统入口导航 -->
-            <div class="system-navigation">
-                <h3>🚀 系统管理中心</h3>
-                <div class="nav-grid">
-                    <div class="nav-card" onclick="navigateToSystem('project')">
-                        <div class="nav-icon">📊</div>
-                        <h4>项目管理系统</h4>
-                        <p>项目进度、里程碑、团队管理</p>
-                    </div>
-                    <div class="nav-card" onclick="navigateToSystem('token')">
-                        <div class="nav-icon">🪙</div>
-                        <h4>代币管理系统</h4>
-                        <p>代币发行、流通、价格管理</p>
-                    </div>
-                    <div class="nav-card" onclick="navigateToSystem('nft')">
-                        <div class="nav-icon">🎨</div>
-                        <h4>NFT管理系统</h4>
-                        <p>NFT创建、销售、交易管理</p>
-                    </div>
-                    <div class="nav-card" onclick="navigateToSystem('data')">
-                        <div class="nav-icon">📋</div>
-                        <h4>资料管理系统</h4>
-                        <p>文档存储、版本控制、审核</p>
-                    </div>
-                    <div class="nav-card" onclick="navigateToSystem('compliance')">
-                        <div class="nav-icon">⚖️</div>
-                        <h4>合规性管理系统</h4>
-                        <p>法规遵循、风险评估、审计</p>
-                    </div>
-                    <div class="nav-card" onclick="navigateToSystem('market')">
-                        <div class="nav-icon">📈</div>
-                        <h4>一二级市场管理</h4>
-                        <p>发行市场、交易市场、流动性</p>
-                    </div>
-                    <div class="nav-card" onclick="navigateToSystem('oracle')">
-                        <div class="nav-icon">🔮</div>
-                        <h4>预言机数据集成</h4>
-                        <p>实时数据、价格feeds、外部API</p>
-                    </div>
-                    <div class="nav-card" onclick="navigateToSystem('ai')">
-                        <div class="nav-icon">🤖</div>
-                        <h4>AI智能模块</h4>
-                        <p>智能分析、风险预测、决策支持</p>
-                    </div>
+        <!-- 左侧边栏 -->
+        <div class="left-sidebar">
+            <!-- 项目头部信息 -->
+            <div class="sidebar-header">
+                <div class="breadcrumb-nav">
+                    <a href="index.html">🏠 首页</a>
+                    <span>></span>
+                    <a href="rwa_client_form.html">项目申请</a>
+                    <span>></span>
+                    <span>资产管理</span>
                 </div>
+                <h2 id="projectTitle">🏢 智慧城市基础设施</h2>
+                <div class="project-status">🟢 运营中</div>
             </div>
             
-            <div class="project-info">
-                <div class="info-card">
-                    <h3>项目状态</h3>
-                    <p>🟢 运营中</p>
+            <!-- 系统导航菜单 -->
+            <div class="sidebar-navigation">
+                <h3>🚀 系统管理</h3>
+                <ul class="nav-menu">
+                    <li class="nav-item">
+                        <a class="nav-link active" onclick="showModule('overview')" data-module="overview">
+                            <span class="nav-icon">📊</span>
+                            <span class="nav-text">项目概览</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" onclick="showModule('oracle')" data-module="oracle">
+                            <span class="nav-icon">🔮</span>
+                            <span class="nav-text">预言机数据</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" onclick="showModule('ai')" data-module="ai">
+                            <span class="nav-icon">🤖</span>
+                            <span class="nav-text">AI智能分析</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" onclick="showModule('token')" data-module="token">
+                            <span class="nav-icon">🪙</span>
+                            <span class="nav-text">代币管理</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" onclick="showModule('nft')" data-module="nft">
+                            <span class="nav-icon">🎨</span>
+                            <span class="nav-text">NFT管理</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" onclick="showModule('compliance')" data-module="compliance">
+                            <span class="nav-icon">⚖️</span>
+                            <span class="nav-text">合规管理</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" onclick="showModule('market')" data-module="market">
+                            <span class="nav-icon">📈</span>
+                            <span class="nav-text">市场管理</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" onclick="showModule('data')" data-module="data">
+                            <span class="nav-icon">📋</span>
+                            <span class="nav-text">资料管理</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            
+            <!-- 快速统计 -->
+            <div class="sidebar-stats">
+                <h4>📈 关键指标</h4>
+                <div class="stat-item">
+                    <span class="stat-label">资产估值</span>
+                    <span class="stat-value">¥50,000万</span>
                 </div>
-                <div class="info-card">
-                    <h3>资产估值</h3>
-                    <p>¥50,000万元</p>
+                <div class="stat-item">
+                    <span class="stat-label">年化收益</span>
+                    <span class="stat-value">8.5%</span>
                 </div>
-                <div class="info-card">
-                    <h3>年化收益率</h3>
-                    <p>8.5%</p>
+                <div class="stat-item">
+                    <span class="stat-label">代币发行</span>
+                    <span class="stat-value">1,000,000</span>
                 </div>
-                <div class="info-card">
-                    <h3>代币发行量</h3>
-                    <p>1,000,000 RWA</p>
+                <div class="stat-item">
+                    <span class="stat-label">NFT发行</span>
+                    <span class="stat-value">500</span>
                 </div>
-                <div class="info-card">
-                    <h3>NFT发行量</h3>
-                    <p>500 NFT</p>
-                </div>
-                <div class="info-card">
-                    <h3>持有人数量</h3>
-                    <p>1,247人</p>
+                <div class="stat-item">
+                    <span class="stat-label">持有人数</span>
+                    <span class="stat-value">1,247</span>
                 </div>
             </div>
         </div>
+        
+        <!-- 右侧主内容区 -->
+        <div class="main-content">
+            <!-- 项目概览模块 -->
+            <div id="overview-module" class="content-module active">
+                <div class="header">
+                    <h1>📊 项目概览</h1>
+                    <div class="project-info">
+                        <div class="info-card">
+                            <h3>项目状态</h3>
+                            <p>🟢 运营中</p>
+                        </div>
+                        <div class="info-card">
+                            <h3>资产估值</h3>
+                            <p>¥50,000万元</p>
+                        </div>
+                        <div class="info-card">
+                            <h3>年化收益率</h3>
+                            <p>8.5%</p>
+                        </div>
+                        <div class="info-card">
+                            <h3>代币发行量</h3>
+                            <p>1,000,000 RWA</p>
+                        </div>
+                        <div class="info-card">
+                            <h3>NFT发行量</h3>
+                            <p>500 NFT</p>
+                        </div>
+                        <div class="info-card">
+                            <h3>持有人数量</h3>
+                            <p>1,247人</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-        <!-- 预言机数据面板 -->
-        <div class="oracle-panel" id="oracle-panel">
+            <!-- 预言机数据模块 -->
+            <div id="oracle-module" class="content-module">
+                <div class="module-header">
+                    <h1>🔮 预言机数据中心</h1>
+                    <p class="module-description">实时市场数据、资产表现分析和系统性能监控</p>
+                </div>
+                <div class="oracle-panel" id="oracle-panel">
             <h2>🔮 预言机数据中心 
                 <button class="data-refresh-btn" onclick="refreshOracleData()">
                     <i class="fas fa-sync-alt"></i> 刷新数据
@@ -1098,9 +1313,16 @@
             </div>
         </div>
 
-        <!-- AI智能分析面板 -->
-        <div class="ai-panel">
-            <h2>🤖 AI智能分析中心</h2>
+            </div>
+
+            <!-- AI智能分析模块 -->
+            <div id="ai-module" class="content-module">
+                <div class="module-header">
+                    <h1>🤖 AI智能分析中心</h1>
+                    <p class="module-description">智能预测、风险评估和投资组合优化建议</p>
+                </div>
+                <div class="ai-panel">
+                    <h2>🤖 AI智能分析中心</h2>
             <div class="ai-grid">
                 <div class="ai-card">
                     <h4>📈 收益预测</h4>
@@ -1176,10 +1398,16 @@
                     </div>
                 </div>
             </div>
-        </div>
+                </div>
+            </div>
 
-        <!-- 主要管理面板 -->
-        <div class="dashboard">
+            <!-- 代币管理模块 -->
+            <div id="token-module" class="content-module">
+                <div class="module-header">
+                    <h1>🪙 代币管理系统</h1>
+                    <p class="module-description">代币发行、流通管理和价格监控</p>
+                </div>
+                <div class="dashboard">
             <!-- 代币管理 -->
             <div class="panel">
                 <h2>🪙 代币管理</h2>
@@ -1375,8 +1603,124 @@
             </div>
         </div>
 
-        <!-- 项目管理和合规管理 -->
-        <div class="dashboard">
+            <!-- 合规管理模块 -->
+            <div id="compliance-module" class="content-module">
+                <div class="module-header">
+                    <h1>⚖️ 合规管理系统</h1>
+                    <p class="module-description">法规遵循、风险评估和审计管理</p>
+                </div>
+                <div class="dashboard">
+                    <!-- 合规管理面板 -->
+                    <div class="panel">
+                        <h2>⚖️ 合规管理</h2>
+                        <div class="tabs">
+                            <button class="tab active" onclick="switchTab('compliance', 'overview')">概览</button>
+                            <button class="tab" onclick="switchTab('compliance', 'regulatory')">监管</button>
+                            <button class="tab" onclick="switchTab('compliance', 'audit')">审计</button>
+                        </div>
+                        
+                        <div id="compliance-overview" class="tab-content active">
+                            <div class="stats-grid">
+                                <div class="stat-card">
+                                    <h3>98%</h3>
+                                    <p>合规评分</p>
+                                </div>
+                                <div class="stat-card">
+                                    <h3>3</h3>
+                                    <p>待处理事项</p>
+                                </div>
+                                <div class="stat-card">
+                                    <h3>15</h3>
+                                    <p>已完成审计</p>
+                                </div>
+                            </div>
+                            <div class="action-buttons">
+                                <button class="btn btn-primary">📋 合规检查</button>
+                                <button class="btn btn-info">📊 生成报告</button>
+                                <button class="btn btn-warning">⚠️ 风险评估</button>
+                            </div>
+                        </div>
+                        
+                        <div id="compliance-regulatory" class="tab-content">
+                            <h3>监管合规</h3>
+                            <div class="action-buttons">
+                                <button class="btn btn-primary">📋 提交监管报告</button>
+                                <button class="btn btn-info">🔍 合规检查</button>
+                            </div>
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>监管要求</th>
+                                        <th>合规状态</th>
+                                        <th>最后检查</th>
+                                        <th>下次检查</th>
+                                        <th>操作</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>香港SFC许可</td>
+                                        <td><span class="status-badge status-active">合规</span></td>
+                                        <td>2024-05-15</td>
+                                        <td>2024-08-15</td>
+                                        <td><button class="btn btn-info" style="padding: 4px 8px; font-size: 0.8rem;">更新</button></td>
+                                    </tr>
+                                    <tr>
+                                        <td>新加坡MAS报告</td>
+                                        <td><span class="status-badge status-pending">待提交</span></td>
+                                        <td>2024-03-20</td>
+                                        <td>2024-06-20</td>
+                                        <td><button class="btn btn-warning" style="padding: 4px 8px; font-size: 0.8rem;">提交</button></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        <div id="compliance-audit" class="tab-content">
+                            <h3>审计管理</h3>
+                            <div class="action-buttons">
+                                <button class="btn btn-primary" onclick="openModal('scheduleAuditModal')">📅 安排审计</button>
+                                <button class="btn btn-info">📊 审计报告</button>
+                            </div>
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>审计类型</th>
+                                        <th>审计机构</th>
+                                        <th>审计时间</th>
+                                        <th>状态</th>
+                                        <th>结果</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>年度财务审计</td>
+                                        <td>德勤会计师事务所</td>
+                                        <td>2024-03-01</td>
+                                        <td><span class="status-badge status-active">已完成</span></td>
+                                        <td>无保留意见</td>
+                                    </tr>
+                                    <tr>
+                                        <td>合规性审计</td>
+                                        <td>普华永道</td>
+                                        <td>2024-06-01</td>
+                                        <td><span class="status-badge status-pending">进行中</span></td>
+                                        <td>-</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 数据管理模块 -->
+            <div id="data-module" class="content-module">
+                <div class="module-header">
+                    <h1>📋 项目数据管理</h1>
+                    <p class="module-description">文档存储、版本控制和数据审核</p>
+                </div>
+                <div class="dashboard">
             <!-- 项目资料管理 -->
             <div class="panel">
                 <h2>📋 项目资料管理</h2>
@@ -3722,6 +4066,44 @@
             
             // 系统导航卡片已经通过onclick属性绑定了点击事件
              // 无需额外的事件监听器
+        });
+        
+        // 显示指定模块
+        function showModule(moduleId) {
+            // 隐藏所有模块
+            const modules = document.querySelectorAll('.content-module');
+            modules.forEach(module => {
+                module.classList.remove('active');
+            });
+            
+            // 移除所有导航链接的active状态
+            const navLinks = document.querySelectorAll('.nav-link');
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+            });
+            
+            // 显示指定模块
+            const targetModule = document.getElementById(moduleId + '-module');
+            if (targetModule) {
+                targetModule.classList.add('active');
+            }
+            
+            // 激活对应的导航链接
+            const activeLink = document.querySelector(`[data-module="${moduleId}"]`);
+            if (activeLink) {
+                activeLink.classList.add('active');
+            }
+        }
+        
+        // 导航到不同系统（保持向后兼容）
+        function navigateToSystem(system) {
+            showModule(system);
+        }
+        
+        // 页面加载完成后初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            // 默认显示项目概览模块
+            showModule('overview');
         });
         
 
