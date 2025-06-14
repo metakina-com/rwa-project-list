@@ -32,6 +32,31 @@
             box-shadow: 0 8px 32px rgba(0,0,0,0.1);
         }
 
+        .nav-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .nav-links a {
+            color: #007bff;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: #0056b3;
+        }
+
         .header h1 {
             color: #2c3e50;
             font-size: 2.5rem;
@@ -1054,6 +1079,14 @@
     <div class="container">
         <!-- 项目头部信息 -->
         <div class="header">
+            <div class="nav-bar">
+                <div class="nav-links">
+                    <a href="index.html">首页</a>
+                    <a href="rwa_marketplace.html">交易市场</a>
+                    <a href="asset_management.html">资产管理</a>
+                    <a href="rwa_client_form.html">项目申请</a>
+                </div>
+            </div>
             <h1>🏢 智慧商业综合体RWA项目</h1>
             
             <!-- 系统入口导航 -->
@@ -1089,6 +1122,11 @@
                         <div class="nav-icon">📈</div>
                         <h4>一二级市场管理</h4>
                         <p>发行市场、交易市场、流动性</p>
+                    </div>
+                    <div class="nav-card" onclick="publishToMarketplace()" style="border: 2px solid #28a745; background: linear-gradient(135deg, #e8f5e8 0%, #d4edda 100%);">
+                        <div class="nav-icon">🚀</div>
+                        <h4>发行到RWA市场</h4>
+                        <p>将项目发布到公共交易市场</p>
                     </div>
                     <div class="nav-card" onclick="navigateToSystem('oracle')">
                         <div class="nav-icon">🔮</div>
@@ -3082,10 +3120,148 @@
             }, 3000);
         }
         
+        // 发行到RWA市场
+        function publishToMarketplace() {
+            // 检查项目状态
+            const currentProject = window.projectManager ? window.projectManager.currentProject : null;
+            
+            if (!currentProject) {
+                alert('请先选择一个项目');
+                return;
+            }
+            
+            // 显示发行确认对话框
+            const confirmModal = document.createElement('div');
+            confirmModal.className = 'modal';
+            confirmModal.style.display = 'block';
+            confirmModal.innerHTML = `
+                <div class="modal-content" style="max-width: 600px;">
+                    <div class="modal-header">
+                        <h2 class="modal-title">🚀 发行到RWA交易市场</h2>
+                        <button class="close-btn" onclick="this.closest('.modal').remove()">&times;</button>
+                    </div>
+                    
+                    <div style="margin-bottom: 20px;">
+                        <h3 style="color: #2c3e50; margin-bottom: 10px;">项目信息</h3>
+                        <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+                            <p><strong>项目名称：</strong>${currentProject.name || '智慧商业综合体RWA项目'}</p>
+                            <p><strong>项目类型：</strong>房地产RWA</p>
+                            <p><strong>预计总价值：</strong>¥5,000万</p>
+                            <p><strong>发行份额：</strong>1,000份</p>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-bottom: 20px;">
+                        <h3 style="color: #2c3e50; margin-bottom: 10px;">发行设置</h3>
+                        <div class="form-group">
+                            <label class="form-label">单份价格 (¥)</label>
+                            <input type="number" class="form-input" id="sharePrice" value="50000" min="1000">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">可售份额</label>
+                            <input type="number" class="form-input" id="availableShares" value="800" min="1" max="1000">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">预期年化收益率 (%)</label>
+                            <input type="number" class="form-input" id="expectedYield" value="6.8" min="0" max="20" step="0.1">
+                        </div>
+                    </div>
+                    
+                    <div style="background: #fff3cd; border: 1px solid #ffeaa7; border-radius: 8px; padding: 15px; margin-bottom: 20px;">
+                        <h4 style="color: #856404; margin-bottom: 10px;">⚠️ 发行须知</h4>
+                        <ul style="color: #856404; margin: 0; padding-left: 20px;">
+                            <li>发行后项目将在RWA交易市场公开展示</li>
+                            <li>投资者可以购买项目份额进行投资</li>
+                            <li>发行信息一旦提交将无法修改</li>
+                            <li>请确保所有信息准确无误</li>
+                        </ul>
+                    </div>
+                    
+                    <div style="display: flex; gap: 10px; margin-top: 30px;">
+                        <button class="btn btn-secondary" onclick="this.closest('.modal').remove()">取消</button>
+                        <button class="btn btn-primary" onclick="confirmPublishToMarket()">确认发行</button>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(confirmModal);
+        }
+        
+        // 确认发行到市场
+        function confirmPublishToMarket() {
+            const sharePrice = document.getElementById('sharePrice').value;
+            const availableShares = document.getElementById('availableShares').value;
+            const expectedYield = document.getElementById('expectedYield').value;
+            
+            if (!sharePrice || !availableShares || !expectedYield) {
+                alert('请填写完整的发行信息');
+                return;
+            }
+            
+            // 模拟发行过程
+            const modal = document.querySelector('.modal');
+            const confirmBtn = modal.querySelector('.btn-primary');
+            
+            confirmBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 发行中...';
+            confirmBtn.disabled = true;
+            
+            setTimeout(() => {
+                // 保存发行信息到localStorage
+                const publishedAsset = {
+                    id: 'asset-' + Date.now(),
+                    name: '智慧商业综合体RWA项目',
+                    type: 'real-estate',
+                    description: '位于核心商业区的高端商业综合体，包含办公楼、购物中心和酒店。',
+                    totalValue: parseInt(sharePrice) * 1000,
+                    availableShares: parseInt(availableShares),
+                    pricePerShare: parseInt(sharePrice),
+                    status: 'active',
+                    location: '上海',
+                    yield: expectedYield + '%',
+                    icon: '🏢',
+                    publishTime: new Date().toISOString()
+                };
+                
+                // 保存到已发行资产列表
+                const publishedAssets = JSON.parse(localStorage.getItem('publishedAssets') || '[]');
+                publishedAssets.push(publishedAsset);
+                localStorage.setItem('publishedAssets', JSON.stringify(publishedAssets));
+                
+                modal.remove();
+                
+                // 显示成功提示
+                showNotification('项目已成功发行到RWA交易市场！', 'success');
+                
+                // 询问是否跳转到交易市场
+                setTimeout(() => {
+                    if (confirm('发行成功！是否立即查看RWA交易市场？')) {
+                        window.open('rwa_marketplace.html', '_blank');
+                    }
+                }, 1000);
+                
+            }, 2000);
+        }
+        
         // 显示通知
         function showNotification(message, type = 'info') {
             const notification = document.createElement('div');
             notification.className = `notification ${type}`;
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: ${type === 'success' ? '#28a745' : '#007bff'};
+                color: white;
+                padding: 15px 20px;
+                border-radius: 8px;
+                box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+                z-index: 10000;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                transform: translateX(100%);
+                transition: transform 0.3s ease;
+            `;
             notification.innerHTML = `
                 <i class="fas fa-${type === 'success' ? 'check-circle' : 'info-circle'}"></i>
                 <span>${message}</span>
@@ -3095,14 +3271,16 @@
             
             // 显示动画
             setTimeout(() => {
-                notification.classList.add('show');
+                notification.style.transform = 'translateX(0)';
             }, 100);
             
             // 自动隐藏
             setTimeout(() => {
-                notification.classList.remove('show');
+                notification.style.transform = 'translateX(100%)';
                 setTimeout(() => {
-                    document.body.removeChild(notification);
+                    if (document.body.contains(notification)) {
+                        document.body.removeChild(notification);
+                    }
                 }, 300);
             }, 3000);
         }

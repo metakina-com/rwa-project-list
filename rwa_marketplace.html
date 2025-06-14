@@ -1,0 +1,899 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RWA公共交易市场 - 元话数字投行</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Header Styles */
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+        }
+
+        .header h1 {
+            color: #2c3e50;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .header-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .stat-card {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            border-left: 4px solid #007bff;
+        }
+
+        .stat-card h3 {
+            color: #495057;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .stat-card .value {
+            color: #2c3e50;
+            font-size: 1.3rem;
+            font-weight: 600;
+        }
+
+        /* Search and Filter Section */
+        .search-section {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+        }
+
+        .search-bar {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .search-input {
+            flex: 1;
+            min-width: 300px;
+            padding: 12px 20px;
+            border: 2px solid #e9ecef;
+            border-radius: 25px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #007bff;
+            box-shadow: 0 0 0 3px rgba(0,123,255,0.1);
+        }
+
+        .filter-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 8px 16px;
+            border: 2px solid #e9ecef;
+            background: white;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .filter-btn:hover,
+        .filter-btn.active {
+            background: #007bff;
+            color: white;
+            border-color: #007bff;
+        }
+
+        /* Asset Grid */
+        .assets-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .asset-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .asset-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+        }
+
+        .asset-image {
+            height: 200px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 3rem;
+            position: relative;
+        }
+
+        .asset-status {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .status-active {
+            background: rgba(40, 167, 69, 0.9);
+            color: white;
+        }
+
+        .status-pending {
+            background: rgba(255, 193, 7, 0.9);
+            color: #333;
+        }
+
+        .asset-content {
+            padding: 20px;
+        }
+
+        .asset-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        .asset-description {
+            color: #6c757d;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+
+        .asset-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .detail-item {
+            text-align: center;
+        }
+
+        .detail-label {
+            color: #6c757d;
+            font-size: 0.8rem;
+            margin-bottom: 5px;
+        }
+
+        .detail-value {
+            color: #2c3e50;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .asset-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: #007bff;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #0056b3;
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #545b62;
+        }
+
+        /* Trading Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #6c757d;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #007bff;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .assets-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .search-bar {
+                flex-direction: column;
+            }
+
+            .search-input {
+                min-width: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header Section -->
+        <div class="header">
+            <h1>
+                <i class="fas fa-store"></i>
+                RWA公共交易市场
+            </h1>
+            <p style="color: #6c757d; margin-bottom: 20px;">发现、投资和交易优质RWA资产</p>
+            
+            <div class="header-stats">
+                <div class="stat-card">
+                    <h3>总资产数量</h3>
+                    <div class="value" id="totalAssets">156</div>
+                </div>
+                <div class="stat-card">
+                    <h3>总市值</h3>
+                    <div class="value" id="totalValue">¥2.8亿</div>
+                </div>
+                <div class="stat-card">
+                    <h3>24h交易量</h3>
+                    <div class="value" id="dailyVolume">¥580万</div>
+                </div>
+                <div class="stat-card">
+                    <h3>活跃投资者</h3>
+                    <div class="value" id="activeInvestors">1,234</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Search and Filter Section -->
+        <div class="search-section">
+            <div class="search-bar">
+                <input type="text" class="search-input" placeholder="搜索资产名称、类型或地区..." id="searchInput">
+                <button class="btn btn-primary" onclick="searchAssets()">
+                    <i class="fas fa-search"></i> 搜索
+                </button>
+            </div>
+            
+            <div class="filter-buttons">
+                <button class="filter-btn active" data-filter="all">全部</button>
+                <button class="filter-btn" data-filter="real-estate">房地产</button>
+                <button class="filter-btn" data-filter="infrastructure">基础设施</button>
+                <button class="filter-btn" data-filter="energy">能源</button>
+                <button class="filter-btn" data-filter="commodities">大宗商品</button>
+                <button class="filter-btn" data-filter="art">艺术品</button>
+            </div>
+        </div>
+
+        <!-- Assets Grid -->
+        <div class="assets-grid" id="assetsGrid">
+            <!-- Assets will be dynamically loaded here -->
+        </div>
+    </div>
+
+    <!-- Trading Modal -->
+    <div class="modal" id="tradingModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">购买资产份额</h2>
+                <button class="close-btn" onclick="closeTradingModal()">&times;</button>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">资产名称</label>
+                <input type="text" class="form-input" id="assetName" readonly>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">购买份额</label>
+                <input type="number" class="form-input" id="shareAmount" placeholder="输入购买份额数量" min="1">
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">单价</label>
+                <input type="text" class="form-input" id="sharePrice" readonly>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">总金额</label>
+                <input type="text" class="form-input" id="totalAmount" readonly>
+            </div>
+            
+            <div style="display: flex; gap: 10px; margin-top: 30px;">
+                <button class="btn btn-secondary" onclick="closeTradingModal()">取消</button>
+                <button class="btn btn-primary" onclick="confirmPurchase()">确认购买</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // User authentication check
+        function checkUserAuthentication() {
+            const isLoggedIn = localStorage.getItem('userLoggedIn');
+            const userInfo = JSON.parse(localStorage.getItem('userInfo') || '{}');
+            
+            if (!isLoggedIn || !userInfo.id) {
+                // Redirect to login or show login modal
+                showLoginModal();
+                return false;
+            }
+            
+            // Update header with user info
+            updateUserDisplay(userInfo);
+            return true;
+        }
+        
+        // Show login modal
+        function showLoginModal() {
+            const loginModal = document.createElement('div');
+            loginModal.className = 'modal';
+            loginModal.style.display = 'block';
+            loginModal.innerHTML = `
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h2 class="modal-title">用户登录</h2>
+                    </div>
+                    <p style="margin-bottom: 20px; color: #6c757d;">RWA交易市场仅对注册用户开放，请先登录您的账户。</p>
+                    <div class="form-group">
+                        <label class="form-label">用户名/邮箱</label>
+                        <input type="text" class="form-input" id="loginUsername" placeholder="请输入用户名或邮箱">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">密码</label>
+                        <input type="password" class="form-input" id="loginPassword" placeholder="请输入密码">
+                    </div>
+                    <div style="display: flex; gap: 10px; margin-top: 30px;">
+                        <button class="btn btn-secondary" onclick="simulateLogin()">模拟登录</button>
+                        <button class="btn btn-primary" onclick="performLogin()">登录</button>
+                    </div>
+                    <p style="margin-top: 15px; text-align: center; color: #6c757d; font-size: 0.9rem;">
+                        还没有账户？<a href="rwa_client_form.html" style="color: #007bff;">立即申请RWA项目</a>
+                    </p>
+                </div>
+            `;
+            document.body.appendChild(loginModal);
+        }
+        
+        // Simulate login for demo
+        function simulateLogin() {
+            const userInfo = {
+                id: 'user_' + Date.now(),
+                name: '演示用户',
+                email: 'demo@example.com',
+                role: 'investor',
+                loginTime: new Date().toISOString()
+            };
+            
+            localStorage.setItem('userLoggedIn', 'true');
+            localStorage.setItem('userInfo', JSON.stringify(userInfo));
+            
+            // Remove login modal
+            const modal = document.querySelector('.modal');
+            if (modal) modal.remove();
+            
+            // Update display
+            updateUserDisplay(userInfo);
+            
+            // Show success message
+            alert('登录成功！欢迎来到RWA交易市场');
+        }
+        
+        // Perform actual login
+        function performLogin() {
+            const username = document.getElementById('loginUsername').value;
+            const password = document.getElementById('loginPassword').value;
+            
+            if (!username || !password) {
+                alert('请输入用户名和密码');
+                return;
+            }
+            
+            // Simulate login validation
+            if (username && password) {
+                const userInfo = {
+                    id: 'user_' + username.replace(/[^a-zA-Z0-9]/g, ''),
+                    name: username,
+                    email: username.includes('@') ? username : username + '@example.com',
+                    role: 'investor',
+                    loginTime: new Date().toISOString()
+                };
+                
+                localStorage.setItem('userLoggedIn', 'true');
+                localStorage.setItem('userInfo', JSON.stringify(userInfo));
+                
+                // Remove login modal
+                const modal = document.querySelector('.modal');
+                if (modal) modal.remove();
+                
+                // Update display
+                updateUserDisplay(userInfo);
+                
+                alert('登录成功！');
+            }
+        }
+        
+        // Update user display in header
+        function updateUserDisplay(userInfo) {
+            const header = document.querySelector('.header');
+            const existingUserInfo = header.querySelector('.user-info');
+            
+            if (existingUserInfo) {
+                existingUserInfo.remove();
+            }
+            
+            const userInfoDiv = document.createElement('div');
+            userInfoDiv.className = 'user-info';
+            userInfoDiv.style.cssText = `
+                display: flex;
+                align-items: center;
+                gap: 15px;
+                margin-top: 15px;
+                padding: 10px 15px;
+                background: rgba(0, 123, 255, 0.1);
+                border-radius: 10px;
+                border-left: 4px solid #007bff;
+            `;
+            
+            userInfoDiv.innerHTML = `
+                <div style="flex: 1;">
+                    <div style="font-weight: 600; color: #2c3e50;">👤 ${userInfo.name}</div>
+                    <div style="font-size: 0.9rem; color: #6c757d;">${userInfo.email}</div>
+                </div>
+                <button onclick="logout()" style="
+                    background: #dc3545;
+                    color: white;
+                    border: none;
+                    padding: 5px 10px;
+                    border-radius: 5px;
+                    cursor: pointer;
+                    font-size: 0.8rem;
+                ">退出登录</button>
+            `;
+            
+            header.appendChild(userInfoDiv);
+        }
+        
+        // Logout function
+        function logout() {
+            localStorage.removeItem('userLoggedIn');
+            localStorage.removeItem('userInfo');
+            location.reload();
+        }
+
+        // 获取资产数据（包含示例数据和发行的项目）
+        function getAssetData() {
+            // 示例资产数据
+            const sampleAssets = [
+                {
+                    id: 'asset-001',
+                    name: '上海陆家嘴商业综合体',
+                    type: 'real-estate',
+                    description: '位于上海陆家嘴核心区域的高端商业综合体，包含办公楼、购物中心和酒店。',
+                    totalValue: 50000000,
+                    availableShares: 1000,
+                    pricePerShare: 50000,
+                    status: 'active',
+                    location: '上海',
+                    yield: '6.8%',
+                    icon: '🏢'
+                },
+                {
+                    id: 'asset-002',
+                    name: '深圳前海金融中心',
+                    type: 'real-estate',
+                    description: '深圳前海自贸区核心地段的甲级写字楼，租户为知名金融机构。',
+                    totalValue: 80000000,
+                    availableShares: 800,
+                    pricePerShare: 100000,
+                    status: 'active',
+                    location: '深圳',
+                    yield: '7.2%',
+                    icon: '🏦'
+                },
+                {
+                    id: 'asset-003',
+                    name: '京沪高铁基础设施',
+                    type: 'infrastructure',
+                    description: '京沪高铁沿线基础设施投资项目，包含车站、信号系统等关键设施。',
+                    totalValue: 120000000,
+                    availableShares: 600,
+                    pricePerShare: 200000,
+                    status: 'pending',
+                    location: '北京-上海',
+                    yield: '5.5%',
+                    icon: '🚄'
+                },
+                {
+                    id: 'asset-004',
+                    name: '新疆风电场项目',
+                    type: 'energy',
+                    description: '新疆地区大型风力发电场，装机容量200MW，已并网发电。',
+                    totalValue: 60000000,
+                    availableShares: 1200,
+                    pricePerShare: 50000,
+                    status: 'active',
+                    location: '新疆',
+                    yield: '8.1%',
+                    icon: '💨'
+                },
+                {
+                    id: 'asset-005',
+                    name: '黄金储备基金',
+                    type: 'commodities',
+                    description: '实物黄金储备投资基金，由专业机构管理，安全性高。',
+                    totalValue: 30000000,
+                    availableShares: 3000,
+                    pricePerShare: 10000,
+                    status: 'active',
+                    location: '全球',
+                    yield: '4.2%',
+                    icon: '🥇'
+                },
+                {
+                    id: 'asset-006',
+                    name: '当代艺术品收藏',
+                    type: 'art',
+                    description: '精选当代知名艺术家作品集合，包含绘画、雕塑等多种形式。',
+                    totalValue: 15000000,
+                    availableShares: 500,
+                    pricePerShare: 30000,
+                    status: 'active',
+                    location: '北京',
+                    yield: '12.5%',
+                    icon: '🎨'
+                }
+            ];
+            
+            // 获取从资产管理界面发行的项目
+            const publishedAssets = JSON.parse(localStorage.getItem('publishedAssets') || '[]');
+            
+            // 合并数据，发行的项目显示在前面
+            return [...publishedAssets, ...sampleAssets];
+        }
+
+        let currentAssets = getAssetData();
+        let selectedAsset = null;
+
+        // Initialize the marketplace
+        function initMarketplace() {
+            // Check user authentication first
+            if (!checkUserAuthentication()) {
+                return; // Stop initialization if user is not logged in
+            }
+            
+            currentAssets = getAssetData();
+            renderAssets(currentAssets);
+            setupFilterButtons();
+            setupSearchInput();
+        }
+
+        // Render assets grid
+        function renderAssets(assets) {
+            const grid = document.getElementById('assetsGrid');
+            
+            if (assets.length === 0) {
+                grid.innerHTML = `
+                    <div style="grid-column: 1 / -1; text-align: center; padding: 50px; color: #6c757d;">
+                        <i class="fas fa-search" style="font-size: 3rem; margin-bottom: 20px;"></i>
+                        <h3>未找到匹配的资产</h3>
+                        <p>请尝试调整搜索条件或筛选器</p>
+                    </div>
+                `;
+                return;
+            }
+
+            grid.innerHTML = assets.map(asset => `
+                <div class="asset-card" onclick="openAssetDetail('${asset.id}')">
+                    <div class="asset-image">
+                        <span>${asset.icon}</span>
+                        <div class="asset-status ${asset.status === 'active' ? 'status-active' : 'status-pending'}">
+                            ${asset.status === 'active' ? '可投资' : '待上线'}
+                        </div>
+                    </div>
+                    <div class="asset-content">
+                        <h3 class="asset-title">${asset.name}</h3>
+                        <p class="asset-description">${asset.description}</p>
+                        
+                        <div class="asset-details">
+                            <div class="detail-item">
+                                <div class="detail-label">预期收益率</div>
+                                <div class="detail-value">${asset.yield}</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">单价</div>
+                                <div class="detail-value">¥${(asset.pricePerShare / 10000).toFixed(1)}万</div>
+                            </div>
+                        </div>
+                        
+                        <div class="asset-actions">
+                            <button class="btn btn-primary" onclick="event.stopPropagation(); openTradingModal('${asset.id}')" ${asset.status !== 'active' ? 'disabled' : ''}>
+                                <i class="fas fa-shopping-cart"></i> 立即投资
+                            </button>
+                            <a href="project_detail.html?projectId=${asset.id}" class="btn btn-secondary" onclick="event.stopPropagation()">
+                                <i class="fas fa-info-circle"></i> 详情
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Setup filter buttons
+        function setupFilterButtons() {
+            const filterButtons = document.querySelectorAll('.filter-btn');
+            filterButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    // Remove active class from all buttons
+                    filterButtons.forEach(b => b.classList.remove('active'));
+                    // Add active class to clicked button
+                    btn.classList.add('active');
+                    
+                    const filter = btn.dataset.filter;
+                    filterAssets(filter);
+                });
+            });
+        }
+
+        // Setup search input
+        function setupSearchInput() {
+            const searchInput = document.getElementById('searchInput');
+            searchInput.addEventListener('input', debounce(searchAssets, 300));
+        }
+
+        // Filter assets by type
+        function filterAssets(type) {
+            const allAssets = getAssetData();
+            if (type === 'all') {
+                currentAssets = [...allAssets];
+            } else {
+                currentAssets = allAssets.filter(asset => asset.type === type);
+            }
+            
+            // Apply current search if any
+            const searchTerm = document.getElementById('searchInput').value;
+            if (searchTerm) {
+                searchAssets();
+            } else {
+                renderAssets(currentAssets);
+            }
+        }
+
+        // Search assets
+        function searchAssets() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            
+            if (!searchTerm) {
+                renderAssets(currentAssets);
+                return;
+            }
+            
+            const filteredAssets = currentAssets.filter(asset => 
+                asset.name.toLowerCase().includes(searchTerm) ||
+                asset.description.toLowerCase().includes(searchTerm) ||
+                asset.location.toLowerCase().includes(searchTerm)
+            );
+            
+            renderAssets(filteredAssets);
+        }
+
+        // Open asset detail
+        function openAssetDetail(assetId) {
+            window.open(`project_detail.html?projectId=${assetId}`, '_blank');
+        }
+
+        // Open trading modal
+        function openTradingModal(assetId) {
+            selectedAsset = getAssetData().find(asset => asset.id === assetId);
+            if (!selectedAsset) return;
+            
+            document.getElementById('assetName').value = selectedAsset.name;
+            document.getElementById('sharePrice').value = `¥${selectedAsset.pricePerShare.toLocaleString()}`;
+            document.getElementById('shareAmount').value = '';
+            document.getElementById('totalAmount').value = '';
+            
+            document.getElementById('tradingModal').style.display = 'block';
+            
+            // Setup share amount input listener
+            const shareAmountInput = document.getElementById('shareAmount');
+            shareAmountInput.addEventListener('input', calculateTotal);
+        }
+
+        // Close trading modal
+        function closeTradingModal() {
+            document.getElementById('tradingModal').style.display = 'none';
+            selectedAsset = null;
+        }
+
+        // Calculate total amount
+        function calculateTotal() {
+            const shareAmount = parseInt(document.getElementById('shareAmount').value) || 0;
+            const total = shareAmount * selectedAsset.pricePerShare;
+            document.getElementById('totalAmount').value = total > 0 ? `¥${total.toLocaleString()}` : '';
+        }
+
+        // Confirm purchase
+        function confirmPurchase() {
+            const shareAmount = parseInt(document.getElementById('shareAmount').value);
+            
+            if (!shareAmount || shareAmount <= 0) {
+                alert('请输入有效的购买份额数量');
+                return;
+            }
+            
+            if (shareAmount > selectedAsset.availableShares) {
+                alert('购买份额超过可用数量');
+                return;
+            }
+            
+            // Simulate purchase process
+            alert(`购买成功！\n资产：${selectedAsset.name}\n份额：${shareAmount}\n总金额：¥${(shareAmount * selectedAsset.pricePerShare).toLocaleString()}`);
+            
+            closeTradingModal();
+        }
+
+        // Utility function for debouncing
+        function debounce(func, wait) {
+            let timeout;
+            return function executedFunction(...args) {
+                const later = () => {
+                    clearTimeout(timeout);
+                    func(...args);
+                };
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+            };
+        }
+
+        // Close modal when clicking outside
+        window.addEventListener('click', (e) => {
+            const modal = document.getElementById('tradingModal');
+            if (e.target === modal) {
+                closeTradingModal();
+            }
+        });
+
+        // Initialize marketplace when page loads
+        document.addEventListener('DOMContentLoaded', initMarketplace);
+    </script>
+</body>
+</html>
