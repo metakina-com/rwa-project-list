@@ -3667,3 +3667,619 @@ input:checked + .slider:before {
 .debug-console .debug-warning {
     color: #ffd43b;
 }
+
+/* Lifecycle Management Styles */
+.lifecycle-timeline {
+    background: #f8f9fa;
+    border-radius: 15px;
+    padding: 25px;
+}
+
+.timeline-project {
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+}
+
+.project-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #e9ecef;
+}
+
+.project-header h4 {
+    color: #2c3e50;
+    font-size: 1.2rem;
+    margin: 0;
+}
+
+.project-status {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.project-id {
+    font-size: 0.8rem;
+    color: #6c757d;
+    background: #f8f9fa;
+    padding: 4px 8px;
+    border-radius: 4px;
+}
+
+.timeline-stages {
+    display: flex;
+    align-items: flex-start;
+    position: relative;
+    margin-bottom: 20px;
+    overflow-x: auto;
+    padding: 10px 0;
+}
+
+.timeline-stages::before {
+    content: '';
+    position: absolute;
+    top: 25px;
+    left: 25px;
+    right: 25px;
+    height: 3px;
+    background: #e9ecef;
+    z-index: 1;
+}
+
+.stage {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 140px;
+    position: relative;
+    z-index: 2;
+}
+
+.stage-circle {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: #e9ecef;
+    color: #6c757d;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    margin-bottom: 12px;
+    transition: all 0.3s ease;
+    border: 3px solid white;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.stage.completed .stage-circle {
+    background: #28a745;
+    color: white;
+}
+
+.stage.active .stage-circle {
+    background: #667eea;
+    color: white;
+    animation: pulse 2s infinite;
+}
+
+.stage.pending .stage-circle {
+    background: #f8f9fa;
+    color: #adb5bd;
+    border-color: #e9ecef;
+}
+
+.stage-content {
+    text-align: center;
+}
+
+.stage-title {
+    font-weight: 600;
+    color: #2c3e50;
+    font-size: 0.9rem;
+    margin-bottom: 5px;
+}
+
+.stage-date {
+    font-size: 0.8rem;
+    color: #6c757d;
+    margin-bottom: 3px;
+}
+
+.stage-duration {
+    font-size: 0.75rem;
+    color: #adb5bd;
+}
+
+.stage.active .stage-title {
+    color: #667eea;
+    font-weight: 700;
+}
+
+.stage.completed .stage-title {
+    color: #28a745;
+}
+
+.project-progress {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.progress-bar {
+    flex: 1;
+    height: 8px;
+    background: #e9ecef;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #667eea, #764ba2);
+    border-radius: 4px;
+    transition: width 0.5s ease;
+}
+
+.progress-text {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #2c3e50;
+    white-space: nowrap;
+}
+
+/* Milestone Styles */
+.milestone-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.milestone-item {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    background: #f8f9fa;
+    border-radius: 10px;
+    border-left: 4px solid #dee2e6;
+    transition: all 0.3s ease;
+}
+
+.milestone-item.urgent {
+    border-left-color: #dc3545;
+    background: rgba(220, 53, 69, 0.05);
+}
+
+.milestone-item.normal {
+    border-left-color: #667eea;
+    background: rgba(102, 126, 234, 0.05);
+}
+
+.milestone-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 15px;
+    font-size: 1.1rem;
+}
+
+.milestone-item.urgent .milestone-icon {
+    background: rgba(220, 53, 69, 0.1);
+    color: #dc3545;
+}
+
+.milestone-item.normal .milestone-icon {
+    background: rgba(102, 126, 234, 0.1);
+    color: #667eea;
+}
+
+.milestone-content {
+    flex: 1;
+}
+
+.milestone-title {
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 3px;
+}
+
+.milestone-project {
+    font-size: 0.9rem;
+    color: #6c757d;
+    margin-bottom: 3px;
+}
+
+.milestone-deadline {
+    font-size: 0.8rem;
+    color: #adb5bd;
+}
+
+.milestone-action {
+    margin-left: 15px;
+}
+
+/* Health Metrics */
+.health-metrics {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.health-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.health-label {
+    font-weight: 500;
+    color: #2c3e50;
+    flex: 1;
+}
+
+.health-value {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex: 1;
+}
+
+.health-bar {
+    flex: 1;
+    height: 8px;
+    background: #e9ecef;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.health-fill {
+    height: 100%;
+    border-radius: 4px;
+    transition: width 0.5s ease;
+}
+
+.health-fill.success {
+    background: linear-gradient(90deg, #28a745, #20c997);
+}
+
+.health-fill.warning {
+    background: linear-gradient(90deg, #ffc107, #fd7e14);
+}
+
+.health-fill.danger {
+    background: linear-gradient(90deg, #dc3545, #c82333);
+}
+
+.health-value span {
+    font-weight: 600;
+    color: #2c3e50;
+    min-width: 40px;
+    text-align: right;
+}
+
+/* AI Intelligence Styles */
+.prediction-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+.prediction-card {
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+    transition: all 0.3s ease;
+}
+
+.prediction-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+}
+
+.prediction-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    flex-shrink: 0;
+}
+
+.prediction-icon.trend-up {
+    background: rgba(40, 167, 69, 0.1);
+    color: #28a745;
+}
+
+.prediction-icon.trend-down {
+    background: rgba(220, 53, 69, 0.1);
+    color: #dc3545;
+}
+
+.prediction-icon.trend-stable {
+    background: rgba(102, 126, 234, 0.1);
+    color: #667eea;
+}
+
+.prediction-content {
+    flex: 1;
+}
+
+.prediction-title {
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 5px;
+}
+
+.prediction-value {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.trend-up .prediction-value {
+    color: #28a745;
+}
+
+.trend-down .prediction-value {
+    color: #dc3545;
+}
+
+.trend-stable .prediction-value {
+    color: #667eea;
+}
+
+.prediction-desc {
+    font-size: 0.9rem;
+    color: #6c757d;
+    margin-bottom: 5px;
+    line-height: 1.4;
+}
+
+.prediction-confidence {
+    font-size: 0.8rem;
+    color: #adb5bd;
+}
+
+/* Automation Styles */
+.automation-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.automation-item {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    background: #f8f9fa;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+}
+
+.automation-item.active {
+    background: rgba(40, 167, 69, 0.05);
+    border: 1px solid rgba(40, 167, 69, 0.2);
+}
+
+.automation-status {
+    margin-right: 15px;
+}
+
+.automation-content {
+    flex: 1;
+}
+
+.automation-title {
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 3px;
+}
+
+.automation-desc {
+    font-size: 0.9rem;
+    color: #6c757d;
+    margin-bottom: 3px;
+    line-height: 1.4;
+}
+
+.automation-schedule {
+    font-size: 0.8rem;
+    color: #adb5bd;
+}
+
+.automation-toggle {
+    margin-left: 15px;
+}
+
+/* Switch Toggle */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 24px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: .4s;
+    border-radius: 24px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 18px;
+    width: 18px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%;
+}
+
+input:checked + .slider {
+    background-color: #28a745;
+}
+
+input:checked + .slider:before {
+    transform: translateX(26px);
+}
+
+/* AI Insights */
+.insights-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 25px;
+}
+
+.insight-card {
+    background: white;
+    border-radius: 15px;
+    padding: 25px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    border-left: 5px solid #dee2e6;
+    transition: all 0.3s ease;
+}
+
+.insight-card.priority-high {
+    border-left-color: #dc3545;
+    background: linear-gradient(135deg, #fff, rgba(220, 53, 69, 0.02));
+}
+
+.insight-card.priority-medium {
+    border-left-color: #ffc107;
+    background: linear-gradient(135deg, #fff, rgba(255, 193, 7, 0.02));
+}
+
+.insight-card.priority-low {
+    border-left-color: #28a745;
+    background: linear-gradient(135deg, #fff, rgba(40, 167, 69, 0.02));
+}
+
+.insight-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+}
+
+.insight-priority {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 15px;
+}
+
+.insight-priority i {
+    font-size: 1rem;
+}
+
+.insight-priority span {
+    font-size: 0.85rem;
+    font-weight: 600;
+    padding: 4px 8px;
+    border-radius: 4px;
+}
+
+.priority-high .insight-priority i,
+.priority-high .insight-priority span {
+    color: #dc3545;
+}
+
+.priority-medium .insight-priority i,
+.priority-medium .insight-priority span {
+    color: #ffc107;
+}
+
+.priority-low .insight-priority i,
+.priority-low .insight-priority span {
+    color: #28a745;
+}
+
+.insight-content h4 {
+    color: #2c3e50;
+    margin-bottom: 12px;
+    font-size: 1.1rem;
+}
+
+.insight-content p {
+    color: #6c757d;
+    line-height: 1.6;
+    margin-bottom: 15px;
+}
+
+.insight-metrics {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.metric {
+    background: #f8f9fa;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    color: #495057;
+    font-weight: 500;
+}
+
+.insight-actions {
+    display: flex;
+    gap: 10px;
+}
+
+/* Responsive adjustments for lifecycle management */
+@media (max-width: 768px) {
+    .timeline-stages {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .timeline-stages::before {
+        display: none;
+    }
+    
+    .stage {
+        width: 100%;
+        margin-bottom: 20px;
+    }
+    
+    .prediction-cards {
+        grid-template-columns: 1fr;
+    }
+    
+    .insights-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .project-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+}

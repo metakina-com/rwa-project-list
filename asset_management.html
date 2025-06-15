@@ -70,7 +70,7 @@
                 <a href="index.html"><i class="fas fa-home"></i> 首页</a>
                 <a href="rwa_marketplace.html"><i class="fas fa-store"></i> 交易市场</a>
                 <a href="asset_management.html" class="active"><i class="fas fa-chart-line"></i> 资产管理</a>
-                <a href="rwa_client_form.html"><i class="fas fa-plus-circle"></i> 项目申请</a>
+                <a href="rwa_smart_form.html"><i class="fas fa-robot"></i> 智能申请</a>
             </div>
             <div class="user-info">
                 <span>管理员</span>
@@ -134,6 +134,18 @@
                         <a href="#" class="menu-link" onclick="switchContent('financial', event)">
                             <i class="menu-icon fas fa-chart-pie"></i>
                             <span>财务运营</span>
+                        </a>
+                    </div>
+                    <div class="menu-item">
+                        <a href="#" class="menu-link" onclick="switchContent('lifecycle', event)">
+                            <i class="menu-icon fas fa-project-diagram"></i>
+                            <span>生命周期管理</span>
+                        </a>
+                    </div>
+                    <div class="menu-item">
+                        <a href="#" class="menu-link" onclick="switchContent('intelligence', event)">
+                            <i class="menu-icon fas fa-brain"></i>
+                            <span>智能运营</span>
                         </a>
                     </div>
                     <div class="menu-item">
@@ -1330,6 +1342,219 @@
                                         <div class="measure-title">定期压力测试</div>
                                         <div class="measure-desc">每月进行风险压力测试</div>
                                         <div class="measure-status pending">下次: 2024-02-15</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- 生命周期管理 -->
+                <section id="lifecycle-content" class="content-section">
+                    <div class="section-header">
+                        <i class="icon fas fa-project-diagram"></i>
+                        <h2>资产生命周期管理</h2>
+                        <div class="header-actions">
+                            <button class="btn btn-sm btn-primary">
+                                <i class="fas fa-plus"></i> 创建里程碑
+                            </button>
+                            <button class="btn btn-sm btn-secondary">
+                                <i class="fas fa-chart-gantt"></i> 甘特图
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- 项目概览 -->
+                    <div class="dashboard-stats">
+                        <div class="stats-grid">
+                            <div class="stat-card primary">
+                                <div class="stat-icon"><i class="fas fa-play-circle"></i></div>
+                                <div class="stat-value">8</div>
+                                <div class="stat-label">进行中项目</div>
+                                <div class="stat-change positive"><i class="fas fa-arrow-up"></i> +2</div>
+                                <div class="stat-detail">本月新增</div>
+                            </div>
+                            <div class="stat-card success">
+                                <div class="stat-icon"><i class="fas fa-check-circle"></i></div>
+                                <div class="stat-value">15</div>
+                                <div class="stat-label">已完成项目</div>
+                                <div class="stat-change">成功率</div>
+                                <div class="stat-detail">100%</div>
+                            </div>
+                            <div class="stat-card warning">
+                                <div class="stat-icon"><i class="fas fa-clock"></i></div>
+                                <div class="stat-value">3</div>
+                                <div class="stat-label">延期风险</div>
+                                <div class="stat-change">需关注</div>
+                                <div class="stat-detail">预计延期1-2周</div>
+                            </div>
+                            <div class="stat-card info">
+                                <div class="stat-icon"><i class="fas fa-calendar"></i></div>
+                                <div class="stat-value">247</div>
+                                <div class="stat-label">平均周期</div>
+                                <div class="stat-change">天</div>
+                                <div class="stat-detail">从申请到上线</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 项目阶段跟踪 -->
+                    <div class="panel">
+                        <div class="panel-header">
+                            <h3><i class="fas fa-tasks"></i> 项目阶段跟踪</h3>
+                            <div class="panel-actions">
+                                <select class="form-select">
+                                    <option>全部项目</option>
+                                    <option>房地产项目</option>
+                                    <option>艺术品项目</option>
+                                    <option>股权项目</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="panel-content">
+                            <div class="lifecycle-timeline">
+                                <div class="timeline-project">
+                                    <div class="project-header">
+                                        <h4>上海国际金融中心 Phase II</h4>
+                                        <div class="project-status">
+                                            <span class="status-badge status-active">运营中</span>
+                                            <span class="project-id">RWA-2024-001</span>
+                                        </div>
+                                    </div>
+                                    <div class="timeline-stages">
+                                        <div class="stage completed">
+                                            <div class="stage-circle"><i class="fas fa-check"></i></div>
+                                            <div class="stage-content">
+                                                <div class="stage-title">项目启动</div>
+                                                <div class="stage-date">2024-01-15</div>
+                                                <div class="stage-duration">已完成 • 7天</div>
+                                            </div>
+                                        </div>
+                                        <div class="stage completed">
+                                            <div class="stage-circle"><i class="fas fa-check"></i></div>
+                                            <div class="stage-content">
+                                                <div class="stage-title">尽职调查</div>
+                                                <div class="stage-date">2024-01-22</div>
+                                                <div class="stage-duration">已完成 • 14天</div>
+                                            </div>
+                                        </div>
+                                        <div class="stage completed">
+                                            <div class="stage-circle"><i class="fas fa-check"></i></div>
+                                            <div class="stage-content">
+                                                <div class="stage-title">法律架构</div>
+                                                <div class="stage-date">2024-02-05</div>
+                                                <div class="stage-duration">已完成 • 21天</div>
+                                            </div>
+                                        </div>
+                                        <div class="stage completed">
+                                            <div class="stage-circle"><i class="fas fa-check"></i></div>
+                                            <div class="stage-content">
+                                                <div class="stage-title">技术实施</div>
+                                                <div class="stage-date">2024-02-26</div>
+                                                <div class="stage-duration">已完成 • 35天</div>
+                                            </div>
+                                        </div>
+                                        <div class="stage completed">
+                                            <div class="stage-circle"><i class="fas fa-check"></i></div>
+                                            <div class="stage-content">
+                                                <div class="stage-title">代币发行</div>
+                                                <div class="stage-date">2024-04-02</div>
+                                                <div class="stage-duration">已完成 • 14天</div>
+                                            </div>
+                                        </div>
+                                        <div class="stage active">
+                                            <div class="stage-circle"><i class="fas fa-play"></i></div>
+                                            <div class="stage-content">
+                                                <div class="stage-title">运营管理</div>
+                                                <div class="stage-date">2024-04-16</div>
+                                                <div class="stage-duration">进行中 • 已运营240天</div>
+                                            </div>
+                                        </div>
+                                        <div class="stage pending">
+                                            <div class="stage-circle"><i class="fas fa-clock"></i></div>
+                                            <div class="stage-content">
+                                                <div class="stage-title">资产退出</div>
+                                                <div class="stage-date">预计 2027-04-16</div>
+                                                <div class="stage-duration">计划中 • 预计3年期</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="project-progress">
+                                        <div class="progress-bar">
+                                            <div class="progress-fill" style="width: 85%;"></div>
+                                        </div>
+                                        <div class="progress-text">整体进度: 85%</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- 智能运营 -->
+                <section id="intelligence-content" class="content-section">
+                    <div class="section-header">
+                        <i class="icon fas fa-brain"></i>
+                        <h2>AI智能运营</h2>
+                        <div class="header-actions">
+                            <button class="btn btn-sm btn-primary">
+                                <i class="fas fa-robot"></i> 训练模型
+                            </button>
+                            <button class="btn btn-sm btn-secondary">
+                                <i class="fas fa-cog"></i> 配置策略
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- AI助手面板 -->
+                    <div class="ai-analysis-panel">
+                        <div class="ai-analysis-header">
+                            <div class="ai-icon">
+                                <i class="fas fa-robot"></i>
+                            </div>
+                            <div>
+                                <h3>AI运营助手</h3>
+                                <p>基于机器学习的智能化运营建议和自动化操作</p>
+                            </div>
+                        </div>
+                        <div class="analysis-results">
+                            <div class="analysis-card">
+                                <div class="analysis-score">127</div>
+                                <div class="analysis-label">今日AI建议</div>
+                            </div>
+                            <div class="analysis-card">
+                                <div class="analysis-score">85%</div>
+                                <div class="analysis-label">自动化率</div>
+                            </div>
+                            <div class="analysis-card">
+                                <div class="analysis-score">¥2.3万</div>
+                                <div class="analysis-label">成本节省</div>
+                            </div>
+                            <div class="analysis-card">
+                                <div class="analysis-score">99.2%</div>
+                                <div class="analysis-label">准确率</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 智能功能模块 -->
+                    <div class="panel-grid">
+                        <div class="panel">
+                            <div class="panel-header">
+                                <h3><i class="fas fa-chart-line"></i> 智能预测分析</h3>
+                            </div>
+                            <div class="panel-content">
+                                <div class="prediction-cards">
+                                    <div class="prediction-card">
+                                        <div class="prediction-icon trend-up">
+                                            <i class="fas fa-arrow-trend-up"></i>
+                                        </div>
+                                        <div class="prediction-content">
+                                            <div class="prediction-title">收益预测</div>
+                                            <div class="prediction-value">+8.7%</div>
+                                            <div class="prediction-desc">预计Q1收益率将上升</div>
+                                            <div class="prediction-confidence">置信度: 87%</div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
