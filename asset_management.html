@@ -95,61 +95,61 @@
                 <h3><i class="fas fa-building"></i> RWA资产管理</h3>
                 <nav>
                     <div class="menu-item">
-                        <a href="#" class="menu-link active" onclick="switchContent('overview')">
+                        <a href="#" class="menu-link active" onclick="switchContent('overview', event)">
                             <i class="menu-icon fas fa-building"></i>
                             <span>资产总览</span>
                         </a>
                     </div>
                     <div class="menu-item">
-                        <a href="#" class="menu-link" onclick="switchContent('physical')">
+                        <a href="#" class="menu-link" onclick="switchContent('physical', event)">
                             <i class="menu-icon fas fa-warehouse"></i>
                             <span>实物资产管理</span>
                         </a>
                     </div>
                     <div class="menu-item">
-                        <a href="#" class="menu-link" onclick="switchContent('tokenization')">
+                        <a href="#" class="menu-link" onclick="switchContent('tokenization', event)">
                             <i class="menu-icon fas fa-coins"></i>
                             <span>代币化管理</span>
                         </a>
                     </div>
                     <div class="menu-item">
-                        <a href="#" class="menu-link" onclick="switchContent('certificates')">
+                        <a href="#" class="menu-link" onclick="switchContent('certificates', event)">
                             <i class="menu-icon fas fa-certificate"></i>
                             <span>数字权益证书</span>
                         </a>
                     </div>
                     <div class="menu-item">
-                        <a href="#" class="menu-link" onclick="switchContent('investors')">
+                        <a href="#" class="menu-link" onclick="switchContent('investors', event)">
                             <i class="menu-icon fas fa-users-cog"></i>
                             <span>投资者服务</span>
                         </a>
                     </div>
                     <div class="menu-item">
-                        <a href="#" class="menu-link" onclick="switchContent('custody')">
+                        <a href="#" class="menu-link" onclick="switchContent('custody', event)">
                             <i class="menu-icon fas fa-shield-alt"></i>
                             <span>托管服务管理</span>
                         </a>
                     </div>
                     <div class="menu-item">
-                        <a href="#" class="menu-link" onclick="switchContent('financial')">
+                        <a href="#" class="menu-link" onclick="switchContent('financial', event)">
                             <i class="menu-icon fas fa-chart-pie"></i>
                             <span>财务运营</span>
                         </a>
                     </div>
                     <div class="menu-item">
-                        <a href="#" class="menu-link" onclick="switchContent('risk')">
+                        <a href="#" class="menu-link" onclick="switchContent('risk', event)">
                             <i class="menu-icon fas fa-exclamation-triangle"></i>
                             <span>风险控制</span>
                         </a>
                     </div>
                     <div class="menu-item">
-                        <a href="#" class="menu-link" onclick="switchContent('analytics')">
+                        <a href="#" class="menu-link" onclick="switchContent('analytics', event)">
                             <i class="menu-icon fas fa-chart-line"></i>
                             <span>业绩分析</span>
                         </a>
                     </div>
                     <div class="menu-item">
-                        <a href="#" class="menu-link" onclick="switchContent('settings')">
+                        <a href="#" class="menu-link" onclick="switchContent('settings', event)">
                             <i class="menu-icon fas fa-cogs"></i>
                             <span>系统配置</span>
                         </a>
@@ -504,7 +504,7 @@
                                                 <div class="quick-action-desc">录入新的实物资产</div>
                                             </div>
                                         </button>
-                                        <button class="quick-action-card" onclick="switchContent('tokenization')">
+                                        <button class="quick-action-card" onclick="switchContent('tokenization', event)">
                                             <div class="quick-action-icon">
                                                 <i class="fas fa-coins"></i>
                                             </div>
@@ -522,7 +522,7 @@
                                                 <div class="quick-action-desc">导出财务分析报告</div>
                                             </div>
                                         </button>
-                                        <button class="quick-action-card" onclick="switchContent('investors')">
+                                        <button class="quick-action-card" onclick="switchContent('investors', event)">
                                             <div class="quick-action-icon">
                                                 <i class="fas fa-users"></i>
                                             </div>
@@ -1435,12 +1435,61 @@
         </div>
     </div>
 
+    <!-- Debug Console (hidden by default) -->
+    <div id="debugConsole" class="debug-console">
+        <div class="debug-title">调试信息</div>
+        <div id="debugEntries"></div>
+    </div>
+
     <script>
         // Optimized JavaScript for better performance
         'use strict';
         
+        // Debug mode flag
+        let debugMode = false;
+        
         // Performance: Use RAF for smooth animations
         const raf = window.requestAnimationFrame || window.setTimeout;
+        
+        // Debug functions
+        function addDebugEntry(message, type = 'info') {
+            if (!debugMode) return;
+            
+            const debugEntries = document.getElementById('debugEntries');
+            const entry = document.createElement('div');
+            entry.className = `debug-entry debug-${type}`;
+            entry.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
+            
+            debugEntries.appendChild(entry);
+            debugEntries.scrollTop = debugEntries.scrollHeight;
+            
+            // Keep only last 50 entries
+            while (debugEntries.children.length > 50) {
+                debugEntries.removeChild(debugEntries.firstChild);
+            }
+        }
+        
+        function toggleDebugMode() {
+            debugMode = !debugMode;
+            const debugConsole = document.getElementById('debugConsole');
+            
+            if (debugMode) {
+                debugConsole.classList.add('show');
+                addDebugEntry('Debug mode enabled', 'success');
+                showNotification('调试模式已开启 (按Ctrl+D关闭)', 'info');
+            } else {
+                debugConsole.classList.remove('show');
+                showNotification('调试模式已关闭', 'info');
+            }
+        }
+        
+        // Keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            if (e.ctrlKey && e.key === 'd') {
+                e.preventDefault();
+                toggleDebugMode();
+            }
+        });
         
         // Loading management
         document.addEventListener('DOMContentLoaded', function() {
@@ -1453,28 +1502,76 @@
             }, 500);
         });
         
-        // Menu switching with performance optimization
-        function switchContent(contentId) {
-            // Cache DOM queries
-            const sections = document.querySelectorAll('.content-section');
-            const menuLinks = document.querySelectorAll('.menu-link');
-            const targetSection = document.getElementById(contentId + '-content');
-            
-            // Batch DOM updates
-            raf(() => {
-                sections.forEach(section => section.classList.remove('active'));
-                menuLinks.forEach(link => link.classList.remove('active'));
-                
-                if (targetSection) {
-                    targetSection.classList.add('active');
+        // Menu switching with performance optimization and error handling
+        function switchContent(contentId, event) {
+            try {
+                // Prevent default link behavior
+                if (event) {
+                    event.preventDefault();
                 }
                 
-                // Update active menu item
-                const clickedLink = event.target.closest('.menu-link');
-                if (clickedLink) {
-                    clickedLink.classList.add('active');
+                // Cache DOM queries
+                const sections = document.querySelectorAll('.content-section');
+                const menuLinks = document.querySelectorAll('.menu-link');
+                const targetSection = document.getElementById(contentId + '-content');
+                
+                // Debug logging
+                addDebugEntry(`Switching to content: ${contentId}`, 'info');
+                addDebugEntry(`Target section found: ${!!targetSection}`, targetSection ? 'success' : 'error');
+                addDebugEntry(`Available sections: ${Array.from(sections).map(s => s.id).join(', ')}`, 'info');
+                
+                // Check if target section exists
+                if (!targetSection) {
+                    const errorMsg = `Content section not found: ${contentId}-content`;
+                    console.error(errorMsg);
+                    addDebugEntry(errorMsg, 'error');
+                    showNotification(`页面 "${contentId}" 不存在`, 'error');
+                    return false;
                 }
-            });
+                
+                // Batch DOM updates
+                raf(() => {
+                    try {
+                        sections.forEach(section => section.classList.remove('active'));
+                        menuLinks.forEach(link => link.classList.remove('active'));
+                        
+                        targetSection.classList.add('active');
+                        
+                        // Update active menu item - use event if available, otherwise find by contentId
+                        if (event) {
+                            const clickedLink = event.target.closest('.menu-link');
+                            if (clickedLink) {
+                                clickedLink.classList.add('active');
+                            }
+                        } else {
+                            // Fallback: find menu link by onclick attribute
+                            const menuLink = Array.from(menuLinks).find(link => {
+                                const onclick = link.getAttribute('onclick');
+                                return onclick && onclick.includes(`'${contentId}'`);
+                            });
+                            if (menuLink) {
+                                menuLink.classList.add('active');
+                            }
+                        }
+                        
+                        // Show success message for debugging
+                        addDebugEntry(`Successfully switched to: ${contentId}`, 'success');
+                        
+                    } catch (error) {
+                        console.error('Error in DOM updates:', error);
+                        addDebugEntry(`Error in DOM updates: ${error.message}`, 'error');
+                        showNotification('页面切换时出现错误', 'error');
+                    }
+                });
+                
+                return true;
+                
+            } catch (error) {
+                console.error('Error in switchContent:', error);
+                addDebugEntry(`Error in switchContent: ${error.message}`, 'error');
+                showNotification('菜单切换失败，请刷新页面重试', 'error');
+                return false;
+            }
         }
         
         // Tab switching optimization
