@@ -87,92 +87,71 @@
             </div>
         </header>
         
-        <!-- 统计概览 -->
-        <section class="stats-overview">
-            <div class="stat-card">
-                <div class="stat-icon"><i class="fas fa-dollar-sign"></i></div>
-                <div class="stat-value">¥50,000万</div>
-                <div class="stat-label">资产估值</div>
-                <div class="stat-change positive"><i class="fas fa-arrow-up"></i> +3.2%</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-icon"><i class="fas fa-percentage"></i></div>
-                <div class="stat-value">8.5%</div>
-                <div class="stat-label">年化收益率</div>
-                <div class="stat-change positive"><i class="fas fa-arrow-up"></i> +0.3%</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-icon"><i class="fas fa-coins"></i></div>
-                <div class="stat-value">1,000,000</div>
-                <div class="stat-label">代币发行量</div>
-                <div class="stat-change">RWA Token</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-icon"><i class="fas fa-gem"></i></div>
-                <div class="stat-value">500</div>
-                <div class="stat-label">NFT发行量</div>
-                <div class="stat-change">5个系列</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-icon"><i class="fas fa-users"></i></div>
-                <div class="stat-value">1,247</div>
-                <div class="stat-label">持有人数量</div>
-                <div class="stat-change positive"><i class="fas fa-arrow-up"></i> +15</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-icon"><i class="fas fa-chart-bar"></i></div>
-                <div class="stat-value">95.6%</div>
-                <div class="stat-label">入住率</div>
-                <div class="stat-change positive"><i class="fas fa-arrow-up"></i> +2.1%</div>
-            </div>
-        </section>
         
         <!-- 主要内容区域 -->
         <div class="main-content">
             <!-- 侧边栏菜单 -->
             <aside class="sidebar">
-                <h3><i class="fas fa-cog"></i> 管理中心</h3>
+                <h3><i class="fas fa-building"></i> RWA资产管理</h3>
                 <nav>
                     <div class="menu-item">
                         <a href="#" class="menu-link active" onclick="switchContent('overview')">
-                            <i class="menu-icon fas fa-tachometer-alt"></i>
-                            <span>概览仪表板</span>
+                            <i class="menu-icon fas fa-building"></i>
+                            <span>资产总览</span>
                         </a>
                     </div>
                     <div class="menu-item">
-                        <a href="#" class="menu-link" onclick="switchContent('token')">
+                        <a href="#" class="menu-link" onclick="switchContent('physical')">
+                            <i class="menu-icon fas fa-warehouse"></i>
+                            <span>实物资产管理</span>
+                        </a>
+                    </div>
+                    <div class="menu-item">
+                        <a href="#" class="menu-link" onclick="switchContent('tokenization')">
                             <i class="menu-icon fas fa-coins"></i>
-                            <span>代币管理</span>
+                            <span>代币化管理</span>
                         </a>
                     </div>
                     <div class="menu-item">
-                        <a href="#" class="menu-link" onclick="switchContent('nft')">
-                            <i class="menu-icon fas fa-gem"></i>
-                            <span>NFT管理</span>
+                        <a href="#" class="menu-link" onclick="switchContent('certificates')">
+                            <i class="menu-icon fas fa-certificate"></i>
+                            <span>数字权益证书</span>
+                        </a>
+                    </div>
+                    <div class="menu-item">
+                        <a href="#" class="menu-link" onclick="switchContent('investors')">
+                            <i class="menu-icon fas fa-users-cog"></i>
+                            <span>投资者服务</span>
+                        </a>
+                    </div>
+                    <div class="menu-item">
+                        <a href="#" class="menu-link" onclick="switchContent('custody')">
+                            <i class="menu-icon fas fa-shield-alt"></i>
+                            <span>托管服务管理</span>
                         </a>
                     </div>
                     <div class="menu-item">
                         <a href="#" class="menu-link" onclick="switchContent('financial')">
                             <i class="menu-icon fas fa-chart-pie"></i>
-                            <span>财务管理</span>
+                            <span>财务运营</span>
                         </a>
                     </div>
                     <div class="menu-item">
-                        <a href="#" class="menu-link" onclick="switchContent('compliance')">
-                            <i class="menu-icon fas fa-shield-alt"></i>
-                            <span>合规管理</span>
+                        <a href="#" class="menu-link" onclick="switchContent('risk')">
+                            <i class="menu-icon fas fa-exclamation-triangle"></i>
+                            <span>风险控制</span>
                         </a>
                     </div>
                     <div class="menu-item">
                         <a href="#" class="menu-link" onclick="switchContent('analytics')">
                             <i class="menu-icon fas fa-chart-line"></i>
-                            <span>数据分析</span>
+                            <span>业绩分析</span>
                         </a>
                     </div>
                     <div class="menu-item">
                         <a href="#" class="menu-link" onclick="switchContent('settings')">
                             <i class="menu-icon fas fa-cogs"></i>
-                            <span>系统设置</span>
+                            <span>系统配置</span>
                         </a>
                     </div>
                 </nav>
@@ -180,59 +159,380 @@
             
             <!-- 内容面板 -->
             <main class="content-panel">
-                <!-- 概览仪表板 -->
+                <!-- 资产总览 -->
                 <section id="overview-content" class="content-section active">
                     <div class="section-header">
-                        <i class="icon fas fa-tachometer-alt"></i>
-                        <h2>概览仪表板</h2>
-                    </div>
-                    
-                    <div class="action-buttons">
-                        <button class="btn btn-primary" onclick="refreshData()">
-                            <i class="fas fa-sync-alt"></i> 刷新数据
-                        </button>
-                        <button class="btn btn-secondary" onclick="exportReport()">
-                            <i class="fas fa-download"></i> 导出报告
-                        </button>
-                        <button class="btn btn-success" onclick="publishToMarket()">
-                            <i class="fas fa-rocket"></i> 发布到市场
-                        </button>
-                    </div>
-                    
-                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; margin-top: 30px;">
-                        <div style="background: linear-gradient(135deg, #667eea, #764ba2); color: white; padding: 30px; border-radius: 20px; box-shadow: 0 15px 50px rgba(102, 126, 234, 0.3);">
-                            <h4 style="margin-bottom: 15px; font-size: 1.2rem;"><i class="fas fa-chart-line"></i> 今日收益</h4>
-                            <div style="font-size: 2.5rem; font-weight: 700; margin-bottom: 10px;">¥234,567</div>
-                            <div style="opacity: 0.9;"><i class="fas fa-arrow-up"></i> +5.2% 较昨日</div>
-                        </div>
-                        
-                        <div style="background: linear-gradient(135deg, #28a745, #20c997); color: white; padding: 30px; border-radius: 20px; box-shadow: 0 15px 50px rgba(40, 167, 69, 0.3);">
-                            <h4 style="margin-bottom: 15px; font-size: 1.2rem;"><i class="fas fa-exchange-alt"></i> 交易量</h4>
-                            <div style="font-size: 2.5rem; font-weight: 700; margin-bottom: 10px;">1,234</div>
-                            <div style="opacity: 0.9;"><i class="fas fa-arrow-up"></i> +12.8% 较昨日</div>
-                        </div>
-                        
-                        <div style="background: linear-gradient(135deg, #ffc107, #fd7e14); color: white; padding: 30px; border-radius: 20px; box-shadow: 0 15px 50px rgba(255, 193, 7, 0.3);">
-                            <h4 style="margin-bottom: 15px; font-size: 1.2rem;"><i class="fas fa-fire"></i> 活跃度</h4>
-                            <div style="font-size: 2.5rem; font-weight: 700; margin-bottom: 10px;">89.5%</div>
-                            <div style="opacity: 0.9;"><i class="fas fa-arrow-up"></i> +2.1% 较昨日</div>
+                        <i class="icon fas fa-building"></i>
+                        <h2>资产总览</h2>
+                        <div class="header-actions">
+                            <button class="btn btn-sm btn-secondary">
+                                <i class="fas fa-download"></i> 导出报告
+                            </button>
+                            <button class="btn btn-sm btn-primary" onclick="refreshData()">
+                                <i class="fas fa-sync-alt"></i> 刷新数据
+                            </button>
                         </div>
                     </div>
                     
-                    <div style="margin-top: 40px; background: #f8f9fa; padding: 30px; border-radius: 20px;">
-                        <h3 style="margin-bottom: 20px; color: #2c3e50;"><i class="fas fa-bell"></i> 最新动态</h3>
-                        <div style="display: flex; flex-direction: column; gap: 15px;">
-                            <div style="background: white; padding: 20px; border-radius: 15px; border-left: 4px solid #28a745;">
-                                <div style="font-weight: 600; color: #2c3e50;">代币分红已发放</div>
-                                <div style="color: #6c757d; font-size: 0.9rem; margin-top: 5px;">2小时前 - 本期分红总额: ¥125,000</div>
+                    <!-- 核心资产指标 -->
+                    <div class="dashboard-stats">
+                        <div class="stats-grid">
+                            <div class="stat-card primary">
+                                <div class="stat-icon"><i class="fas fa-building"></i></div>
+                                <div class="stat-value">¥12.8亿</div>
+                                <div class="stat-label">总资产价值</div>
+                                <div class="stat-change positive"><i class="fas fa-arrow-up"></i> +2.8%</div>
+                                <div class="stat-detail">较上月增长</div>
                             </div>
-                            <div style="background: white; padding: 20px; border-radius: 15px; border-left: 4px solid #007bff;">
-                                <div style="font-weight: 600; color: #2c3e50;">新NFT系列上线</div>
-                                <div style="color: #6c757d; font-size: 0.9rem; margin-top: 5px;">5小时前 - "未来城市"限量版NFT开始销售</div>
+                            <div class="stat-card success">
+                                <div class="stat-icon"><i class="fas fa-percentage"></i></div>
+                                <div class="stat-value">7.2%</div>
+                                <div class="stat-label">年化收益率(IRR)</div>
+                                <div class="stat-change positive"><i class="fas fa-arrow-up"></i> +0.4%</div>
+                                <div class="stat-detail">超过预期0.7%</div>
                             </div>
-                            <div style="background: white; padding: 20px; border-radius: 15px; border-left: 4px solid #ffc107;">
-                                <div style="font-weight: 600; color: #2c3e50;">合规审核通过</div>
-                                <div style="color: #6c757d; font-size: 0.9rem; margin-top: 5px;">1天前 - Q4季度合规报告已通过监管审核</div>
+                            <div class="stat-card warning">
+                                <div class="stat-icon"><i class="fas fa-home"></i></div>
+                                <div class="stat-value">94.2%</div>
+                                <div class="stat-label">出租率</div>
+                                <div class="stat-change positive"><i class="fas fa-arrow-up"></i> +1.8%</div>
+                                <div class="stat-detail">较去年同期</div>
+                            </div>
+                            <div class="stat-card info">
+                                <div class="stat-icon"><i class="fas fa-coins"></i></div>
+                                <div class="stat-value">85.6%</div>
+                                <div class="stat-label">代币化比例</div>
+                                <div class="stat-change">已发行</div>
+                                <div class="stat-detail">¥10.96亿已代币化</div>
+                            </div>
+                            <div class="stat-card success">
+                                <div class="stat-icon"><i class="fas fa-users"></i></div>
+                                <div class="stat-value">2,847</div>
+                                <div class="stat-label">投资者总数</div>
+                                <div class="stat-change positive"><i class="fas fa-arrow-up"></i> +127</div>
+                                <div class="stat-detail">本月新增</div>
+                            </div>
+                            <div class="stat-card primary">
+                                <div class="stat-icon"><i class="fas fa-chart-line"></i></div>
+                                <div class="stat-value">¥847万</div>
+                                <div class="stat-label">月度净收入</div>
+                                <div class="stat-change positive"><i class="fas fa-arrow-up"></i> +5.2%</div>
+                                <div class="stat-detail">环比增长</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 资产地理分布和类型分析 -->
+                    <div class="dashboard-panels">
+                        <div class="panel-grid">
+                            <!-- 资产地理分布 -->
+                            <div class="dashboard-panel">
+                                <div class="panel-header">
+                                    <h3><i class="fas fa-map-marked-alt"></i> 资产地理分布</h3>
+                                    <div class="panel-actions">
+                                        <button class="btn btn-sm btn-ghost">详情</button>
+                                    </div>
+                                </div>
+                                <div class="panel-content">
+                                    <div class="asset-map-container">
+                                        <div class="map-placeholder">
+                                            <i class="fas fa-map" style="font-size: 3rem; color: #ccc;"></i>
+                                            <p>资产分布地图</p>
+                                        </div>
+                                        <div class="map-legend">
+                                            <div class="legend-item">
+                                                <span class="legend-color" style="background: #667eea;"></span>
+                                                <span>一线城市 (58%)</span>
+                                            </div>
+                                            <div class="legend-item">
+                                                <span class="legend-color" style="background: #28a745;"></span>
+                                                <span>新一线城市 (32%)</span>
+                                            </div>
+                                            <div class="legend-item">
+                                                <span class="legend-color" style="background: #ffc107;"></span>
+                                                <span>二线城市 (10%)</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- 资产类型分布 -->
+                            <div class="dashboard-panel">
+                                <div class="panel-header">
+                                    <h3><i class="fas fa-chart-pie"></i> 资产类型分布</h3>
+                                    <div class="panel-actions">
+                                        <button class="btn btn-sm btn-ghost">分析</button>
+                                    </div>
+                                </div>
+                                <div class="panel-content">
+                                    <div class="asset-type-chart">
+                                        <div class="chart-item">
+                                            <div class="chart-label">
+                                                <span class="chart-color" style="background: #667eea;"></span>
+                                                办公楼
+                                            </div>
+                                            <div class="chart-bar">
+                                                <div class="chart-fill" style="width: 45%; background: #667eea;"></div>
+                                            </div>
+                                            <div class="chart-value">45% (¥5.76亿)</div>
+                                        </div>
+                                        <div class="chart-item">
+                                            <div class="chart-label">
+                                                <span class="chart-color" style="background: #28a745;"></span>
+                                                商业综合体
+                                            </div>
+                                            <div class="chart-bar">
+                                                <div class="chart-fill" style="width: 30%; background: #28a745;"></div>
+                                            </div>
+                                            <div class="chart-value">30% (¥3.84亿)</div>
+                                        </div>
+                                        <div class="chart-item">
+                                            <div class="chart-label">
+                                                <span class="chart-color" style="background: #ffc107;"></span>
+                                                住宅公寓
+                                            </div>
+                                            <div class="chart-bar">
+                                                <div class="chart-fill" style="width: 15%; background: #ffc107;"></div>
+                                            </div>
+                                            <div class="chart-value">15% (¥1.92亿)</div>
+                                        </div>
+                                        <div class="chart-item">
+                                            <div class="chart-label">
+                                                <span class="chart-color" style="background: #dc3545;"></span>
+                                                物流仓储
+                                            </div>
+                                            <div class="chart-bar">
+                                                <div class="chart-fill" style="width: 10%; background: #dc3545;"></div>
+                                            </div>
+                                            <div class="chart-value">10% (¥1.28亿)</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 核心资产概览表 -->
+                    <div class="dashboard-panel">
+                        <div class="panel-header">
+                            <h3><i class="fas fa-list"></i> 核心资产概览</h3>
+                            <div class="panel-actions">
+                                <button class="btn btn-sm btn-secondary">
+                                    <i class="fas fa-filter"></i> 筛选
+                                </button>
+                                <button class="btn btn-sm btn-primary">
+                                    <i class="fas fa-plus"></i> 新增资产
+                                </button>
+                            </div>
+                        </div>
+                        <div class="panel-content">
+                            <div class="enhanced-table-container">
+                                <table class="enhanced-table">
+                                    <thead>
+                                        <tr>
+                                            <th>资产名称</th>
+                                            <th>位置</th>
+                                            <th>类型</th>
+                                            <th>估值</th>
+                                            <th>出租率</th>
+                                            <th>年收益率</th>
+                                            <th>代币化状态</th>
+                                            <th>操作</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <div class="asset-info">
+                                                    <div class="asset-name">上海国际金融中心</div>
+                                                    <div class="asset-code">SHA-IFC-001</div>
+                                                </div>
+                                            </td>
+                                            <td>上海·陆家嘴</td>
+                                            <td><span class="asset-type office">办公楼</span></td>
+                                            <td>¥8.5亿</td>
+                                            <td>
+                                                <div class="progress-indicator">
+                                                    <span class="progress-text">98.5%</span>
+                                                    <div class="progress-bar">
+                                                        <div class="progress-fill" style="width: 98.5%;"></div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td class="positive">7.8%</td>
+                                            <td><span class="status-badge status-active">已完成</span></td>
+                                            <td>
+                                                <div class="action-buttons-inline">
+                                                    <button class="btn btn-sm btn-ghost" title="查看详情">
+                                                        <i class="fas fa-eye"></i>
+                                                    </button>
+                                                    <button class="btn btn-sm btn-ghost" title="编辑">
+                                                        <i class="fas fa-edit"></i>
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="asset-info">
+                                                    <div class="asset-name">深圳科技园区</div>
+                                                    <div class="asset-code">SHZ-TEC-002</div>
+                                                </div>
+                                            </td>
+                                            <td>深圳·南山</td>
+                                            <td><span class="asset-type commercial">商业综合体</span></td>
+                                            <td>¥6.2亿</td>
+                                            <td>
+                                                <div class="progress-indicator">
+                                                    <span class="progress-text">92.3%</span>
+                                                    <div class="progress-bar">
+                                                        <div class="progress-fill" style="width: 92.3%;"></div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td class="positive">6.9%</td>
+                                            <td><span class="status-badge status-active">已完成</span></td>
+                                            <td>
+                                                <div class="action-buttons-inline">
+                                                    <button class="btn btn-sm btn-ghost" title="查看详情">
+                                                        <i class="fas fa-eye"></i>
+                                                    </button>
+                                                    <button class="btn btn-sm btn-ghost" title="编辑">
+                                                        <i class="fas fa-edit"></i>
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="asset-info">
+                                                    <div class="asset-name">北京CBD写字楼</div>
+                                                    <div class="asset-code">BEI-CBD-003</div>
+                                                </div>
+                                            </td>
+                                            <td>北京·朝阳</td>
+                                            <td><span class="asset-type office">办公楼</span></td>
+                                            <td>¥4.8亿</td>
+                                            <td>
+                                                <div class="progress-indicator">
+                                                    <span class="progress-text">85.7%</span>
+                                                    <div class="progress-bar">
+                                                        <div class="progress-fill" style="width: 85.7%;"></div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td class="positive">7.1%</td>
+                                            <td><span class="status-badge status-pending">进行中</span></td>
+                                            <td>
+                                                <div class="action-buttons-inline">
+                                                    <button class="btn btn-sm btn-ghost" title="查看详情">
+                                                        <i class="fas fa-eye"></i>
+                                                    </button>
+                                                    <button class="btn btn-sm btn-ghost" title="编辑">
+                                                        <i class="fas fa-edit"></i>
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 最新动态和快速操作 -->
+                    <div class="dashboard-panels">
+                        <div class="panel-grid">
+                            <!-- 最新动态 -->
+                            <div class="dashboard-panel">
+                                <div class="panel-header">
+                                    <h3><i class="fas fa-bell"></i> 最新动态</h3>
+                                    <div class="panel-actions">
+                                        <button class="btn btn-sm btn-ghost">查看全部</button>
+                                    </div>
+                                </div>
+                                <div class="panel-content">
+                                    <div class="activity-feed">
+                                        <div class="activity-item success">
+                                            <div class="activity-icon">
+                                                <i class="fas fa-hand-holding-usd"></i>
+                                            </div>
+                                            <div class="activity-content">
+                                                <div class="activity-title">季度分红已发放</div>
+                                                <div class="activity-desc">向2,847名投资者发放分红，总额¥2,547万</div>
+                                                <div class="activity-time">2小时前</div>
+                                            </div>
+                                        </div>
+                                        <div class="activity-item info">
+                                            <div class="activity-icon">
+                                                <i class="fas fa-building"></i>
+                                            </div>
+                                            <div class="activity-content">
+                                                <div class="activity-title">新资产完成评估</div>
+                                                <div class="activity-desc">广州天河商务中心评估完成，估值¥3.2亿</div>
+                                                <div class="activity-time">6小时前</div>
+                                            </div>
+                                        </div>
+                                        <div class="activity-item warning">
+                                            <div class="activity-icon">
+                                                <i class="fas fa-exclamation-triangle"></i>
+                                            </div>
+                                            <div class="activity-content">
+                                                <div class="activity-title">合规审核提醒</div>
+                                                <div class="activity-desc">Q1季度合规报告将于3天后到期</div>
+                                                <div class="activity-time">1天前</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- 快速操作面板 -->
+                            <div class="dashboard-panel">
+                                <div class="panel-header">
+                                    <h3><i class="fas fa-bolt"></i> 快速操作</h3>
+                                </div>
+                                <div class="panel-content">
+                                    <div class="quick-actions-grid">
+                                        <button class="quick-action-card" onclick="showModal('new-asset-modal')">
+                                            <div class="quick-action-icon">
+                                                <i class="fas fa-plus-circle"></i>
+                                            </div>
+                                            <div class="quick-action-text">
+                                                <div class="quick-action-title">新增资产</div>
+                                                <div class="quick-action-desc">录入新的实物资产</div>
+                                            </div>
+                                        </button>
+                                        <button class="quick-action-card" onclick="switchContent('tokenization')">
+                                            <div class="quick-action-icon">
+                                                <i class="fas fa-coins"></i>
+                                            </div>
+                                            <div class="quick-action-text">
+                                                <div class="quick-action-title">资产代币化</div>
+                                                <div class="quick-action-desc">启动代币化流程</div>
+                                            </div>
+                                        </button>
+                                        <button class="quick-action-card" onclick="generateReport()">
+                                            <div class="quick-action-icon">
+                                                <i class="fas fa-file-alt"></i>
+                                            </div>
+                                            <div class="quick-action-text">
+                                                <div class="quick-action-title">生成报告</div>
+                                                <div class="quick-action-desc">导出财务分析报告</div>
+                                            </div>
+                                        </button>
+                                        <button class="quick-action-card" onclick="switchContent('investors')">
+                                            <div class="quick-action-icon">
+                                                <i class="fas fa-users"></i>
+                                            </div>
+                                            <div class="quick-action-text">
+                                                <div class="quick-action-title">投资者管理</div>
+                                                <div class="quick-action-desc">查看投资者信息</div>
+                                            </div>
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
