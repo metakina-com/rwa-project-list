@@ -3,2885 +3,50 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RWA资产管理系统</title>
+    <title>RWA资产管理中心 - 智慧商业综合体</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="asset_management.css">
     <style>
+        /* Critical CSS inline - only essential styles for above-the-fold content */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
- 
-         body {
+        
+        body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
             color: #333;
         }
-
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-
-        .header {
-            background: white;
-            border-radius: 15px;
-            padding: 25px;
-            margin-bottom: 25px;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
-        }
-
-        .nav-bar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid #e9ecef;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 20px;
-        }
-
-        .nav-links a {
-            color: #007bff;
-            text-decoration: none;
-            font-weight: 500;
-            transition: color 0.3s ease;
-        }
-
-        .nav-links a:hover {
-            color: #0056b3;
-        }
-
-        .header h1 {
-            color: #2c3e50;
-            font-size: 2.5rem;
-            margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .project-info {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            margin-top: 20px;
-        }
-
-        .info-card {
-            background: #f8f9fa;
-            padding: 15px;
-            border-radius: 10px;
-            border-left: 4px solid #007bff;
-        }
-
-        .info-card h3 {
-            color: #495057;
-            margin-bottom: 8px;
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .info-card p {
-            color: #2c3e50;
-            font-size: 1.1rem;
-            font-weight: 600;
-        }
-
-        .project-info {
-            background: white;
-            border-radius: 15px;
-            padding: 25px;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
-        }
         
-        .dashboard {
-            background: white;
-            border-radius: 15px;
-            padding: 25px;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
-        }
-        
-        /* Main Layout Styles */
-        .main-layout {
-            display: flex;
-            min-height: calc(100vh - 80px);
-            gap: 20px;
-            padding: 20px;
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-        
-        .left-sidebar {
-            width: 350px;
-            background: white;
-            border-radius: 15px;
-            padding: 25px;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
-            height: fit-content;
-            position: sticky;
-            top: 20px;
-        }
-        
-        .right-content {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-        
-        .sidebar-section {
-            margin-bottom: 30px;
-        }
-        
-        .sidebar-section:last-child {
-            margin-bottom: 0;
-        }
-        
-        .sidebar-section h2 {
-            color: #2c3e50;
-            margin-bottom: 20px;
-            font-size: 1.3rem;
-            border-bottom: 2px solid #e9ecef;
-            padding-bottom: 10px;
-        }
-        
-        .sidebar-section h3 {
-            color: #2c3e50;
-            margin-bottom: 15px;
-            font-size: 1.1rem;
-        }
-        
-        .projects-list {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            max-height: 400px;
-            overflow-y: auto;
-        }
-        
-        .projects-list::-webkit-scrollbar {
-            width: 6px;
-        }
-        
-        .projects-list::-webkit-scrollbar-track {
-            background: #f1f1f1;
-            border-radius: 3px;
-        }
-        
-        .projects-list::-webkit-scrollbar-thumb {
-            background: #c1c1c1;
-            border-radius: 3px;
-        }
-        
-        .projects-list::-webkit-scrollbar-thumb:hover {
-            background: #a8a8a8;
-        }
-        
-        .quick-actions {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-        
-        .quick-action-btn {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            padding: 12px 16px;
-            border-radius: 8px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-align: left;
-        }
-        
-        .quick-action-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
-        }
-        
-        .project-card {
-            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-            border-radius: 10px;
-            padding: 15px;
-            border-left: 3px solid #007bff;
-            transition: all 0.3s ease;
-            cursor: pointer;
-            border: 1px solid #e9ecef;
-        }
-        
-        .project-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            border-left-color: #0056b3;
-            border-color: #007bff;
-        }
-        
-        .project-card.selected {
-            border-left-color: #28a745;
-            border-color: #28a745;
-            background: linear-gradient(135deg, #e8f5e8 0%, #d4edda 100%);
-        }
-        
-        .project-card h3 {
-            color: #2c3e50;
-            margin-bottom: 8px;
-            font-size: 1rem;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 8px;
-        }
-        
-        .project-card h3 .status-badge {
-            font-size: 0.7rem;
-            padding: 2px 6px;
-        }
-        
-        .project-meta {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            margin: 10px 0;
-        }
-        
-        .meta-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .meta-label {
-            font-size: 0.75rem;
-            color: #6c757d;
-            font-weight: 500;
-        }
-        
-        .meta-value {
-            font-weight: 600;
-            color: #2c3e50;
-            font-size: 0.8rem;
-        }
-        
-        .project-actions {
-            display: flex;
-            gap: 6px;
-            margin-top: 12px;
-        }
-        
-        .btn-small {
-            padding: 4px 8px;
-            font-size: 0.75rem;
-            border-radius: 4px;
-            flex: 1;
-            text-align: center;
-        }
-        
-        .empty-state {
-            text-align: center;
-            padding: 60px 20px;
-            color: #6c757d;
-        }
-        
-        .empty-state h3 {
-            margin-bottom: 10px;
-            color: #495057;
-        }
-        
-        .status-draft {
-            background-color: #6c757d;
-            color: white;
-        }
-        
-        .status-pending {
-            background-color: #ffc107;
-            color: #212529;
-        }
-        
-        .status-active {
-            background-color: #28a745;
-            color: white;
-        }
-        
-        .status-completed {
-            background-color: #007bff;
-            color: white;
-        }
-        
-        .status-suspended {
-            background-color: #dc3545;
-            color: white;
-        }
-        
-        /* Responsive Design */
-        @media (max-width: 1024px) {
-            .main-layout {
-                flex-direction: column;
-                padding: 15px;
-            }
-            
-            .left-sidebar {
-                width: 100%;
-                position: static;
-                margin-bottom: 20px;
-            }
-            
-            .projects-list {
-                max-height: 200px;
-            }
-            
-            .quick-actions {
-                flex-direction: row;
-            }
-        }
-        
-        @media (max-width: 768px) {
-            .main-layout {
-                padding: 10px;
-                gap: 15px;
-            }
-            
-            .left-sidebar {
-                padding: 20px;
-            }
-            
-            .project-info,
-            .dashboard {
-                padding: 20px;
-            }
-            
-            .info-grid {
-                grid-template-columns: 1fr 1fr;
-                gap: 15px;
-            }
-        }
-        
-        @media (max-width: 480px) {
-            .info-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .quick-actions {
-                flex-direction: column;
-            }
-            
-            .project-actions {
-                flex-direction: column;
-            }
-        }
-
-        .panel {
-            background: white;
-            border-radius: 15px;
-            padding: 25px;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
-        }
-
-        .panel h2 {
-            color: #2c3e50;
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 1.5rem;
-        }
-
-        .tabs {
-            display: flex;
-            border-bottom: 2px solid #e9ecef;
-            margin-bottom: 20px;
-        }
-
-        .tab {
-            padding: 12px 24px;
-            background: none;
-            border: none;
-            cursor: pointer;
-            font-size: 1rem;
-            color: #6c757d;
-            border-bottom: 3px solid transparent;
-            transition: all 0.3s ease;
-        }
-
-        .tab.active {
-            color: #007bff;
-            border-bottom-color: #007bff;
-            font-weight: 600;
-        }
-
-        .tab:hover {
-            color: #007bff;
-            background: #f8f9fa;
-        }
-
-        .tab-content {
-            display: none;
-        }
-
-        .tab-content.active {
-            display: block;
-        }
-
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-            margin-bottom: 20px;
-        }
-
-        .stat-card {
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
-            padding: 20px;
-            border-radius: 12px;
-            text-align: center;
-        }
-
-        .stat-card h3 {
-            font-size: 2rem;
-            margin-bottom: 5px;
-        }
-
-        .stat-card p {
-            opacity: 0.9;
-            font-size: 0.9rem;
-        }
-
-        .action-buttons {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-        }
-
-        .btn {
-            padding: 12px 24px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 1rem;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, #007bff, #0056b3);
-            color: white;
-        }
-
-        .btn-success {
-            background: linear-gradient(135deg, #28a745, #20c997);
-            color: white;
-        }
-
-        .btn-warning {
-            background: linear-gradient(135deg, #ffc107, #fd7e14);
-            color: #212529;
-        }
-
-        .btn-info {
-            background: linear-gradient(135deg, #17a2b8, #138496);
-            color: white;
-        }
-
-        .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-        }
-
-        .data-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 15px;
-        }
-
-        .data-table th,
-        .data-table td {
-            padding: 12px;
-            text-align: left;
-            border-bottom: 1px solid #dee2e6;
-        }
-
-        .data-table th {
-            background: #f8f9fa;
-            font-weight: 600;
-            color: #495057;
-        }
-
-        .data-table tr:hover {
-            background: #f8f9fa;
-        }
-
-        .status-badge {
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 600;
-        }
-
-        .status-active {
-            background: #d4edda;
-            color: #155724;
-        }
-
-        .status-pending {
-            background: #fff3cd;
-            color: #856404;
-        }
-
-        .status-inactive {
-            background: #f8d7da;
-            color: #721c24;
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-            color: #495057;
-        }
-
-        .form-group input,
-        .form-group select,
-        .form-group textarea {
-            width: 100%;
-            padding: 12px;
-            border: 2px solid #e9ecef;
-            border-radius: 8px;
-            font-size: 1rem;
-            transition: border-color 0.3s ease;
-        }
-
-        .form-group input:focus,
-        .form-group select:focus,
-        .form-group textarea:focus {
-            outline: none;
-            border-color: #007bff;
-        }
-
-        .modal {
-            display: none;
+        /* Loading animation */
+        .loading-overlay {
             position: fixed;
-            z-index: 1000;
-            left: 0;
             top: 0;
+            left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0,0,0,0.5);
-        }
-
-        .modal-content {
-            background-color: white;
-            margin: 5% auto;
-            padding: 30px;
-            border-radius: 15px;
-            width: 90%;
-            max-width: 600px;
-            max-height: 80vh;
-            overflow-y: auto;
-        }
-
-        .close {
-            color: #aaa;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-
-        .close:hover {
-            color: #000;
-        }
-
-        .progress-bar {
-            width: 100%;
-            height: 8px;
-            background: #e9ecef;
-            border-radius: 4px;
-            overflow: hidden;
-            margin: 10px 0;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #28a745, #20c997);
-            transition: width 0.3s ease;
-        }
-
-        /* 系统导航样式 */
-        .system-navigation {
-            margin: 25px 0;
-            padding: 20px;
-            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-            border-radius: 15px;
-            border: 1px solid #dee2e6;
-        }
-        
-        .system-navigation h3 {
-            color: #495057;
-            margin-bottom: 20px;
-            text-align: center;
-            font-size: 1.3rem;
-        }
-        
-        .nav-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-        }
-        
-        .nav-card {
-            background: white;
-            border-radius: 12px;
-            padding: 20px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            border: 2px solid transparent;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
-        }
-        
-        .nav-card:hover {
-            transform: translateY(-5px);
-            border-color: #007bff;
-            box-shadow: 0 8px 25px rgba(0,123,255,0.15);
-        }
-        
-        .nav-icon {
-            font-size: 2.5rem;
-            margin-bottom: 10px;
-        }
-        
-        .nav-card h4 {
-            color: #2c3e50;
-            margin-bottom: 8px;
-            font-size: 1rem;
-        }
-        
-        .nav-card p {
-            color: #6c757d;
-            font-size: 0.85rem;
-            line-height: 1.4;
-        }
-        
-        /* 预言机数据面板样式 */
-        .oracle-panel {
-            background: white;
-            border-radius: 15px;
-            padding: 25px;
-            margin-bottom: 25px;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
-        }
-        
-        .oracle-panel h2 {
-            color: #2c3e50;
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 1.5rem;
-        }
-        
-        .oracle-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
-        }
-        
-        .oracle-card {
-            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-            border-radius: 12px;
-            padding: 20px;
-            border-left: 4px solid #17a2b8;
-        }
-        
-        .oracle-card h4 {
-            color: #495057;
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        .oracle-data {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-        
-        .data-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 8px 0;
-            border-bottom: 1px solid #dee2e6;
-        }
-        
-        .data-item:last-child {
-            border-bottom: none;
-        }
-        
-        .data-item .label {
-            font-weight: 600;
-            color: #495057;
-        }
-        
-        .data-item .value {
-            font-weight: 700;
-            color: #2c3e50;
-        }
-        
-        .data-item .change {
-            font-size: 0.85rem;
-            font-weight: 600;
-            padding: 2px 8px;
-            border-radius: 12px;
-        }
-        
-        .change.positive {
-            background: #d4edda;
-            color: #155724;
-        }
-        
-        .change.negative {
-            background: #f8d7da;
-            color: #721c24;
-        }
-        
-        /* AI智能分析面板样式 */
-        .ai-panel {
-            background: white;
-            border-radius: 15px;
-            padding: 25px;
-            margin-bottom: 25px;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
-        }
-        
-        .ai-panel h2 {
-            color: #2c3e50;
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 1.5rem;
-        }
-        
-        .ai-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 20px;
-        }
-        
-        .ai-card {
-            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-            border-radius: 12px;
-            padding: 20px;
-            border-left: 4px solid #6f42c1;
-        }
-        
-        .ai-card h4 {
-            color: #495057;
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        .ai-content {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-        
-        .chart-placeholder {
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
-            padding: 40px 20px;
-            border-radius: 8px;
-            text-align: center;
-            font-size: 1.1rem;
-            font-weight: 600;
-        }
-        
-        .risk-meter {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            padding: 15px;
-            background: white;
-            border-radius: 8px;
-        }
-        
-        .risk-level {
-            padding: 8px 16px;
-            border-radius: 20px;
-            text-align: center;
-            font-weight: 600;
-        }
-        
-        .risk-level.low {
-            background: #d4edda;
-            color: #155724;
-        }
-        
-        .risk-score {
-            text-align: center;
-            font-weight: 600;
-            color: #495057;
-        }
-        
-        .ai-insights {
-            background: white;
-            padding: 15px;
-            border-radius: 8px;
-        }
-        
-        .ai-insights p {
-            margin-bottom: 8px;
-            line-height: 1.5;
-            color: #495057;
-        }
-        
-        .recommendations {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-        
-        .recommendation {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 12px;
-            background: white;
-            border-radius: 8px;
-            border-left: 3px solid #28a745;
-        }
-        
-        .rec-icon {
-            font-size: 1.2rem;
-        }
-        
-        .rec-text {
-            color: #495057;
-            font-weight: 500;
-        }
-        
-        /* 通知样式 */
-        .notification {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: white;
-            border-radius: 10px;
-            padding: 15px 20px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-            z-index: 10000;
-            transform: translateX(400px);
-            opacity: 0;
-            transition: all 0.3s ease;
-            max-width: 350px;
-            border-left: 4px solid #007bff;
-        }
-        
-        .notification.show {
-            transform: translateX(0);
-            opacity: 1;
-        }
-        
-        .notification.success {
-            border-left-color: #28a745;
-        }
-        
-        .notification.error {
-            border-left-color: #dc3545;
-        }
-        
-        .notification i {
-            margin-right: 10px;
-            font-size: 1.1rem;
-        }
-        
-        .notification.success i {
-            color: #28a745;
-        }
-        
-        .notification.error i {
-            color: #dc3545;
-        }
-        
-        /* 高亮效果 */
-        .highlight {
-            animation: highlight 2s ease;
-        }
-        
-        @keyframes highlight {
-            0% { background: rgba(0, 123, 255, 0.1); }
-            50% { background: rgba(0, 123, 255, 0.2); }
-            100% { background: rgba(0, 123, 255, 0.1); }
-        }
-        
-        /* 改进的按钮样式 */
-        .action-button {
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .action-button::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            background: rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-            transform: translate(-50%, -50%);
-            transition: width 0.6s, height 0.6s;
-        }
-        
-        .action-button:active::before {
-            width: 300px;
-            height: 300px;
-        }
-        
-        /* 改进的卡片悬停效果 */
-        .oracle-card,
-        .ai-card {
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-        
-        .oracle-card:hover,
-        .ai-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
-        }
-        
-        @media (max-width: 1200px) {
-            .container {
-                max-width: 100%;
-                padding: 15px;
-            }
-            
-            .nav-grid {
-                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-                gap: 15px;
-            }
-        }
-        
-        @media (max-width: 768px) {
-            .dashboard {
-                grid-template-columns: 1fr;
-            }
-            
-            .stats-grid {
-                grid-template-columns: 1fr 1fr;
-            }
-            
-            .action-buttons {
-                flex-direction: column;
-            }
-            
-            .nav-grid {
-                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            }
-            
-            .oracle-grid,
-            .ai-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .project-info {
-                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-                gap: 15px;
-            }
-            
-            .nav-card {
-                padding: 15px;
-            }
-            
-            .nav-card h4 {
-                font-size: 0.9rem;
-            }
-            
-            .nav-card p {
-                font-size: 0.8rem;
-            }
-            
-            .header h1 {
-                font-size: 2rem;
-            }
-            
-            .panel {
-                padding: 20px;
-            }
-            
-            .notification {
-                right: 10px;
-                left: 10px;
-                max-width: none;
-                transform: translateY(-100px);
-            }
-            
-            .notification.show {
-                transform: translateY(0);
-            }
-        }
-        
-        @media (max-width: 480px) {
-            .container {
-                padding: 10px;
-            }
-            
-            .header {
-                padding: 20px;
-            }
-            
-            .project-info {
-                grid-template-columns: 1fr;
-            }
-            
-            .nav-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .stats-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .action-buttons {
-                flex-direction: column;
-                gap: 10px;
-            }
-            
-            .action-button {
-                width: 100%;
-            }
-        }
-        
-        /* 新增左侧菜单栏样式 */
-        .management-layout {
-            display: flex;
-            min-height: calc(100vh - 200px);
-            gap: 0;
-            margin-top: 20px;
-        }
-        
-        .left-menu {
-            width: 280px;
-            background: white;
-            border-radius: 15px 0 0 15px;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
-            overflow: hidden;
-        }
-        
-        .menu-header {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 20px;
-            text-align: center;
-        }
-        
-        .menu-header h3 {
-            margin: 0;
-            font-size: 1.2rem;
-        }
-        
-        .menu-list {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-        
-        .menu-item {
-            border-bottom: 1px solid #e9ecef;
-        }
-        
-        .menu-item:last-child {
-            border-bottom: none;
-        }
-        
-        .menu-link {
             display: flex;
             align-items: center;
-            padding: 15px 20px;
-            color: #495057;
-            text-decoration: none;
-            transition: all 0.3s ease;
-            cursor: pointer;
+            justify-content: center;
+            z-index: 9999;
+            opacity: 1;
+            transition: opacity 0.5s ease;
         }
         
-        .menu-link:hover {
-            background: #f8f9fa;
-            color: #007bff;
+        .loading-overlay.hidden {
+            opacity: 0;
+            pointer-events: none;
         }
         
-        .menu-link.active {
-            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
-            color: #1976d2;
-            border-right: 4px solid #007bff;
-        }
-        
-        .menu-icon {
-            font-size: 1.2rem;
-            margin-right: 12px;
-            width: 20px;
-            text-align: center;
-        }
-        
-        .menu-text {
-            flex: 1;
-        }
-        
-        .menu-subtitle {
-            font-size: 0.75rem;
-            color: #6c757d;
-            margin-top: 2px;
-        }
-        
-        .content-area {
-            flex: 1;
-            background: white;
-            border-radius: 0 15px 15px 0;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
-            padding: 30px;
-            overflow-y: auto;
-        }
-        
-        .content-header {
-            margin-bottom: 25px;
-            padding-bottom: 15px;
-            border-bottom: 2px solid #e9ecef;
-        }
-        
-        .content-header h2 {
-            color: #2c3e50;
-            margin: 0;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .content-section {
-            display: none;
-        }
-        
-        .content-section.active {
-            display: block;
-        }
-        
-        /* 系统管理界面样式 */
-        .system-config-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
-            margin-bottom: 25px;
-        }
-        
-        .config-card {
-            background: #f8f9fa;
-            border-radius: 10px;
-            padding: 20px;
-            border-left: 4px solid #007bff;
-        }
-        
-        .config-card h4 {
-            color: #495057;
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        .config-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 8px 0;
-            border-bottom: 1px solid #dee2e6;
-        }
-        
-        .config-item:last-child {
-            border-bottom: none;
-        }
-        
-        .config-toggle {
-            width: 50px;
-            height: 25px;
-            background: #ccc;
-            border-radius: 25px;
-            position: relative;
-            cursor: pointer;
-            transition: background 0.3s ease;
-        }
-        
-        .config-toggle.active {
-            background: #28a745;
-        }
-        
-        .config-toggle::after {
-            content: '';
-            position: absolute;
-            width: 21px;
-            height: 21px;
-            background: white;
-            border-radius: 50%;
-            top: 2px;
-            left: 2px;
-            transition: transform 0.3s ease;
-        }
-        
-        .config-toggle.active::after {
-            transform: translateX(25px);
-        }
-        
-        /* 财务管理界面样式 */
-        .financial-overview {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-            margin-bottom: 25px;
-        }
-        
-        .financial-card {
-            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
-            color: white;
-            padding: 20px;
-            border-radius: 12px;
-            text-align: center;
-        }
-        
-        .financial-card.expense {
-            background: linear-gradient(135deg, #dc3545 0%, #fd7e14 100%);
-        }
-        
-        .financial-card.profit {
-            background: linear-gradient(135deg, #007bff 0%, #6f42c1 100%);
-        }
-        
-        .financial-card h4 {
-            font-size: 1.8rem;
-            margin-bottom: 5px;
-        }
-        
-        .financial-card p {
-            opacity: 0.9;
-            font-size: 0.9rem;
-        }
-        
-        .chart-placeholder {
-            background: #f8f9fa;
-            border: 2px dashed #dee2e6;
-            border-radius: 10px;
-            padding: 40px;
-            text-align: center;
-            color: #6c757d;
-            margin: 20px 0;
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <!-- 项目头部信息 -->
-        <div class="header">
-            <div class="nav-bar">
-                <div class="nav-links">
-                    <a href="index.html">首页</a>
-                    <a href="rwa_marketplace.html">交易市场</a>
-                    <a href="asset_management.html">资产管理</a>
-                    <a href="rwa_client_form.html">项目申请</a>
-                </div>
-            </div>
-            <h1>🏢 智慧商业综合体RWA项目</h1>
-            
-            <!-- 系统入口导航 -->
-            <div class="system-navigation">
-                <h3>🚀 系统管理中心</h3>
-                <div class="nav-grid">
-                    <div class="nav-card" onclick="navigateToSystem('project')">
-                        <div class="nav-icon">📊</div>
-                        <h4>项目管理系统</h4>
-                        <p>项目进度、里程碑、团队管理</p>
-                    </div>
-                    <div class="nav-card" onclick="navigateToSystem('token')">
-                        <div class="nav-icon">🪙</div>
-                        <h4>代币管理系统</h4>
-                        <p>代币发行、流通、价格管理</p>
-                    </div>
-                    <div class="nav-card" onclick="navigateToSystem('nft')">
-                        <div class="nav-icon">🎨</div>
-                        <h4>NFT管理系统</h4>
-                        <p>NFT创建、销售、交易管理</p>
-                    </div>
-                    <div class="nav-card" onclick="navigateToSystem('data')">
-                        <div class="nav-icon">📋</div>
-                        <h4>资料管理系统</h4>
-                        <p>文档存储、版本控制、审核</p>
-                    </div>
-                    <div class="nav-card" onclick="navigateToSystem('compliance')">
-                        <div class="nav-icon">⚖️</div>
-                        <h4>合规性管理系统</h4>
-                        <p>法规遵循、风险评估、审计</p>
-                    </div>
-                    <div class="nav-card" onclick="navigateToSystem('market')">
-                        <div class="nav-icon">📈</div>
-                        <h4>一二级市场管理</h4>
-                        <p>发行市场、交易市场、流动性</p>
-                    </div>
-                    <div class="nav-card" onclick="publishToMarketplace()" style="border: 2px solid #28a745; background: linear-gradient(135deg, #e8f5e8 0%, #d4edda 100%);">
-                        <div class="nav-icon">🚀</div>
-                        <h4>发行到RWA市场</h4>
-                        <p>将项目发布到公共交易市场</p>
-                    </div>
-                    <div class="nav-card" onclick="navigateToSystem('oracle')">
-                        <div class="nav-icon">🔮</div>
-                        <h4>预言机数据集成</h4>
-                        <p>实时数据、价格feeds、外部API</p>
-                    </div>
-                    <div class="nav-card" onclick="navigateToSystem('ai')">
-                        <div class="nav-icon">🤖</div>
-                        <h4>AI智能模块</h4>
-                        <p>智能分析、风险预测、决策支持</p>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="project-info">
-                <div class="info-card">
-                    <h3>项目状态</h3>
-                    <p>🟢 运营中</p>
-                </div>
-                <div class="info-card">
-                    <h3>资产估值</h3>
-                    <p>¥50,000万元</p>
-                </div>
-                <div class="info-card">
-                    <h3>年化收益率</h3>
-                    <p>8.5%</p>
-                </div>
-                <div class="info-card">
-                    <h3>代币发行量</h3>
-                    <p>1,000,000 RWA</p>
-                </div>
-                <div class="info-card">
-                    <h3>NFT发行量</h3>
-                    <p>500 NFT</p>
-                </div>
-                <div class="info-card">
-                    <h3>持有人数量</h3>
-                    <p>1,247人</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- 预言机数据面板 -->
-        <div class="oracle-panel">
-            <h2>🔮 预言机数据中心</h2>
-            <div class="oracle-grid">
-                <div class="oracle-card">
-                    <h4>📊 市场数据</h4>
-                    <div class="oracle-data">
-                        <div class="data-item">
-                            <span class="label">ETH/USD:</span>
-                            <span class="value">$2,345.67</span>
-                            <span class="change positive">+2.34%</span>
-                        </div>
-                        <div class="data-item">
-                            <span class="label">BTC/USD:</span>
-                            <span class="value">$43,210.89</span>
-                            <span class="change negative">-1.23%</span>
-                        </div>
-                        <div class="data-item">
-                            <span class="label">房地产指数:</span>
-                            <span class="value">1,234.56</span>
-                            <span class="change positive">+0.89%</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="oracle-card">
-                    <h4>🏢 资产数据</h4>
-                    <div class="oracle-data">
-                        <div class="data-item">
-                            <span class="label">租金收入:</span>
-                            <span class="value">¥2,345,678</span>
-                            <span class="change positive">+5.67%</span>
-                        </div>
-                        <div class="data-item">
-                            <span class="label">入住率:</span>
-                            <span class="value">95.6%</span>
-                            <span class="change positive">+2.1%</span>
-                        </div>
-                        <div class="data-item">
-                            <span class="label">资产估值:</span>
-                            <span class="value">¥500,000,000</span>
-                            <span class="change positive">+3.45%</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="oracle-card">
-                    <h4>⚡ 实时状态</h4>
-                    <div class="oracle-data">
-                        <div class="data-item">
-                            <span class="label">数据更新:</span>
-                            <span class="value status-active">实时</span>
-                        </div>
-                        <div class="data-item">
-                            <span class="label">API状态:</span>
-                            <span class="value status-active">正常</span>
-                        </div>
-                        <div class="data-item">
-                            <span class="label">最后同步:</span>
-                            <span class="value">2分钟前</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- AI智能分析面板 -->
-        <div class="ai-panel">
-            <h2>🤖 AI智能分析中心</h2>
-            <div class="ai-grid">
-                <div class="ai-card">
-                    <h4>📈 收益预测</h4>
-                    <div class="ai-content">
-                        <div class="prediction-chart">
-                            <div class="chart-placeholder">📊 收益趋势图</div>
-                        </div>
-                        <div class="ai-insights">
-                            <p><strong>AI预测:</strong> 未来6个月预期收益率为8.7%</p>
-                            <p><strong>置信度:</strong> 87%</p>
-                            <p><strong>关键因素:</strong> 市场需求上升、租金增长</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="ai-card">
-                    <h4>⚠️ 风险评估</h4>
-                    <div class="ai-content">
-                        <div class="risk-meter">
-                            <div class="risk-level low">低风险</div>
-                            <div class="risk-score">风险评分: 2.3/10</div>
-                        </div>
-                        <div class="ai-insights">
-                            <p><strong>主要风险:</strong> 市场波动、政策变化</p>
-                            <p><strong>建议:</strong> 保持当前投资策略</p>
-                            <p><strong>监控指标:</strong> 入住率、租金水平</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="ai-card">
-                    <h4>💡 智能建议</h4>
-                    <div class="ai-content">
-                        <div class="recommendations">
-                            <div class="recommendation">
-                                <span class="rec-icon">💰</span>
-                                <span class="rec-text">建议增加代币流动性池</span>
-                            </div>
-                            <div class="recommendation">
-                                <span class="rec-icon">🎯</span>
-                                <span class="rec-text">优化NFT定价策略</span>
-                            </div>
-                            <div class="recommendation">
-                                <span class="rec-icon">📊</span>
-                                <span class="rec-text">扩大市场推广范围</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- 系统管理中心 - 新布局 -->
-        <div class="management-layout">
-            <!-- 左侧菜单栏 -->
-            <div class="left-menu">
-                <div class="menu-header">
-                    <h3>🚀 系统管理中心</h3>
-                </div>
-                <ul class="menu-list">
-                    <li class="menu-item">
-                        <a class="menu-link active" onclick="switchContent('project')">
-                            <span class="menu-icon">📊</span>
-                            <div class="menu-text">
-                                项目管理系统
-                                <div class="menu-subtitle">项目进度、里程碑管理</div>
-                            </div>
-                        </a>
-                    </li>
-                    <li class="menu-item">
-                        <a class="menu-link" onclick="switchContent('token')">
-                            <span class="menu-icon">🪙</span>
-                            <div class="menu-text">
-                                代币管理系统
-                                <div class="menu-subtitle">代币发行、流通管理</div>
-                            </div>
-                        </a>
-                    </li>
-                    <li class="menu-item">
-                        <a class="menu-link" onclick="switchContent('nft')">
-                            <span class="menu-icon">🎨</span>
-                            <div class="menu-text">
-                                NFT管理系统
-                                <div class="menu-subtitle">NFT创建、销售管理</div>
-                            </div>
-                        </a>
-                    </li>
-                    <li class="menu-item">
-                        <a class="menu-link" onclick="switchContent('data')">
-                            <span class="menu-icon">📋</span>
-                            <div class="menu-text">
-                                资料管理系统
-                                <div class="menu-subtitle">文档存储、版本控制</div>
-                            </div>
-                        </a>
-                    </li>
-                    <li class="menu-item">
-                        <a class="menu-link" onclick="switchContent('compliance')">
-                            <span class="menu-icon">⚖️</span>
-                            <div class="menu-text">
-                                合规性管理系统
-                                <div class="menu-subtitle">法规遵循、风险评估</div>
-                            </div>
-                        </a>
-                    </li>
-                    <li class="menu-item">
-                        <a class="menu-link" onclick="switchContent('market')">
-                            <span class="menu-icon">📈</span>
-                            <div class="menu-text">
-                                一二级市场管理
-                                <div class="menu-subtitle">发行市场、交易市场</div>
-                            </div>
-                        </a>
-                    </li>
-                    <li class="menu-item">
-                        <a class="menu-link" onclick="switchContent('oracle')">
-                            <span class="menu-icon">🔮</span>
-                            <div class="menu-text">
-                                预言机数据集成
-                                <div class="menu-subtitle">实时数据、价格feeds</div>
-                            </div>
-                        </a>
-                    </li>
-                    <li class="menu-item">
-                        <a class="menu-link" onclick="switchContent('ai')">
-                            <span class="menu-icon">🤖</span>
-                            <div class="menu-text">
-                                AI智能模块
-                                <div class="menu-subtitle">智能分析、决策支持</div>
-                            </div>
-                        </a>
-                    </li>
-                    <li class="menu-item">
-                        <a class="menu-link" onclick="switchContent('system')">
-                            <span class="menu-icon">⚙️</span>
-                            <div class="menu-text">
-                                系统管理
-                                <div class="menu-subtitle">用户权限、系统配置</div>
-                            </div>
-                        </a>
-                    </li>
-                    <li class="menu-item">
-                        <a class="menu-link" onclick="switchContent('financial')">
-                            <span class="menu-icon">💰</span>
-                            <div class="menu-text">
-                                财务管理
-                                <div class="menu-subtitle">收支统计、财务报表</div>
-                            </div>
-                        </a>
-                    </li>
-                    <li class="menu-item">
-                        <a class="menu-link" onclick="publishToMarketplace()" style="background: linear-gradient(135deg, #e8f5e8 0%, #d4edda 100%); border-right: 4px solid #28a745;">
-                            <span class="menu-icon">🚀</span>
-                            <div class="menu-text">
-                                发行到RWA市场
-                                <div class="menu-subtitle">发布到公共交易市场</div>
-                            </div>
-                        </a>
-                    </li>
-                </ul>
-            </div>
-            
-            <!-- 右侧内容区域 -->
-            <div class="content-area">
-                <!-- 项目管理系统内容 -->
-                <div id="project-content" class="content-section active">
-                    <div class="content-header">
-                        <h2>📊 项目管理系统</h2>
-                    </div>
-                    <!-- 这里保持原有的项目管理内容 -->
-                    <div class="stats-grid">
-                        <div class="stat-card">
-                            <h3>5</h3>
-                            <p>活跃项目</p>
-                        </div>
-                        <div class="stat-card">
-                            <h3>12</h3>
-                            <p>已完成项目</p>
-                        </div>
-                        <div class="stat-card">
-                            <h3>3</h3>
-                            <p>待审核项目</p>
-                        </div>
-                    </div>
-                    <div class="action-buttons">
-                        <button class="btn btn-primary" onclick="createProject()">🆕 创建新项目</button>
-                        <button class="btn btn-info" onclick="viewProjects()">📋 查看所有项目</button>
-                        <button class="btn btn-warning" onclick="exportProjects()">📤 导出项目数据</button>
-                    </div>
-                </div>
-                
-                <!-- 系统管理内容 -->
-                <div id="system-content" class="content-section">
-                    <div class="content-header">
-                        <h2>⚙️ 系统管理</h2>
-                    </div>
-                    <div class="system-config-grid">
-                        <div class="config-card">
-                            <h4>👥 用户权限管理</h4>
-                            <div class="config-item">
-                                <span>管理员权限</span>
-                                <div class="config-toggle active" onclick="toggleConfig(this)"></div>
-                            </div>
-                            <div class="config-item">
-                                <span>用户注册</span>
-                                <div class="config-toggle active" onclick="toggleConfig(this)"></div>
-                            </div>
-                            <div class="config-item">
-                                <span>访客模式</span>
-                                <div class="config-toggle" onclick="toggleConfig(this)"></div>
-                            </div>
-                        </div>
-                        <div class="config-card">
-                            <h4>🔧 系统配置</h4>
-                            <div class="config-item">
-                                <span>自动备份</span>
-                                <div class="config-toggle active" onclick="toggleConfig(this)"></div>
-                            </div>
-                            <div class="config-item">
-                                <span>邮件通知</span>
-                                <div class="config-toggle active" onclick="toggleConfig(this)"></div>
-                            </div>
-                            <div class="config-item">
-                                <span>维护模式</span>
-                                <div class="config-toggle" onclick="toggleConfig(this)"></div>
-                            </div>
-                        </div>
-                        <div class="config-card">
-                            <h4>📊 系统监控</h4>
-                            <div class="config-item">
-                                <span>CPU使用率</span>
-                                <span class="meta-value">45%</span>
-                            </div>
-                            <div class="config-item">
-                                <span>内存使用率</span>
-                                <span class="meta-value">62%</span>
-                            </div>
-                            <div class="config-item">
-                                <span>磁盘空间</span>
-                                <span class="meta-value">78%</span>
-                            </div>
-                        </div>
-                        <div class="config-card">
-                            <h4>📝 操作日志</h4>
-                            <div style="max-height: 200px; overflow-y: auto;">
-                                <div class="config-item">
-                                    <span>用户登录</span>
-                                    <span class="meta-value">2分钟前</span>
-                                </div>
-                                <div class="config-item">
-                                    <span>项目创建</span>
-                                    <span class="meta-value">15分钟前</span>
-                                </div>
-                                <div class="config-item">
-                                    <span>代币发行</span>
-                                    <span class="meta-value">1小时前</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="action-buttons">
-                        <button class="btn btn-primary">👥 管理用户</button>
-                        <button class="btn btn-warning">🔧 系统设置</button>
-                        <button class="btn btn-info">📊 查看日志</button>
-                        <button class="btn btn-success">💾 备份数据</button>
-                    </div>
-                </div>
-                
-                <!-- 财务管理内容 -->
-                <div id="financial-content" class="content-section">
-                    <div class="content-header">
-                        <h2>💰 财务管理</h2>
-                    </div>
-                    <div class="financial-overview">
-                        <div class="financial-card">
-                            <h4>¥2,450,000</h4>
-                            <p>总收入</p>
-                        </div>
-                        <div class="financial-card expense">
-                            <h4>¥890,000</h4>
-                            <p>总支出</p>
-                        </div>
-                        <div class="financial-card profit">
-                            <h4>¥1,560,000</h4>
-                            <p>净利润</p>
-                        </div>
-                        <div class="financial-card">
-                            <h4>8.7%</h4>
-                            <p>投资回报率</p>
-                        </div>
-                    </div>
-                    <div class="chart-placeholder">
-                        📈 财务趋势图表（待集成图表库）
-                    </div>
-                    <div class="data-table">
-                        <table class="data-table">
-                            <thead>
-                                <tr>
-                                    <th>日期</th>
-                                    <th>类型</th>
-                                    <th>描述</th>
-                                    <th>金额</th>
-                                    <th>状态</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>2024-01-15</td>
-                                    <td>收入</td>
-                                    <td>代币销售收入</td>
-                                    <td>¥450,000</td>
-                                    <td><span class="status-badge status-active">已确认</span></td>
-                                </tr>
-                                <tr>
-                                    <td>2024-01-14</td>
-                                    <td>支出</td>
-                                    <td>运营成本</td>
-                                    <td>¥85,000</td>
-                                    <td><span class="status-badge status-active">已支付</span></td>
-                                </tr>
-                                <tr>
-                                    <td>2024-01-13</td>
-                                    <td>收入</td>
-                                    <td>NFT交易手续费</td>
-                                    <td>¥32,000</td>
-                                    <td><span class="status-badge status-pending">待确认</span></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="action-buttons">
-                        <button class="btn btn-primary">📊 生成报表</button>
-                        <button class="btn btn-success">💰 记录收入</button>
-                        <button class="btn btn-warning">💸 记录支出</button>
-                        <button class="btn btn-info">📤 导出数据</button>
-                    </div>
-                </div>
-                
-                <!-- 代币管理系统内容 -->
-                <div id="token-content" class="content-section">
-                    <div class="content-header">
-                        <h2>🪙 代币管理系统</h2>
-                    </div>
-                    <!-- 代币管理内容将通过JavaScript动态添加 -->
-                </div>
-                
-                <!-- NFT管理系统内容 -->
-                <div id="nft-content" class="content-section">
-                    <div class="content-header">
-                        <h2>🎨 NFT管理系统</h2>
-                    </div>
-                    <!-- NFT管理内容将通过JavaScript动态添加 -->
-                </div>
-                
-                <!-- 资料管理系统内容 -->
-                <div id="data-content" class="content-section">
-                    <div class="content-header">
-                        <h2>📋 资料管理系统</h2>
-                    </div>
-                    <!-- 资料管理内容将通过JavaScript动态添加 -->
-                </div>
-                
-                <!-- 合规性管理系统内容 -->
-                <div id="compliance-content" class="content-section">
-                    <div class="content-header">
-                        <h2>⚖️ 合规性管理系统</h2>
-                    </div>
-                    <!-- 合规管理内容将通过JavaScript动态添加 -->
-                </div>
-                
-                <!-- 一二级市场管理内容 -->
-                <div id="market-content" class="content-section">
-                    <div class="content-header">
-                        <h2>📈 一二级市场管理</h2>
-                    </div>
-                    <div class="stats-grid">
-                        <div class="stat-card">
-                            <h3>¥2,500万</h3>
-                            <p>一级市场发行额</p>
-                        </div>
-                        <div class="stat-card">
-                            <h3>¥1,800万</h3>
-                            <p>二级市场交易额</p>
-                        </div>
-                        <div class="stat-card">
-                            <h3>1,247</h3>
-                            <p>活跃投资者</p>
-                        </div>
-                    </div>
-                    <div class="action-buttons">
-                        <button class="btn btn-primary">📊 发行管理</button>
-                        <button class="btn btn-success">💹 交易监控</button>
-                        <button class="btn btn-info">📈 市场分析</button>
-                    </div>
-                </div>
-                
-                <!-- 预言机数据集成内容 -->
-                <div id="oracle-content" class="content-section">
-                    <div class="content-header">
-                        <h2>🔮 预言机数据集成</h2>
-                    </div>
-                    <div class="oracle-grid">
-                        <div class="oracle-card">
-                            <h4>📊 实时价格数据</h4>
-                            <div class="oracle-data">
-                                <div class="data-item">
-                                    <span class="label">ETH/USD:</span>
-                                    <span class="value">$2,345.67</span>
-                                    <span class="change positive">+2.34%</span>
-                                </div>
-                                <div class="data-item">
-                                    <span class="label">BTC/USD:</span>
-                                    <span class="value">$43,210.89</span>
-                                    <span class="change negative">-1.23%</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="action-buttons">
-                        <button class="btn btn-primary">🔄 刷新数据</button>
-                        <button class="btn btn-info">⚙️ 配置数据源</button>
-                        <button class="btn btn-warning">📊 数据分析</button>
-                    </div>
-                </div>
-                
-                <!-- AI智能模块内容 -->
-                <div id="ai-content" class="content-section">
-                    <div class="content-header">
-                        <h2>🤖 AI智能模块</h2>
-                    </div>
-                    <div class="ai-grid">
-                        <div class="ai-card">
-                            <h4>📈 智能预测</h4>
-                            <div class="ai-content">
-                                <div class="chart-placeholder">📊 AI预测图表</div>
-                                <div class="ai-insights">
-                                    <p><strong>预测结果:</strong> 未来30天收益率预期为7.2%</p>
-                                    <p><strong>置信度:</strong> 85%</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="action-buttons">
-                        <button class="btn btn-primary">🧠 运行分析</button>
-                        <button class="btn btn-success">📊 生成报告</button>
-                        <button class="btn btn-info">⚙️ 模型配置</button>
-                    </div>
-                </div>
-
-        <!-- 主要管理面板 -->
-        <div class="dashboard">
-            <!-- 代币管理 -->
-            <div class="panel">
-                <h2>🪙 代币管理</h2>
-                <div class="tabs">
-                    <button class="tab active" onclick="switchTab('token', 'overview')">概览</button>
-                    <button class="tab" onclick="switchTab('token', 'issue')">发行</button>
-                    <button class="tab" onclick="switchTab('token', 'holders')">持有人</button>
-                </div>
-                
-                <div id="token-overview" class="tab-content active">
-                    <div class="stats-grid">
-                        <div class="stat-card">
-                            <h3>1,000,000</h3>
-                            <p>总发行量</p>
-                        </div>
-                        <div class="stat-card">
-                            <h3>850,000</h3>
-                            <p>已流通</p>
-                        </div>
-                        <div class="stat-card">
-                            <h3>¥50.00</h3>
-                            <p>当前价格</p>
-                        </div>
-                    </div>
-                    <div class="action-buttons">
-                        <button class="btn btn-primary" onclick="openModal('issueTokenModal')">📈 增发代币</button>
-                        <button class="btn btn-info" onclick="openModal('distributeDividendModal')">💰 分红派息</button>
-                        <button class="btn btn-warning">📊 价格调整</button>
-                    </div>
-                </div>
-                
-                <div id="token-issue" class="tab-content">
-                    <h3>代币发行记录</h3>
-                    <table class="data-table">
-                        <thead>
-                            <tr>
-                                <th>发行日期</th>
-                                <th>发行数量</th>
-                                <th>发行价格</th>
-                                <th>状态</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>2024-01-15</td>
-                                <td>500,000</td>
-                                <td>¥50.00</td>
-                                <td><span class="status-badge status-active">已完成</span></td>
-                            </tr>
-                            <tr>
-                                <td>2024-03-20</td>
-                                <td>300,000</td>
-                                <td>¥52.00</td>
-                                <td><span class="status-badge status-active">已完成</span></td>
-                            </tr>
-                            <tr>
-                                <td>2024-06-10</td>
-                                <td>200,000</td>
-                                <td>¥48.00</td>
-                                <td><span class="status-badge status-pending">进行中</span></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                
-                <div id="token-holders" class="tab-content">
-                    <h3>代币持有人分布</h3>
-                    <table class="data-table">
-                        <thead>
-                            <tr>
-                                <th>持有人</th>
-                                <th>持有数量</th>
-                                <th>持有比例</th>
-                                <th>KYC状态</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>0x1234...5678</td>
-                                <td>50,000</td>
-                                <td>5.0%</td>
-                                <td><span class="status-badge status-active">已认证</span></td>
-                            </tr>
-                            <tr>
-                                <td>0x9876...4321</td>
-                                <td>30,000</td>
-                                <td>3.0%</td>
-                                <td><span class="status-badge status-active">已认证</span></td>
-                            </tr>
-                            <tr>
-                                <td>0xabcd...efgh</td>
-                                <td>25,000</td>
-                                <td>2.5%</td>
-                                <td><span class="status-badge status-pending">待认证</span></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <!-- NFT管理 -->
-            <div class="panel">
-                <h2>🎨 NFT管理</h2>
-                <div class="tabs">
-                    <button class="tab active" onclick="switchTab('nft', 'overview')">概览</button>
-                    <button class="tab" onclick="switchTab('nft', 'collections')">系列</button>
-                    <button class="tab" onclick="switchTab('nft', 'marketplace')">交易</button>
-                </div>
-                
-                <div id="nft-overview" class="tab-content active">
-                    <div class="stats-grid">
-                        <div class="stat-card">
-                            <h3>500</h3>
-                            <p>总发行量</p>
-                        </div>
-                        <div class="stat-card">
-                            <h3>387</h3>
-                            <p>已售出</p>
-                        </div>
-                        <div class="stat-card">
-                            <h3>¥5,000</h3>
-                            <p>地板价</p>
-                        </div>
-                    </div>
-                    <div class="action-buttons">
-                        <button class="btn btn-primary" onclick="openModal('createNFTModal')">🎨 创建NFT</button>
-                        <button class="btn btn-success">🏪 开启销售</button>
-                        <button class="btn btn-info">📈 价格管理</button>
-                    </div>
-                </div>
-                
-                <div id="nft-collections" class="tab-content">
-                    <h3>NFT系列管理</h3>
-                    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 15px;">
-                        <div style="border: 1px solid #dee2e6; border-radius: 8px; padding: 15px; text-align: center;">
-                            <div style="width: 100%; height: 120px; background: linear-gradient(45deg, #667eea, #764ba2); border-radius: 8px; margin-bottom: 10px; display: flex; align-items: center; justify-content: center; color: white; font-size: 2rem;">🏠</div>
-                            <h4>所有权凭证</h4>
-                            <p>已发行: 100/100</p>
-                            <span class="status-badge status-active">已售罄</span>
-                        </div>
-                        <div style="border: 1px solid #dee2e6; border-radius: 8px; padding: 15px; text-align: center;">
-                            <div style="width: 100%; height: 120px; background: linear-gradient(45deg, #28a745, #20c997); border-radius: 8px; margin-bottom: 10px; display: flex; align-items: center; justify-content: center; color: white; font-size: 2rem;">💎</div>
-                            <h4>收益权NFT</h4>
-                            <p>已发行: 250/300</p>
-                            <span class="status-badge status-pending">销售中</span>
-                        </div>
-                        <div style="border: 1px solid #dee2e6; border-radius: 8px; padding: 15px; text-align: center;">
-                            <div style="width: 100%; height: 120px; background: linear-gradient(45deg, #ffc107, #fd7e14); border-radius: 8px; margin-bottom: 10px; display: flex; align-items: center; justify-content: center; color: white; font-size: 2rem;">🎖️</div>
-                            <h4>纪念版NFT</h4>
-                            <p>已发行: 37/100</p>
-                            <span class="status-badge status-pending">销售中</span>
-                        </div>
-                    </div>
-                </div>
-                
-                <div id="nft-marketplace" class="tab-content">
-                    <h3>NFT交易记录</h3>
-                    <table class="data-table">
-                        <thead>
-                            <tr>
-                                <th>NFT ID</th>
-                                <th>类型</th>
-                                <th>交易价格</th>
-                                <th>交易时间</th>
-                                <th>状态</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>#001</td>
-                                <td>所有权凭证</td>
-                                <td>¥8,000</td>
-                                <td>2024-06-15</td>
-                                <td><span class="status-badge status-active">已成交</span></td>
-                            </tr>
-                            <tr>
-                                <td>#125</td>
-                                <td>收益权NFT</td>
-                                <td>¥5,500</td>
-                                <td>2024-06-14</td>
-                                <td><span class="status-badge status-active">已成交</span></td>
-                            </tr>
-                            <tr>
-                                <td>#089</td>
-                                <td>纪念版NFT</td>
-                                <td>¥3,200</td>
-                                <td>2024-06-13</td>
-                                <td><span class="status-badge status-pending">待确认</span></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-
-        <!-- 项目管理和合规管理 -->
-        <div class="dashboard" style="display: none;">
-            <!-- 项目资料管理 -->
-            <div class="panel">
-                <h2>📋 项目资料管理</h2>
-                <div class="tabs">
-                    <button class="tab active" onclick="switchTab('project', 'documents')">文档</button>
-                    <button class="tab" onclick="switchTab('project', 'valuation')">估值</button>
-                    <button class="tab" onclick="switchTab('project', 'reports')">报告</button>
-                </div>
-                
-                <div id="project-documents" class="tab-content active">
-                    <div class="action-buttons">
-                        <button class="btn btn-primary" onclick="openModal('uploadDocModal')">📤 上传文档</button>
-                        <button class="btn btn-info">📊 生成报告</button>
-                    </div>
-                    <table class="data-table">
-                        <thead>
-                            <tr>
-                                <th>文档名称</th>
-                                <th>类型</th>
-                                <th>上传时间</th>
-                                <th>状态</th>
-                                <th>操作</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>资产评估报告.pdf</td>
-                                <td>评估文档</td>
-                                <td>2024-01-10</td>
-                                <td><span class="status-badge status-active">已审核</span></td>
-                                <td><button class="btn btn-info" style="padding: 4px 8px; font-size: 0.8rem;">下载</button></td>
-                            </tr>
-                            <tr>
-                                <td>法律意见书.pdf</td>
-                                <td>法律文档</td>
-                                <td>2024-01-15</td>
-                                <td><span class="status-badge status-active">已审核</span></td>
-                                <td><button class="btn btn-info" style="padding: 4px 8px; font-size: 0.8rem;">下载</button></td>
-                            </tr>
-                            <tr>
-                                <td>财务审计报告.pdf</td>
-                                <td>财务文档</td>
-                                <td>2024-03-01</td>
-                                <td><span class="status-badge status-pending">待审核</span></td>
-                                <td><button class="btn btn-warning" style="padding: 4px 8px; font-size: 0.8rem;">审核</button></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                
-                <div id="project-valuation" class="tab-content">
-                    <h3>估值管理</h3>
-                    <div class="stats-grid">
-                        <div class="stat-card">
-                            <h3>¥50,000万</h3>
-                            <p>当前估值</p>
-                        </div>
-                        <div class="stat-card">
-                            <h3>+12.5%</h3>
-                            <p>年度增长</p>
-                        </div>
-                        <div class="stat-card">
-                            <h3>2024-01-15</h3>
-                            <p>最新评估日期</p>
-                        </div>
-                    </div>
-                    <div class="action-buttons">
-                        <button class="btn btn-primary" onclick="openModal('revaluationModal')">🔄 重新评估</button>
-                        <button class="btn btn-info">📈 估值历史</button>
-                    </div>
-                    <table class="data-table">
-                        <thead>
-                            <tr>
-                                <th>评估日期</th>
-                                <th>评估价值</th>
-                                <th>评估方法</th>
-                                <th>评估机构</th>
-                                <th>状态</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>2024-01-15</td>
-                                <td>¥50,000万</td>
-                                <td>收益法</td>
-                                <td>中诚评估</td>
-                                <td><span class="status-badge status-active">有效</span></td>
-                            </tr>
-                            <tr>
-                                <td>2023-07-20</td>
-                                <td>¥44,500万</td>
-                                <td>市场法</td>
-                                <td>华信评估</td>
-                                <td><span class="status-badge status-inactive">已过期</span></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                
-                <div id="project-reports" class="tab-content">
-                    <h3>项目报告</h3>
-                    <div class="action-buttons">
-                        <button class="btn btn-primary">📊 生成月报</button>
-                        <button class="btn btn-success">📈 生成季报</button>
-                        <button class="btn btn-info">📋 生成年报</button>
-                    </div>
-                    <table class="data-table">
-                        <thead>
-                            <tr>
-                                <th>报告类型</th>
-                                <th>报告期间</th>
-                                <th>生成时间</th>
-                                <th>状态</th>
-                                <th>操作</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>月度运营报告</td>
-                                <td>2024年5月</td>
-                                <td>2024-06-01</td>
-                                <td><span class="status-badge status-active">已完成</span></td>
-                                <td><button class="btn btn-info" style="padding: 4px 8px; font-size: 0.8rem;">查看</button></td>
-                            </tr>
-                            <tr>
-                                <td>季度财务报告</td>
-                                <td>2024年Q1</td>
-                                <td>2024-04-15</td>
-                                <td><span class="status-badge status-active">已完成</span></td>
-                                <td><button class="btn btn-info" style="padding: 4px 8px; font-size: 0.8rem;">查看</button></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <!-- 合规性管理 -->
-            <div class="panel">
-                <h2>⚖️ 合规性管理</h2>
-                <div class="tabs">
-                    <button class="tab active" onclick="switchTab('compliance', 'kyc')">KYC/AML</button>
-                    <button class="tab" onclick="switchTab('compliance', 'regulatory')">监管</button>
-                    <button class="tab" onclick="switchTab('compliance', 'audit')">审计</button>
-                </div>
-                
-                <div id="compliance-kyc" class="tab-content active">
-                    <div class="stats-grid">
-                        <div class="stat-card">
-                            <h3>1,247</h3>
-                            <p>总用户数</p>
-                        </div>
-                        <div class="stat-card">
-                            <h3>1,156</h3>
-                            <p>已完成KYC</p>
-                        </div>
-                        <div class="stat-card">
-                            <h3>91</h3>
-                            <p>待审核</p>
-                        </div>
-                    </div>
-                    <div class="action-buttons">
-                        <button class="btn btn-primary">👥 批量审核</button>
-                        <button class="btn btn-warning">⚠️ 风险监控</button>
-                        <button class="btn btn-info">📊 合规报告</button>
-                    </div>
-                    <table class="data-table">
-                        <thead>
-                            <tr>
-                                <th>用户ID</th>
-                                <th>KYC等级</th>
-                                <th>AML状态</th>
-                                <th>风险评级</th>
-                                <th>操作</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>USER001</td>
-                                <td>增强级</td>
-                                <td><span class="status-badge status-active">通过</span></td>
-                                <td>低风险</td>
-                                <td><button class="btn btn-info" style="padding: 4px 8px; font-size: 0.8rem;">查看</button></td>
-                            </tr>
-                            <tr>
-                                <td>USER002</td>
-                                <td>标准级</td>
-                                <td><span class="status-badge status-pending">审核中</span></td>
-                                <td>中风险</td>
-                                <td><button class="btn btn-warning" style="padding: 4px 8px; font-size: 0.8rem;">审核</button></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                
-                <div id="compliance-regulatory" class="tab-content">
-                    <h3>监管合规</h3>
-                    <div class="action-buttons">
-                        <button class="btn btn-primary">📋 提交监管报告</button>
-                        <button class="btn btn-info">🔍 合规检查</button>
-                    </div>
-                    <table class="data-table">
-                        <thead>
-                            <tr>
-                                <th>监管要求</th>
-                                <th>合规状态</th>
-                                <th>最后检查</th>
-                                <th>下次检查</th>
-                                <th>操作</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>香港SFC许可</td>
-                                <td><span class="status-badge status-active">合规</span></td>
-                                <td>2024-05-15</td>
-                                <td>2024-08-15</td>
-                                <td><button class="btn btn-info" style="padding: 4px 8px; font-size: 0.8rem;">更新</button></td>
-                            </tr>
-                            <tr>
-                                <td>新加坡MAS报告</td>
-                                <td><span class="status-badge status-pending">待提交</span></td>
-                                <td>2024-03-20</td>
-                                <td>2024-06-20</td>
-                                <td><button class="btn btn-warning" style="padding: 4px 8px; font-size: 0.8rem;">提交</button></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                
-                <div id="compliance-audit" class="tab-content">
-                    <h3>审计管理</h3>
-                    <div class="action-buttons">
-                        <button class="btn btn-primary" onclick="openModal('scheduleAuditModal')">📅 安排审计</button>
-                        <button class="btn btn-info">📊 审计报告</button>
-                    </div>
-                    <table class="data-table">
-                        <thead>
-                            <tr>
-                                <th>审计类型</th>
-                                <th>审计机构</th>
-                                <th>审计时间</th>
-                                <th>状态</th>
-                                <th>结果</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>年度财务审计</td>
-                                <td>德勤会计师事务所</td>
-                                <td>2024-03-01</td>
-                                <td><span class="status-badge status-active">已完成</span></td>
-                                <td>无保留意见</td>
-                            </tr>
-                            <tr>
-                                <td>合规性审计</td>
-                                <td>普华永道</td>
-                                <td>2024-06-01</td>
-                                <td><span class="status-badge status-pending">进行中</span></td>
-                                <td>-</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-                </div>
-            </div>
-        </div>
-        </div>
-
-    <!-- 模态框 -->
-    <!-- 增发代币模态框 -->
-    <div id="issueTokenModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal('issueTokenModal')">&times;</span>
-            <h2>📈 增发代币</h2>
-            <form>
-                <div class="form-group">
-                    <label for="issueAmount">增发数量</label>
-                    <input type="number" id="issueAmount" placeholder="请输入增发数量">
-                </div>
-                <div class="form-group">
-                    <label for="issuePrice">发行价格（元）</label>
-                    <input type="number" id="issuePrice" step="0.01" placeholder="请输入发行价格">
-                </div>
-                <div class="form-group">
-                    <label for="issueReason">增发原因</label>
-                    <textarea id="issueReason" rows="3" placeholder="请说明增发原因"></textarea>
-                </div>
-                <div class="action-buttons">
-                    <button type="button" class="btn btn-primary">确认增发</button>
-                    <button type="button" class="btn btn-warning" onclick="closeModal('issueTokenModal')">取消</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- 分红派息模态框 -->
-    <div id="distributeDividendModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal('distributeDividendModal')">&times;</span>
-            <h2>💰 分红派息</h2>
-            <form>
-                <div class="form-group">
-                    <label for="dividendAmount">总分红金额（元）</label>
-                    <input type="number" id="dividendAmount" placeholder="请输入总分红金额">
-                </div>
-                <div class="form-group">
-                    <label for="dividendDate">分红日期</label>
-                    <input type="date" id="dividendDate">
-                </div>
-                <div class="form-group">
-                    <label for="dividendNote">分红说明</label>
-                    <textarea id="dividendNote" rows="3" placeholder="请说明分红来源和计算方式"></textarea>
-                </div>
-                <div class="action-buttons">
-                    <button type="button" class="btn btn-success">确认分红</button>
-                    <button type="button" class="btn btn-warning" onclick="closeModal('distributeDividendModal')">取消</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- 创建NFT模态框 -->
-    <div id="createNFTModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal('createNFTModal')">&times;</span>
-            <h2>🎨 创建NFT</h2>
-            <form>
-                <div class="form-group">
-                    <label for="nftName">NFT名称</label>
-                    <input type="text" id="nftName" placeholder="请输入NFT名称">
-                </div>
-                <div class="form-group">
-                    <label for="nftType">NFT类型</label>
-                    <select id="nftType">
-                        <option value="ownership">所有权凭证NFT</option>
-                        <option value="revenue">收益权NFT</option>
-                        <option value="access">使用权NFT</option>
-                        <option value="commemorative">纪念版NFT</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="nftQuantity">发行数量</label>
-                    <input type="number" id="nftQuantity" placeholder="请输入发行数量">
-                </div>
-                <div class="form-group">
-                    <label for="nftPrice">销售价格（元）</label>
-                    <input type="number" id="nftPrice" step="0.01" placeholder="请输入销售价格">
-                </div>
-                <div class="form-group">
-                    <label for="nftDescription">NFT描述</label>
-                    <textarea id="nftDescription" rows="3" placeholder="请描述NFT的特点和权益"></textarea>
-                </div>
-                <div class="action-buttons">
-                    <button type="button" class="btn btn-primary">创建NFT</button>
-                    <button type="button" class="btn btn-warning" onclick="closeModal('createNFTModal')">取消</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- 上传文档模态框 -->
-    <div id="uploadDocModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal('uploadDocModal')">&times;</span>
-            <h2>📤 上传文档</h2>
-            <form>
-                <div class="form-group">
-                    <label for="docType">文档类型</label>
-                    <select id="docType">
-                        <option value="valuation">评估文档</option>
-                        <option value="legal">法律文档</option>
-                        <option value="financial">财务文档</option>
-                        <option value="compliance">合规文档</option>
-                        <option value="other">其他文档</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="docFile">选择文件</label>
-                    <input type="file" id="docFile" accept=".pdf,.doc,.docx,.xls,.xlsx">
-                </div>
-                <div class="form-group">
-                    <label for="docDescription">文档说明</label>
-                    <textarea id="docDescription" rows="3" placeholder="请简要说明文档内容"></textarea>
-                </div>
-                <div class="action-buttons">
-                    <button type="button" class="btn btn-primary">上传文档</button>
-                    <button type="button" class="btn btn-warning" onclick="closeModal('uploadDocModal')">取消</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- 重新评估模态框 -->
-    <div id="revaluationModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal('revaluationModal')">&times;</span>
-            <h2>🔄 重新评估</h2>
-            <form>
-                <div class="form-group">
-                    <label for="valuationMethod">评估方法</label>
-                    <select id="valuationMethod">
-                        <option value="income">收益法</option>
-                        <option value="market">市场法</option>
-                        <option value="cost">成本法</option>
-                        <option value="multiple">多种方法综合</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="valuationAgency">评估机构</label>
-                    <input type="text" id="valuationAgency" placeholder="请输入评估机构名称">
-                </div>
-                <div class="form-group">
-                    <label for="valuationDate">评估日期</label>
-                    <input type="date" id="valuationDate">
-                </div>
-                <div class="form-group">
-                    <label for="estimatedValue">预估价值（万元）</label>
-                    <input type="number" id="estimatedValue" placeholder="请输入预估价值">
-                </div>
-                <div class="action-buttons">
-                    <button type="button" class="btn btn-primary">提交评估</button>
-                    <button type="button" class="btn btn-warning" onclick="closeModal('revaluationModal')">取消</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- 安排审计模态框 -->
-    <div id="scheduleAuditModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal('scheduleAuditModal')">&times;</span>
-            <h2>📅 安排审计</h2>
-            <form>
-                <div class="form-group">
-                    <label for="auditType">审计类型</label>
-                    <select id="auditType">
-                        <option value="financial">财务审计</option>
-                        <option value="compliance">合规审计</option>
-                        <option value="operational">运营审计</option>
-                        <option value="it">IT审计</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="auditFirm">审计机构</label>
-                    <input type="text" id="auditFirm" placeholder="请输入审计机构名称">
-                </div>
-                <div class="form-group">
-                    <label for="auditStartDate">开始日期</label>
-                    <input type="date" id="auditStartDate">
-                </div>
-                <div class="form-group">
-                    <label for="auditEndDate">结束日期</label>
-                    <input type="date" id="auditEndDate">
-                </div>
-                <div class="form-group">
-                    <label for="auditScope">审计范围</label>
-                    <textarea id="auditScope" rows="3" placeholder="请描述审计的具体范围和要求"></textarea>
-                </div>
-                <div class="action-buttons">
-                    <button type="button" class="btn btn-primary">安排审计</button>
-                    <button type="button" class="btn btn-warning" onclick="closeModal('scheduleAuditModal')">取消</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- 引入项目数据管理脚本 -->
-    <script src="project_data_manager.js"></script>
-    
-    <script>
-        // 标签页切换功能
-        function switchTab(section, tabName) {
-            // 隐藏所有该部分的标签内容
-            const tabContents = document.querySelectorAll(`#${section}-overview, #${section}-issue, #${section}-holders, #${section}-collections, #${section}-marketplace, #${section}-documents, #${section}-valuation, #${section}-reports, #${section}-kyc, #${section}-regulatory, #${section}-audit`);
-            tabContents.forEach(content => {
-                content.classList.remove('active');
-            });
-            
-            // 移除所有标签的激活状态
-            const tabs = document.querySelectorAll('.tab');
-            tabs.forEach(tab => {
-                tab.classList.remove('active');
-            });
-            
-            // 显示选中的标签内容
-            const targetContent = document.getElementById(`${section}-${tabName}`);
-            if (targetContent) {
-                targetContent.classList.add('active');
-            }
-            
-            // 激活点击的标签
-            event.target.classList.add('active');
-        }
-
-        // 模态框功能
-        function openModal(modalId) {
-            document.getElementById(modalId).style.display = 'block';
-        }
-
-        function closeModal(modalId) {
-            document.getElementById(modalId).style.display = 'none';
-        }
-
-        // 点击模态框外部关闭
-        window.onclick = function(event) {
-            const modals = document.querySelectorAll('.modal');
-            modals.forEach(modal => {
-                if (event.target === modal) {
-                    modal.style.display = 'none';
-                }
-            });
-        }
-
-        // 模拟数据加载和实时更新
-        function updateDashboard() {
-            // 这里可以添加实时数据更新逻辑
-            console.log('Dashboard updated at:', new Date().toLocaleTimeString());
-        }
-
-        // 每30秒更新一次数据
-        setInterval(updateDashboard, 30000);
-
-        // 页面加载完成后的初始化
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log('RWA资产管理系统已加载');
-            updateDashboard();
-        });
-
-        // 表单提交处理
-        function handleFormSubmit(formType, formData) {
-            console.log(`提交${formType}表单:`, formData);
-            // 这里可以添加实际的表单提交逻辑
-            alert(`${formType}操作已提交，请等待处理结果`);
-        }
-
-        // 数据导出功能
-        function exportData(dataType) {
-            console.log(`导出${dataType}数据`);
-            // 这里可以添加数据导出逻辑
-            alert(`${dataType}数据导出功能开发中`);
-        }
-
-        // 通知功能
-        function showNotification(message, type = 'info') {
-            // 创建通知元素
-            const notification = document.createElement('div');
-            notification.style.cssText = `
-                position: fixed;
-                top: 20px;
-                right: 20px;
-                padding: 15px 20px;
-                background: ${type === 'success' ? '#28a745' : type === 'warning' ? '#ffc107' : '#007bff'};
-                color: white;
-                border-radius: 8px;
-                z-index: 10000;
-                box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-            `;
-            notification.textContent = message;
-            
-            document.body.appendChild(notification);
-            
-            // 3秒后自动移除
-            setTimeout(() => {
-                document.body.removeChild(notification);
-            }, 3000);
-        }
-
-        // 示例：显示欢迎通知
-        setTimeout(() => {
-            showNotification('欢迎使用RWA资产管理系统！', 'success');
-        }, 1000);
-        
-        // 新增内容切换函数
-        function switchContent(contentType) {
-            // 移除所有菜单项的活动状态
-            document.querySelectorAll('.menu-link').forEach(link => {
-                link.classList.remove('active');
-            });
-            
-            // 隐藏所有内容区域
-            document.querySelectorAll('.content-section').forEach(section => {
-                section.classList.remove('active');
-            });
-            
-            // 激活当前菜单项
-            event.target.closest('.menu-link').classList.add('active');
-            
-            // 显示对应内容区域
-            const contentElement = document.getElementById(contentType + '-content');
-            if (contentElement) {
-                contentElement.classList.add('active');
-            }
-        }
-        
-        // 配置开关切换函数
-        function toggleConfig(toggle) {
-            toggle.classList.toggle('active');
-        }
-        /* Enhanced Styles for Better UX */
-        .dashboard-panel {
-            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
-            border: 1px solid #e2e8f0;
-            border-radius: 16px;
-            padding: 2rem;
-            margin-bottom: 2rem;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-            transition: all 0.3s ease;
-        }
-        
-        .dashboard-panel:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
-        }
-        
-        .tab-button {
-            background: transparent;
-            border: 2px solid #e2e8f0;
-            color: #64748b;
-            padding: 0.75rem 1.5rem;
-            border-radius: 50px;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            margin-right: 0.5rem;
-            margin-bottom: 0.5rem;
-        }
-        
-        .tab-button.active {
-            background: linear-gradient(135deg, #4f46e5, #7c3aed);
-            border-color: #4f46e5;
-            color: white;
-            box-shadow: 0 4px 15px rgba(79, 70, 229, 0.3);
-        }
-        
-        .tab-button:hover:not(.active) {
-            border-color: #4f46e5;
-            color: #4f46e5;
-            background: rgba(79, 70, 229, 0.05);
-        }
-        
-        .stats-card {
-            background: white;
-            border-radius: 16px;
-            padding: 1.5rem;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-            transition: all 0.3s ease;
-            border: 1px solid #f1f5f9;
-        }
-        
-        .stats-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
-        }
-        
-        .stats-value {
-            font-size: 2rem;
-            font-weight: 700;
-            background: linear-gradient(135deg, #4f46e5, #7c3aed);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin-bottom: 0.5rem;
-        }
-        
-        .stats-label {
-            color: #64748b;
-            font-size: 0.875rem;
-            font-weight: 500;
-        }
-        
-        .action-button {
-            background: linear-gradient(135deg, #4f46e5, #7c3aed);
-            color: white;
-            border: none;
-            padding: 0.75rem 1.5rem;
-            border-radius: 50px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(79, 70, 229, 0.3);
-            margin-right: 0.5rem;
-            margin-bottom: 0.5rem;
-        }
-        
-        .action-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(79, 70, 229, 0.4);
-        }
-        
-        .action-button.secondary {
-            background: white;
-            color: #4f46e5;
-            border: 2px solid #4f46e5;
-            box-shadow: 0 4px 15px rgba(79, 70, 229, 0.1);
-        }
-        
-        .action-button.secondary:hover {
-            background: #4f46e5;
-            color: white;
-        }
-        
-        .data-table {
-            background: white;
-            border-radius: 16px;
-            overflow: hidden;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-            margin-top: 1.5rem;
-        }
-        
-        .data-table th {
-            background: linear-gradient(135deg, #f8fafc, #e2e8f0);
-            color: #374151;
-            font-weight: 600;
-            padding: 1rem;
-            text-align: left;
-            border-bottom: 2px solid #e2e8f0;
-        }
-        
-        .data-table td {
-            padding: 1rem;
-            border-bottom: 1px solid #f1f5f9;
-            color: #64748b;
-        }
-        
-        .data-table tr:hover {
-            background: rgba(79, 70, 229, 0.02);
-        }
-        
-        .status-badge {
-            padding: 0.25rem 0.75rem;
-            border-radius: 50px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            text-transform: uppercase;
-        }
-        
-        .status-active {
-            background: rgba(34, 197, 94, 0.1);
-            color: #16a34a;
-        }
-        
-        .status-pending {
-            background: rgba(251, 191, 36, 0.1);
-            color: #d97706;
-        }
-        
-        .status-inactive {
-            background: rgba(239, 68, 68, 0.1);
-            color: #dc2626;
-        }
-        
-        .progress-bar {
-            background: #f1f5f9;
-            border-radius: 50px;
-            height: 8px;
-            overflow: hidden;
-            margin-top: 0.5rem;
-        }
-        
-        .progress-fill {
-            background: linear-gradient(135deg, #4f46e5, #7c3aed);
-            height: 100%;
-            border-radius: 50px;
-            transition: width 0.3s ease;
-        }
-        
-        .chart-container {
-            background: white;
-            border-radius: 16px;
-            padding: 1.5rem;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-            margin-top: 1.5rem;
-        }
-        
-        .loading-spinner {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            border: 3px solid #f3f3f3;
-            border-top: 3px solid #4f46e5;
+        .spinner {
+            width: 60px;
+            height: 60px;
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-top: 4px solid white;
             border-radius: 50%;
             animation: spin 1s linear infinite;
         }
@@ -2890,341 +55,318 @@
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
-        
-        .notification {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: white;
-            border-radius: 12px;
-            padding: 1rem 1.5rem;
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
-            border-left: 4px solid #4f46e5;
-            z-index: 1000;
-            transform: translateX(400px);
-            transition: transform 0.3s ease;
-        }
-        
-        .notification.show {
-            transform: translateX(0);
-        }
-        
-        .modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 2000;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s ease;
-        }
-        
-        .modal.show {
-            opacity: 1;
-            visibility: visible;
-        }
-        
-        .modal-content {
-            background: white;
-            border-radius: 20px;
-            padding: 2rem;
-            max-width: 500px;
-            width: 90%;
-            max-height: 80vh;
-            overflow-y: auto;
-            transform: scale(0.8);
-            transition: transform 0.3s ease;
-        }
-        
-        .modal.show .modal-content {
-            transform: scale(1);
-        }
-        
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-        
-        .form-label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 600;
-            color: #374151;
-        }
-        
-        .form-input {
-            width: 100%;
-            padding: 0.75rem 1rem;
-            border: 2px solid #e2e8f0;
-            border-radius: 12px;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-        }
-        
-        .form-input:focus {
-            outline: none;
-            border-color: #4f46e5;
-            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
-        }
-        
-        .form-select {
-            width: 100%;
-            padding: 0.75rem 1rem;
-            border: 2px solid #e2e8f0;
-            border-radius: 12px;
-            font-size: 1rem;
-            background: white;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        
-        .form-select:focus {
-            outline: none;
-            border-color: #4f46e5;
-            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
-        }
-        
-        /* Animation Classes */
-        .fade-in {
-            opacity: 0;
-            transform: translateY(20px);
-            transition: all 0.6s ease;
-        }
-        
-        .fade-in.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-        
-        .slide-in-left {
-            opacity: 0;
-            transform: translateX(-30px);
-            transition: all 0.6s ease;
-        }
-        
-        .slide-in-left.visible {
-            opacity: 1;
-            transform: translateX(0);
-        }
-        
-        .slide-in-right {
-            opacity: 0;
-            transform: translateX(30px);
-            transition: all 0.6s ease;
-        }
-        
-        .slide-in-right.visible {
-            opacity: 1;
-            transform: translateX(0);
-        }
     </style>
-
-    <!-- Main Layout Container -->
-    <div class="main-layout">
-        <!-- Left Sidebar -->
-        <aside class="left-sidebar">
-            <!-- Projects List Section -->
-            <div class="sidebar-section">
-                <h2>📋 项目列表</h2>
-                <div id="projects-grid" class="projects-list">
-                    <!-- Projects will be loaded here -->
-                </div>
-                <div id="empty-state" class="empty-state" style="display: none;">
-                    <h3>暂无项目</h3>
-                    <p>您还没有创建任何项目，<a href="rwa_client_form.html">点击这里</a>创建您的第一个项目。</p>
-                </div>
+</head>
+<body>
+    <!-- Loading overlay for better user experience -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="spinner"></div>
+    </div>
+    
+    <div class="container">
+        <!-- 顶部导航栏 -->
+        <nav class="top-nav">
+            <div class="nav-links">
+                <a href="index.html"><i class="fas fa-home"></i> 首页</a>
+                <a href="rwa_marketplace.html"><i class="fas fa-store"></i> 交易市场</a>
+                <a href="asset_management.html" class="active"><i class="fas fa-chart-line"></i> 资产管理</a>
+                <a href="rwa_client_form.html"><i class="fas fa-plus-circle"></i> 项目申请</a>
             </div>
-            
-            <!-- Quick Actions -->
-            <div class="sidebar-section">
-                <h3>🚀 快速操作</h3>
-                <div class="quick-actions">
-                    <button class="quick-action-btn" onclick="window.location.href='rwa_client_form.html'">
-                        ➕ 创建新项目
-                    </button>
-                    <button class="quick-action-btn" onclick="window.location.reload()">
-                        🔄 刷新数据
-                    </button>
-                </div>
+            <div class="user-info">
+                <span>管理员</span>
+                <div class="user-avatar">A</div>
             </div>
-        </aside>
+        </nav>
         
-        <!-- Right Content Area -->
-        <main class="right-content">
-            <!-- Project Info Section -->
-            <section class="project-info">
-                <div class="project-header">
-                    <div class="project-title">
-                        <h1>西安元话科技有限公司</h1>
-                        <span class="project-id">项目ID: RWA-2024-001</span>
+        <!-- 主标题区域 -->
+        <header class="header">
+            <h1><i class="fas fa-building"></i> 智慧商业综合体RWA项目</h1>
+            <div class="project-status">
+                <i class="fas fa-circle"></i>
+                运营中 - 项目ID: RWA-2024-001
+            </div>
+        </header>
+        
+        <!-- 统计概览 -->
+        <section class="stats-overview">
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fas fa-dollar-sign"></i></div>
+                <div class="stat-value">¥50,000万</div>
+                <div class="stat-label">资产估值</div>
+                <div class="stat-change positive"><i class="fas fa-arrow-up"></i> +3.2%</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fas fa-percentage"></i></div>
+                <div class="stat-value">8.5%</div>
+                <div class="stat-label">年化收益率</div>
+                <div class="stat-change positive"><i class="fas fa-arrow-up"></i> +0.3%</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fas fa-coins"></i></div>
+                <div class="stat-value">1,000,000</div>
+                <div class="stat-label">代币发行量</div>
+                <div class="stat-change">RWA Token</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fas fa-gem"></i></div>
+                <div class="stat-value">500</div>
+                <div class="stat-label">NFT发行量</div>
+                <div class="stat-change">5个系列</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fas fa-users"></i></div>
+                <div class="stat-value">1,247</div>
+                <div class="stat-label">持有人数量</div>
+                <div class="stat-change positive"><i class="fas fa-arrow-up"></i> +15</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fas fa-chart-bar"></i></div>
+                <div class="stat-value">95.6%</div>
+                <div class="stat-label">入住率</div>
+                <div class="stat-change positive"><i class="fas fa-arrow-up"></i> +2.1%</div>
+            </div>
+        </section>
+        
+        <!-- 主要内容区域 -->
+        <div class="main-content">
+            <!-- 侧边栏菜单 -->
+            <aside class="sidebar">
+                <h3><i class="fas fa-cog"></i> 管理中心</h3>
+                <nav>
+                    <div class="menu-item">
+                        <a href="#" class="menu-link active" onclick="switchContent('overview')">
+                            <i class="menu-icon fas fa-tachometer-alt"></i>
+                            <span>概览仪表板</span>
+                        </a>
                     </div>
-                    <div class="project-status">
-                        <span class="status-badge status-active">运营中</span>
+                    <div class="menu-item">
+                        <a href="#" class="menu-link" onclick="switchContent('token')">
+                            <i class="menu-icon fas fa-coins"></i>
+                            <span>代币管理</span>
+                        </a>
                     </div>
-                </div>
-                
-                <div class="info-grid">
-                    <div class="info-card">
-                        <div class="info-icon">📊</div>
-                        <div class="info-content">
-                            <h3>今日营收</h3>
-                            <p>¥ 0</p>
-                        </div>
+                    <div class="menu-item">
+                        <a href="#" class="menu-link" onclick="switchContent('nft')">
+                            <i class="menu-icon fas fa-gem"></i>
+                            <span>NFT管理</span>
+                        </a>
                     </div>
-                    <div class="info-card">
-                        <div class="info-icon">💰</div>
-                        <div class="info-content">
-                            <h3>今日投入</h3>
-                            <p>¥ 0</p>
-                        </div>
+                    <div class="menu-item">
+                        <a href="#" class="menu-link" onclick="switchContent('financial')">
+                            <i class="menu-icon fas fa-chart-pie"></i>
+                            <span>财务管理</span>
+                        </a>
                     </div>
-                    <div class="info-card">
-                        <div class="info-icon">💎</div>
-                        <div class="info-content">
-                            <h3>今日净利润</h3>
-                            <p>¥ 0</p>
-                        </div>
+                    <div class="menu-item">
+                        <a href="#" class="menu-link" onclick="switchContent('compliance')">
+                            <i class="menu-icon fas fa-shield-alt"></i>
+                            <span>合规管理</span>
+                        </a>
                     </div>
-                    <div class="info-card">
-                        <div class="info-icon">💼</div>
-                        <div class="info-content">
-                            <h3>合作伙伴数量</h3>
-                            <p>0</p>
-                        </div>
+                    <div class="menu-item">
+                        <a href="#" class="menu-link" onclick="switchContent('analytics')">
+                            <i class="menu-icon fas fa-chart-line"></i>
+                            <span>数据分析</span>
+                        </a>
                     </div>
-                </div>
-            </section>
-
-            <!-- Dashboard Section -->
-            <section class="dashboard">
-            <div class="dashboard-panel">
-                <h2>资产管理中心</h2>
-                
-                <!-- Tab Navigation -->
-                <div class="tab-nav">
-                    <button class="tab-button active" onclick="switchTab('token')">代币管理</button>
-                    <button class="tab-button" onclick="switchTab('nft')">NFT管理</button>
-                    <button class="tab-button" onclick="switchTab('data')">项目数据</button>
-                    <button class="tab-button" onclick="switchTab('compliance')">合规管理</button>
-                </div>
-
-                <!-- Token Management Tab -->
-                <div id="token-tab" class="tab-content active">
-                    <div class="sub-tabs">
-                        <button class="tab-button active" onclick="switchSubTab('token', 'overview')">概览</button>
-                        <button class="tab-button" onclick="switchSubTab('token', 'issue')">发行</button>
-                        <button class="tab-button" onclick="switchSubTab('token', 'holders')">持有者</button>
+                    <div class="menu-item">
+                        <a href="#" class="menu-link" onclick="switchContent('settings')">
+                            <i class="menu-icon fas fa-cogs"></i>
+                            <span>系统设置</span>
+                        </a>
+                    </div>
+                </nav>
+            </aside>
+            
+            <!-- 内容面板 -->
+            <main class="content-panel">
+                <!-- 概览仪表板 -->
+                <section id="overview-content" class="content-section active">
+                    <div class="section-header">
+                        <i class="icon fas fa-tachometer-alt"></i>
+                        <h2>概览仪表板</h2>
                     </div>
                     
-                    <div id="token-overview" class="sub-tab-content active">
-                        <div class="stats-grid">
-                            <div class="stats-card">
-                                <div class="stats-value">1,000,000</div>
-                                <div class="stats-label">总发行量</div>
+                    <div class="action-buttons">
+                        <button class="btn btn-primary" onclick="refreshData()">
+                            <i class="fas fa-sync-alt"></i> 刷新数据
+                        </button>
+                        <button class="btn btn-secondary" onclick="exportReport()">
+                            <i class="fas fa-download"></i> 导出报告
+                        </button>
+                        <button class="btn btn-success" onclick="publishToMarket()">
+                            <i class="fas fa-rocket"></i> 发布到市场
+                        </button>
+                    </div>
+                    
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; margin-top: 30px;">
+                        <div style="background: linear-gradient(135deg, #667eea, #764ba2); color: white; padding: 30px; border-radius: 20px; box-shadow: 0 15px 50px rgba(102, 126, 234, 0.3);">
+                            <h4 style="margin-bottom: 15px; font-size: 1.2rem;"><i class="fas fa-chart-line"></i> 今日收益</h4>
+                            <div style="font-size: 2.5rem; font-weight: 700; margin-bottom: 10px;">¥234,567</div>
+                            <div style="opacity: 0.9;"><i class="fas fa-arrow-up"></i> +5.2% 较昨日</div>
+                        </div>
+                        
+                        <div style="background: linear-gradient(135deg, #28a745, #20c997); color: white; padding: 30px; border-radius: 20px; box-shadow: 0 15px 50px rgba(40, 167, 69, 0.3);">
+                            <h4 style="margin-bottom: 15px; font-size: 1.2rem;"><i class="fas fa-exchange-alt"></i> 交易量</h4>
+                            <div style="font-size: 2.5rem; font-weight: 700; margin-bottom: 10px;">1,234</div>
+                            <div style="opacity: 0.9;"><i class="fas fa-arrow-up"></i> +12.8% 较昨日</div>
+                        </div>
+                        
+                        <div style="background: linear-gradient(135deg, #ffc107, #fd7e14); color: white; padding: 30px; border-radius: 20px; box-shadow: 0 15px 50px rgba(255, 193, 7, 0.3);">
+                            <h4 style="margin-bottom: 15px; font-size: 1.2rem;"><i class="fas fa-fire"></i> 活跃度</h4>
+                            <div style="font-size: 2.5rem; font-weight: 700; margin-bottom: 10px;">89.5%</div>
+                            <div style="opacity: 0.9;"><i class="fas fa-arrow-up"></i> +2.1% 较昨日</div>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-top: 40px; background: #f8f9fa; padding: 30px; border-radius: 20px;">
+                        <h3 style="margin-bottom: 20px; color: #2c3e50;"><i class="fas fa-bell"></i> 最新动态</h3>
+                        <div style="display: flex; flex-direction: column; gap: 15px;">
+                            <div style="background: white; padding: 20px; border-radius: 15px; border-left: 4px solid #28a745;">
+                                <div style="font-weight: 600; color: #2c3e50;">代币分红已发放</div>
+                                <div style="color: #6c757d; font-size: 0.9rem; margin-top: 5px;">2小时前 - 本期分红总额: ¥125,000</div>
                             </div>
-                            <div class="stats-card">
-                                <div class="stats-value">750,000</div>
-                                <div class="stats-label">流通量</div>
+                            <div style="background: white; padding: 20px; border-radius: 15px; border-left: 4px solid #007bff;">
+                                <div style="font-weight: 600; color: #2c3e50;">新NFT系列上线</div>
+                                <div style="color: #6c757d; font-size: 0.9rem; margin-top: 5px;">5小时前 - "未来城市"限量版NFT开始销售</div>
                             </div>
-                            <div class="stats-card">
-                                <div class="stats-value">$2.50</div>
-                                <div class="stats-label">当前价格</div>
+                            <div style="background: white; padding: 20px; border-radius: 15px; border-left: 4px solid #ffc107;">
+                                <div style="font-weight: 600; color: #2c3e50;">合规审核通过</div>
+                                <div style="color: #6c757d; font-size: 0.9rem; margin-top: 5px;">1天前 - Q4季度合规报告已通过监管审核</div>
                             </div>
-                            <div class="stats-card">
-                                <div class="stats-value">1,250</div>
-                                <div class="stats-label">持有者数量</div>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- 代币管理 -->
+                <section id="token-content" class="content-section">
+                    <div class="section-header">
+                        <i class="icon fas fa-coins"></i>
+                        <h2>代币管理</h2>
+                    </div>
+                    
+                    <div class="tab-nav">
+                        <button class="tab-button active" onclick="switchTab('token', 'overview')">概览</button>
+                        <button class="tab-button" onclick="switchTab('token', 'distribution')">分配管理</button>
+                        <button class="tab-button" onclick="switchTab('token', 'holders')">持有者</button>
+                        <button class="tab-button" onclick="switchTab('token', 'transactions')">交易记录</button>
+                    </div>
+                    
+                    <div id="token-overview" class="tab-content active">
+                        <div class="action-buttons">
+                            <button class="btn btn-primary" onclick="showModal('dividend-modal')">
+                                <i class="fas fa-hand-holding-usd"></i> 发放分红
+                            </button>
+                            <button class="btn btn-secondary" onclick="showModal('mint-modal')">
+                                <i class="fas fa-plus"></i> 增发代币
+                            </button>
+                            <button class="btn btn-warning" onclick="adjustPrice()">
+                                <i class="fas fa-chart-line"></i> 价格调整
+                            </button>
+                        </div>
+                        
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 30px;">
+                            <div style="background: white; padding: 25px; border-radius: 15px; box-shadow: 0 8px 25px rgba(0,0,0,0.1); text-align: center;">
+                                <div style="font-size: 2rem; font-weight: 700; color: #667eea; margin-bottom: 10px;">1,000,000</div>
+                                <div style="color: #6c757d;">总发行量</div>
+                            </div>
+                            <div style="background: white; padding: 25px; border-radius: 15px; box-shadow: 0 8px 25px rgba(0,0,0,0.1); text-align: center;">
+                                <div style="font-size: 2rem; font-weight: 700; color: #28a745; margin-bottom: 10px;">750,000</div>
+                                <div style="color: #6c757d;">流通量</div>
+                            </div>
+                            <div style="background: white; padding: 25px; border-radius: 15px; box-shadow: 0 8px 25px rgba(0,0,0,0.1); text-align: center;">
+                                <div style="font-size: 2rem; font-weight: 700; color: #ffc107; margin-bottom: 10px;">$2.50</div>
+                                <div style="color: #6c757d;">当前价格</div>
+                            </div>
+                            <div style="background: white; padding: 25px; border-radius: 15px; box-shadow: 0 8px 25px rgba(0,0,0,0.1); text-align: center;">
+                                <div style="font-size: 2rem; font-weight: 700; color: #dc3545; margin-bottom: 10px;">1,247</div>
+                                <div style="color: #6c757d;">持有者数量</div>
                             </div>
                         </div>
                         
-                        <div class="action-buttons">
-                            <button class="action-button" onclick="showModal('dividend')">分红管理</button>
-                            <button class="action-button secondary" onclick="showModal('price')">价格调整</button>
-                        </div>
-                    </div>
-                    
-                    <div id="token-issue" class="sub-tab-content">
-                        <h3>代币发行</h3>
-                        <div class="form-group">
-                            <label class="form-label">发行数量</label>
-                            <input type="number" class="form-input" placeholder="输入发行数量">
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">发行价格</label>
-                            <input type="number" class="form-input" placeholder="输入发行价格">
-                        </div>
-                        <button class="action-button">确认发行</button>
-                    </div>
-                    
-                    <div id="token-holders" class="sub-tab-content">
-                        <h3>持有者列表</h3>
                         <table class="data-table">
                             <thead>
                                 <tr>
-                                    <th>地址</th>
+                                    <th>持有者地址</th>
                                     <th>持有量</th>
                                     <th>占比</th>
                                     <th>最后交易</th>
+                                    <th>操作</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
                                     <td>0x1234...5678</td>
-                                    <td>50,000</td>
+                                    <td>50,000 RWA</td>
                                     <td>5.0%</td>
                                     <td>2024-01-15</td>
+                                    <td><button class="btn btn-secondary">查看</button></td>
                                 </tr>
                                 <tr>
                                     <td>0x9876...5432</td>
-                                    <td>25,000</td>
+                                    <td>25,000 RWA</td>
                                     <td>2.5%</td>
                                     <td>2024-01-14</td>
+                                    <td><button class="btn btn-secondary">查看</button></td>
+                                </tr>
+                                <tr>
+                                    <td>0x5555...1111</td>
+                                    <td>15,000 RWA</td>
+                                    <td>1.5%</td>
+                                    <td>2024-01-13</td>
+                                    <td><button class="btn btn-secondary">查看</button></td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
-                </div>
-
-                <!-- NFT Management Tab -->
-                <div id="nft-tab" class="tab-content">
-                    <div class="sub-tabs">
-                        <button class="tab-button active" onclick="switchSubTab('nft', 'overview')">概览</button>
-                        <button class="tab-button" onclick="switchSubTab('nft', 'series')">系列管理</button>
-                        <button class="tab-button" onclick="switchSubTab('nft', 'marketplace')">交易市场</button>
+                </section>
+                
+                <!-- NFT管理 -->
+                <section id="nft-content" class="content-section">
+                    <div class="section-header">
+                        <i class="icon fas fa-gem"></i>
+                        <h2>NFT管理</h2>
                     </div>
                     
-                    <div id="nft-overview" class="sub-tab-content active">
-                        <div class="stats-grid">
-                            <div class="stats-card">
-                                <div class="stats-value">5</div>
-                                <div class="stats-label">NFT系列</div>
+                    <div class="tab-nav">
+                        <button class="tab-button active" onclick="switchTab('nft', 'overview')">概览</button>
+                        <button class="tab-button" onclick="switchTab('nft', 'collections')">系列管理</button>
+                        <button class="tab-button" onclick="switchTab('nft', 'marketplace')">市场数据</button>
+                        <button class="tab-button" onclick="switchTab('nft', 'royalties')">版税管理</button>
+                    </div>
+                    
+                    <div id="nft-overview" class="tab-content active">
+                        <div class="action-buttons">
+                            <button class="btn btn-primary" onclick="showModal('create-nft-modal')">
+                                <i class="fas fa-plus"></i> 创建NFT
+                            </button>
+                            <button class="btn btn-secondary" onclick="batchMint()">
+                                <i class="fas fa-layer-group"></i> 批量铸造
+                            </button>
+                            <button class="btn btn-success" onclick="launchCollection()">
+                                <i class="fas fa-rocket"></i> 发布系列
+                            </button>
+                        </div>
+                        
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 30px;">
+                            <div style="background: white; padding: 25px; border-radius: 15px; box-shadow: 0 8px 25px rgba(0,0,0,0.1); text-align: center;">
+                                <div style="font-size: 2rem; font-weight: 700; color: #667eea; margin-bottom: 10px;">5</div>
+                                <div style="color: #6c757d;">NFT系列</div>
                             </div>
-                            <div class="stats-card">
-                                <div class="stats-value">1,500</div>
-                                <div class="stats-label">总NFT数量</div>
+                            <div style="background: white; padding: 25px; border-radius: 15px; box-shadow: 0 8px 25px rgba(0,0,0,0.1); text-align: center;">
+                                <div style="font-size: 2rem; font-weight: 700; color: #28a745; margin-bottom: 10px;">1,500</div>
+                                <div style="color: #6c757d;">总NFT数量</div>
                             </div>
-                            <div class="stats-card">
-                                <div class="stats-value">$125.50</div>
-                                <div class="stats-label">平均价格</div>
+                            <div style="background: white; padding: 25px; border-radius: 15px; box-shadow: 0 8px 25px rgba(0,0,0,0.1); text-align: center;">
+                                <div style="font-size: 2rem; font-weight: 700; color: #ffc107; margin-bottom: 10px;">$125.50</div>
+                                <div style="color: #6c757d;">平均价格</div>
                             </div>
-                            <div class="stats-card">
-                                <div class="stats-value">850</div>
-                                <div class="stats-label">持有者</div>
+                            <div style="background: white; padding: 25px; border-radius: 15px; box-shadow: 0 8px 25px rgba(0,0,0,0.1); text-align: center;">
+                                <div style="font-size: 2rem; font-weight: 700; color: #dc3545; margin-bottom: 10px;">850</div>
+                                <div style="color: #6c757d;">持有者</div>
                             </div>
                         </div>
                         
-                        <div class="action-buttons">
-                            <button class="action-button" onclick="showModal('createNFT')">创建NFT</button>
-                            <button class="action-button secondary" onclick="showModal('batchMint')">批量铸造</button>
-                        </div>
-                    </div>
-                    
-                    <div id="nft-series" class="sub-tab-content">
-                        <h3>NFT系列管理</h3>
                         <table class="data-table">
                             <thead>
                                 <tr>
@@ -3241,197 +383,120 @@
                                     <td>500</td>
                                     <td>$200</td>
                                     <td><span class="status-badge status-active">活跃</span></td>
-                                    <td><button class="action-button">管理</button></td>
+                                    <td><button class="btn btn-secondary">管理</button></td>
                                 </tr>
                                 <tr>
                                     <td>限量版</td>
                                     <td>100</td>
                                     <td>$500</td>
                                     <td><span class="status-badge status-pending">预售</span></td>
-                                    <td><button class="action-button">管理</button></td>
+                                    <td><button class="btn btn-secondary">管理</button></td>
+                                </tr>
+                                <tr>
+                                    <td>未来城市</td>
+                                    <td>300</td>
+                                    <td>$150</td>
+                                    <td><span class="status-badge status-active">活跃</span></td>
+                                    <td><button class="btn btn-secondary">管理</button></td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
+                </section>
+                
+                <!-- 财务管理 -->
+                <section id="financial-content" class="content-section">
+                    <div class="section-header">
+                        <i class="icon fas fa-chart-pie"></i>
+                        <h2>财务管理</h2>
+                    </div>
                     
-                    <div id="nft-marketplace" class="sub-tab-content">
-                        <h3>交易市场数据</h3>
-                        <div class="stats-grid">
-                            <div class="stats-card">
-                                <div class="stats-value">$15,750</div>
-                                <div class="stats-label">24h交易量</div>
-                            </div>
-                            <div class="stats-card">
-                                <div class="stats-value">125</div>
-                                <div class="stats-label">24h交易次数</div>
-                            </div>
-                            <div class="stats-card">
-                                <div class="stats-value">$126</div>
-                                <div class="stats-label">平均成交价</div>
-                            </div>
-                            <div class="stats-card">
-                                <div class="stats-value">2.5%</div>
-                                <div class="stats-label">手续费收入</div>
+                    <div class="action-buttons">
+                        <button class="btn btn-primary" onclick="generateReport()">
+                            <i class="fas fa-file-alt"></i> 生成报告
+                        </button>
+                        <button class="btn btn-secondary" onclick="exportFinancial()">
+                            <i class="fas fa-download"></i> 导出数据
+                        </button>
+                        <button class="btn btn-success" onclick="scheduleDividend()">
+                            <i class="fas fa-calendar-alt"></i> 计划分红
+                        </button>
+                    </div>
+                    
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-bottom: 30px;">
+                        <div style="background: linear-gradient(135deg, #28a745, #20c997); color: white; padding: 25px; border-radius: 15px; text-align: center;">
+                            <h4 style="margin-bottom: 15px;"><i class="fas fa-arrow-up"></i> 总收入</h4>
+                            <div style="font-size: 2rem; font-weight: 700;">¥2,345,678</div>
+                            <div style="opacity: 0.9; margin-top: 10px;">+15.2% 本月</div>
+                        </div>
+                        <div style="background: linear-gradient(135deg, #dc3545, #fd7e14); color: white; padding: 25px; border-radius: 15px; text-align: center;">
+                            <h4 style="margin-bottom: 15px;"><i class="fas fa-arrow-down"></i> 总支出</h4>
+                            <div style="font-size: 2rem; font-weight: 700;">¥1,234,567</div>
+                            <div style="opacity: 0.9; margin-top: 10px;">+8.7% 本月</div>
+                        </div>
+                        <div style="background: linear-gradient(135deg, #007bff, #6f42c1); color: white; padding: 25px; border-radius: 15px; text-align: center;">
+                            <h4 style="margin-bottom: 15px;"><i class="fas fa-chart-line"></i> 净利润</h4>
+                            <div style="font-size: 2rem; font-weight: 700;">¥1,111,111</div>
+                            <div style="opacity: 0.9; margin-top: 10px;">+22.5% 本月</div>
+                        </div>
+                    </div>
+                    
+                    <div style="background: #f8f9fa; padding: 30px; border-radius: 20px;">
+                        <h3 style="margin-bottom: 20px; color: #2c3e50;"><i class="fas fa-chart-bar"></i> 收支趋势图</h3>
+                        <div style="background: white; height: 300px; border-radius: 15px; display: flex; align-items: center; justify-content: center; color: #6c757d; border: 2px dashed #dee2e6;">
+                            <div style="text-align: center;">
+                                <i class="fas fa-chart-area" style="font-size: 3rem; margin-bottom: 15px;"></i>
+                                <div>财务图表将在此显示</div>
+                                <div style="font-size: 0.9rem; margin-top: 10px;">集成Chart.js或其他图表库</div>
                             </div>
                         </div>
-                        
-                        <table class="data-table">
-                            <thead>
-                                <tr>
-                                    <th>NFT</th>
-                                    <th>卖家</th>
-                                    <th>买家</th>
-                                    <th>价格</th>
-                                    <th>时间</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>创世 #001</td>
-                                    <td>0x1234...5678</td>
-                                    <td>0x9876...5432</td>
-                                    <td>$250</td>
-                                    <td>2小时前</td>
-                                </tr>
-                                <tr>
-                                    <td>限量版 #025</td>
-                                    <td>0x5555...1111</td>
-                                    <td>0x2222...8888</td>
-                                    <td>$600</td>
-                                    <td>5小时前</td>
-                                </tr>
-                            </tbody>
-                        </table>
                     </div>
-                </div>
-
-                <!-- Project Data Tab -->
-                <div id="data-tab" class="tab-content">
-                    <div class="sub-tabs">
-                        <button class="tab-button active" onclick="switchSubTab('data', 'documents')">文档管理</button>
-                        <button class="tab-button" onclick="switchSubTab('data', 'valuation')">估值数据</button>
-                        <button class="tab-button" onclick="switchSubTab('data', 'reports')">报告生成</button>
+                </section>
+                
+                <!-- 合规管理 -->
+                <section id="compliance-content" class="content-section">
+                    <div class="section-header">
+                        <i class="icon fas fa-shield-alt"></i>
+                        <h2>合规管理</h2>
                     </div>
                     
-                    <div id="data-documents" class="sub-tab-content active">
-                        <h3>项目文档</h3>
+                    <div class="tab-nav">
+                        <button class="tab-button active" onclick="switchTab('compliance', 'kyc')">KYC/AML</button>
+                        <button class="tab-button" onclick="switchTab('compliance', 'audit')">审计追踪</button>
+                        <button class="tab-button" onclick="switchTab('compliance', 'reports')">合规报告</button>
+                        <button class="tab-button" onclick="switchTab('compliance', 'policies')">政策管理</button>
+                    </div>
+                    
+                    <div id="compliance-kyc" class="tab-content active">
                         <div class="action-buttons">
-                            <button class="action-button" onclick="showModal('uploadDoc')">上传文档</button>
-                            <button class="action-button secondary">批量下载</button>
+                            <button class="btn btn-primary" onclick="batchReview()">
+                                <i class="fas fa-tasks"></i> 批量审核
+                            </button>
+                            <button class="btn btn-warning" onclick="riskMonitoring()">
+                                <i class="fas fa-exclamation-triangle"></i> 风险监控
+                            </button>
+                            <button class="btn btn-secondary" onclick="exportCompliance()">
+                                <i class="fas fa-download"></i> 导出数据
+                            </button>
                         </div>
                         
-                        <table class="data-table">
-                            <thead>
-                                <tr>
-                                    <th>文档名称</th>
-                                    <th>类型</th>
-                                    <th>大小</th>
-                                    <th>上传时间</th>
-                                    <th>操作</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>项目白皮书.pdf</td>
-                                    <td>白皮书</td>
-                                    <td>2.5MB</td>
-                                    <td>2024-01-10</td>
-                                    <td><button class="action-button">下载</button></td>
-                                </tr>
-                                <tr>
-                                    <td>财务报告Q4.xlsx</td>
-                                    <td>财务</td>
-                                    <td>1.2MB</td>
-                                    <td>2024-01-08</td>
-                                    <td><button class="action-button">下载</button></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    
-                    <div id="data-valuation" class="sub-tab-content">
-                        <h3>资产估值</h3>
-                        <div class="stats-grid">
-                            <div class="stats-card">
-                                <div class="stats-value">$2.5M</div>
-                                <div class="stats-label">当前估值</div>
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 30px;">
+                            <div style="background: white; padding: 25px; border-radius: 15px; box-shadow: 0 8px 25px rgba(0,0,0,0.1); text-align: center;">
+                                <div style="font-size: 2rem; font-weight: 700; color: #28a745; margin-bottom: 10px;">1,250</div>
+                                <div style="color: #6c757d;">已验证用户</div>
                             </div>
-                            <div class="stats-card">
-                                <div class="stats-value">+15.2%</div>
-                                <div class="stats-label">月度增长</div>
+                            <div style="background: white; padding: 25px; border-radius: 15px; box-shadow: 0 8px 25px rgba(0,0,0,0.1); text-align: center;">
+                                <div style="font-size: 2rem; font-weight: 700; color: #ffc107; margin-bottom: 10px;">45</div>
+                                <div style="color: #6c757d;">待审核</div>
                             </div>
-                            <div class="stats-card">
-                                <div class="stats-value">$2.8M</div>
-                                <div class="stats-label">预期估值</div>
+                            <div style="background: white; padding: 25px; border-radius: 15px; box-shadow: 0 8px 25px rgba(0,0,0,0.1); text-align: center;">
+                                <div style="font-size: 2rem; font-weight: 700; color: #dc3545; margin-bottom: 10px;">12</div>
+                                <div style="color: #6c757d;">风险用户</div>
                             </div>
-                            <div class="stats-card">
-                                <div class="stats-value">AAA</div>
-                                <div class="stats-label">信用评级</div>
+                            <div style="background: white; padding: 25px; border-radius: 15px; box-shadow: 0 8px 25px rgba(0,0,0,0.1); text-align: center;">
+                                <div style="font-size: 2rem; font-weight: 700; color: #667eea; margin-bottom: 10px;">98.5%</div>
+                                <div style="color: #6c757d;">通过率</div>
                             </div>
-                        </div>
-                        
-                        <div class="action-buttons">
-                            <button class="action-button" onclick="showModal('revaluation')">重新评估</button>
-                            <button class="action-button secondary">导出报告</button>
-                        </div>
-                    </div>
-                    
-                    <div id="data-reports" class="sub-tab-content">
-                        <h3>报告生成</h3>
-                        <div class="form-group">
-                            <label class="form-label">报告类型</label>
-                            <select class="form-select">
-                                <option>财务报告</option>
-                                <option>运营报告</option>
-                                <option>合规报告</option>
-                                <option>投资者报告</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">时间范围</label>
-                            <select class="form-select">
-                                <option>本月</option>
-                                <option>本季度</option>
-                                <option>本年度</option>
-                                <option>自定义</option>
-                            </select>
-                        </div>
-                        <button class="action-button">生成报告</button>
-                    </div>
-                </div>
-
-                <!-- Compliance Management Tab -->
-                <div id="compliance-tab" class="tab-content">
-                    <div class="sub-tabs">
-                        <button class="tab-button active" onclick="switchSubTab('compliance', 'kyc')">KYC/AML</button>
-                        <button class="tab-button" onclick="switchSubTab('compliance', 'regulation')">法规监管</button>
-                        <button class="tab-button" onclick="switchSubTab('compliance', 'audit')">审计追踪</button>
-                    </div>
-                    
-                    <div id="compliance-kyc" class="sub-tab-content active">
-                        <h3>KYC/AML管理</h3>
-                        <div class="stats-grid">
-                            <div class="stats-card">
-                                <div class="stats-value">1,250</div>
-                                <div class="stats-label">已验证用户</div>
-                            </div>
-                            <div class="stats-card">
-                                <div class="stats-value">45</div>
-                                <div class="stats-label">待审核</div>
-                            </div>
-                            <div class="stats-card">
-                                <div class="stats-value">12</div>
-                                <div class="stats-label">风险用户</div>
-                            </div>
-                            <div class="stats-card">
-                                <div class="stats-value">98.5%</div>
-                                <div class="stats-label">通过率</div>
-                            </div>
-                        </div>
-                        
-                        <div class="action-buttons">
-                            <button class="action-button" onclick="showModal('batchReview')">批量审核</button>
-                            <button class="action-button secondary">风险监控</button>
                         </div>
                         
                         <table class="data-table">
@@ -3452,7 +517,7 @@
                                     <td><span class="status-badge status-pending">待审核</span></td>
                                     <td>低</td>
                                     <td>2024-01-15</td>
-                                    <td><button class="action-button">审核</button></td>
+                                    <td><button class="btn btn-primary">审核</button></td>
                                 </tr>
                                 <tr>
                                     <td>U002</td>
@@ -3460,185 +525,268 @@
                                     <td><span class="status-badge status-active">已通过</span></td>
                                     <td>低</td>
                                     <td>2024-01-14</td>
-                                    <td><button class="action-button">查看</button></td>
+                                    <td><button class="btn btn-secondary">查看</button></td>
+                                </tr>
+                                <tr>
+                                    <td>U003</td>
+                                    <td>王五</td>
+                                    <td><span class="status-badge status-pending">待审核</span></td>
+                                    <td>中</td>
+                                    <td>2024-01-13</td>
+                                    <td><button class="btn btn-primary">审核</button></td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
+                </section>
+                
+                <!-- 数据分析 -->
+                <section id="analytics-content" class="content-section">
+                    <div class="section-header">
+                        <i class="icon fas fa-chart-line"></i>
+                        <h2>数据分析</h2>
+                    </div>
                     
-                    <div id="compliance-regulation" class="sub-tab-content">
-                        <h3>法规监管</h3>
-                        <div class="stats-grid">
-                            <div class="stats-card">
-                                <div class="stats-value">100%</div>
-                                <div class="stats-label">合规率</div>
-                            </div>
-                            <div class="stats-card">
-                                <div class="stats-value">0</div>
-                                <div class="stats-label">违规事件</div>
-                            </div>
-                            <div class="stats-card">
-                                <div class="stats-value">15</div>
-                                <div class="stats-label">监管要求</div>
-                            </div>
-                            <div class="stats-card">
-                                <div class="stats-value">5</div>
-                                <div class="stats-label">待更新政策</div>
+                    <div class="action-buttons">
+                        <button class="btn btn-primary" onclick="generateAnalytics()">
+                            <i class="fas fa-chart-bar"></i> 生成分析
+                        </button>
+                        <button class="btn btn-secondary" onclick="customReport()">
+                            <i class="fas fa-cog"></i> 自定义报告
+                        </button>
+                        <button class="btn btn-success" onclick="scheduleReport()">
+                            <i class="fas fa-clock"></i> 定时报告
+                        </button>
+                    </div>
+                    
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-bottom: 30px;">
+                        <div style="background: #f8f9fa; padding: 30px; border-radius: 20px;">
+                            <h3 style="margin-bottom: 20px; color: #2c3e50;"><i class="fas fa-users"></i> 用户增长趋势</h3>
+                            <div style="background: white; height: 250px; border-radius: 15px; display: flex; align-items: center; justify-content: center; color: #6c757d; border: 2px dashed #dee2e6;">
+                                <div style="text-align: center;">
+                                    <i class="fas fa-chart-line" style="font-size: 2.5rem; margin-bottom: 10px;"></i>
+                                    <div>用户增长图表</div>
+                                </div>
                             </div>
                         </div>
                         
-                        <div class="action-buttons">
-                            <button class="action-button">合规检查</button>
-                            <button class="action-button secondary">政策更新</button>
+                        <div style="background: #f8f9fa; padding: 30px; border-radius: 20px;">
+                            <h3 style="margin-bottom: 20px; color: #2c3e50;"><i class="fas fa-dollar-sign"></i> 收益分析</h3>
+                            <div style="background: white; height: 250px; border-radius: 15px; display: flex; align-items: center; justify-content: center; color: #6c757d; border: 2px dashed #dee2e6;">
+                                <div style="text-align: center;">
+                                    <i class="fas fa-chart-pie" style="font-size: 2.5rem; margin-bottom: 10px;"></i>
+                                    <div>收益分析图表</div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     
-                    <div id="compliance-audit" class="sub-tab-content">
-                        <h3>审计追踪</h3>
-                        <table class="data-table">
-                            <thead>
-                                <tr>
-                                    <th>操作</th>
-                                    <th>用户</th>
-                                    <th>时间</th>
-                                    <th>IP地址</th>
-                                    <th>状态</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>代币转账</td>
-                                    <td>0x1234...5678</td>
-                                    <td>2024-01-15 14:30</td>
-                                    <td>192.168.1.100</td>
-                                    <td><span class="status-badge status-active">成功</span></td>
-                                </tr>
-                                <tr>
-                                    <td>NFT铸造</td>
-                                    <td>0x9876...5432</td>
-                                    <td>2024-01-15 13:45</td>
-                                    <td>192.168.1.101</td>
-                                    <td><span class="status-badge status-active">成功</span></td>
-                                </tr>
-                            </tbody>
-                        </table>
+                    <div style="background: linear-gradient(135deg, #667eea, #764ba2); color: white; padding: 30px; border-radius: 20px;">
+                        <h3 style="margin-bottom: 20px;"><i class="fas fa-robot"></i> AI智能洞察</h3>
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
+                            <div style="background: rgba(255,255,255,0.1); padding: 20px; border-radius: 15px;">
+                                <h4 style="margin-bottom: 10px;">📈 预测收益</h4>
+                                <div>未来6个月预期收益率: 8.7%</div>
+                                <div style="font-size: 0.9rem; opacity: 0.8; margin-top: 5px;">置信度: 87%</div>
+                            </div>
+                            <div style="background: rgba(255,255,255,0.1); padding: 20px; border-radius: 15px;">
+                                <h4 style="margin-bottom: 10px;">⚠️ 风险评估</h4>
+                                <div>当前风险等级: 低</div>
+                                <div style="font-size: 0.9rem; opacity: 0.8; margin-top: 5px;">风险评分: 2.3/10</div>
+                            </div>
+                            <div style="background: rgba(255,255,255,0.1); padding: 20px; border-radius: 15px;">
+                                <h4 style="margin-bottom: 10px;">💡 优化建议</h4>
+                                <div>建议增加代币流动性池</div>
+                                <div style="font-size: 0.9rem; opacity: 0.8; margin-top: 5px;">预期提升: 12%</div>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
-        </div>
-    </section>
-        </main>
-    </div>
-
-    <!-- Modals -->
-    <div id="dividend-modal" class="modal">
-        <div class="modal-content">
-            <h3>分红管理</h3>
-            <div class="form-group">
-                <label class="form-label">分红总额</label>
-                <input type="number" class="form-input" placeholder="输入分红总额">
-            </div>
-            <div class="form-group">
-                <label class="form-label">分红日期</label>
-                <input type="date" class="form-input">
-            </div>
-            <div class="action-buttons">
-                <button class="action-button" onclick="hideModal('dividend')">确认</button>
-                <button class="action-button secondary" onclick="hideModal('dividend')">取消</button>
-            </div>
-        </div>
-    </div>
-
-    <div id="price-modal" class="modal">
-        <div class="modal-content">
-            <h3>价格调整</h3>
-            <div class="form-group">
-                <label class="form-label">新价格</label>
-                <input type="number" class="form-input" placeholder="输入新价格">
-            </div>
-            <div class="form-group">
-                <label class="form-label">生效时间</label>
-                <input type="datetime-local" class="form-input">
-            </div>
-            <div class="action-buttons">
-                <button class="action-button" onclick="hideModal('price')">确认</button>
-                <button class="action-button secondary" onclick="hideModal('price')">取消</button>
-            </div>
+                </section>
+                
+                <!-- 系统设置 -->
+                <section id="settings-content" class="content-section">
+                    <div class="section-header">
+                        <i class="icon fas fa-cogs"></i>
+                        <h2>系统设置</h2>
+                    </div>
+                    
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px;">
+                        <div style="background: #f8f9fa; padding: 30px; border-radius: 20px;">
+                            <h3 style="margin-bottom: 20px; color: #2c3e50;"><i class="fas fa-bell"></i> 通知设置</h3>
+                            <div style="display: flex; flex-direction: column; gap: 15px;">
+                                <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid #dee2e6;">
+                                    <span>邮件通知</span>
+                                    <label style="position: relative; display: inline-block; width: 50px; height: 25px;">
+                                        <input type="checkbox" checked style="opacity: 0; width: 0; height: 0;">
+                                        <span style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #28a745; transition: .4s; border-radius: 25px;"></span>
+                                        <span style="position: absolute; content: ''; height: 21px; width: 21px; left: 2px; bottom: 2px; background-color: white; transition: .4s; border-radius: 50%;"></span>
+                                    </label>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid #dee2e6;">
+                                    <span>短信通知</span>
+                                    <label style="position: relative; display: inline-block; width: 50px; height: 25px;">
+                                        <input type="checkbox" style="opacity: 0; width: 0; height: 0;">
+                                        <span style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; transition: .4s; border-radius: 25px;"></span>
+                                        <span style="position: absolute; content: ''; height: 21px; width: 21px; left: 2px; bottom: 2px; background-color: white; transition: .4s; border-radius: 50%;"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </main>
         </div>
     </div>
 
     <script>
-        // Tab switching functionality
-        function switchTab(tabName) {
-            // Hide all tab contents
-            const tabContents = document.querySelectorAll('.tab-content');
-            tabContents.forEach(content => {
-                content.classList.remove('active');
+        // Optimized JavaScript for better performance
+        'use strict';
+        
+        // Performance: Use RAF for smooth animations
+        const raf = window.requestAnimationFrame || window.setTimeout;
+        
+        // Loading management
+        document.addEventListener('DOMContentLoaded', function() {
+            // Hide loading overlay after page load
+            setTimeout(() => {
+                const loadingOverlay = document.getElementById('loadingOverlay');
+                if (loadingOverlay) {
+                    loadingOverlay.classList.add('hidden');
+                }
+            }, 500);
+        });
+        
+        // Menu switching with performance optimization
+        function switchContent(contentId) {
+            // Cache DOM queries
+            const sections = document.querySelectorAll('.content-section');
+            const menuLinks = document.querySelectorAll('.menu-link');
+            const targetSection = document.getElementById(contentId + '-content');
+            
+            // Batch DOM updates
+            raf(() => {
+                sections.forEach(section => section.classList.remove('active'));
+                menuLinks.forEach(link => link.classList.remove('active'));
+                
+                if (targetSection) {
+                    targetSection.classList.add('active');
+                }
+                
+                // Update active menu item
+                const clickedLink = event.target.closest('.menu-link');
+                if (clickedLink) {
+                    clickedLink.classList.add('active');
+                }
             });
-            
-            // Remove active class from all tab buttons
-            const tabButtons = document.querySelectorAll('.tab-nav .tab-button');
-            tabButtons.forEach(button => {
-                button.classList.remove('active');
-            });
-            
-            // Show selected tab content
-            document.getElementById(tabName + '-tab').classList.add('active');
-            
-            // Add active class to clicked button
-            event.target.classList.add('active');
         }
         
-        function switchSubTab(mainTab, subTab) {
-            // Hide all sub-tab contents for this main tab
-            const subTabContents = document.querySelectorAll(`#${mainTab}-tab .sub-tab-content`);
-            subTabContents.forEach(content => {
-                content.classList.remove('active');
+        // Tab switching optimization
+        function switchTab(section, tabId) {
+            const tabButtons = document.querySelectorAll(`#${section}-content .tab-button`);
+            const tabContents = document.querySelectorAll(`#${section}-content .tab-content`);
+            
+            raf(() => {
+                tabButtons.forEach(btn => btn.classList.remove('active'));
+                tabContents.forEach(content => content.classList.remove('active'));
+                
+                const activeButton = Array.from(tabButtons).find(btn => 
+                    btn.onclick && btn.onclick.toString().includes(tabId)
+                );
+                const activeContent = document.getElementById(`${section}-${tabId}`);
+                
+                if (activeButton) activeButton.classList.add('active');
+                if (activeContent) activeContent.classList.add('active');
             });
-            
-            // Remove active class from all sub-tab buttons for this main tab
-            const subTabButtons = document.querySelectorAll(`#${mainTab}-tab .sub-tabs .tab-button`);
-            subTabButtons.forEach(button => {
-                button.classList.remove('active');
-            });
-            
-            // Show selected sub-tab content
-            document.getElementById(`${mainTab}-${subTab}`).classList.add('active');
-            
-            // Add active class to clicked button
-            event.target.classList.add('active');
         }
         
-        // Modal functionality
+        // Modal management with improved accessibility
         function showModal(modalId) {
-            document.getElementById(modalId + '-modal').classList.add('show');
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.style.display = 'flex';
+                modal.classList.add('show');
+                document.body.style.overflow = 'hidden'; // Prevent scroll
+                
+                // Focus management for accessibility
+                const firstInput = modal.querySelector('input, button, select, textarea');
+                if (firstInput) firstInput.focus();
+            }
         }
         
         function hideModal(modalId) {
-            document.getElementById(modalId + '-modal').classList.remove('show');
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.classList.remove('show');
+                setTimeout(() => {
+                    modal.style.display = 'none';
+                    document.body.style.overflow = ''; // Restore scroll
+                }, 300);
+            }
         }
         
-        // Wallet connection functionality
-        document.getElementById('connectWallet').addEventListener('click', async function() {
-            if (typeof window.ethereum !== 'undefined') {
-                try {
-                    const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-                    const account = accounts[0];
-                    document.getElementById('walletAddress').textContent = account.substring(0, 6) + '...' + account.substring(38);
-                    this.textContent = '已连接';
-                    this.disabled = true;
-                } catch (error) {
-                    console.error('连接钱包失败:', error);
-                }
-            } else {
-                alert('请安装MetaMask钱包');
-            }
-        });
+        // Notification system
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.innerHTML = `
+                <i class="fas ${type === 'success' ? 'fa-check-circle' : type === 'error' ? 'fa-exclamation-circle' : 'fa-info-circle'}"></i>
+                ${message}
+            `;
+            
+            document.body.appendChild(notification);
+            
+            raf(() => {
+                notification.classList.add('show');
+            });
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 300);
+            }, 3000);
+        }
         
-        // Animation on scroll
+        // Performance optimized data refresh
+        function refreshData() {
+            showNotification('正在刷新数据...', 'info');
+            
+            // Simulate API call with loading state
+            setTimeout(() => {
+                showNotification('数据刷新成功！', 'success');
+                
+                // Update UI elements with new data
+                updateStats();
+            }, 1500);
+        }
+        
+        function updateStats() {
+            // Batch DOM updates for better performance
+            const updates = [
+                { selector: '.stat-value', values: ['¥50,000万', '8.7%', '1,000,000', '520', '1,267', '96.2%'] }
+            ];
+            
+            raf(() => {
+                updates.forEach(update => {
+                    const elements = document.querySelectorAll(update.selector);
+                    elements.forEach((el, index) => {
+                        if (update.values[index]) {
+                            el.textContent = update.values[index];
+                            el.parentElement.classList.add('highlight');
+                            setTimeout(() => {
+                                el.parentElement.classList.remove('highlight');
+                            }, 2000);
+                        }
+                    });
+                });
+            });
+        }
+        
+        // Lazy loading for better performance
         const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1
         };
         
         const observer = new IntersectionObserver((entries) => {
@@ -3649,336 +797,38 @@
             });
         }, observerOptions);
         
-        document.querySelectorAll('.fade-in, .slide-in-left, .slide-in-right').forEach(el => {
-            observer.observe(el);
-        });
-        
-        // System navigation functions
-        function navigateToSystem(systemType) {
-            // 这里可以根据实际需求跳转到不同的管理系统页面
-            switch(systemType) {
-                case 'project':
-                    // 跳转到项目管理系统
-                    window.location.href = 'project_management.html';
-                    break;
-                case 'token':
-                    // 跳转到代币管理系统
-                    window.location.href = 'token_management.html';
-                    break;
-                case 'nft':
-                    // 跳转到NFT管理系统
-                    window.location.href = 'nft_management.html';
-                    break;
-                case 'data':
-                    // 跳转到资料管理系统
-                    window.location.href = 'data_management.html';
-                    break;
-                case 'compliance':
-                    // 跳转到合规性管理系统
-                    window.location.href = 'compliance_management.html';
-                    break;
-                case 'market':
-                    // 跳转到一二级市场管理系统
-                    window.location.href = 'market_management.html';
-                    break;
-                case 'oracle':
-                    // 显示预言机数据详情
-                    showOracleDetails();
-                    break;
-                case 'ai':
-                    // 显示AI分析详情
-                    showAIAnalysis();
-                    break;
-                default:
-                    console.log('未知的系统类型:', systemType);
-            }
-        }
-        
-        // 显示预言机数据详情
-        function showOracleDetails() {
-            // 这里可以展开预言机数据面板或跳转到详细页面
-            const oraclePanel = document.getElementById('oracle-panel');
-            if (oraclePanel) {
-                oraclePanel.scrollIntoView({ behavior: 'smooth' });
-                oraclePanel.classList.add('highlight');
-                setTimeout(() => {
-                    oraclePanel.classList.remove('highlight');
-                }, 2000);
-            }
-        }
-        
-        // 显示AI分析详情
-        function showAIAnalysis() {
-            // 这里可以展开AI分析面板或跳转到详细页面
-            const aiPanel = document.getElementById('ai-panel');
-            if (aiPanel) {
-                aiPanel.scrollIntoView({ behavior: 'smooth' });
-                aiPanel.classList.add('highlight');
-                setTimeout(() => {
-                    aiPanel.classList.remove('highlight');
-                }, 2000);
-            }
-        }
-        
-        // 刷新预言机数据
-        function refreshOracleData() {
-            // 模拟数据刷新
-            const refreshBtn = event.target;
-            refreshBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 刷新中...';
-            refreshBtn.disabled = true;
-            
-            setTimeout(() => {
-                // 这里可以调用实际的API来获取最新数据
-                refreshBtn.innerHTML = '<i class="fas fa-sync-alt"></i> 刷新数据';
-                refreshBtn.disabled = false;
-                
-                // 显示成功提示
-                showNotification('预言机数据已更新', 'success');
-            }, 2000);
-        }
-        
-        // 生成AI报告
-        function generateAIReport() {
-            const generateBtn = event.target;
-            generateBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 生成中...';
-            generateBtn.disabled = true;
-            
-            setTimeout(() => {
-                generateBtn.innerHTML = '<i class="fas fa-chart-line"></i> 生成报告';
-                generateBtn.disabled = false;
-                
-                // 显示成功提示
-                showNotification('AI分析报告已生成', 'success');
-            }, 3000);
-        }
-        
-        // 发行到RWA市场
-        function publishToMarketplace() {
-            // 检查项目状态
-            const currentProject = window.projectManager ? window.projectManager.currentProject : null;
-            
-            if (!currentProject) {
-                alert('请先选择一个项目');
-                return;
-            }
-            
-            // 显示发行确认对话框
-            const confirmModal = document.createElement('div');
-            confirmModal.className = 'modal';
-            confirmModal.style.display = 'block';
-            confirmModal.innerHTML = `
-                <div class="modal-content" style="max-width: 600px;">
-                    <div class="modal-header">
-                        <h2 class="modal-title">🚀 发行到RWA交易市场</h2>
-                        <button class="close-btn" onclick="this.closest('.modal').remove()">&times;</button>
-                    </div>
-                    
-                    <div style="margin-bottom: 20px;">
-                        <h3 style="color: #2c3e50; margin-bottom: 10px;">项目信息</h3>
-                        <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
-                            <p><strong>项目名称：</strong>${currentProject.name || '智慧商业综合体RWA项目'}</p>
-                            <p><strong>项目类型：</strong>房地产RWA</p>
-                            <p><strong>预计总价值：</strong>¥5,000万</p>
-                            <p><strong>发行份额：</strong>1,000份</p>
-                        </div>
-                    </div>
-                    
-                    <div style="margin-bottom: 20px;">
-                        <h3 style="color: #2c3e50; margin-bottom: 10px;">发行设置</h3>
-                        <div class="form-group">
-                            <label class="form-label">单份价格 (¥)</label>
-                            <input type="number" class="form-input" id="sharePrice" value="50000" min="1000">
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">可售份额</label>
-                            <input type="number" class="form-input" id="availableShares" value="800" min="1" max="1000">
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">预期年化收益率 (%)</label>
-                            <input type="number" class="form-input" id="expectedYield" value="6.8" min="0" max="20" step="0.1">
-                        </div>
-                    </div>
-                    
-                    <div style="background: #fff3cd; border: 1px solid #ffeaa7; border-radius: 8px; padding: 15px; margin-bottom: 20px;">
-                        <h4 style="color: #856404; margin-bottom: 10px;">⚠️ 发行须知</h4>
-                        <ul style="color: #856404; margin: 0; padding-left: 20px;">
-                            <li>发行后项目将在RWA交易市场公开展示</li>
-                            <li>投资者可以购买项目份额进行投资</li>
-                            <li>发行信息一旦提交将无法修改</li>
-                            <li>请确保所有信息准确无误</li>
-                        </ul>
-                    </div>
-                    
-                    <div style="display: flex; gap: 10px; margin-top: 30px;">
-                        <button class="btn btn-secondary" onclick="this.closest('.modal').remove()">取消</button>
-                        <button class="btn btn-primary" onclick="confirmPublishToMarket()">确认发行</button>
-                    </div>
-                </div>
-            `;
-            
-            document.body.appendChild(confirmModal);
-        }
-        
-        // 确认发行到市场
-        function confirmPublishToMarket() {
-            const sharePrice = document.getElementById('sharePrice').value;
-            const availableShares = document.getElementById('availableShares').value;
-            const expectedYield = document.getElementById('expectedYield').value;
-            
-            if (!sharePrice || !availableShares || !expectedYield) {
-                alert('请填写完整的发行信息');
-                return;
-            }
-            
-            // 模拟发行过程
-            const modal = document.querySelector('.modal');
-            const confirmBtn = modal.querySelector('.btn-primary');
-            
-            confirmBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 发行中...';
-            confirmBtn.disabled = true;
-            
-            setTimeout(() => {
-                // 保存发行信息到localStorage
-                const publishedAsset = {
-                    id: 'asset-' + Date.now(),
-                    name: '智慧商业综合体RWA项目',
-                    type: 'real-estate',
-                    description: '位于核心商业区的高端商业综合体，包含办公楼、购物中心和酒店。',
-                    totalValue: parseInt(sharePrice) * 1000,
-                    availableShares: parseInt(availableShares),
-                    pricePerShare: parseInt(sharePrice),
-                    status: 'active',
-                    location: '上海',
-                    yield: expectedYield + '%',
-                    icon: '🏢',
-                    publishTime: new Date().toISOString()
-                };
-                
-                // 保存到已发行资产列表
-                const publishedAssets = JSON.parse(localStorage.getItem('publishedAssets') || '[]');
-                publishedAssets.push(publishedAsset);
-                localStorage.setItem('publishedAssets', JSON.stringify(publishedAssets));
-                
-                modal.remove();
-                
-                // 显示成功提示
-                showNotification('项目已成功发行到RWA交易市场！', 'success');
-                
-                // 询问是否跳转到交易市场
-                setTimeout(() => {
-                    if (confirm('发行成功！是否立即查看RWA交易市场？')) {
-                        window.open('rwa_marketplace.html', '_blank');
-                    }
-                }, 1000);
-                
-            }, 2000);
-        }
-        
-        // 显示通知
-        function showNotification(message, type = 'info') {
-            const notification = document.createElement('div');
-            notification.className = `notification ${type}`;
-            notification.style.cssText = `
-                position: fixed;
-                top: 20px;
-                right: 20px;
-                background: ${type === 'success' ? '#28a745' : '#007bff'};
-                color: white;
-                padding: 15px 20px;
-                border-radius: 8px;
-                box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-                z-index: 10000;
-                display: flex;
-                align-items: center;
-                gap: 10px;
-                transform: translateX(100%);
-                transition: transform 0.3s ease;
-            `;
-            notification.innerHTML = `
-                <i class="fas fa-${type === 'success' ? 'check-circle' : 'info-circle'}"></i>
-                <span>${message}</span>
-            `;
-            
-            document.body.appendChild(notification);
-            
-            // 显示动画
-            setTimeout(() => {
-                notification.style.transform = 'translateX(0)';
-            }, 100);
-            
-            // 自动隐藏
-            setTimeout(() => {
-                notification.style.transform = 'translateX(100%)';
-                setTimeout(() => {
-                    if (document.body.contains(notification)) {
-                        document.body.removeChild(notification);
-                    }
-                }, 300);
-            }, 3000);
-        }
-        
-        // Initialize animations and project manager
+        // Initialize animations on scroll
         document.addEventListener('DOMContentLoaded', function() {
-            // Add fade-in class to elements
-            document.querySelectorAll('.stats-card, .info-card, .dashboard-panel').forEach(el => {
-                el.classList.add('fade-in');
-            });
-            
-            // 初始化项目管理器
-            window.projectManager = new ProjectDataManager();
-            
-            // 系统导航卡片已经通过onclick属性绑定了点击事件
-            // 无需额外的事件监听器
-            
-            // 将原有的dashboard内容移动到对应的content-section中
-            setTimeout(() => {
-                const originalDashboard = document.querySelector('.dashboard');
-                if (originalDashboard) {
-                    const panels = originalDashboard.querySelectorAll('.panel');
-                    
-                    // 移动代币管理面板
-                    if (panels[0]) {
-                        const tokenContent = document.getElementById('token-content');
-                        if (tokenContent) {
-                            tokenContent.appendChild(panels[0]);
-                        }
-                    }
-                    
-                    // 移动NFT管理面板
-                    if (panels[1]) {
-                        const nftContent = document.getElementById('nft-content');
-                        if (nftContent) {
-                            nftContent.appendChild(panels[1]);
-                        }
-                    }
-                    
-                    // 移动项目资料管理面板
-                    if (panels[2]) {
-                        const dataContent = document.getElementById('data-content');
-                        if (dataContent) {
-                            dataContent.appendChild(panels[2]);
-                        }
-                    }
-                    
-                    // 移动合规性管理面板
-                    if (panels[3]) {
-                        const complianceContent = document.getElementById('compliance-content');
-                        if (complianceContent) {
-                            complianceContent.appendChild(panels[3]);
-                        }
-                    }
-                    
-                    // 隐藏原有的dashboard
-                    originalDashboard.style.display = 'none';
-                    
-                    // 同时隐藏第二个dashboard
-                    const secondDashboard = document.querySelectorAll('.dashboard')[1];
-                    if (secondDashboard) {
-                        secondDashboard.style.display = 'none';
-                    }
-                }
-            }, 100);
+            const animatedElements = document.querySelectorAll('.fade-in, .slide-in-left, .slide-in-right');
+            animatedElements.forEach(el => observer.observe(el));
         });
+        
+        // Global error handling
+        window.addEventListener('error', function(e) {
+            console.error('JavaScript Error:', e.error);
+            showNotification('系统出现错误，请刷新页面重试', 'error');
+        });
+        
+        // Mock functions for UI interactions
+        const mockFunctions = {
+            exportReport: () => showNotification('报告导出功能开发中...', 'info'),
+            publishToMarket: () => showNotification('发布到市场功能开发中...', 'info'),
+            adjustPrice: () => showNotification('价格调整功能开发中...', 'info'),
+            batchMint: () => showNotification('批量铸造功能开发中...', 'info'),
+            launchCollection: () => showNotification('发布系列功能开发中...', 'info'),
+            generateReport: () => showNotification('生成报告功能开发中...', 'info'),
+            exportFinancial: () => showNotification('导出财务数据功能开发中...', 'info'),
+            scheduleDividend: () => showNotification('计划分红功能开发中...', 'info'),
+            batchReview: () => showNotification('批量审核功能开发中...', 'info'),
+            riskMonitoring: () => showNotification('风险监控功能开发中...', 'info'),
+            exportCompliance: () => showNotification('导出合规数据功能开发中...', 'info'),
+            generateAnalytics: () => showNotification('生成分析功能开发中...', 'info'),
+            customReport: () => showNotification('自定义报告功能开发中...', 'info'),
+            scheduleReport: () => showNotification('定时报告功能开发中...', 'info')
+        };
+        
+        // Assign mock functions to global scope
+        Object.assign(window, mockFunctions);
     </script>
 </body>
 </html>
