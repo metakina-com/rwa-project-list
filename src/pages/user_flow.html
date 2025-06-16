@@ -1,0 +1,964 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>用户完整流程 - RWA数字投行平台</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* 流程步骤样式 */
+        .flow-steps {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 40px;
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+        }
+
+        .step {
+            display: flex;
+            align-items: center;
+            position: relative;
+        }
+
+        .step:not(:last-child)::after {
+            content: '';
+            width: 60px;
+            height: 2px;
+            background: #e9ecef;
+            margin: 0 20px;
+        }
+
+        .step.active:not(:last-child)::after {
+            background: #007bff;
+        }
+
+        .step-circle {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: #e9ecef;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #6c757d;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .step.active .step-circle {
+            background: #007bff;
+            color: white;
+        }
+
+        .step.completed .step-circle {
+            background: #28a745;
+            color: white;
+        }
+
+        .step-label {
+            margin-left: 10px;
+            font-weight: 500;
+            color: #6c757d;
+        }
+
+        .step.active .step-label {
+            color: #007bff;
+        }
+
+        .step.completed .step-label {
+            color: #28a745;
+        }
+
+        /* 内容区域样式 */
+        .content-area {
+            background: white;
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            min-height: 600px;
+        }
+
+        .step-content {
+            display: none;
+        }
+
+        .step-content.active {
+            display: block;
+        }
+
+        /* 表单样式 */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #495057;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #007bff;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background: #007bff;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #0056b3;
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn-success {
+            background: #28a745;
+            color: white;
+        }
+
+        /* 资产卡片样式 */
+        .asset-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .asset-card {
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            padding: 20px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .asset-card:hover {
+            border-color: #007bff;
+            box-shadow: 0 4px 12px rgba(0,123,255,0.15);
+        }
+
+        .asset-card.selected {
+            border-color: #007bff;
+            background: #f8f9ff;
+        }
+
+        /* 购买确认样式 */
+        .purchase-summary {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .summary-row.total {
+            font-weight: 600;
+            font-size: 18px;
+            border-top: 2px solid #dee2e6;
+            padding-top: 10px;
+            margin-top: 15px;
+        }
+
+        /* 成功页面样式 */
+        .success-icon {
+            width: 80px;
+            height: 80px;
+            background: #28a745;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            color: white;
+            font-size: 40px;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .flow-steps {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .step:not(:last-child)::after {
+                display: none;
+            }
+
+            .asset-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* 加载动画 */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #007bff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* 通知样式 */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 20px;
+            border-radius: 8px;
+            color: white;
+            font-weight: 500;
+            z-index: 10000;
+            max-width: 400px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        .notification.success {
+            background: #28a745;
+        }
+
+        .notification.error {
+            background: #dc3545;
+        }
+
+        .notification.info {
+            background: #17a2b8;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 页面标题 -->
+        <div class="text-center mb-8">
+            <h1 class="text-4xl font-bold text-white mb-4">
+                <i class="fas fa-coins mr-3"></i>
+                RWA数字投行平台
+            </h1>
+            <p class="text-xl text-white opacity-90">完整的用户投资流程体验</p>
+        </div>
+
+        <!-- 流程步骤指示器 -->
+        <div class="flow-steps">
+            <div class="step active" id="step1">
+                <div class="step-circle">1</div>
+                <div class="step-label">用户注册</div>
+            </div>
+            <div class="step" id="step2">
+                <div class="step-circle">2</div>
+                <div class="step-label">身份验证</div>
+            </div>
+            <div class="step" id="step3">
+                <div class="step-circle">3</div>
+                <div class="step-label">浏览资产</div>
+            </div>
+            <div class="step" id="step4">
+                <div class="step-circle">4</div>
+                <div class="step-label">购买确认</div>
+            </div>
+            <div class="step" id="step5">
+                <div class="step-circle">5</div>
+                <div class="step-label">交易完成</div>
+            </div>
+        </div>
+
+        <!-- 内容区域 -->
+        <div class="content-area">
+            <!-- 步骤1: 用户注册/登录 -->
+            <div class="step-content active" id="content1">
+                <h2 class="text-2xl font-bold mb-6 text-center">
+                    <i class="fas fa-user-plus mr-2"></i>
+                    欢迎来到RWA数字投行平台
+                </h2>
+                
+                <div class="grid md:grid-cols-2 gap-8">
+                    <!-- 登录表单 -->
+                    <div>
+                        <h3 class="text-xl font-semibold mb-4">已有账户？立即登录</h3>
+                        <form id="loginForm">
+                            <div class="form-group">
+                                <label class="form-label">邮箱地址</label>
+                                <input type="email" class="form-input" id="loginEmail" placeholder="请输入邮箱地址" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">密码</label>
+                                <input type="password" class="form-input" id="loginPassword" placeholder="请输入密码" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary w-full">
+                                <span id="loginBtnText">登录</span>
+                                <span id="loginLoading" class="loading" style="display: none;"></span>
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- 注册表单 -->
+                    <div>
+                        <h3 class="text-xl font-semibold mb-4">新用户注册</h3>
+                        <form id="registerForm">
+                            <div class="form-group">
+                                <label class="form-label">用户名</label>
+                                <input type="text" class="form-input" id="registerUsername" placeholder="请输入用户名" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">邮箱地址</label>
+                                <input type="email" class="form-input" id="registerEmail" placeholder="请输入邮箱地址" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">密码</label>
+                                <input type="password" class="form-input" id="registerPassword" placeholder="请输入密码" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">确认密码</label>
+                                <input type="password" class="form-input" id="confirmPassword" placeholder="请确认密码" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary w-full">
+                                <span id="registerBtnText">注册</span>
+                                <span id="registerLoading" class="loading" style="display: none;"></span>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 步骤2: 身份验证 -->
+            <div class="step-content" id="content2">
+                <h2 class="text-2xl font-bold mb-6 text-center">
+                    <i class="fas fa-shield-alt mr-2"></i>
+                    身份验证 (KYC)
+                </h2>
+                
+                <div class="max-w-2xl mx-auto">
+                    <div class="text-center mb-8">
+                        <p class="text-gray-600 mb-4">为了确保交易安全，请完成身份验证流程</p>
+                    </div>
+
+                    <form id="kycForm">
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div class="form-group">
+                                <label class="form-label">真实姓名</label>
+                                <input type="text" class="form-input" id="realName" placeholder="请输入真实姓名" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">身份证号</label>
+                                <input type="text" class="form-input" id="idNumber" placeholder="请输入身份证号" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">手机号码</label>
+                                <input type="tel" class="form-input" id="phoneNumber" placeholder="请输入手机号码" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">职业</label>
+                                <select class="form-input" id="occupation" required>
+                                    <option value="">请选择职业</option>
+                                    <option value="employee">企业员工</option>
+                                    <option value="business">企业主</option>
+                                    <option value="freelancer">自由职业</option>
+                                    <option value="student">学生</option>
+                                    <option value="retired">退休</option>
+                                    <option value="other">其他</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">投资经验</label>
+                            <select class="form-input" id="investmentExperience" required>
+                                <option value="">请选择投资经验</option>
+                                <option value="beginner">新手投资者（0-1年）</option>
+                                <option value="intermediate">中级投资者（1-5年）</option>
+                                <option value="advanced">高级投资者（5年以上）</option>
+                            </select>
+                        </div>
+
+                        <div class="text-center mt-8">
+                            <button type="submit" class="btn btn-primary">
+                                <span id="kycBtnText">提交验证</span>
+                                <span id="kycLoading" class="loading" style="display: none;"></span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- 步骤3: 浏览资产 -->
+            <div class="step-content" id="content3">
+                <h2 class="text-2xl font-bold mb-6 text-center">
+                    <i class="fas fa-chart-line mr-2"></i>
+                    选择投资资产
+                </h2>
+                
+                <div class="asset-grid" id="assetGrid">
+                    <!-- 资产卡片将通过JavaScript动态生成 -->
+                </div>
+
+                <div class="text-center mt-8">
+                    <button id="selectAssetBtn" class="btn btn-primary" disabled>
+                        选择此资产继续
+                    </button>
+                </div>
+            </div>
+
+            <!-- 步骤4: 购买确认 -->
+            <div class="step-content" id="content4">
+                <h2 class="text-2xl font-bold mb-6 text-center">
+                    <i class="fas fa-shopping-cart mr-2"></i>
+                    确认购买信息
+                </h2>
+                
+                <div class="max-w-2xl mx-auto">
+                    <div id="selectedAssetInfo" class="mb-6">
+                        <!-- 选中的资产信息将在这里显示 -->
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">购买份额</label>
+                        <input type="number" class="form-input" id="purchaseAmount" placeholder="请输入购买份额" min="1" required>
+                        <small class="text-gray-500 mt-1 block">最小购买份额：1份</small>
+                    </div>
+
+                    <div class="purchase-summary" id="purchaseSummary">
+                        <h4 class="font-semibold mb-3">购买摘要</h4>
+                        <div class="summary-row">
+                            <span>资产名称：</span>
+                            <span id="summaryAssetName">-</span>
+                        </div>
+                        <div class="summary-row">
+                            <span>单价：</span>
+                            <span id="summaryUnitPrice">-</span>
+                        </div>
+                        <div class="summary-row">
+                            <span>购买份额：</span>
+                            <span id="summaryAmount">-</span>
+                        </div>
+                        <div class="summary-row">
+                            <span>手续费：</span>
+                            <span id="summaryFee">¥50</span>
+                        </div>
+                        <div class="summary-row total">
+                            <span>总计：</span>
+                            <span id="summaryTotal">¥0</span>
+                        </div>
+                    </div>
+
+                    <div class="text-center mt-8">
+                        <button id="confirmPurchaseBtn" class="btn btn-success">
+                            <span id="purchaseBtnText">确认购买</span>
+                            <span id="purchaseLoading" class="loading" style="display: none;"></span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 步骤5: 交易完成 -->
+            <div class="step-content" id="content5">
+                <div class="text-center">
+                    <div class="success-icon">
+                        <i class="fas fa-check"></i>
+                    </div>
+                    <h2 class="text-2xl font-bold mb-4">交易成功完成！</h2>
+                    <p class="text-gray-600 mb-6">恭喜您成功购买了RWA资产</p>
+                    
+                    <div class="max-w-md mx-auto bg-gray-50 rounded-lg p-6 mb-8">
+                        <h4 class="font-semibold mb-4">交易详情</h4>
+                        <div class="text-left space-y-2">
+                            <div class="flex justify-between">
+                                <span>交易ID：</span>
+                                <span id="transactionId" class="font-mono">-</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span>资产名称：</span>
+                                <span id="finalAssetName">-</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span>购买份额：</span>
+                                <span id="finalAmount">-</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span>交易金额：</span>
+                                <span id="finalTotal" class="font-semibold">-</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span>交易时间：</span>
+                                <span id="transactionTime">-</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="space-x-4">
+                        <button class="btn btn-primary" onclick="window.location.href='rwa_marketplace.html'">
+                            继续投资
+                        </button>
+                        <button class="btn btn-secondary" onclick="window.location.href='asset_management.html'">
+                            查看我的资产
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="../js/api-client.js"></script>
+    <script src="../js/auth.js"></script>
+    <script>
+        // 全局变量
+        let currentStep = 1;
+        let selectedAsset = null;
+        let currentUser = null;
+        let authManager = null;
+
+        // 初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            // 初始化认证管理器
+            authManager = new AuthManager();
+            
+            // 检查用户是否已登录
+            if (authManager.isLoggedIn()) {
+                currentUser = authManager.getCurrentUser();
+                if (authManager.isKYCApproved()) {
+                    // 用户已登录且KYC已通过，直接跳到资产选择
+                    goToStep(3);
+                } else {
+                    // 用户已登录但KYC未通过
+                    goToStep(2);
+                }
+            }
+
+            // 绑定事件
+            bindEvents();
+            
+            // 加载资产数据
+            loadAssets();
+        });
+
+        // 绑定事件
+        function bindEvents() {
+            // 登录表单
+            document.getElementById('loginForm').addEventListener('submit', handleLogin);
+            
+            // 注册表单
+            document.getElementById('registerForm').addEventListener('submit', handleRegister);
+            
+            // KYC表单
+            document.getElementById('kycForm').addEventListener('submit', handleKYC);
+            
+            // 资产选择
+            document.getElementById('selectAssetBtn').addEventListener('click', () => goToStep(4));
+            
+            // 购买金额变化
+            document.getElementById('purchaseAmount').addEventListener('input', updatePurchaseSummary);
+            
+            // 确认购买
+            document.getElementById('confirmPurchaseBtn').addEventListener('click', handlePurchase);
+        }
+
+        // 处理登录
+        async function handleLogin(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            
+            setLoading('login', true);
+            
+            try {
+                const result = await authManager.login({ email, password });
+                
+                if (result.success) {
+                    currentUser = result.user;
+                    showNotification('登录成功！', 'success');
+                    
+                    if (authManager.isKYCApproved()) {
+                        goToStep(3);
+                    } else {
+                        goToStep(2);
+                    }
+                } else {
+                    showNotification(result.error, 'error');
+                }
+            } catch (error) {
+                showNotification('登录失败，请稍后重试', 'error');
+            } finally {
+                setLoading('login', false);
+            }
+        }
+
+        // 处理注册
+        async function handleRegister(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('registerUsername').value;
+            const email = document.getElementById('registerEmail').value;
+            const password = document.getElementById('registerPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            
+            if (password !== confirmPassword) {
+                showNotification('两次输入的密码不一致', 'error');
+                return;
+            }
+            
+            setLoading('register', true);
+            
+            try {
+                const result = await authManager.register({
+                    username,
+                    email,
+                    password
+                });
+                
+                if (result.success) {
+                    currentUser = result.user;
+                    showNotification('注册成功！', 'success');
+                    goToStep(2);
+                } else {
+                    showNotification(result.error, 'error');
+                }
+            } catch (error) {
+                showNotification('注册失败，请稍后重试', 'error');
+            } finally {
+                setLoading('register', false);
+            }
+        }
+
+        // 处理KYC验证
+        async function handleKYC(e) {
+            e.preventDefault();
+            
+            const kycData = {
+                realName: document.getElementById('realName').value,
+                idNumber: document.getElementById('idNumber').value,
+                phoneNumber: document.getElementById('phoneNumber').value,
+                occupation: document.getElementById('occupation').value,
+                investmentExperience: document.getElementById('investmentExperience').value
+            };
+            
+            setLoading('kyc', true);
+            
+            try {
+                // 模拟KYC验证过程
+                await new Promise(resolve => setTimeout(resolve, 2000));
+                
+                // 更新用户KYC状态
+                currentUser.kyc_status = 'approved';
+                
+                showNotification('身份验证成功！', 'success');
+                goToStep(3);
+            } catch (error) {
+                showNotification('验证失败，请稍后重试', 'error');
+            } finally {
+                setLoading('kyc', false);
+            }
+        }
+
+        // 加载资产数据
+        async function loadAssets() {
+            const assets = [
+                {
+                    id: 1,
+                    name: '上海核心商业地产基金',
+                    type: '房地产',
+                    price: 10000,
+                    expectedReturn: '8.5%',
+                    riskLevel: '中等',
+                    minInvestment: 1,
+                    description: '位于上海核心商业区的优质商业地产投资基金'
+                },
+                {
+                    id: 2,
+                    name: '新能源汽车产业基金',
+                    type: '股权投资',
+                    price: 5000,
+                    expectedReturn: '12.3%',
+                    riskLevel: '较高',
+                    minInvestment: 1,
+                    description: '专注于新能源汽车产业链的股权投资基金'
+                },
+                {
+                    id: 3,
+                    name: '科技创新债券基金',
+                    type: '债券',
+                    price: 1000,
+                    expectedReturn: '6.2%',
+                    riskLevel: '较低',
+                    minInvestment: 1,
+                    description: '投资于科技创新企业债券的稳健型基金'
+                }
+            ];
+            
+            renderAssets(assets);
+        }
+
+        // 渲染资产列表
+        function renderAssets(assets) {
+            const assetGrid = document.getElementById('assetGrid');
+            assetGrid.innerHTML = '';
+            
+            assets.forEach(asset => {
+                const assetCard = document.createElement('div');
+                assetCard.className = 'asset-card';
+                assetCard.innerHTML = `
+                    <h4 class="font-semibold text-lg mb-2">${asset.name}</h4>
+                    <div class="space-y-2 text-sm text-gray-600 mb-4">
+                        <div class="flex justify-between">
+                            <span>类型：</span>
+                            <span>${asset.type}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>单价：</span>
+                            <span class="font-semibold">¥${asset.price.toLocaleString()}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>预期收益：</span>
+                            <span class="text-green-600 font-semibold">${asset.expectedReturn}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>风险等级：</span>
+                            <span>${asset.riskLevel}</span>
+                        </div>
+                    </div>
+                    <p class="text-sm text-gray-500 mb-4">${asset.description}</p>
+                `;
+                
+                assetCard.addEventListener('click', () => selectAsset(asset, assetCard));
+                assetGrid.appendChild(assetCard);
+            });
+        }
+
+        // 选择资产
+        function selectAsset(asset, cardElement) {
+            // 移除其他卡片的选中状态
+            document.querySelectorAll('.asset-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            
+            // 选中当前卡片
+            cardElement.classList.add('selected');
+            selectedAsset = asset;
+            
+            // 启用继续按钮
+            document.getElementById('selectAssetBtn').disabled = false;
+        }
+
+        // 更新购买摘要
+        function updatePurchaseSummary() {
+            if (!selectedAsset) return;
+            
+            const amount = parseInt(document.getElementById('purchaseAmount').value) || 0;
+            const unitPrice = selectedAsset.price;
+            const fee = 50;
+            const total = amount * unitPrice + fee;
+            
+            document.getElementById('summaryAssetName').textContent = selectedAsset.name;
+            document.getElementById('summaryUnitPrice').textContent = `¥${unitPrice.toLocaleString()}`;
+            document.getElementById('summaryAmount').textContent = `${amount}份`;
+            document.getElementById('summaryTotal').textContent = `¥${total.toLocaleString()}`;
+        }
+
+        // 处理购买
+        async function handlePurchase() {
+            const amount = parseInt(document.getElementById('purchaseAmount').value);
+            
+            if (!amount || amount < 1) {
+                showNotification('请输入有效的购买份额', 'error');
+                return;
+            }
+            
+            setLoading('purchase', true);
+            
+            try {
+                // 模拟购买过程
+                await new Promise(resolve => setTimeout(resolve, 3000));
+                
+                // 生成交易ID
+                const transactionId = 'TXN' + Date.now();
+                const total = amount * selectedAsset.price + 50;
+                
+                // 更新最终交易信息
+                document.getElementById('transactionId').textContent = transactionId;
+                document.getElementById('finalAssetName').textContent = selectedAsset.name;
+                document.getElementById('finalAmount').textContent = `${amount}份`;
+                document.getElementById('finalTotal').textContent = `¥${total.toLocaleString()}`;
+                document.getElementById('transactionTime').textContent = new Date().toLocaleString();
+                
+                showNotification('购买成功！', 'success');
+                goToStep(5);
+            } catch (error) {
+                showNotification('购买失败，请稍后重试', 'error');
+            } finally {
+                setLoading('purchase', false);
+            }
+        }
+
+        // 跳转到指定步骤
+        function goToStep(step) {
+            // 隐藏当前内容
+            document.querySelectorAll('.step-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            // 显示目标内容
+            document.getElementById(`content${step}`).classList.add('active');
+            
+            // 更新步骤指示器
+            updateStepIndicator(step);
+            
+            // 更新当前步骤
+            currentStep = step;
+            
+            // 特殊处理
+            if (step === 4 && selectedAsset) {
+                displaySelectedAsset();
+                updatePurchaseSummary();
+            }
+        }
+
+        // 更新步骤指示器
+        function updateStepIndicator(currentStep) {
+            for (let i = 1; i <= 5; i++) {
+                const step = document.getElementById(`step${i}`);
+                step.classList.remove('active', 'completed');
+                
+                if (i < currentStep) {
+                    step.classList.add('completed');
+                } else if (i === currentStep) {
+                    step.classList.add('active');
+                }
+            }
+        }
+
+        // 显示选中的资产信息
+        function displaySelectedAsset() {
+            if (!selectedAsset) return;
+            
+            const assetInfo = document.getElementById('selectedAssetInfo');
+            assetInfo.innerHTML = `
+                <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                    <h4 class="font-semibold text-lg mb-2">${selectedAsset.name}</h4>
+                    <div class="grid md:grid-cols-2 gap-4 text-sm">
+                        <div>
+                            <span class="text-gray-600">类型：</span>
+                            <span class="font-medium">${selectedAsset.type}</span>
+                        </div>
+                        <div>
+                            <span class="text-gray-600">单价：</span>
+                            <span class="font-medium">¥${selectedAsset.price.toLocaleString()}</span>
+                        </div>
+                        <div>
+                            <span class="text-gray-600">预期收益：</span>
+                            <span class="font-medium text-green-600">${selectedAsset.expectedReturn}</span>
+                        </div>
+                        <div>
+                            <span class="text-gray-600">风险等级：</span>
+                            <span class="font-medium">${selectedAsset.riskLevel}</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // 设置加载状态
+        function setLoading(type, isLoading) {
+            const btnText = document.getElementById(`${type}BtnText`);
+            const loading = document.getElementById(`${type}Loading`);
+            
+            if (isLoading) {
+                btnText.style.display = 'none';
+                loading.style.display = 'inline-block';
+            } else {
+                btnText.style.display = 'inline';
+                loading.style.display = 'none';
+            }
+        }
+
+        // 显示通知
+        function showNotification(message, type = 'info', duration = 3000) {
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.textContent = message;
+            
+            document.body.appendChild(notification);
+            
+            // 显示动画
+            setTimeout(() => {
+                notification.classList.add('show');
+            }, 100);
+            
+            // 自动隐藏
+            setTimeout(() => {
+                notification.classList.remove('show');
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 300);
+            }, duration);
+        }
+    </script>
+</body>
+</html>
