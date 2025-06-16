@@ -86,78 +86,142 @@ async function authMiddleware(c, next) {
 
 // 用户注册
 app.post('/register', async (c) => {
-    try {
-        const body = await c.req.json();
-        const validatedData = registerSchema.parse(body);
+  try {
+    const body = await c.req.json();
+    
+    // 支持钱包注册和传统邮箱注册
+    if (body.registration_type === 'wallet') {
+      // 钱包注册
+      const walletData = z.object({
+        wallet_address: z.string().min(1, '钱包地址不能为空'),
+        username: z.string().optional(),
+        email: z.string().email().optional(),
+        registration_type: z.literal('wallet')
+      }).parse(body);
+      
+      // 检查钱包地址是否已存在
+      const existingWallet = await c.env.DB.prepare(
+        'SELECT id FROM users WHERE wallet_address = ?'
+      ).bind(walletData.wallet_address.toLowerCase()).first();
+      
+      if (existingWallet) {
+        return c.json({ error: '该钱包地址已被注册' }, 400);
+      }
+      
+      // 如果提供了邮箱，检查是否已存在
+      if (walletData.email) {
+        const existingEmail = await c.env.DB.prepare(
+          'SELECT id FROM users WHERE email = ?'
+        ).bind(walletData.email).first();
         
-        const { email, password, name, phone, wallet_address } = validatedData;
-        
-        // 检查邮箱是否已存在
-        const existingUser = await c.env.DB.prepare(
-            'SELECT id FROM users WHERE email = ?'
-        ).bind(email).first();
-        
-        if (existingUser) {
-            return c.json({ error: '邮箱已被注册' }, 400);
+        if (existingEmail) {
+          return c.json({ error: '邮箱已被注册' }, 400);
         }
-        
-        // 检查钱包地址是否已存在（如果提供）
-        if (wallet_address) {
-            const existingWallet = await c.env.DB.prepare(
-                'SELECT id FROM users WHERE wallet_address = ?'
-            ).bind(wallet_address).first();
-            
-            if (existingWallet) {
-                return c.json({ error: '钱包地址已被注册' }, 400);
-            }
-        }
-        
-        // 创建新用户
-        const userId = generateUserId();
-        const hashedPassword = hashPassword(password);
-        
-        await c.env.DB.prepare(`
-            INSERT INTO users (id, email, password_hash, name, phone, wallet_address, kyc_status)
-            VALUES (?, ?, ?, ?, ?, ?, 'pending')
-        `).bind(userId, email, hashedPassword, name, phone || null, wallet_address || null).run();
-        
-        // 生成JWT令牌
-        const token = await generateToken(userId, email);
-        
-        // 设置Cookie
-        setCookie(c, 'auth_token', token, {
-            httpOnly: true,
-            secure: true,
-            sameSite: 'Strict',
-            maxAge: 24 * 60 * 60 // 24小时
-        });
-        
-        return c.json({
-            success: true,
-            message: '注册成功',
-            user: {
-                id: userId,
-                email,
-                name,
-                phone,
-                wallet_address,
-                kyc_status: 'pending'
-            },
-            token
-        });
-        
-    } catch (error) {
-        console.error('注册错误:', error);
-        
-        if (error instanceof z.ZodError) {
-            return c.json({
-                error: '数据验证失败',
-                details: error.errors
-            }, 400);
-        }
-        
-        return c.json({ error: '注册失败，请稍后重试' }, 500);
+      }
+      
+      // 创建钱包用户
+      const userId = generateUserId();
+      
+      await c.env.DB.prepare(`
+        INSERT INTO users (id, email, name, wallet_address, kyc_status)
+        VALUES (?, ?, ?, ?, 'pending')
+      `).bind(
+        userId,
+        walletData.email || '',
+        walletData.username || `user_${walletData.wallet_address.slice(-8)}`,
+        walletData.wallet_address.toLowerCase()
+      ).run();
+      
+      // 生成JWT令牌
+      const token = await generateToken(userId, walletData.email || walletData.wallet_address);
+      
+      // 设置Cookie
+      setCookie(c, 'auth_token', token, {
+        httpOnly: true,
+        secure: true,
+        sameSite: 'Strict',
+        maxAge: 24 * 60 * 60 // 24小时
+      });
+      
+      return c.json({
+        success: true,
+        message: '钱包注册成功',
+        user: {
+          id: userId,
+          email: walletData.email || '',
+          name: walletData.username || `user_${walletData.wallet_address.slice(-8)}`,
+          wallet_address: walletData.wallet_address.toLowerCase(),
+          kyc_status: 'pending'
+        },
+        token
+      });
+    } else {
+      // 传统邮箱注册
+      const validatedData = registerSchema.parse(body);
+      
+      const { email, password, name, phone, wallet_address } = validatedData;
+      
+      // 检查邮箱是否已存在
+      const existingUser = await c.env.DB.prepare(
+          'SELECT id FROM users WHERE email = ?'
+      ).bind(email).first();
+      
+      if (existingUser) {
+          return c.json({ error: '邮箱已被注册' }, 400);
+      }
+      
+      // 检查钱包地址是否已存在（如果提供）
+      if (wallet_address) {
+          const existingWallet = await c.env.DB.prepare(
+              'SELECT id FROM users WHERE wallet_address = ?'
+          ).bind(wallet_address).first();
+          
+          if (existingWallet) {
+              return c.json({ error: '钱包地址已被注册' }, 400);
+          }
+      }
+      
+      // 创建新用户
+      const userId = generateUserId();
+      const hashedPassword = hashPassword(password);
+      
+      await c.env.DB.prepare(`
+          INSERT INTO users (id, email, password_hash, name, phone, wallet_address, kyc_status)
+          VALUES (?, ?, ?, ?, ?, ?, 'pending')
+      `).bind(userId, email, hashedPassword, name, phone || null, wallet_address || null).run();
+      
+      // 生成JWT令牌
+      const token = await generateToken(userId, email);
+      
+      // 设置Cookie
+      setCookie(c, 'auth_token', token, {
+          httpOnly: true,
+          secure: true,
+          sameSite: 'Strict',
+          maxAge: 24 * 60 * 60 // 24小时
+      });
+      
+      return c.json({
+          success: true,
+          message: '注册成功',
+          user: {
+              id: userId,
+              email,
+              name,
+              phone,
+              wallet_address,
+              kyc_status: 'pending'
+          },
+          token
+      });
     }
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      return c.json({ error: '输入数据格式错误', details: error.errors }, 400);
+    }
+    console.error('注册失败:', error);
+    return c.json({ error: '注册失败' }, 500);
+  }
 });
 
 // 用户登录
@@ -264,6 +328,91 @@ app.get('/profile', authMiddleware, async (c) => {
         console.error('获取用户信息错误:', error);
         return c.json({ error: '获取用户信息失败' }, 500);
     }
+});
+
+// 通过钱包地址获取用户信息
+app.get('/wallet/:address', async (c) => {
+  try {
+    const walletAddress = c.req.param('address');
+    
+    if (!walletAddress) {
+      return c.json({ error: '钱包地址不能为空' }, 400);
+    }
+    
+    const user = await c.env.DB.prepare(
+      'SELECT id, email, name, phone, kyc_status, wallet_address, created_at FROM users WHERE wallet_address = ?'
+    ).bind(walletAddress.toLowerCase()).first();
+    
+    if (!user) {
+      return c.json({ error: '用户不存在' }, 404);
+    }
+    
+    // 生成JWT令牌
+    const token = await generateToken(user.id, user.email);
+    
+    return c.json({ 
+      user: {
+        id: user.id,
+        email: user.email,
+        name: user.name,
+        phone: user.phone,
+        kyc_status: user.kyc_status,
+        wallet_address: user.wallet_address
+      },
+      token 
+    });
+  } catch (error) {
+    console.error('通过钱包地址获取用户失败:', error);
+    return c.json({ error: '获取用户信息失败' }, 500);
+  }
+});
+
+// 获取用户的RWA资产
+app.get('/:userId/assets', authMiddleware, async (c) => {
+  try {
+    const userId = c.req.param('userId');
+    const userPayload = c.get('user');
+    
+    // 检查权限：只能查看自己的资产
+    if (userId !== userPayload.userId) {
+      return c.json({ error: '无权限访问' }, 403);
+    }
+    
+    // 获取用户的投资记录
+    const investments = await c.env.DB.prepare(`
+      SELECT 
+        i.id,
+        i.project_id,
+        i.amount,
+        i.quantity,
+        i.unit_price,
+        i.status,
+        i.created_at,
+        p.name as project_name,
+        p.asset_type,
+        p.location
+      FROM investments i
+      JOIN projects p ON i.project_id = p.id
+      WHERE i.user_id = ?
+      ORDER BY i.created_at DESC
+    `).bind(userId).all();
+    
+    // 计算资产统计
+    const totalInvestment = investments.results.reduce((sum, inv) => sum + inv.amount, 0);
+    const activeInvestments = investments.results.filter(inv => inv.status === 'active').length;
+    
+    return c.json({
+      assets: investments.results,
+      summary: {
+        total_investment: totalInvestment,
+        active_investments: activeInvestments,
+        total_projects: investments.results.length
+      }
+    });
+  } catch (error) {
+    console.error('获取用户资产失败:', error);
+    return c.json({ error: '获取资产信息失败' }, 500);
+  }
 });
 
 // 更新用户信息

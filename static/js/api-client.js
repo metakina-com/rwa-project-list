@@ -122,6 +122,17 @@ class APIClient {
         // 用户注册
         register: (userData) => this.post('/api/users/register', userData),
         
+        // 钱包注册
+        registerWithWallet: (walletAddress, username = null, email = null) => this.post('/api/users/register', {
+            registration_type: 'wallet',
+            wallet_address: walletAddress,
+            username: username,
+            email: email
+        }),
+        
+        // 钱包登录
+        loginWithWallet: (walletAddress) => this.get(`/api/users/wallet/${walletAddress}`),
+        
         // 用户登录
         login: (credentials) => this.post('/api/users/login', credentials),
         
@@ -149,11 +160,29 @@ class APIClient {
         // 获取用户投资记录
         getByUser: (userId) => this.get(`/api/investments/user/${userId}`),
         
+        // 获取当前用户投资记录
+        getUserInvestments: () => this.get('/api/investments/user'),
+        
         // 获取项目投资记录
         getByProject: (projectId) => this.get(`/api/investments/project/${projectId}`),
         
+        // 获取投资详情
+        getById: (investmentId) => this.get(`/api/investments/${investmentId}`),
+        
         // 更新投资状态
         updateStatus: (investmentId, status) => this.put(`/api/investments/${investmentId}/status`, { status })
+    };
+
+    // 交易相关API
+    transactions = {
+        // 获取用户交易记录
+        getByUser: (userId) => this.get(`/api/transactions/user/${userId}`),
+        
+        // 获取项目交易记录
+        getByProject: (projectId) => this.get(`/api/transactions/project/${projectId}`),
+        
+        // 获取交易详情
+        getById: (transactionId) => this.get(`/api/transactions/${transactionId}`)
     };
 }
 

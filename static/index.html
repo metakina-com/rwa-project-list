@@ -7,6 +7,8 @@
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- ThirdWeb SDK -->
+    <script src="https://unpkg.com/@thirdweb-dev/sdk@latest/dist/browser.js"></script>
     <style>
         * {
             margin: 0;
@@ -171,6 +173,265 @@
         
         .user-dropdown a:hover {
             background: #f3f4f6;
+        }
+        
+        /* Wallet Styles */
+        .wallet-button {
+            background: linear-gradient(135deg, #1e40af, #3b82f6);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(30, 64, 175, 0.3);
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .wallet-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(30, 64, 175, 0.4);
+        }
+        
+        .wallet-connected {
+            background: linear-gradient(135deg, #059669, #10b981);
+        }
+        
+        .wallet-address {
+            font-family: monospace;
+            font-size: 0.9rem;
+        }
+        
+        .asset-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            margin-bottom: 1rem;
+            transition: transform 0.3s ease;
+        }
+        
+        .asset-card:hover {
+            transform: translateY(-2px);
+        }
+        
+        .asset-balance {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #4f46e5;
+        }
+        
+        .asset-label {
+            color: #6b7280;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 10000;
+            backdrop-filter: blur(5px);
+        }
+        
+        .modal-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            max-width: 500px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1f2937;
+        }
+        
+        .close-button {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #6b7280;
+        }
+        
+        .wallet-option {
+            display: flex;
+            align-items: center;
+            padding: 1rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            margin-bottom: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .wallet-option:hover {
+            border-color: #4f46e5;
+            background: #f8fafc;
+        }
+        
+        .wallet-icon {
+            width: 40px;
+            height: 40px;
+            margin-right: 1rem;
+            border-radius: 8px;
+        }
+        
+        .wallet-info h3 {
+            margin: 0;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+        
+        .wallet-info p {
+            margin: 0;
+            color: #6b7280;
+            font-size: 0.9rem;
+        }
+        
+        /* Asset Management Modal Styles */
+        .assets-summary {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+        
+        .assets-list {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        
+        .asset-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            margin-bottom: 0.5rem;
+            background: #f9fafb;
+        }
+        
+        .asset-info {
+            flex: 1;
+        }
+        
+        .asset-name {
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 0.25rem;
+        }
+        
+        .asset-type {
+            font-size: 0.8rem;
+            color: #6b7280;
+        }
+        
+        .asset-amount {
+            text-align: right;
+        }
+        
+        .asset-value {
+            font-weight: 600;
+            color: #059669;
+        }
+        
+        .asset-status {
+            font-size: 0.8rem;
+            color: #6b7280;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 3rem 1rem;
+            color: #6b7280;
+        }
+        
+        .empty-state-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+        
+        /* Utility Classes */
+        .flex {
+            display: flex;
+        }
+        
+        .justify-between {
+            justify-content: space-between;
+        }
+        
+        .items-center {
+            align-items: center;
+        }
+        
+        .mb-2 {
+            margin-bottom: 0.5rem;
+        }
+        
+        .mb-4 {
+            margin-bottom: 1rem;
+        }
+        
+        .text-sm {
+            font-size: 0.875rem;
+        }
+        
+        .text-gray-600 {
+            color: #6b7280;
+        }
+        
+        .text-green-600 {
+            color: #059669;
+        }
+        
+        .font-semibold {
+            font-weight: 600;
         }
         
         /* Hero Section */
@@ -657,6 +918,8 @@
                 </ul>
                 <div class="nav-actions">
                     <a href="rwa_smart_form.html" class="cta-button">智能申请</a>
+                    <!-- 钱包连接区域 -->
+                    <div id="wallet-container"></div>
                     <!-- 用户登录区域将由JavaScript动态生成 -->
                 </div>
                 <button class="mobile-menu-btn">
@@ -1098,8 +1361,437 @@
             document.body.classList.add('loaded');
         });
         
-        // 初始化用户认证界面
+        // ThirdWeb钱包管理类
+        class WalletManager {
+            constructor() {
+                this.sdk = null;
+                this.wallet = null;
+                this.address = null;
+                this.balance = null;
+                this.assets = [];
+                this.userAssets = [];
+                this.init();
+            }
+            
+            async init() {
+                try {
+                    // 初始化ThirdWeb SDK
+                    this.sdk = new ThirdwebSDK("ethereum");
+                    this.updateWalletUI();
+                    
+                    // 检查是否已连接钱包
+                    if (localStorage.getItem('walletConnected') === 'true') {
+                        await this.autoConnect();
+                    }
+                } catch (error) {
+                    console.error('初始化钱包管理器失败:', error);
+                }
+            }
+            
+            async connectWallet(walletType = 'metamask') {
+                try {
+                    // 显示连接中状态
+                    this.showConnectingState();
+                    
+                    // 连接钱包
+                    this.wallet = await this.sdk.wallet.connect(walletType);
+                    this.address = await this.wallet.getAddress();
+                    
+                    // 获取余额
+                    await this.updateBalance();
+                    
+                    // 保存连接状态
+                    localStorage.setItem('walletConnected', 'true');
+                    localStorage.setItem('walletType', walletType);
+                    localStorage.setItem('walletAddress', this.address);
+                    
+                    // 更新UI
+                    this.updateWalletUI();
+                    
+                    // 触发连接成功事件
+                    this.triggerWalletEvent('connected', { address: this.address, balance: this.balance });
+                    
+                    return { success: true, address: this.address };
+                } catch (error) {
+                    console.error('连接钱包失败:', error);
+                    this.updateWalletUI();
+                    return { success: false, error: error.message };
+                }
+            }
+            
+            async disconnectWallet() {
+                try {
+                    if (this.wallet) {
+                        await this.wallet.disconnect();
+                    }
+                    
+                    // 清除状态
+                    this.wallet = null;
+                    this.address = null;
+                    this.balance = null;
+                    this.assets = [];
+                    
+                    // 清除本地存储
+                    localStorage.removeItem('walletConnected');
+                    localStorage.removeItem('walletType');
+                    localStorage.removeItem('walletAddress');
+                    
+                    // 更新UI
+                    this.updateWalletUI();
+                    
+                    // 触发断开连接事件
+                    this.triggerWalletEvent('disconnected');
+                    
+                    return { success: true };
+                } catch (error) {
+                    console.error('断开钱包连接失败:', error);
+                    return { success: false, error: error.message };
+                }
+            }
+            
+            async autoConnect() {
+                const walletType = localStorage.getItem('walletType') || 'metamask';
+                await this.connectWallet(walletType);
+            }
+            
+            async updateBalance() {
+                if (!this.wallet) return;
+                
+                try {
+                    this.balance = await this.wallet.getBalance();
+                } catch (error) {
+                    console.error('获取余额失败:', error);
+                }
+            }
+            
+            async getAssets() {
+                if (!this.address) return [];
+                
+                try {
+                    // 这里可以调用API获取用户的RWA资产
+                    const response = await fetch(`/api/users/${this.address}/assets`);
+                    if (response.ok) {
+                        this.assets = await response.json();
+                    }
+                } catch (error) {
+                    console.error('获取资产失败:', error);
+                }
+                
+                return this.assets;
+            }
+            
+            // 加载用户投资资产
+            async loadUserAssets() {
+                try {
+                    const authToken = localStorage.getItem('authToken');
+                    if (!authToken) {
+                        this.userAssets = [];
+                        return;
+                    }
+                    
+                    const response = await apiClient.investments.getUserInvestments();
+                    if (response.success) {
+                        this.userAssets = response.investments || [];
+                    } else {
+                        this.userAssets = [];
+                    }
+                } catch (error) {
+                    console.error('加载用户资产失败:', error);
+                    this.userAssets = [];
+                }
+            }
+            
+            // 更新资产显示
+            updateAssetsDisplay() {
+                const assetsContainer = document.getElementById('userAssetsContainer');
+                if (!assetsContainer) return;
+                
+                if (!this.userAssets || this.userAssets.length === 0) {
+                    assetsContainer.innerHTML = '<p class="text-gray-500 text-center py-8">暂无投资资产</p>';
+                    return;
+                }
+                
+                const assetsHTML = this.userAssets.map(asset => `
+                    <div class="asset-card bg-white rounded-lg shadow-md p-6 border border-gray-200 mb-4">
+                        <div class="flex justify-between items-start mb-4">
+                            <div>
+                                <h3 class="text-lg font-semibold text-gray-900">${asset.asset_name || '未知资产'}</h3>
+                                <p class="text-sm text-gray-600">投资ID: ${asset.id}</p>
+                            </div>
+                            <span class="px-3 py-1 rounded-full text-xs font-medium ${
+                                asset.status === 'active' ? 'bg-green-100 text-green-800' :
+                                asset.status === 'pending' ? 'bg-yellow-100 text-yellow-800' :
+                                'bg-gray-100 text-gray-800'
+                            }">
+                                ${asset.status === 'active' ? '活跃' : asset.status === 'pending' ? '待处理' : '其他'}
+                            </span>
+                        </div>
+                        <div class="grid grid-cols-2 gap-4 text-sm">
+                            <div>
+                                <span class="text-gray-600">投资金额:</span>
+                                <span class="font-medium text-gray-900">$${asset.amount || '0'}</span>
+                            </div>
+                            <div>
+                                <span class="text-gray-600">投资时间:</span>
+                                <span class="font-medium text-gray-900">${new Date(asset.created_at).toLocaleDateString()}</span>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+                
+                assetsContainer.innerHTML = assetsHTML;
+            }
+            
+            // 显示资产管理模态框
+            showAssetsModal() {
+                const modal = document.getElementById('assetsModal');
+                if (modal) {
+                    modal.style.display = 'block';
+                    this.updateAssetsDisplay();
+                } else {
+                    this.createAssetsModal();
+                }
+            }
+            
+            // 创建资产管理模态框
+            createAssetsModal() {
+                const modalHTML = `
+                    <div id="assetsModal" class="modal">
+                        <div class="modal-content" style="max-width: 800px;">
+                            <div class="modal-header">
+                                <h2 class="modal-title">我的资产</h2>
+                                <button class="close-button" onclick="walletManager.closeModal('assetsModal')">&times;</button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="assets-summary mb-6">
+                                    <div class="grid grid-cols-3 gap-4">
+                                        <div class="stat-card">
+                                            <div class="stat-label">总投资</div>
+                                            <div class="stat-value">${this.userAssets.length}</div>
+                                        </div>
+                                        <div class="stat-card">
+                                            <div class="stat-label">总金额</div>
+                                            <div class="stat-value">$${this.getTotalInvestment()}</div>
+                                        </div>
+                                        <div class="stat-card">
+                                            <div class="stat-label">活跃投资</div>
+                                            <div class="stat-value">${this.getActiveInvestments()}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="userAssetsContainer">
+                                    <!-- 资产列表将在这里显示 -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                document.body.insertAdjacentHTML('beforeend', modalHTML);
+                document.getElementById('assetsModal').style.display = 'block';
+                this.updateAssetsDisplay();
+            }
+            
+            // 获取总投资金额
+            getTotalInvestment() {
+                if (!this.userAssets) return '0';
+                return this.userAssets.reduce((total, asset) => total + (parseFloat(asset.amount) || 0), 0).toFixed(2);
+            }
+            
+            // 获取活跃投资数量
+            getActiveInvestments() {
+                if (!this.userAssets) return 0;
+                return this.userAssets.filter(asset => asset.status === 'active').length;
+            }
+            
+            updateWalletUI() {
+                const container = document.getElementById('wallet-container');
+                if (!container) return;
+                
+                if (this.address) {
+                    // 已连接状态
+                    container.innerHTML = `
+                        <div class="wallet-button wallet-connected" onclick="walletManager.showWalletModal()">
+                            <i class="fas fa-wallet"></i>
+                            <span class="wallet-address">${this.formatAddress(this.address)}</span>
+                        </div>
+                    `;
+                } else {
+                    // 未连接状态
+                    container.innerHTML = `
+                        <button class="wallet-button" onclick="walletManager.showConnectModal()">
+                            <i class="fas fa-wallet"></i>
+                            <span>连接钱包</span>
+                        </button>
+                    `;
+                }
+            }
+            
+            showConnectingState() {
+                const container = document.getElementById('wallet-container');
+                if (container) {
+                    container.innerHTML = `
+                        <button class="wallet-button" disabled>
+                            <i class="fas fa-spinner fa-spin"></i>
+                            <span>连接中...</span>
+                        </button>
+                    `;
+                }
+            }
+            
+            formatAddress(address) {
+                if (!address) return '';
+                return `${address.slice(0, 6)}...${address.slice(-4)}`;
+            }
+            
+            showConnectModal() {
+                const modal = document.getElementById('walletConnectModal');
+                if (modal) {
+                    modal.style.display = 'block';
+                } else {
+                    this.createConnectModal();
+                }
+            }
+            
+            showWalletModal() {
+                const modal = document.getElementById('walletModal');
+                if (modal) {
+                    modal.style.display = 'block';
+                    this.updateWalletModalContent();
+                } else {
+                    this.createWalletModal();
+                }
+            }
+            
+            createConnectModal() {
+                const modalHTML = `
+                    <div id="walletConnectModal" class="modal">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h2 class="modal-title">连接钱包</h2>
+                                <button class="close-button" onclick="walletManager.closeModal('walletConnectModal')">&times;</button>
+                            </div>
+                            <div class="wallet-options">
+                                <div class="wallet-option" onclick="walletManager.connectWallet('metamask')">
+                                    <img src="https://upload.wikimedia.org/wikipedia/commons/3/36/MetaMask_Fox.svg" alt="MetaMask" class="wallet-icon">
+                                    <div class="wallet-info">
+                                        <h3>MetaMask</h3>
+                                        <p>使用MetaMask钱包连接</p>
+                                    </div>
+                                </div>
+                                <div class="wallet-option" onclick="walletManager.connectWallet('walletconnect')">
+                                    <img src="https://walletconnect.com/walletconnect-logo.svg" alt="WalletConnect" class="wallet-icon">
+                                    <div class="wallet-info">
+                                        <h3>WalletConnect</h3>
+                                        <p>使用WalletConnect协议连接</p>
+                                    </div>
+                                </div>
+                                <div class="wallet-option" onclick="walletManager.connectWallet('coinbase')">
+                                    <img src="https://avatars.githubusercontent.com/u/18060234?s=280&v=4" alt="Coinbase" class="wallet-icon">
+                                    <div class="wallet-info">
+                                        <h3>Coinbase Wallet</h3>
+                                        <p>使用Coinbase钱包连接</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                document.body.insertAdjacentHTML('beforeend', modalHTML);
+                document.getElementById('walletConnectModal').style.display = 'block';
+            }
+            
+            createWalletModal() {
+                const modalHTML = `
+                    <div id="walletModal" class="modal">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h2 class="modal-title">我的钱包</h2>
+                                <button class="close-button" onclick="walletManager.closeModal('walletModal')">&times;</button>
+                            </div>
+                            <div id="walletModalContent">
+                                <!-- 内容将由updateWalletModalContent()填充 -->
+                            </div>
+                        </div>
+                    </div>
+                `;
+                document.body.insertAdjacentHTML('beforeend', modalHTML);
+                document.getElementById('walletModal').style.display = 'block';
+                this.updateWalletModalContent();
+            }
+            
+            async updateWalletModalContent() {
+                const content = document.getElementById('walletModalContent');
+                if (!content) return;
+                
+                // 获取最新资产信息
+                await this.updateBalance();
+                await this.loadUserAssets();
+                
+                const balanceETH = this.balance ? parseFloat(this.balance.displayValue).toFixed(4) : '0.0000';
+                
+                content.innerHTML = `
+                    <div class="wallet-info-section">
+                        <div class="asset-card">
+                            <div class="asset-label">钱包地址</div>
+                            <div class="wallet-address" style="font-size: 1rem;">${this.address}</div>
+                        </div>
+                        
+                        <div class="asset-card">
+                            <div class="asset-label">ETH 余额</div>
+                            <div class="asset-balance">${balanceETH} ETH</div>
+                        </div>
+                        
+                        <div class="asset-card">
+                            <div class="asset-label">RWA 资产</div>
+                            <div class="asset-balance">${this.userAssets.length} 项资产</div>
+                            <div style="margin-top: 1rem;">
+                                <button class="cta-button" onclick="walletManager.showAssetsModal()" style="margin-right: 1rem;">查看资产</button>
+                                <a href="asset_management.html" class="auth-button" style="display: inline-block; text-decoration: none;">详细管理</a>
+                            </div>
+                        </div>
+                        
+                        <div style="margin-top: 2rem; text-align: center;">
+                            <button class="auth-button" onclick="walletManager.disconnectWallet(); walletManager.closeModal('walletModal');">
+                                断开连接
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            closeModal(modalId) {
+                const modal = document.getElementById(modalId);
+                if (modal) {
+                    modal.style.display = 'none';
+                }
+            }
+            
+            triggerWalletEvent(eventType, data = {}) {
+                const event = new CustomEvent('walletStateChanged', {
+                    detail: { type: eventType, ...data }
+                });
+                document.dispatchEvent(event);
+            }
+            
+            // 获取当前钱包状态
+            getWalletState() {
+                return {
+                    connected: !!this.address,
+                    address: this.address,
+                    balance: this.balance,
+                    assets: this.assets
+                };
+            }
+        }
+        
+        // 全局钱包管理器实例
+        let walletManager;
+        
+        // 初始化用户认证界面和钱包
         document.addEventListener('DOMContentLoaded', function() {
+            // 初始化钱包管理器
+            walletManager = new WalletManager();
+            
             // 等待auth.js加载完成后初始化
             if (typeof AuthService !== 'undefined') {
                 initializeAuth();
@@ -1111,6 +1803,12 @@
                     }
                 }, 100);
             }
+            
+            // 监听钱包状态变化
+            document.addEventListener('walletStateChanged', function(event) {
+                console.log('钱包状态变化:', event.detail);
+                // 可以在这里添加额外的处理逻辑
+            });
         });
         
         function initializeAuth() {
@@ -1184,14 +1882,145 @@
             }
         }
         
-        // 点击其他地方关闭下拉菜单
+        // 点击其他地方关闭下拉菜单和模态框
         document.addEventListener('click', function(event) {
+            // 关闭用户下拉菜单
             const userMenu = document.querySelector('.user-menu');
             const dropdown = document.getElementById('userDropdown');
             if (userMenu && dropdown && !userMenu.contains(event.target)) {
                 dropdown.classList.remove('show');
             }
+            
+            // 关闭钱包模态框
+            const walletConnectModal = document.getElementById('walletConnectModal');
+            const walletModal = document.getElementById('walletModal');
+            
+            if (walletConnectModal && event.target === walletConnectModal) {
+                walletConnectModal.style.display = 'none';
+            }
+            
+            if (walletModal && event.target === walletModal) {
+                walletModal.style.display = 'none';
+            }
         });
+        
+        // 钱包连接成功后的处理
+        document.addEventListener('walletStateChanged', function(event) {
+            const { type, address, balance } = event.detail;
+            
+            if (type === 'connected') {
+                // 关闭连接模态框
+                const connectModal = document.getElementById('walletConnectModal');
+                if (connectModal) {
+                    connectModal.style.display = 'none';
+                }
+                
+                // 显示成功提示
+                showNotification('钱包连接成功！', 'success');
+                
+                // 可以在这里添加自动注册/登录逻辑
+                handleWalletLogin(address);
+            } else if (type === 'disconnected') {
+                showNotification('钱包已断开连接', 'info');
+            }
+        });
+        
+        // 处理钱包登录逻辑
+        async function handleWalletLogin(address) {
+            try {
+                // 检查该钱包地址是否已注册
+                const response = await fetch(`/api/users/wallet/${address}`);
+                
+                if (response.ok) {
+                    const userData = await response.json();
+                    // 用户已存在，直接登录
+                    if (typeof AuthService !== 'undefined') {
+                        AuthService.setCurrentUser(userData.user, userData.token);
+                        updateAuthUI();
+                    }
+                } else if (response.status === 404) {
+                    // 用户不存在，提示注册
+                    if (confirm('该钱包地址尚未注册，是否立即注册？')) {
+                        await registerWithWallet(address);
+                    }
+                }
+            } catch (error) {
+                console.error('钱包登录处理失败:', error);
+            }
+        }
+        
+        // 使用钱包地址注册
+        async function registerWithWallet(address) {
+            try {
+                const userData = {
+                    wallet_address: address,
+                    username: `user_${address.slice(-8)}`,
+                    email: '', // 可选
+                    registration_type: 'wallet'
+                };
+                
+                const response = await fetch('/api/users/register', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(userData)
+                });
+                
+                if (response.ok) {
+                    const result = await response.json();
+                    if (typeof AuthService !== 'undefined') {
+                        AuthService.setCurrentUser(result.user, result.token);
+                        updateAuthUI();
+                    }
+                    showNotification('注册成功！', 'success');
+                } else {
+                    const error = await response.json();
+                    showNotification(`注册失败: ${error.message}`, 'error');
+                }
+            } catch (error) {
+                console.error('钱包注册失败:', error);
+                showNotification('注册失败，请稍后重试', 'error');
+            }
+        }
+        
+        // 显示通知
+        function showNotification(message, type = 'info') {
+            // 创建通知元素
+            const notification = document.createElement('div');
+            notification.className = `notification notification-${type}`;
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: ${type === 'success' ? '#10b981' : type === 'error' ? '#ef4444' : '#3b82f6'};
+                color: white;
+                padding: 1rem 1.5rem;
+                border-radius: 8px;
+                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+                z-index: 10001;
+                transform: translateX(100%);
+                transition: transform 0.3s ease;
+            `;
+            notification.textContent = message;
+            
+            document.body.appendChild(notification);
+            
+            // 显示动画
+            setTimeout(() => {
+                notification.style.transform = 'translateX(0)';
+            }, 100);
+            
+            // 自动隐藏
+            setTimeout(() => {
+                notification.style.transform = 'translateX(100%)';
+                setTimeout(() => {
+                    if (notification.parentNode) {
+                        notification.parentNode.removeChild(notification);
+                    }
+                }, 300);
+            }, 3000);
+        }
     </script>
     
     <!-- API客户端脚本 -->

@@ -85,14 +85,18 @@ CREATE TABLE IF NOT EXISTS project_compliance (
 -- 用户表
 CREATE TABLE IF NOT EXISTS users (
     id TEXT PRIMARY KEY,
-    email TEXT UNIQUE NOT NULL,
-    password_hash TEXT NOT NULL,
-    wallet_address TEXT UNIQUE,
+    email TEXT UNIQUE,
+    password_hash TEXT,
     name TEXT,
     phone TEXT,
-    kyc_status TEXT DEFAULT 'pending',
+    wallet_address TEXT UNIQUE,
+    kyc_status TEXT DEFAULT 'pending' CHECK (kyc_status IN ('pending', 'approved', 'rejected')),
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT check_auth_method CHECK (
+        (email IS NOT NULL AND password_hash IS NOT NULL) OR 
+        (wallet_address IS NOT NULL)
+    )
 );
 
 -- 投资记录表
@@ -101,13 +105,35 @@ CREATE TABLE IF NOT EXISTS investments (
     user_id TEXT NOT NULL,
     project_id TEXT NOT NULL,
     amount DECIMAL(20,2) NOT NULL,
+    quantity DECIMAL(20,8) NOT NULL,
+    unit_price DECIMAL(20,8) NOT NULL,
     token_amount DECIMAL(20,8),
     investment_type TEXT DEFAULT 'token',
     status TEXT DEFAULT 'pending',
+    transaction_id TEXT,
     transaction_hash TEXT,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id),
     FOREIGN KEY (project_id) REFERENCES projects(id)
+);
+
+-- 交易记录表
+CREATE TABLE IF NOT EXISTS transactions (
+    id TEXT PRIMARY KEY,
+    user_id TEXT NOT NULL,
+    project_id TEXT NOT NULL,
+    investment_id TEXT,
+    type TEXT NOT NULL, -- 'purchase', 'sale', 'transfer'
+    amount DECIMAL(20,2) NOT NULL,
+    status TEXT DEFAULT 'pending', -- 'pending', 'processing', 'completed', 'failed', 'cancelled'
+    transaction_hash TEXT,
+    payment_method TEXT,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id),
+    FOREIGN KEY (project_id) REFERENCES projects(id),
+    FOREIGN KEY (investment_id) REFERENCES investments(id)
 );
 
 -- 上传文件信息表
@@ -148,8 +174,13 @@ CREATE TABLE IF NOT EXISTS risk_assessments (
 -- 创建索引以提高查询性能
 CREATE INDEX IF NOT EXISTS idx_projects_status ON projects(status);
 CREATE INDEX IF NOT EXISTS idx_projects_type ON projects(type);
-CREATE INDEX IF NOT EXISTS idx_investments_user ON investments(user_id);
-CREATE INDEX IF NOT EXISTS idx_investments_project ON investments(project_id);
+CREATE INDEX IF NOT EXISTS idx_investments_user_id ON investments(user_id);
+CREATE INDEX IF NOT EXISTS idx_investments_project_id ON investments(project_id);
+CREATE INDEX IF NOT EXISTS idx_investments_status ON investments(status);
+CREATE INDEX IF NOT EXISTS idx_transactions_user_id ON transactions(user_id);
+CREATE INDEX IF NOT EXISTS idx_transactions_project_id ON transactions(project_id);
+CREATE INDEX IF NOT EXISTS idx_transactions_status ON transactions(status);
+CREATE INDEX IF NOT EXISTS idx_transactions_type ON transactions(type);
 CREATE INDEX IF NOT EXISTS idx_uploaded_files_project_id ON uploaded_files(project_id);
 CREATE INDEX IF NOT EXISTS idx_uploaded_files_category ON uploaded_files(category);
 CREATE INDEX IF NOT EXISTS idx_uploaded_files_status ON uploaded_files(status);
