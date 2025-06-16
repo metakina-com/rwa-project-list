@@ -220,6 +220,7 @@ app.get('/list', async (c) => {
 app.delete('/:fileId', async (c) => {
   try {
     const fileId = c.req.param('fileId');
+    const { DB, R2_BUCKET } = c.env;
     
     if (!fileId) {
       return c.json({
@@ -228,8 +229,34 @@ app.delete('/:fileId', async (c) => {
       }, 400);
     }
     
-    // 在实际应用中，这里应该从数据库删除文件记录，并从存储服务删除文件
-    console.log('删除文件:', fileId);
+    // 首先从数据库获取文件信息
+    const { results } = await DB.prepare(
+      'SELECT file_name FROM uploaded_files WHERE id = ? AND status = "uploaded"'
+    ).bind(fileId).all();
+    
+    if (results.length === 0) {
+      return c.json({
+        success: false,
+        error: '文件不存在或已被删除'
+      }, 404);
+    }
+    
+    const fileName = results[0].file_name;
+    
+    // 从R2存储删除文件
+    try {
+      await R2_BUCKET.delete(fileName);
+    } catch (r2Error) {
+      console.error('从R2存储删除文件失败:', r2Error);
+      // 继续执行数据库删除，即使R2删除失败
+    }
+    
+    // 从数据库删除文件记录（软删除）
+    await DB.prepare(
+      'UPDATE uploaded_files SET status = "deleted", deleted_time = ? WHERE id = ?'
+    ).bind(new Date().toISOString(), fileId).run();
+    
+    console.log('文件删除成功:', fileId);
     
     return c.json({
       success: true,
