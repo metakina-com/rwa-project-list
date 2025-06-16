@@ -1,0 +1,37 @@
+[
+  {
+    "AllowedOrigins": [
+      "https://rwa-project-platform.pages.dev",
+      "https://*.rwa-project-platform.pages.dev",
+      "http://localhost:8788",
+      "http://localhost:3000",
+      "http://127.0.0.1:8788"
+    ],
+    "AllowedMethods": [
+      "GET",
+      "PUT",
+      "POST",
+      "DELETE",
+      "HEAD",
+      "OPTIONS"
+    ],
+    "AllowedHeaders": [
+      "*",
+      "Content-Type",
+      "Content-Length",
+      "Authorization",
+      "X-Requested-With",
+      "Accept",
+      "Origin",
+      "Cache-Control",
+      "X-File-Name"
+    ],
+    "ExposeHeaders": [
+      "ETag",
+      "Content-Length",
+      "Content-Type",
+      "Last-Modified"
+    ],
+    "MaxAgeSeconds": 3600
+  }
+]
