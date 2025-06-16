@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "dev": "wrangler pages dev static --compatibility-date=2024-01-01",
+    "dev:new": "wrangler pages dev dist --compatibility-date=2024-01-01",
     "build": "npm run build:static && npm run build:functions",
+    "build:reorganized": "node scripts/build-reorganized.js",
     "build:static": "node scripts/build-static.js",
     "build:functions": "node scripts/build-functions.js",
     "deploy": "wrangler pages deploy static",
