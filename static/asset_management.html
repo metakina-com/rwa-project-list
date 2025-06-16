@@ -94,6 +94,7 @@
             <aside class="sidebar">
                 <h3><i class="fas fa-building"></i> RWA资产管理</h3>
                 <nav>
+                    <!-- 核心资产管理 -->
                     <div class="menu-item">
                         <a href="#" class="menu-link active" onclick="switchContent('overview', event)">
                             <i class="menu-icon fas fa-building"></i>
@@ -103,31 +104,27 @@
                     <div class="menu-item">
                         <a href="#" class="menu-link" onclick="switchContent('physical', event)">
                             <i class="menu-icon fas fa-warehouse"></i>
-                            <span>实物资产管理</span>
+                            <span>实物资产</span>
                         </a>
                     </div>
                     <div class="menu-item">
                         <a href="#" class="menu-link" onclick="switchContent('tokenization', event)">
                             <i class="menu-icon fas fa-coins"></i>
-                            <span>代币化管理</span>
+                            <span>代币化</span>
                         </a>
                     </div>
                     <div class="menu-item">
                         <a href="#" class="menu-link" onclick="switchContent('certificates', event)">
                             <i class="menu-icon fas fa-certificate"></i>
-                            <span>数字权益证书</span>
+                            <span>权益证书</span>
                         </a>
                     </div>
+                    
+                    <!-- 运营管理 -->
                     <div class="menu-item">
-                        <a href="#" class="menu-link" onclick="switchContent('investors', event)">
-                            <i class="menu-icon fas fa-users-cog"></i>
-                            <span>投资者服务</span>
-                        </a>
-                    </div>
-                    <div class="menu-item">
-                        <a href="#" class="menu-link" onclick="switchContent('custody', event)">
-                            <i class="menu-icon fas fa-shield-alt"></i>
-                            <span>托管服务管理</span>
+                        <a href="#" class="menu-link" onclick="switchContent('lifecycle', event)">
+                            <i class="menu-icon fas fa-project-diagram"></i>
+                            <span>生命周期</span>
                         </a>
                     </div>
                     <div class="menu-item">
@@ -137,9 +134,9 @@
                         </a>
                     </div>
                     <div class="menu-item">
-                        <a href="#" class="menu-link" onclick="switchContent('lifecycle', event)">
-                            <i class="menu-icon fas fa-project-diagram"></i>
-                            <span>生命周期管理</span>
+                        <a href="#" class="menu-link" onclick="switchContent('custody', event)">
+                            <i class="menu-icon fas fa-shield-alt"></i>
+                            <span>托管服务</span>
                         </a>
                     </div>
                     <div class="menu-item">
@@ -148,10 +145,18 @@
                             <span>智能运营</span>
                         </a>
                     </div>
+                    
+                    <!-- 服务与分析 -->
                     <div class="menu-item">
-                        <a href="#" class="menu-link" onclick="switchContent('risk', event)">
-                            <i class="menu-icon fas fa-exclamation-triangle"></i>
-                            <span>风险控制</span>
+                        <a href="#" class="menu-link" onclick="switchContent('investors', event)">
+                            <i class="menu-icon fas fa-users-cog"></i>
+                            <span>投资者服务</span>
+                        </a>
+                    </div>
+                    <div class="menu-item">
+                        <a href="#" class="menu-link" onclick="switchContent('fund-institutions', event)">
+                            <i class="menu-icon fas fa-university"></i>
+                            <span>基金创投机构</span>
                         </a>
                     </div>
                     <div class="menu-item">
@@ -161,9 +166,37 @@
                         </a>
                     </div>
                     <div class="menu-item">
+                        <a href="#" class="menu-link" onclick="switchContent('risk', event)">
+                            <i class="menu-icon fas fa-exclamation-triangle"></i>
+                            <span>风险控制</span>
+                        </a>
+                    </div>
+                    
+                    <!-- 平台配置 -->
+                    <div class="menu-item">
+                        <a href="#" class="menu-link" onclick="switchContent('client-platform', event)">
+                            <i class="menu-icon fas fa-palette"></i>
+                            <span>主题配置</span>
+                        </a>
+                    </div>
+                    <div class="menu-item">
                         <a href="#" class="menu-link" onclick="switchContent('settings', event)">
                             <i class="menu-icon fas fa-cogs"></i>
-                            <span>系统配置</span>
+                            <span>系统设置</span>
+                        </a>
+                    </div>
+                    
+                    <!-- 学习与资讯 -->
+                    <div class="menu-item">
+                        <a href="#" class="menu-link" onclick="switchContent('courses', event)">
+                            <i class="menu-icon fas fa-graduation-cap"></i>
+                            <span>RWA学院</span>
+                        </a>
+                    </div>
+                    <div class="menu-item">
+                        <a href="#" class="menu-link" onclick="switchContent('news', event)">
+                            <i class="menu-icon fas fa-newspaper"></i>
+                            <span>行业资讯</span>
                         </a>
                     </div>
                 </nav>
@@ -1126,6 +1159,320 @@
                     </div>
                 </section>
                 
+                <!-- 基金创投机构 -->
+                <section id="fund-institutions-content" class="content-section">
+                    <div class="section-header">
+                        <i class="icon fas fa-university"></i>
+                        <h2>基金创投机构</h2>
+                        <div class="header-actions">
+                            <button class="btn btn-sm btn-primary" onclick="addNewInstitution()">
+                                <i class="fas fa-plus"></i> 新增机构
+                            </button>
+                            <button class="btn btn-sm btn-secondary" onclick="exportInstitutionData()">
+                                <i class="fas fa-file-export"></i> 导出数据
+                            </button>
+                            <button class="btn btn-sm btn-info" onclick="institutionAnalysis()">
+                                <i class="fas fa-chart-line"></i> 机构分析
+                            </button>
+                            <button class="btn btn-sm btn-warning" onclick="dueDiligenceReport()">
+                                <i class="fas fa-search"></i> 尽调报告
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- 机构管理操作按钮 -->
+                    <div class="action-buttons">
+                        <button class="btn btn-primary" onclick="batchInstitutionReview()">
+                            <i class="fas fa-check-double"></i> 批量审核
+                        </button>
+                        <button class="btn btn-success" onclick="partnershipManagement()">
+                            <i class="fas fa-handshake"></i> 合作管理
+                        </button>
+                        <button class="btn btn-info" onclick="performanceTracking()">
+                            <i class="fas fa-chart-bar"></i> 业绩跟踪
+                        </button>
+                        <button class="btn btn-warning" onclick="riskAssessment()">
+                            <i class="fas fa-shield-alt"></i> 风险评估
+                        </button>
+                        <button class="btn btn-secondary" onclick="communicationLog()">
+                            <i class="fas fa-comments"></i> 沟通记录
+                        </button>
+                        <button class="btn btn-danger" onclick="blacklistManagement()">
+                            <i class="fas fa-ban"></i> 黑名单管理
+                        </button>
+                    </div>
+                    
+                    <!-- 机构统计 -->
+                    <div class="dashboard-stats">
+                        <div class="stats-grid">
+                            <div class="stat-card primary">
+                                <div class="stat-icon"><i class="fas fa-university"></i></div>
+                                <div class="stat-value">186</div>
+                                <div class="stat-label">合作机构总数</div>
+                                <div class="stat-change positive"><i class="fas fa-arrow-up"></i> +12</div>
+                                <div class="stat-detail">本季度新增</div>
+                            </div>
+                            <div class="stat-card success">
+                                <div class="stat-icon"><i class="fas fa-star"></i></div>
+                                <div class="stat-value">45</div>
+                                <div class="stat-label">核心合作伙伴</div>
+                                <div class="stat-change positive"><i class="fas fa-arrow-up"></i> +3</div>
+                                <div class="stat-detail">战略级合作</div>
+                            </div>
+                            <div class="stat-card warning">
+                                <div class="stat-icon"><i class="fas fa-money-bill-wave"></i></div>
+                                <div class="stat-value">¥45.2亿</div>
+                                <div class="stat-label">管理资金规模</div>
+                                <div class="stat-change positive"><i class="fas fa-arrow-up"></i> +8.5%</div>
+                                <div class="stat-detail">较上季度增长</div>
+                            </div>
+                            <div class="stat-card info">
+                                <div class="stat-icon"><i class="fas fa-handshake"></i></div>
+                                <div class="stat-value">23</div>
+                                <div class="stat-label">活跃项目数</div>
+                                <div class="stat-change positive"><i class="fas fa-arrow-up"></i> +5</div>
+                                <div class="stat-detail">正在进行中</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 机构列表 -->
+                    <div class="data-table-container">
+                        <div class="table-header">
+                            <h3><i class="fas fa-list"></i> 机构列表</h3>
+                            <div class="table-actions">
+                                <div class="search-box">
+                                    <i class="fas fa-search"></i>
+                                    <input type="text" placeholder="搜索机构名称、类型..." onkeyup="filterInstitutions(this.value)">
+                                </div>
+                                <select class="filter-select" onchange="filterByType(this.value)">
+                                    <option value="">全部类型</option>
+                                    <option value="vc">风险投资</option>
+                                    <option value="pe">私募股权</option>
+                                    <option value="fund">基金公司</option>
+                                    <option value="bank">银行</option>
+                                    <option value="insurance">保险公司</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th><input type="checkbox" onclick="selectAllInstitutions(this)"></th>
+                                        <th>机构名称</th>
+                                        <th>机构类型</th>
+                                        <th>管理规模</th>
+                                        <th>合作状态</th>
+                                        <th>风险等级</th>
+                                        <th>最后联系</th>
+                                        <th>操作</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><input type="checkbox" class="institution-checkbox"></td>
+                                        <td>
+                                            <div class="institution-info">
+                                                <div class="institution-name">红杉资本中国</div>
+                                                <div class="institution-code">SC-CN-001</div>
+                                            </div>
+                                        </td>
+                                        <td><span class="badge badge-primary">风险投资</span></td>
+                                        <td>¥180亿</td>
+                                        <td><span class="status-badge active">活跃合作</span></td>
+                                        <td><span class="risk-level low">低风险</span></td>
+                                        <td>2024-01-15</td>
+                                        <td>
+                                            <div class="action-buttons">
+                                                <button class="btn btn-sm btn-info" onclick="viewInstitutionDetail('SC-CN-001')" title="查看详情">
+                                                    <i class="fas fa-eye"></i>
+                                                </button>
+                                                <button class="btn btn-sm btn-warning" onclick="editInstitution('SC-CN-001')" title="编辑">
+                                                    <i class="fas fa-edit"></i>
+                                                </button>
+                                                <button class="btn btn-sm btn-success" onclick="contactInstitution('SC-CN-001')" title="联系">
+                                                    <i class="fas fa-phone"></i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><input type="checkbox" class="institution-checkbox"></td>
+                                        <td>
+                                            <div class="institution-info">
+                                                <div class="institution-name">IDG资本</div>
+                                                <div class="institution-code">IDG-001</div>
+                                            </div>
+                                        </td>
+                                        <td><span class="badge badge-primary">风险投资</span></td>
+                                        <td>¥120亿</td>
+                                        <td><span class="status-badge active">活跃合作</span></td>
+                                        <td><span class="risk-level low">低风险</span></td>
+                                        <td>2024-01-12</td>
+                                        <td>
+                                            <div class="action-buttons">
+                                                <button class="btn btn-sm btn-info" onclick="viewInstitutionDetail('IDG-001')" title="查看详情">
+                                                    <i class="fas fa-eye"></i>
+                                                </button>
+                                                <button class="btn btn-sm btn-warning" onclick="editInstitution('IDG-001')" title="编辑">
+                                                    <i class="fas fa-edit"></i>
+                                                </button>
+                                                <button class="btn btn-sm btn-success" onclick="contactInstitution('IDG-001')" title="联系">
+                                                    <i class="fas fa-phone"></i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><input type="checkbox" class="institution-checkbox"></td>
+                                        <td>
+                                            <div class="institution-info">
+                                                <div class="institution-name">高瓴资本</div>
+                                                <div class="institution-code">HL-001</div>
+                                            </div>
+                                        </td>
+                                        <td><span class="badge badge-success">私募股权</span></td>
+                                        <td>¥650亿</td>
+                                        <td><span class="status-badge active">活跃合作</span></td>
+                                        <td><span class="risk-level low">低风险</span></td>
+                                        <td>2024-01-10</td>
+                                        <td>
+                                            <div class="action-buttons">
+                                                <button class="btn btn-sm btn-info" onclick="viewInstitutionDetail('HL-001')" title="查看详情">
+                                                    <i class="fas fa-eye"></i>
+                                                </button>
+                                                <button class="btn btn-sm btn-warning" onclick="editInstitution('HL-001')" title="编辑">
+                                                    <i class="fas fa-edit"></i>
+                                                </button>
+                                                <button class="btn btn-sm btn-success" onclick="contactInstitution('HL-001')" title="联系">
+                                                    <i class="fas fa-phone"></i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><input type="checkbox" class="institution-checkbox"></td>
+                                        <td>
+                                            <div class="institution-info">
+                                                <div class="institution-name">中金资本</div>
+                                                <div class="institution-code">CICC-001</div>
+                                            </div>
+                                        </td>
+                                        <td><span class="badge badge-info">基金公司</span></td>
+                                        <td>¥280亿</td>
+                                        <td><span class="status-badge pending">洽谈中</span></td>
+                                        <td><span class="risk-level medium">中风险</span></td>
+                                        <td>2024-01-08</td>
+                                        <td>
+                                            <div class="action-buttons">
+                                                <button class="btn btn-sm btn-info" onclick="viewInstitutionDetail('CICC-001')" title="查看详情">
+                                                    <i class="fas fa-eye"></i>
+                                                </button>
+                                                <button class="btn btn-sm btn-warning" onclick="editInstitution('CICC-001')" title="编辑">
+                                                    <i class="fas fa-edit"></i>
+                                                </button>
+                                                <button class="btn btn-sm btn-success" onclick="contactInstitution('CICC-001')" title="联系">
+                                                    <i class="fas fa-phone"></i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><input type="checkbox" class="institution-checkbox"></td>
+                                        <td>
+                                            <div class="institution-info">
+                                                <div class="institution-name">招商银行资管</div>
+                                                <div class="institution-code">CMB-AM-001</div>
+                                            </div>
+                                        </td>
+                                        <td><span class="badge badge-warning">银行</span></td>
+                                        <td>¥1,200亿</td>
+                                        <td><span class="status-badge active">活跃合作</span></td>
+                                        <td><span class="risk-level low">低风险</span></td>
+                                        <td>2024-01-05</td>
+                                        <td>
+                                            <div class="action-buttons">
+                                                <button class="btn btn-sm btn-info" onclick="viewInstitutionDetail('CMB-AM-001')" title="查看详情">
+                                                    <i class="fas fa-eye"></i>
+                                                </button>
+                                                <button class="btn btn-sm btn-warning" onclick="editInstitution('CMB-AM-001')" title="编辑">
+                                                    <i class="fas fa-edit"></i>
+                                                </button>
+                                                <button class="btn btn-sm btn-success" onclick="contactInstitution('CMB-AM-001')" title="联系">
+                                                    <i class="fas fa-phone"></i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="table-pagination">
+                            <div class="pagination-info">
+                                显示 1-5 条，共 186 条记录
+                            </div>
+                            <div class="pagination-controls">
+                                <button class="btn btn-sm btn-secondary" onclick="previousPage()">
+                                    <i class="fas fa-chevron-left"></i> 上一页
+                                </button>
+                                <span class="page-numbers">
+                                    <button class="btn btn-sm btn-primary">1</button>
+                                    <button class="btn btn-sm btn-secondary">2</button>
+                                    <button class="btn btn-sm btn-secondary">3</button>
+                                    <span>...</span>
+                                    <button class="btn btn-sm btn-secondary">37</button>
+                                </span>
+                                <button class="btn btn-sm btn-secondary" onclick="nextPage()">
+                                    下一页 <i class="fas fa-chevron-right"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 最近活动 -->
+                    <div class="recent-activity">
+                        <div class="activity-header">
+                            <h3><i class="fas fa-clock"></i> 最近活动</h3>
+                            <button class="btn btn-sm btn-secondary" onclick="viewAllActivities()">
+                                查看全部 <i class="fas fa-arrow-right"></i>
+                            </button>
+                        </div>
+                        <div class="activity-list">
+                            <div class="activity-item">
+                                <div class="activity-icon success">
+                                    <i class="fas fa-handshake"></i>
+                                </div>
+                                <div class="activity-content">
+                                    <div class="activity-title">新增合作机构</div>
+                                    <div class="activity-desc">与腾讯投资签署战略合作协议</div>
+                                    <div class="activity-time">2小时前</div>
+                                </div>
+                            </div>
+                            <div class="activity-item">
+                                <div class="activity-icon info">
+                                    <i class="fas fa-chart-line"></i>
+                                </div>
+                                <div class="activity-content">
+                                    <div class="activity-title">业绩更新</div>
+                                    <div class="activity-desc">红杉资本Q4业绩报告已更新</div>
+                                    <div class="activity-time">4小时前</div>
+                                </div>
+                            </div>
+                            <div class="activity-item">
+                                <div class="activity-icon warning">
+                                    <i class="fas fa-exclamation-triangle"></i>
+                                </div>
+                                <div class="activity-content">
+                                    <div class="activity-title">风险提醒</div>
+                                    <div class="activity-desc">某机构风险等级调整为中风险</div>
+                                    <div class="activity-time">6小时前</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
                 <!-- 托管服务管理 -->
                 <section id="custody-content" class="content-section">
                     <div class="section-header">
@@ -1888,6 +2235,504 @@
                         </div>
                     </div>
                 </section>
+
+                <!-- RWA课程内容面板 -->
+                <section id="courses-content" class="content-section">
+                    <div class="section-header">
+                        <i class="icon fas fa-graduation-cap"></i>
+                        <h2>RWA专业课程</h2>
+                        <div class="header-actions">
+                            <button class="btn btn-sm btn-primary" onclick="refreshCourses()">
+                                <i class="fas fa-sync-alt"></i> 刷新课程
+                            </button>
+                            <button class="btn btn-sm btn-success" onclick="addCourse()">
+                                <i class="fas fa-plus"></i> 添加课程
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="courses-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 25px; margin-top: 20px;">
+                        <!-- 基础课程 -->
+                        <div class="course-card" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 25px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
+                            <div class="course-header" style="display: flex; align-items: center; margin-bottom: 15px;">
+                                <i class="fas fa-book-open" style="font-size: 24px; margin-right: 15px;"></i>
+                                <h3 style="margin: 0;">RWA基础理论</h3>
+                            </div>
+                            <p style="margin-bottom: 15px; opacity: 0.9;">了解现实世界资产代币化的基本概念、原理和应用场景</p>
+                            <div class="course-meta" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                                <span style="background: rgba(255,255,255,0.2); padding: 5px 10px; border-radius: 20px; font-size: 12px;">初级</span>
+                                <span style="font-size: 14px;"><i class="fas fa-clock"></i> 4小时</span>
+                            </div>
+                            <div class="course-progress" style="background: rgba(255,255,255,0.2); height: 8px; border-radius: 4px; margin-bottom: 15px;">
+                                <div style="background: #28a745; height: 100%; width: 75%; border-radius: 4px;"></div>
+                            </div>
+                            <button class="btn" style="background: rgba(255,255,255,0.2); color: white; border: none; padding: 10px 20px; border-radius: 25px; width: 100%;" onclick="startCourse('rwa-basics')">
+                                继续学习 (75%)
+                            </button>
+                        </div>
+
+                        <!-- 技术实现课程 -->
+                        <div class="course-card" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white; padding: 25px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
+                            <div class="course-header" style="display: flex; align-items: center; margin-bottom: 15px;">
+                                <i class="fas fa-code" style="font-size: 24px; margin-right: 15px;"></i>
+                                <h3 style="margin: 0;">智能合约开发</h3>
+                            </div>
+                            <p style="margin-bottom: 15px; opacity: 0.9;">学习RWA代币化智能合约的设计、开发和部署</p>
+                            <div class="course-meta" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                                <span style="background: rgba(255,255,255,0.2); padding: 5px 10px; border-radius: 20px; font-size: 12px;">中级</span>
+                                <span style="font-size: 14px;"><i class="fas fa-clock"></i> 8小时</span>
+                            </div>
+                            <div class="course-progress" style="background: rgba(255,255,255,0.2); height: 8px; border-radius: 4px; margin-bottom: 15px;">
+                                <div style="background: #ffc107; height: 100%; width: 30%; border-radius: 4px;"></div>
+                            </div>
+                            <button class="btn" style="background: rgba(255,255,255,0.2); color: white; border: none; padding: 10px 20px; border-radius: 25px; width: 100%;" onclick="startCourse('smart-contracts')">
+                                开始学习
+                            </button>
+                        </div>
+
+                        <!-- 法律合规课程 -->
+                        <div class="course-card" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); color: white; padding: 25px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
+                            <div class="course-header" style="display: flex; align-items: center; margin-bottom: 15px;">
+                                <i class="fas fa-balance-scale" style="font-size: 24px; margin-right: 15px;"></i>
+                                <h3 style="margin: 0;">法律与合规</h3>
+                            </div>
+                            <p style="margin-bottom: 15px; opacity: 0.9;">掌握RWA代币化的法律框架、合规要求和监管政策</p>
+                            <div class="course-meta" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                                <span style="background: rgba(255,255,255,0.2); padding: 5px 10px; border-radius: 20px; font-size: 12px;">高级</span>
+                                <span style="font-size: 14px;"><i class="fas fa-clock"></i> 6小时</span>
+                            </div>
+                            <div class="course-progress" style="background: rgba(255,255,255,0.2); height: 8px; border-radius: 4px; margin-bottom: 15px;">
+                                <div style="background: #dc3545; height: 100%; width: 0%; border-radius: 4px;"></div>
+                            </div>
+                            <button class="btn" style="background: rgba(255,255,255,0.2); color: white; border: none; padding: 10px 20px; border-radius: 25px; width: 100%;" onclick="startCourse('legal-compliance')">
+                                即将开放
+                            </button>
+                        </div>
+
+                        <!-- 投资策略课程 -->
+                        <div class="course-card" style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); color: white; padding: 25px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
+                            <div class="course-header" style="display: flex; align-items: center; margin-bottom: 15px;">
+                                <i class="fas fa-chart-line" style="font-size: 24px; margin-right: 15px;"></i>
+                                <h3 style="margin: 0;">投资策略分析</h3>
+                            </div>
+                            <p style="margin-bottom: 15px; opacity: 0.9;">学习RWA投资组合构建、风险评估和收益优化策略</p>
+                            <div class="course-meta" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                                <span style="background: rgba(255,255,255,0.2); padding: 5px 10px; border-radius: 20px; font-size: 12px;">中级</span>
+                                <span style="font-size: 14px;"><i class="fas fa-clock"></i> 5小时</span>
+                            </div>
+                            <div class="course-progress" style="background: rgba(255,255,255,0.2); height: 8px; border-radius: 4px; margin-bottom: 15px;">
+                                <div style="background: #17a2b8; height: 100%; width: 60%; border-radius: 4px;"></div>
+                            </div>
+                            <button class="btn" style="background: rgba(255,255,255,0.2); color: white; border: none; padding: 10px 20px; border-radius: 25px; width: 100%;" onclick="startCourse('investment-strategy')">
+                                继续学习 (60%)
+                            </button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 行业资讯内容面板 -->
+                <section id="news-content" class="content-section">
+                    <div class="section-header">
+                        <i class="icon fas fa-newspaper"></i>
+                        <h2>行业资讯</h2>
+                        <div class="header-actions">
+                            <button class="btn btn-sm btn-primary" onclick="refreshNews()">
+                                <i class="fas fa-sync-alt"></i> 刷新资讯
+                            </button>
+                            <button class="btn btn-sm btn-info" onclick="subscribeNews()">
+                                <i class="fas fa-bell"></i> 订阅推送
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="news-container" style="display: grid; grid-template-columns: 2fr 1fr; gap: 30px; margin-top: 20px;">
+                        <!-- 主要新闻列表 -->
+                        <div class="main-news">
+                            <div class="news-tabs" style="display: flex; margin-bottom: 20px; border-bottom: 2px solid #e9ecef;">
+                                <button class="tab-btn active" onclick="switchNewsTab('latest')" style="padding: 10px 20px; border: none; background: none; color: #007bff; border-bottom: 2px solid #007bff; margin-right: 20px;">最新资讯</button>
+                                <button class="tab-btn" onclick="switchNewsTab('trending')" style="padding: 10px 20px; border: none; background: none; color: #6c757d;">热门话题</button>
+                                <button class="tab-btn" onclick="switchNewsTab('analysis')" style="padding: 10px 20px; border: none; background: none; color: #6c757d;">深度分析</button>
+                            </div>
+                            
+                            <div class="news-list">
+                                <!-- 重要新闻 -->
+                                <article class="news-item featured" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 25px; border-radius: 15px; margin-bottom: 20px;">
+                                    <div class="news-badge" style="background: #ff6b6b; color: white; padding: 5px 10px; border-radius: 20px; font-size: 12px; display: inline-block; margin-bottom: 15px;">重要</div>
+                                    <h3 style="margin: 0 0 10px 0; font-size: 20px;">美国SEC批准首个房地产代币化基金</h3>
+                                    <p style="margin: 0 0 15px 0; opacity: 0.9; line-height: 1.6;">美国证券交易委员会正式批准了首个专注于房地产资产代币化的投资基金，标志着RWA领域的重大突破...</p>
+                                    <div class="news-meta" style="display: flex; justify-content: space-between; align-items: center;">
+                                        <span style="font-size: 14px;"><i class="fas fa-calendar"></i> 2024年1月15日</span>
+                                        <span style="font-size: 14px;"><i class="fas fa-eye"></i> 1.2万阅读</span>
+                                    </div>
+                                </article>
+
+                                <!-- 普通新闻 -->
+                                <article class="news-item" style="background: white; padding: 20px; border-radius: 10px; margin-bottom: 15px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); border-left: 4px solid #28a745;">
+                                    <div class="news-header" style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px;">
+                                        <h4 style="margin: 0; color: #2c3e50; font-size: 16px;">欧盟发布RWA代币化监管框架草案</h4>
+                                        <span class="news-time" style="color: #6c757d; font-size: 12px;">3小时前</span>
+                                    </div>
+                                    <p style="margin: 0 0 10px 0; color: #6c757d; line-height: 1.5;">欧盟委员会发布了关于现实世界资产代币化的监管框架草案，为行业发展提供了明确的法律指导...</p>
+                                    <div class="news-tags" style="display: flex; gap: 10px;">
+                                        <span style="background: #e3f2fd; color: #1976d2; padding: 3px 8px; border-radius: 12px; font-size: 11px;">监管</span>
+                                        <span style="background: #f3e5f5; color: #7b1fa2; padding: 3px 8px; border-radius: 12px; font-size: 11px;">欧盟</span>
+                                    </div>
+                                </article>
+
+                                <article class="news-item" style="background: white; padding: 20px; border-radius: 10px; margin-bottom: 15px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); border-left: 4px solid #007bff;">
+                                    <div class="news-header" style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px;">
+                                        <h4 style="margin: 0; color: #2c3e50; font-size: 16px;">BlackRock推出价值5亿美元的代币化基金</h4>
+                                        <span class="news-time" style="color: #6c757d; font-size: 12px;">6小时前</span>
+                                    </div>
+                                    <p style="margin: 0 0 10px 0; color: #6c757d; line-height: 1.5;">全球最大资产管理公司BlackRock宣布推出首个代币化货币市场基金，初始规模达5亿美元...</p>
+                                    <div class="news-tags" style="display: flex; gap: 10px;">
+                                        <span style="background: #e8f5e8; color: #2e7d32; padding: 3px 8px; border-radius: 12px; font-size: 11px;">基金</span>
+                                        <span style="background: #fff3e0; color: #f57c00; padding: 3px 8px; border-radius: 12px; font-size: 11px;">BlackRock</span>
+                                    </div>
+                                </article>
+
+                                <article class="news-item" style="background: white; padding: 20px; border-radius: 10px; margin-bottom: 15px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); border-left: 4px solid #ffc107;">
+                                    <div class="news-header" style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px;">
+                                        <h4 style="margin: 0; color: #2c3e50; font-size: 16px;">新加坡金管局启动RWA沙盒计划</h4>
+                                        <span class="news-time" style="color: #6c757d; font-size: 12px;">1天前</span>
+                                    </div>
+                                    <p style="margin: 0 0 10px 0; color: #6c757d; line-height: 1.5;">新加坡金融管理局宣布启动专门针对现实世界资产代币化的监管沙盒计划，支持创新项目发展...</p>
+                                    <div class="news-tags" style="display: flex; gap: 10px;">
+                                        <span style="background: #fce4ec; color: #c2185b; padding: 3px 8px; border-radius: 12px; font-size: 11px;">新加坡</span>
+                                        <span style="background: #e1f5fe; color: #0277bd; padding: 3px 8px; border-radius: 12px; font-size: 11px;">沙盒</span>
+                                    </div>
+                                </article>
+                            </div>
+                        </div>
+                        
+                        <!-- 侧边栏 -->
+                        <div class="news-sidebar">
+                            <!-- 市场数据 -->
+                            <div class="sidebar-widget" style="background: white; padding: 20px; border-radius: 10px; margin-bottom: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+                                <h4 style="margin: 0 0 15px 0; color: #2c3e50;"><i class="fas fa-chart-bar"></i> 市场数据</h4>
+                                <div class="market-stats">
+                                    <div style="display: flex; justify-content: space-between; margin-bottom: 10px; padding-bottom: 10px; border-bottom: 1px solid #e9ecef;">
+                                        <span>RWA总市值</span>
+                                        <span style="color: #28a745; font-weight: bold;">$2.3B</span>
+                                    </div>
+                                    <div style="display: flex; justify-content: space-between; margin-bottom: 10px; padding-bottom: 10px; border-bottom: 1px solid #e9ecef;">
+                                        <span>24h交易量</span>
+                                        <span style="color: #007bff; font-weight: bold;">$156M</span>
+                                    </div>
+                                    <div style="display: flex; justify-content: space-between;">
+                                        <span>活跃项目</span>
+                                        <span style="color: #6f42c1; font-weight: bold;">127</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- 热门话题 -->
+                            <div class="sidebar-widget" style="background: white; padding: 20px; border-radius: 10px; margin-bottom: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+                                <h4 style="margin: 0 0 15px 0; color: #2c3e50;"><i class="fas fa-fire"></i> 热门话题</h4>
+                                <div class="trending-topics">
+                                    <div style="margin-bottom: 10px; padding: 8px; background: #f8f9fa; border-radius: 5px;">
+                                        <span style="font-size: 14px; color: #495057;">#房地产代币化</span>
+                                        <span style="float: right; font-size: 12px; color: #6c757d;">热度: 95%</span>
+                                    </div>
+                                    <div style="margin-bottom: 10px; padding: 8px; background: #f8f9fa; border-radius: 5px;">
+                                        <span style="font-size: 14px; color: #495057;">#监管政策</span>
+                                        <span style="float: right; font-size: 12px; color: #6c757d;">热度: 87%</span>
+                                    </div>
+                                    <div style="margin-bottom: 10px; padding: 8px; background: #f8f9fa; border-radius: 5px;">
+                                        <span style="font-size: 14px; color: #495057;">#机构采用</span>
+                                        <span style="float: right; font-size: 12px; color: #6c757d;">热度: 76%</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- 推荐阅读 -->
+                            <div class="sidebar-widget" style="background: white; padding: 20px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+                                <h4 style="margin: 0 0 15px 0; color: #2c3e50;"><i class="fas fa-bookmark"></i> 推荐阅读</h4>
+                                <div class="recommended-articles">
+                                    <div style="margin-bottom: 15px; padding-bottom: 15px; border-bottom: 1px solid #e9ecef;">
+                                        <h5 style="margin: 0 0 5px 0; font-size: 14px; color: #495057;">RWA代币化完整指南</h5>
+                                        <span style="font-size: 12px; color: #6c757d;">深度解析 • 15分钟阅读</span>
+                                    </div>
+                                    <div style="margin-bottom: 15px; padding-bottom: 15px; border-bottom: 1px solid #e9ecef;">
+                                        <h5 style="margin: 0 0 5px 0; font-size: 14px; color: #495057;">传统金融vs DeFi对比</h5>
+                                        <span style="font-size: 12px; color: #6c757d;">市场分析 • 8分钟阅读</span>
+                                    </div>
+                                    <div>
+                                        <h5 style="margin: 0 0 5px 0; font-size: 14px; color: #495057;">投资RWA的风险管理</h5>
+                                        <span style="font-size: 12px; color: #6c757d;">风险评估 • 12分钟阅读</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 平台主题配置内容面板 -->
+                <section id="client-platform-content" class="content-section">
+                    <div class="section-header">
+                        <i class="icon fas fa-palette"></i>
+                        <h2>平台主题配置</h2>
+                        <div class="header-actions">
+                            <button class="btn btn-sm btn-success" onclick="previewTheme()">
+                                <i class="fas fa-eye"></i> 预览主题
+                            </button>
+                            <button class="btn btn-sm btn-primary" onclick="saveThemeConfig()">
+                                <i class="fas fa-save"></i> 保存配置
+                            </button>
+                            <button class="btn btn-sm btn-info" onclick="resetTheme()">
+                                <i class="fas fa-undo"></i> 重置主题
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- 主题选择区域 -->
+                    <div class="theme-selection" style="margin-bottom: 30px;">
+                        <h3 style="margin: 0 0 20px 0; color: #2c3e50;"><i class="fas fa-paint-brush"></i> 选择NFT售卖页面主题</h3>
+                        <p style="color: #6c757d; margin-bottom: 25px;">为您的NFT售卖页面选择合适的主题模板，所有主题均为免费使用</p>
+                    
+                    <!-- 主题模板选择 -->
+                    <div class="theme-templates" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 25px;">
+                        <!-- 主题1: 经典艺术风格 -->
+                        <div class="theme-card" style="background: white; border-radius: 15px; padding: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); border: 1px solid #e9ecef; position: relative;">
+                            <div class="theme-badge" style="position: absolute; top: 15px; right: 15px; background: #28a745; color: white; padding: 5px 10px; border-radius: 12px; font-size: 11px; font-weight: bold;">免费</div>
+                            
+                            <div class="theme-preview" style="width: 100%; height: 200px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 12px; margin-bottom: 20px; position: relative; overflow: hidden;">
+                                <div style="position: absolute; top: 20px; left: 20px; color: white; font-size: 18px; font-weight: bold;">经典艺术</div>
+                                <div style="position: absolute; bottom: 20px; left: 20px; right: 20px;">
+                                    <div style="background: rgba(255,255,255,0.2); backdrop-filter: blur(10px); border-radius: 8px; padding: 15px; color: white;">
+                                        <div style="font-size: 14px; margin-bottom: 5px;">NFT作品展示</div>
+                                        <div style="display: flex; gap: 8px;">
+                                            <div style="width: 30px; height: 30px; background: rgba(255,255,255,0.3); border-radius: 4px;"></div>
+                                            <div style="width: 30px; height: 30px; background: rgba(255,255,255,0.3); border-radius: 4px;"></div>
+                                            <div style="width: 30px; height: 30px; background: rgba(255,255,255,0.3); border-radius: 4px;"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="theme-info">
+                                <h3 style="margin: 0 0 10px 0; color: #2c3e50;">经典艺术风格</h3>
+                                <p style="margin: 0 0 15px 0; color: #6c757d; font-size: 14px; line-height: 1.5;">优雅的艺术画廊风格，适合艺术品、收藏品等高端NFT展示。采用深色背景和金色装饰元素。</p>
+                                
+                                <div class="theme-features" style="margin-bottom: 20px;">
+                                    <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+                                        <span style="background: #f8f9fa; color: #495057; padding: 4px 8px; border-radius: 12px; font-size: 11px;">响应式设计</span>
+                                        <span style="background: #f8f9fa; color: #495057; padding: 4px 8px; border-radius: 12px; font-size: 11px;">暗色主题</span>
+                                        <span style="background: #f8f9fa; color: #495057; padding: 4px 8px; border-radius: 12px; font-size: 11px;">画廊布局</span>
+                                        <span style="background: #f8f9fa; color: #495057; padding: 4px 8px; border-radius: 12px; font-size: 11px;">高端设计</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="theme-actions" style="display: flex; gap: 10px;">
+                                    <button class="btn btn-sm btn-primary" onclick="selectTheme('classic-art')" style="flex: 1; padding: 10px; border: none; border-radius: 8px; background: #007bff; color: white; font-size: 13px;">
+                                        <i class="fas fa-check"></i> 选择主题
+                                    </button>
+                                    <button class="btn btn-sm btn-outline-secondary" onclick="previewTheme('classic-art')" style="padding: 10px 15px; border: 1px solid #6c757d; border-radius: 8px; background: transparent; color: #6c757d; font-size: 13px;">
+                                        <i class="fas fa-eye"></i> 预览
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 主题2: 现代简约风格 -->
+                        <div class="theme-card" style="background: white; border-radius: 15px; padding: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); border: 1px solid #e9ecef; position: relative;">
+                            <div class="theme-badge" style="position: absolute; top: 15px; right: 15px; background: #28a745; color: white; padding: 5px 10px; border-radius: 12px; font-size: 11px; font-weight: bold;">免费</div>
+                            
+                            <div class="theme-preview" style="width: 100%; height: 200px; background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); border-radius: 12px; margin-bottom: 20px; position: relative; overflow: hidden;">
+                                <div style="position: absolute; top: 20px; left: 20px; color: white; font-size: 18px; font-weight: bold;">现代简约</div>
+                                <div style="position: absolute; bottom: 20px; left: 20px; right: 20px;">
+                                    <div style="background: rgba(255,255,255,0.9); border-radius: 8px; padding: 15px; color: #333;">
+                                        <div style="font-size: 14px; margin-bottom: 5px; font-weight: 600;">NFT市场</div>
+                                        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px;">
+                                            <div style="height: 25px; background: linear-gradient(45deg, #ff6b6b, #feca57); border-radius: 4px;"></div>
+                                            <div style="height: 25px; background: linear-gradient(45deg, #48dbfb, #0abde3); border-radius: 4px;"></div>
+                                            <div style="height: 25px; background: linear-gradient(45deg, #ff9ff3, #f368e0); border-radius: 4px;"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="theme-info">
+                                <h3 style="margin: 0 0 10px 0; color: #2c3e50;">现代简约风格</h3>
+                                <p style="margin: 0 0 15px 0; color: #6c757d; font-size: 14px; line-height: 1.5;">简洁现代的设计风格，适合数字艺术、游戏道具等年轻化NFT。采用明亮色彩和简洁布局。</p>
+                                
+                                <div class="theme-features" style="margin-bottom: 20px;">
+                                    <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+                                        <span style="background: #f8f9fa; color: #495057; padding: 4px 8px; border-radius: 12px; font-size: 11px;">响应式设计</span>
+                                        <span style="background: #f8f9fa; color: #495057; padding: 4px 8px; border-radius: 12px; font-size: 11px;">亮色主题</span>
+                                        <span style="background: #f8f9fa; color: #495057; padding: 4px 8px; border-radius: 12px; font-size: 11px;">卡片布局</span>
+                                        <span style="background: #f8f9fa; color: #495057; padding: 4px 8px; border-radius: 12px; font-size: 11px;">年轻化</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="theme-actions" style="display: flex; gap: 10px;">
+                                    <button class="btn btn-sm btn-primary" onclick="selectTheme('modern-minimal')" style="flex: 1; padding: 10px; border: none; border-radius: 8px; background: #007bff; color: white; font-size: 13px;">
+                                        <i class="fas fa-check"></i> 选择主题
+                                    </button>
+                                    <button class="btn btn-sm btn-outline-secondary" onclick="previewTheme('modern-minimal')" style="padding: 10px 15px; border: 1px solid #6c757d; border-radius: 8px; background: transparent; color: #6c757d; font-size: 13px;">
+                                        <i class="fas fa-eye"></i> 预览
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 主题3: 科技未来风格 -->
+                        <div class="theme-card" style="background: white; border-radius: 15px; padding: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); border: 1px solid #e9ecef; position: relative;">
+                            <div class="theme-badge" style="position: absolute; top: 15px; right: 15px; background: #28a745; color: white; padding: 5px 10px; border-radius: 12px; font-size: 11px; font-weight: bold;">免费</div>
+                            
+                            <div class="theme-preview" style="width: 100%; height: 200px; background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); border-radius: 12px; margin-bottom: 20px; position: relative; overflow: hidden;">
+                                <div style="position: absolute; top: 20px; left: 20px; color: white; font-size: 18px; font-weight: bold;">科技未来</div>
+                                <div style="position: absolute; bottom: 20px; left: 20px; right: 20px;">
+                                    <div style="background: rgba(0,0,0,0.7); backdrop-filter: blur(10px); border-radius: 8px; padding: 15px; color: white; border: 1px solid rgba(255,255,255,0.2);">
+                                        <div style="font-size: 14px; margin-bottom: 8px; display: flex; align-items: center; gap: 8px;">
+                                            <div style="width: 8px; height: 8px; background: #00ff88; border-radius: 50%; animation: pulse 2s infinite;"></div>
+                                            <span>区块链NFT</span>
+                                        </div>
+                                        <div style="display: flex; gap: 5px;">
+                                            <div style="flex: 1; height: 4px; background: linear-gradient(90deg, #00ff88, #00d4ff); border-radius: 2px;"></div>
+                                            <div style="flex: 1; height: 4px; background: rgba(255,255,255,0.2); border-radius: 2px;"></div>
+                                            <div style="flex: 1; height: 4px; background: rgba(255,255,255,0.2); border-radius: 2px;"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="theme-info">
+                                <h3 style="margin: 0 0 10px 0; color: #2c3e50;">科技未来风格</h3>
+                                <p style="margin: 0 0 15px 0; color: #6c757d; font-size: 14px; line-height: 1.5;">充满科技感的未来风格，适合元宇宙、虚拟资产等前沿NFT。采用霓虹色彩和科技元素。</p>
+                                
+                                <div class="theme-features" style="margin-bottom: 20px;">
+                                    <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+                                        <span style="background: #f8f9fa; color: #495057; padding: 4px 8px; border-radius: 12px; font-size: 11px;">响应式设计</span>
+                                        <span style="background: #f8f9fa; color: #495057; padding: 4px 8px; border-radius: 12px; font-size: 11px;">科技主题</span>
+                                        <span style="background: #f8f9fa; color: #495057; padding: 4px 8px; border-radius: 12px; font-size: 11px;">动效设计</span>
+                                        <span style="background: #f8f9fa; color: #495057; padding: 4px 8px; border-radius: 12px; font-size: 11px;">未来感</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="theme-actions" style="display: flex; gap: 10px;">
+                                    <button class="btn btn-sm btn-primary" onclick="selectTheme('tech-future')" style="flex: 1; padding: 10px; border: none; border-radius: 8px; background: #007bff; color: white; font-size: 13px;">
+                                        <i class="fas fa-check"></i> 选择主题
+                                    </button>
+                                    <button class="btn btn-sm btn-outline-secondary" onclick="previewTheme('tech-future')" style="padding: 10px 15px; border: 1px solid #6c757d; border-radius: 8px; background: transparent; color: #6c757d; font-size: 13px;">
+                                        <i class="fas fa-eye"></i> 预览
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                            </div>
+                            
+                    </div>
+                    
+                    <!-- 主题配置工具 -->
+                    <div class="theme-config-tools" style="margin-top: 30px; background: white; border-radius: 15px; padding: 25px; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
+                        <h3 style="margin: 0 0 20px 0; color: #2c3e50;"><i class="fas fa-cogs"></i> 主题配置工具</h3>
+                        
+                        <!-- 当前选中主题 -->
+                        <div class="current-theme" style="background: #f8f9fa; border-radius: 10px; padding: 20px; margin-bottom: 25px;">
+                            <div style="display: flex; align-items: center; justify-content: space-between;">
+                                <div>
+                                    <h4 style="margin: 0 0 5px 0; color: #2c3e50;">当前选中主题</h4>
+                                    <p style="margin: 0; color: #6c757d; font-size: 14px;" id="currentThemeName">尚未选择主题</p>
+                                </div>
+                                <div style="display: flex; gap: 10px;">
+                                    <button class="btn btn-sm btn-outline-primary" onclick="customizeTheme()" style="padding: 8px 15px; border: 1px solid #007bff; border-radius: 6px; background: transparent; color: #007bff; font-size: 12px;">
+                                        <i class="fas fa-edit"></i> 自定义
+                                    </button>
+                                    <button class="btn btn-sm btn-primary" onclick="applyTheme()" style="padding: 8px 15px; border: none; border-radius: 6px; background: #007bff; color: white; font-size: 12px;">
+                                        <i class="fas fa-check"></i> 应用主题
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 配置选项 -->
+                        <div class="config-options" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-bottom: 25px;">
+                            <div class="config-group" style="background: #fff; border: 1px solid #e9ecef; border-radius: 10px; padding: 20px;">
+                                <h5 style="margin: 0 0 15px 0; color: #2c3e50;"><i class="fas fa-palette"></i> 颜色配置</h5>
+                                <div style="display: flex; flex-direction: column; gap: 10px;">
+                                    <div style="display: flex; align-items: center; justify-content: space-between;">
+                                        <label style="font-size: 14px; color: #495057;">主色调</label>
+                                        <input type="color" value="#007bff" style="width: 40px; height: 30px; border: none; border-radius: 5px; cursor: pointer;">
+                                    </div>
+                                    <div style="display: flex; align-items: center; justify-content: space-between;">
+                                        <label style="font-size: 14px; color: #495057;">辅助色</label>
+                                        <input type="color" value="#6c757d" style="width: 40px; height: 30px; border: none; border-radius: 5px; cursor: pointer;">
+                                    </div>
+                                    <div style="display: flex; align-items: center; justify-content: space-between;">
+                                        <label style="font-size: 14px; color: #495057;">背景色</label>
+                                        <input type="color" value="#ffffff" style="width: 40px; height: 30px; border: none; border-radius: 5px; cursor: pointer;">
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="config-group" style="background: #fff; border: 1px solid #e9ecef; border-radius: 10px; padding: 20px;">
+                                <h5 style="margin: 0 0 15px 0; color: #2c3e50;"><i class="fas fa-font"></i> 字体配置</h5>
+                                <div style="display: flex; flex-direction: column; gap: 10px;">
+                                    <div style="display: flex; align-items: center; justify-content: space-between;">
+                                        <label style="font-size: 14px; color: #495057;">字体族</label>
+                                        <select style="padding: 5px 10px; border: 1px solid #ced4da; border-radius: 4px; font-size: 12px;">
+                                            <option>系统默认</option>
+                                            <option>微软雅黑</option>
+                                            <option>苹方</option>
+                                            <option>思源黑体</option>
+                                        </select>
+                                    </div>
+                                    <div style="display: flex; align-items: center; justify-content: space-between;">
+                                        <label style="font-size: 14px; color: #495057;">字体大小</label>
+                                        <select style="padding: 5px 10px; border: 1px solid #ced4da; border-radius: 4px; font-size: 12px;">
+                                            <option>小号</option>
+                                            <option selected>中号</option>
+                                            <option>大号</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="config-group" style="background: #fff; border: 1px solid #e9ecef; border-radius: 10px; padding: 20px;">
+                                <h5 style="margin: 0 0 15px 0; color: #2c3e50;"><i class="fas fa-th-large"></i> 布局配置</h5>
+                                <div style="display: flex; flex-direction: column; gap: 10px;">
+                                    <div style="display: flex; align-items: center; justify-content: space-between;">
+                                        <label style="font-size: 14px; color: #495057;">页面宽度</label>
+                                        <select style="padding: 5px 10px; border: 1px solid #ced4da; border-radius: 4px; font-size: 12px;">
+                                            <option>固定宽度</option>
+                                            <option selected>响应式</option>
+                                            <option>全屏</option>
+                                        </select>
+                                    </div>
+                                    <div style="display: flex; align-items: center; justify-content: space-between;">
+                                        <label style="font-size: 14px; color: #495057;">卡片间距</label>
+                                        <select style="padding: 5px 10px; border: 1px solid #ced4da; border-radius: 4px; font-size: 12px;">
+                                            <option>紧密</option>
+                                            <option selected>标准</option>
+                                            <option>宽松</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 操作按钮 -->
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
+                            <button class="tool-btn" onclick="exportTheme()" style="padding: 15px; border: none; border-radius: 10px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; cursor: pointer; transition: transform 0.2s;">
+                                <i class="fas fa-download" style="display: block; font-size: 20px; margin-bottom: 8px;"></i>
+                                导出主题配置
+                            </button>
+                            <button class="tool-btn" onclick="importTheme()" style="padding: 15px; border: none; border-radius: 10px; background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white; cursor: pointer; transition: transform 0.2s;">
+                                <i class="fas fa-upload" style="display: block; font-size: 20px; margin-bottom: 8px;"></i>
+                                导入主题配置
+                            </button>
+                            <button class="tool-btn" onclick="shareTheme()" style="padding: 15px; border: none; border-radius: 10px; background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); color: white; cursor: pointer; transition: transform 0.2s;">
+                                <i class="fas fa-share-alt" style="display: block; font-size: 20px; margin-bottom: 8px;"></i>
+                                分享主题
+                            </button>
+                            <button class="tool-btn" onclick="themeHistory()" style="padding: 15px; border: none; border-radius: 10px; background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); color: white; cursor: pointer; transition: transform 0.2s;">
+                                <i class="fas fa-history" style="display: block; font-size: 20px; margin-bottom: 8px;"></i>
+                                配置历史
+                            </button>
+                        </div>
+                    </div>
+                </section>
             </main>
         </div>
     </div>
@@ -2220,6 +3065,50 @@
             customerSupport: () => showNotification('客户支持系统已启动', 'info'),
             freezeAccount: () => showNotification('账户已冻结', 'error'),
             
+            // 基金创投机构管理功能
+            addNewInstitution: () => showNotification('添加新机构功能启动', 'info'),
+            exportInstitutionData: () => showNotification('正在导出机构数据...', 'info'),
+            institutionAnalysis: () => showNotification('机构分析报告生成中...', 'info'),
+            dueDiligenceReport: () => showNotification('尽调报告功能启动', 'info'),
+            batchInstitutionReview: () => showNotification('批量机构审核中...', 'info'),
+            partnershipManagement: () => showNotification('合作管理界面已打开', 'info'),
+            performanceTracking: () => showNotification('业绩跟踪系统已启动', 'info'),
+            riskAssessment: () => showNotification('风险评估分析中...', 'warning'),
+            communicationLog: () => showNotification('沟通记录系统已打开', 'info'),
+            blacklistManagement: () => showNotification('黑名单管理功能启动', 'warning'),
+            viewInstitutionDetail: (institutionId) => showNotification(`查看机构详情: ${institutionId}`, 'info'),
+            editInstitution: (institutionId) => showNotification(`编辑机构: ${institutionId}`, 'info'),
+            contactInstitution: (institutionId) => showNotification(`联系机构: ${institutionId}`, 'success'),
+            filterInstitutions: (searchTerm) => {
+                if (searchTerm) {
+                    showNotification(`搜索机构: ${searchTerm}`, 'info');
+                } else {
+                    showNotification('显示所有机构', 'info');
+                }
+            },
+            filterByType: (type) => {
+                const typeNames = {
+                    'vc': '风险投资',
+                    'pe': '私募股权',
+                    'fund': '基金公司',
+                    'bank': '银行',
+                    'insurance': '保险公司'
+                };
+                if (type) {
+                    showNotification(`筛选类型: ${typeNames[type]}`, 'info');
+                } else {
+                    showNotification('显示所有类型', 'info');
+                }
+            },
+            selectAllInstitutions: (checkbox) => {
+                const checkboxes = document.querySelectorAll('.institution-checkbox');
+                checkboxes.forEach(cb => cb.checked = checkbox.checked);
+                showNotification(checkbox.checked ? '已选择所有机构' : '已取消选择', 'info');
+            },
+            previousPage: () => showNotification('上一页', 'info'),
+            nextPage: () => showNotification('下一页', 'info'),
+            viewAllActivities: () => showNotification('查看所有活动记录', 'info'),
+            
             // 托管服务管理功能
             createCustodyAccount: () => showNotification('创建托管账户...', 'info'),
             syncCustodyStatus: () => showNotification('正在同步托管状态...', 'info'),
@@ -2264,7 +3153,98 @@
             performanceTuning: () => showNotification('性能调优功能启动', 'info'),
             securityScan: () => showNotification('安全扫描进行中...', 'warning'),
             maintenanceMode: () => showNotification('维护模式已启用', 'warning'),
-            exportLogs: () => showNotification('正在导出系统日志...', 'info')
+            exportLogs: () => showNotification('正在导出系统日志...', 'info'),
+            
+            // 课程管理功能
+            refreshCourses: () => {
+                showNotification('正在刷新课程列表...', 'info');
+                setTimeout(() => showNotification('课程列表已更新', 'success'), 1000);
+            },
+            addCourse: () => showNotification('添加课程功能开发中...', 'info'),
+            startCourse: (courseId) => {
+                showNotification(`正在启动课程: ${courseId}`, 'info');
+                setTimeout(() => showNotification('课程已启动，请查看学习进度', 'success'), 500);
+            },
+            
+            // 新闻管理功能
+            refreshNews: () => {
+                showNotification('正在刷新新闻资讯...', 'info');
+                setTimeout(() => showNotification('新闻资讯已更新', 'success'), 1000);
+            },
+            subscribeNews: () => showNotification('新闻订阅功能开发中...', 'info'),
+            switchNewsTab: (tabType) => {
+                const tabs = document.querySelectorAll('.tab-btn');
+                tabs.forEach(tab => {
+                    tab.classList.remove('active');
+                    tab.style.color = '#6c757d';
+                    tab.style.borderBottom = 'none';
+                });
+                
+                const activeTab = Array.from(tabs).find(tab => 
+                    tab.onclick && tab.onclick.toString().includes(tabType)
+                );
+                
+                if (activeTab) {
+                    activeTab.classList.add('active');
+                    activeTab.style.color = '#007bff';
+                    activeTab.style.borderBottom = '2px solid #007bff';
+                }
+                
+                const tabNames = {
+                    'latest': '最新资讯',
+                    'trending': '热门话题', 
+                    'analysis': '深度分析'
+                };
+                showNotification(`切换到${tabNames[tabType] || tabType}`, 'info');
+            },
+            
+            // 平台主题配置管理功能
+            selectTheme: (themeId) => {
+                showNotification(`正在选择主题: ${themeId}`, 'info');
+                setTimeout(() => {
+                    document.getElementById('currentThemeName').textContent = themeId;
+                    showNotification('主题选择成功！', 'success');
+                }, 500);
+            },
+            previewTheme: () => {
+                showNotification('正在预览主题效果...', 'info');
+                setTimeout(() => showNotification('主题预览已加载', 'success'), 1000);
+            },
+            saveTheme: () => {
+                showNotification('正在保存主题配置...', 'info');
+                setTimeout(() => showNotification('主题配置保存成功！', 'success'), 1200);
+            },
+            resetTheme: () => {
+                showNotification('正在重置主题配置...', 'warning');
+                setTimeout(() => {
+                    document.getElementById('currentThemeName').textContent = '尚未选择主题';
+                    showNotification('主题配置已重置', 'success');
+                }, 800);
+            },
+            customizeTheme: () => {
+                showNotification('正在打开主题自定义编辑器...', 'info');
+                setTimeout(() => showNotification('主题编辑器已启动', 'success'), 1000);
+            },
+            applyTheme: () => {
+                showNotification('正在应用主题到NFT售卖页面...', 'info');
+                setTimeout(() => showNotification('主题应用成功！', 'success'), 1500);
+            },
+            exportTheme: () => {
+                showNotification('正在导出主题配置文件...', 'info');
+                setTimeout(() => showNotification('主题配置导出完成', 'success'), 1200);
+            },
+            importTheme: () => {
+                showNotification('正在导入主题配置文件...', 'info');
+                setTimeout(() => showNotification('主题配置导入成功', 'success'), 1000);
+            },
+            shareTheme: () => {
+                showNotification('正在生成主题分享链接...', 'info');
+                setTimeout(() => showNotification('主题分享链接已生成', 'success'), 800);
+            },
+            themeHistory: () => {
+                showNotification('正在加载主题配置历史...', 'info');
+                setTimeout(() => showNotification('配置历史已加载', 'success'), 1000);
+            }
         };
         
         // Assign mock functions to global scope

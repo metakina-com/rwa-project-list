@@ -298,6 +298,74 @@
             line-height: 1.6;
         }
         
+        /* Knowledge Section Button Styles */
+        .feature-card .btn-secondary {
+            background: #4f46e5;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+        
+        .feature-card .btn-secondary:hover {
+            background: #3730a3;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 15px rgba(79, 70, 229, 0.3);
+        }
+        
+        /* News Section Styles */
+        .news-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .news-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 25px;
+            color: white;
+            transition: all 0.3s ease;
+        }
+        
+        .news-card:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.15);
+        }
+        
+        .news-date {
+            color: #e0e7ff;
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+        
+        .news-card h3 {
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+        }
+        
+        .news-card p {
+            line-height: 1.6;
+            opacity: 0.9;
+        }
+        
+        .news-card a {
+            color: #a5b4fc;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+        
+        .news-card a:hover {
+            color: #c7d2fe;
+        }
+        
         /* Stats Section */
         .stats {
             padding: 80px 0;
@@ -580,6 +648,9 @@
                     <li><a href="#features">产品特色</a></li>
                     <li><a href="rwa_marketplace.html">RWA交易市场</a></li>
                     <li><a href="asset_management.html">资产管理</a></li>
+                    <li><a href="#knowledge">知识课程</a></li>
+                    <li><a href="#news">新闻资讯</a></li>
+                    <li><a href="#venture-database">创投数据库</a></li>
                     <li><a href="#solutions">解决方案</a></li>
                     <li><a href="#about">关于我们</a></li>
                     <li><a href="#contact">联系我们</a></li>
@@ -664,6 +735,121 @@
                     <h3>99.9%</h3>
                     <p>系统稳定性</p>
                 </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Knowledge Section -->
+    <section id="knowledge" class="features">
+        <div class="container">
+            <h2 class="section-title fade-in">RWA知识课程</h2>
+            <div class="features-grid">
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <h3>RWA基础入门</h3>
+                    <p>了解实物资产数字化的基本概念、技术原理和市场应用，为投资决策提供理论基础。</p>
+                    <a href="#" class="btn-secondary" style="margin-top: 15px; display: inline-block;">开始学习</a>
+                </div>
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3>投资策略分析</h3>
+                    <p>深入学习RWA投资策略、风险评估和收益分析方法，提升投资专业能力。</p>
+                    <a href="#" class="btn-secondary" style="margin-top: 15px; display: inline-block;">开始学习</a>
+                </div>
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3>合规与风控</h3>
+                    <p>掌握RWA领域的法律法规、合规要求和风险控制措施，确保投资安全。</p>
+                    <a href="#" class="btn-secondary" style="margin-top: 15px; display: inline-block;">开始学习</a>
+                </div>
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">
+                        <i class="fas fa-cogs"></i>
+                    </div>
+                    <h3>技术实践</h3>
+                    <p>学习区块链技术、智能合约开发和数字资产管理的实际操作技能。</p>
+                    <a href="#" class="btn-secondary" style="margin-top: 15px; display: inline-block;">开始学习</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- News Section -->
+    <section id="news" class="stats">
+        <div class="container">
+            <h2 class="section-title fade-in" style="color: white; margin-bottom: 40px;">行业资讯</h2>
+            <div class="news-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin-bottom: 40px;">
+                <div class="news-card fade-in" style="background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); border-radius: 15px; padding: 25px; color: white;">
+                    <div class="news-date" style="color: #e0e7ff; font-size: 0.9rem; margin-bottom: 10px;">2024年1月15日</div>
+                    <h3 style="margin-bottom: 15px; font-size: 1.2rem;">全球RWA市场规模突破5000亿美元</h3>
+                    <p style="line-height: 1.6; opacity: 0.9;">据最新报告显示，全球实物资产数字化市场规模已突破5000亿美元，预计2025年将达到8000亿美元...</p>
+                    <a href="#" style="color: #a5b4fc; text-decoration: none; font-weight: 500;">阅读更多 →</a>
+                </div>
+                <div class="news-card fade-in" style="background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); border-radius: 15px; padding: 25px; color: white;">
+                    <div class="news-date" style="color: #e0e7ff; font-size: 0.9rem; margin-bottom: 10px;">2024年1月12日</div>
+                    <h3 style="margin-bottom: 15px; font-size: 1.2rem;">新加坡推出RWA监管框架</h3>
+                    <p style="line-height: 1.6; opacity: 0.9;">新加坡金融管理局发布了针对实物资产数字化的全新监管框架，为行业发展提供了明确指引...</p>
+                    <a href="#" style="color: #a5b4fc; text-decoration: none; font-weight: 500;">阅读更多 →</a>
+                </div>
+                <div class="news-card fade-in" style="background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); border-radius: 15px; padding: 25px; color: white;">
+                    <div class="news-date" style="color: #e0e7ff; font-size: 0.9rem; margin-bottom: 10px;">2024年1月10日</div>
+                    <h3 style="margin-bottom: 15px; font-size: 1.2rem;">房地产RWA项目获得重大突破</h3>
+                    <p style="line-height: 1.6; opacity: 0.9;">某知名房地产开发商成功完成首个大型商业地产的数字化代币发行，融资额达2亿美元...</p>
+                    <a href="#" style="color: #a5b4fc; text-decoration: none; font-weight: 500;">阅读更多 →</a>
+                </div>
+            </div>
+            <div style="text-align: center;">
+                <a href="#" class="btn-primary">查看更多资讯</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Venture Database Section -->
+    <section id="venture-database" class="features">
+        <div class="container">
+            <h2 class="section-title fade-in">创投数据库</h2>
+            <div class="features-grid">
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">
+                        <i class="fas fa-building"></i>
+                    </div>
+                    <h3>顶级投资机构</h3>
+                    <p>汇聚全球知名风投机构信息，包括红杉资本、软银愿景基金等顶级投资者的投资偏好和项目组合。</p>
+                    <div style="margin-top: 15px; color: #4f46e5; font-weight: 600;">收录机构: 500+</div>
+                </div>
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">
+                        <i class="fas fa-rocket"></i>
+                    </div>
+                    <h3>创新项目库</h3>
+                    <p>精选优质RWA创新项目，涵盖房地产、艺术品、大宗商品等多个领域的数字化解决方案。</p>
+                    <div style="margin-top: 15px; color: #4f46e5; font-weight: 600;">活跃项目: 1200+</div>
+                </div>
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">
+                        <i class="fas fa-chart-bar"></i>
+                    </div>
+                    <h3>投资数据分析</h3>
+                    <p>提供详细的投资趋势分析、行业热点追踪和市场预测，助力投资决策和项目评估。</p>
+                    <div style="margin-top: 15px; color: #4f46e5; font-weight: 600;">数据更新: 实时</div>
+                </div>
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3>专家网络</h3>
+                    <p>连接行业专家、投资顾问和创业导师，为项目方和投资者提供专业咨询和对接服务。</p>
+                    <div style="margin-top: 15px; color: #4f46e5; font-weight: 600;">专家顾问: 200+</div>
+                </div>
+            </div>
+            <div style="text-align: center; margin-top: 40px;">
+                <a href="asset_management.html#fund-venture-content" class="btn-primary">进入数据库</a>
             </div>
         </div>
     </section>

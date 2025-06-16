@@ -771,7 +771,7 @@
                 min-width: auto;
             }
         }
-        \n        /* Additional Responsive Styles for Multi-Tier Market */\n        @media (max-width: 768px) {\n            .market-tabs {\n                flex-direction: column;\n                gap: 4px;\n            }\n            \n            .market-tab {\n                padding: 15px 10px;\n            }\n            \n            .market-tab i {\n                font-size: 1.2rem;\n                margin-bottom: 5px;\n            }\n            \n            .market-tab span {\n                font-size: 0.9rem;\n            }\n            \n            .market-tab small {\n                font-size: 0.7rem;\n            }\n            \n            .market-stats {\n                grid-template-columns: 1fr;\n                gap: 15px;\n            }\n            \n            .derivatives-categories {\n                grid-template-columns: 1fr;\n            }\n            \n            .ipo-grid {\n                grid-template-columns: 1fr;\n            }\n            \n            .section-tabs {\n                flex-wrap: wrap;\n                gap: 4px;\n            }\n            \n            .section-tab {\n                flex: none;\n                min-width: 80px;\n                padding: 10px 15px;\n                font-size: 0.9rem;\n            }\n            \n            .market-header {\n                padding: 20px;\n                text-align: left;\n            }\n            \n            .market-header h2 {\n                font-size: 1.5rem;\n            }\n            \n            .modal-content, .advanced-filters-content {\n                width: 95%;\n                padding: 20px;\n            }\n        }\n    </style>
+        \n        /* Additional Responsive Styles for Multi-Tier Market */\n        @media (max-width: 768px) {\n            .market-tabs {\n                flex-direction: column;\n                gap: 4px;\n            }\n            \n            .market-tab {\n                padding: 15px 10px;\n            }\n            \n            .market-tab i {\n                font-size: 1.2rem;\n                margin-bottom: 5px;\n            }\n            \n            .market-tab span {\n                font-size: 0.9rem;\n            }\n            \n            .market-tab small {\n                font-size: 0.7rem;\n            }\n            \n            .market-stats {\n                grid-template-columns: 1fr;\n                gap: 15px;\n            }\n            \n            .derivatives-categories {\n                grid-template-columns: 1fr;\n            }\n            \n            .ipo-grid {\n                grid-template-columns: 1fr;\n            }\n            \n            .section-tabs {\n                flex-wrap: wrap;\n                gap: 4px;\n            }\n            \n            .section-tab {\n                flex: none;\n                min-width: 80px;\n                padding: 10px 15px;\n                font-size: 0.9rem;\n            }\n            \n            .market-header {\n                padding: 20px;\n                text-align: left;\n            }\n            \n            .market-header h2 {\n                font-size: 1.5rem;\n            }\n            \n            .modal-content, .advanced-filters-content {\n                width: 95%;\n                padding: 20px;\n            }\n        }\n        \n        /* Enhanced Trading Interface Styles */\n        .trading-tab {\n            flex: 1;\n            padding: 12px 20px;\n            border: none;\n            background: transparent;\n            cursor: pointer;\n            font-weight: 500;\n            color: #6c757d;\n            border-bottom: 3px solid transparent;\n            transition: all 0.3s ease;\n        }\n        \n        .trading-tab.active {\n            color: #2c3e50;\n            border-bottom-color: #3498db;\n            background: rgba(52, 152, 219, 0.05);\n        }\n        \n        .trading-tab:hover {\n            background: rgba(52, 152, 219, 0.1);\n        }\n        \n        .quick-btn {\n            padding: 8px 16px;\n            border: 2px solid #e9ecef;\n            background: white;\n            border-radius: 6px;\n            cursor: pointer;\n            font-size: 0.9rem;\n            font-weight: 500;\n            color: #495057;\n            transition: all 0.3s ease;\n        }\n        \n        .quick-btn:hover {\n            border-color: #3498db;\n            background: #3498db;\n            color: white;\n        }\n        \n        .metric-card {\n            background: white;\n            padding: 15px;\n            border-radius: 8px;\n            border: 1px solid #e9ecef;\n            text-align: center;\n        }\n        \n        .metric-label {\n            font-size: 0.85rem;\n            color: #6c757d;\n            margin-bottom: 5px;\n        }\n        \n        .metric-value {\n            font-size: 1.2rem;\n            font-weight: 600;\n            color: #2c3e50;\n        }\n        \n        .info-row {\n            display: flex;\n            justify-content: space-between;\n            padding: 8px 0;\n            border-bottom: 1px solid #f8f9fa;\n        }\n        \n        .info-row:last-child {\n            border-bottom: none;\n        }\n        \n        .detail-tab {\n            padding: 12px 24px;\n            border: none;\n            background: transparent;\n            cursor: pointer;\n            font-weight: 500;\n            color: #6c757d;\n            border-bottom: 3px solid transparent;\n            transition: all 0.3s ease;\n        }\n        \n        .detail-tab.active {\n            color: #2c3e50;\n            border-bottom-color: #3498db;\n        }\n        \n        .detail-tab:hover {\n            color: #3498db;\n        }\n        \n        .tab-pane {\n            display: none;\n            animation: fadeIn 0.3s ease;\n        }\n        \n        .tab-pane.active {\n            display: block;\n        }\n        \n        @keyframes fadeIn {\n            from { opacity: 0; transform: translateY(10px); }\n            to { opacity: 1; transform: translateY(0); }\n        }\n    </style>
 </head>
 <body>
     <div class="container">
@@ -978,36 +978,271 @@
     </div>
 
     <!-- Trading Modal -->
+    <!-- Enhanced Trading Modal -->
     <div class="modal" id="tradingModal">
-        <div class="modal-content">
+        <div class="modal-content" style="max-width: 800px; max-height: 90vh; overflow-y: auto;">
             <div class="modal-header">
-                <h2 class="modal-title">购买资产份额</h2>
+                <h2 class="modal-title">资产交易</h2>
                 <button class="close-btn" onclick="closeTradingModal()">&times;</button>
             </div>
             
-            <div class="form-group">
-                <label class="form-label">资产名称</label>
-                <input type="text" class="form-input" id="assetName" readonly>
+            <!-- Trading Tabs -->
+            <div class="trading-tabs" style="display: flex; margin-bottom: 20px; border-bottom: 2px solid #f0f0f0;">
+                <button class="trading-tab active" onclick="switchTradingTab('buy')" id="buyTab">
+                    <i class="fas fa-arrow-up" style="color: #28a745;"></i> 买入
+                </button>
+                <button class="trading-tab" onclick="switchTradingTab('sell')" id="sellTab">
+                    <i class="fas fa-arrow-down" style="color: #dc3545;"></i> 卖出
+                </button>
             </div>
             
-            <div class="form-group">
-                <label class="form-label">购买份额</label>
-                <input type="number" class="form-input" id="shareAmount" placeholder="输入购买份额数量" min="1">
+            <!-- Asset Info Panel -->
+            <div class="asset-info-panel" style="background: #f8f9fa; padding: 15px; border-radius: 10px; margin-bottom: 20px;">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <div>
+                        <h3 id="tradingAssetName" style="margin: 0; color: #2c3e50;">资产名称</h3>
+                        <p id="tradingAssetType" style="margin: 5px 0; color: #6c757d; font-size: 0.9rem;">资产类型</p>
+                    </div>
+                    <div style="text-align: right;">
+                        <div id="tradingAssetPrice" style="font-size: 1.5rem; font-weight: 600; color: #2c3e50;">¥0</div>
+                        <div id="tradingAssetChange" style="font-size: 0.9rem;">+0.00%</div>
+                    </div>
+                </div>
             </div>
             
-            <div class="form-group">
-                <label class="form-label">单价</label>
-                <input type="text" class="form-input" id="sharePrice" readonly>
-            </div>
-            
-            <div class="form-group">
-                <label class="form-label">总金额</label>
-                <input type="text" class="form-input" id="totalAmount" readonly>
+            <!-- Trading Form -->
+            <div class="trading-form">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                    <div class="form-group">
+                        <label class="form-label">交易类型</label>
+                        <select class="form-input" id="orderType">
+                            <option value="market">市价单</option>
+                            <option value="limit">限价单</option>
+                            <option value="stop">止损单</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group" id="limitPriceGroup" style="display: none;">
+                        <label class="form-label">限价价格</label>
+                        <input type="number" class="form-input" id="limitPrice" placeholder="输入限价" step="0.01">
+                    </div>
+                </div>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                    <div class="form-group">
+                        <label class="form-label">交易份额</label>
+                        <input type="number" class="form-input" id="shareAmount" placeholder="输入份额数量" min="1">
+                        <small style="color: #6c757d;">可用份额: <span id="availableShares">0</span></small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">交易金额</label>
+                        <input type="text" class="form-input" id="totalAmount" readonly>
+                        <small style="color: #6c757d;">手续费: <span id="tradingFee">¥0</span></small>
+                    </div>
+                </div>
+                
+                <!-- Quick Amount Buttons -->
+                <div class="quick-amounts" style="margin: 15px 0;">
+                    <label class="form-label">快速选择</label>
+                    <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                        <button class="quick-btn" onclick="setQuickAmount(25)">25%</button>
+                        <button class="quick-btn" onclick="setQuickAmount(50)">50%</button>
+                        <button class="quick-btn" onclick="setQuickAmount(75)">75%</button>
+                        <button class="quick-btn" onclick="setQuickAmount(100)">全部</button>
+                    </div>
+                </div>
+                
+                <!-- Risk Warning -->
+                <div class="risk-warning" style="background: #fff3cd; border: 1px solid #ffeaa7; border-radius: 8px; padding: 15px; margin: 15px 0;">
+                    <h4 style="color: #856404; margin: 0 0 10px 0;"><i class="fas fa-exclamation-triangle"></i> 风险提示</h4>
+                    <p style="color: #856404; margin: 0; font-size: 0.9rem;">投资有风险，请仔细阅读相关风险披露文件，确保您了解并能承受投资风险。</p>
+                </div>
             </div>
             
             <div style="display: flex; gap: 10px; margin-top: 30px;">
                 <button class="btn btn-secondary" onclick="closeTradingModal()">取消</button>
-                <button class="btn btn-primary" onclick="confirmPurchase()">确认购买</button>
+                <button class="btn btn-primary" onclick="confirmTrade()" id="confirmTradeBtn">确认买入</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Enhanced Asset Detail Modal -->
+    <div class="modal" id="assetDetailModal">
+        <div class="modal-content" style="max-width: 1000px; max-height: 90vh; overflow-y: auto;">
+            <div class="modal-header">
+                <h2 class="modal-title">项目详情</h2>
+                <button class="close-btn" onclick="closeAssetDetailModal()">&times;</button>
+            </div>
+            
+            <!-- Asset Detail Content -->
+            <div class="asset-detail-content">
+                <!-- Basic Info -->
+                <div class="detail-section">
+                    <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 30px;">
+                        <div>
+                            <h3 id="detailAssetName" style="color: #2c3e50; margin-bottom: 10px;">资产名称</h3>
+                            <p id="detailAssetDescription" style="color: #6c757d; line-height: 1.6;">资产描述</p>
+                            
+                            <!-- Key Metrics -->
+                            <div class="metrics-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; margin: 20px 0;">
+                                <div class="metric-card">
+                                    <div class="metric-label">总价值</div>
+                                    <div class="metric-value" id="detailTotalValue">¥0</div>
+                                </div>
+                                <div class="metric-card">
+                                    <div class="metric-label">预期收益率</div>
+                                    <div class="metric-value" id="detailYield">0%</div>
+                                </div>
+                                <div class="metric-card">
+                                    <div class="metric-label">风险等级</div>
+                                    <div class="metric-value" id="detailRiskLevel">低</div>
+                                </div>
+                                <div class="metric-card">
+                                    <div class="metric-label">最小投资</div>
+                                    <div class="metric-value" id="detailMinInvestment">¥0</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Trading Panel -->
+                        <div class="trading-panel" style="background: #f8f9fa; padding: 20px; border-radius: 10px;">
+                            <h4 style="margin-bottom: 15px; color: #2c3e50;">交易信息</h4>
+                            <div class="trading-info">
+                                <div class="info-row">
+                                    <span>当前价格</span>
+                                    <span id="detailCurrentPrice" style="font-weight: 600;">¥0</span>
+                                </div>
+                                <div class="info-row">
+                                    <span>24h涨跌</span>
+                                    <span id="detailPriceChange">+0.00%</span>
+                                </div>
+                                <div class="info-row">
+                                    <span>可用份额</span>
+                                    <span id="detailAvailableShares">0</span>
+                                </div>
+                                <div class="info-row">
+                                    <span>交易量</span>
+                                    <span id="detailTradingVolume">¥0</span>
+                                </div>
+                            </div>
+                            <button class="btn btn-primary" onclick="openTradingFromDetail()" style="width: 100%; margin-top: 15px;">立即交易</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Detailed Information Tabs -->
+                <div class="detail-tabs" style="margin-top: 30px;">
+                    <div class="tab-buttons" style="display: flex; border-bottom: 2px solid #f0f0f0; margin-bottom: 20px;">
+                        <button class="detail-tab active" onclick="switchDetailTab('overview')">项目概览</button>
+                        <button class="detail-tab" onclick="switchDetailTab('financials')">财务数据</button>
+                        <button class="detail-tab" onclick="switchDetailTab('documents')">相关文档</button>
+                        <button class="detail-tab" onclick="switchDetailTab('news')">最新动态</button>
+                    </div>
+                    
+                    <!-- Tab Content -->
+                    <div class="tab-content">
+                        <div id="overview-tab" class="tab-pane active">
+                            <div id="projectOverview">项目概览内容将在这里显示...</div>
+                        </div>
+                        <div id="financials-tab" class="tab-pane">
+                            <div id="financialData">财务数据内容将在这里显示...</div>
+                        </div>
+                        <div id="documents-tab" class="tab-pane">
+                            <div id="projectDocuments">相关文档内容将在这里显示...</div>
+                        </div>
+                        <div id="news-tab" class="tab-pane">
+                            <div id="projectNews">最新动态内容将在这里显示...</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Derivatives Trading Modal -->
+    <div class="modal" id="derivativesTradingModal">
+        <div class="modal-content" style="max-width: 900px; max-height: 90vh; overflow-y: auto;">
+            <div class="modal-header">
+                <h2 class="modal-title">衍生品交易</h2>
+                <button class="close-btn" onclick="closeDerivativesTradingModal()">&times;</button>
+            </div>
+            
+            <!-- Derivatives Info -->
+            <div class="derivatives-info" style="background: #f8f9fa; padding: 20px; border-radius: 10px; margin-bottom: 20px;">
+                <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 20px;">
+                    <div>
+                        <h3 id="derivativeName" style="margin: 0; color: #2c3e50;">衍生品名称</h3>
+                        <p id="derivativeDescription" style="margin: 10px 0; color: #6c757d;">衍生品描述</p>
+                        <div class="derivative-specs" id="derivativeSpecs">
+                            <!-- 衍生品规格信息 -->
+                        </div>
+                    </div>
+                    <div style="text-align: right;">
+                        <div id="derivativePrice" style="font-size: 1.5rem; font-weight: 600; color: #2c3e50;">¥0</div>
+                        <div id="derivativeChange" style="font-size: 0.9rem;">+0.00%</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Derivatives Trading Form -->
+            <div class="derivatives-trading-form">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                    <div class="form-group">
+                        <label class="form-label">交易方向</label>
+                        <select class="form-input" id="derivativeDirection">
+                            <option value="buy">买入开仓</option>
+                            <option value="sell">卖出开仓</option>
+                            <option value="close_buy">买入平仓</option>
+                            <option value="close_sell">卖出平仓</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">合约数量</label>
+                        <input type="number" class="form-input" id="derivativeQuantity" placeholder="输入合约数量" min="1">
+                    </div>
+                </div>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                    <div class="form-group">
+                        <label class="form-label">保证金要求</label>
+                        <input type="text" class="form-input" id="marginRequirement" readonly>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">预估盈亏</label>
+                        <input type="text" class="form-input" id="estimatedPnL" readonly>
+                    </div>
+                </div>
+                
+                <!-- Risk Metrics -->
+                <div class="risk-metrics" style="background: #fff3cd; border-radius: 8px; padding: 15px; margin: 15px 0;">
+                    <h4 style="color: #856404; margin: 0 0 10px 0;">风险指标</h4>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 10px;">
+                        <div>
+                            <small style="color: #856404;">Delta</small>
+                            <div id="deltaValue" style="font-weight: 600;">0.00</div>
+                        </div>
+                        <div>
+                            <small style="color: #856404;">Gamma</small>
+                            <div id="gammaValue" style="font-weight: 600;">0.00</div>
+                        </div>
+                        <div>
+                            <small style="color: #856404;">Theta</small>
+                            <div id="thetaValue" style="font-weight: 600;">0.00</div>
+                        </div>
+                        <div>
+                            <small style="color: #856404;">Vega</small>
+                            <div id="vegaValue" style="font-weight: 600;">0.00</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div style="display: flex; gap: 10px; margin-top: 30px;">
+                <button class="btn btn-secondary" onclick="closeDerivativesTradingModal()">取消</button>
+                <button class="btn btn-primary" onclick="confirmDerivativeTrade()">确认交易</button>
             </div>
         </div>
     </div>
@@ -3249,6 +3484,205 @@
             event.target.classList.add('active');
         }
         
+        // Enhanced Trading Functions
+        function switchTradingTab(type) {
+            const buyTab = document.getElementById('buyTab');
+            const sellTab = document.getElementById('sellTab');
+            const confirmBtn = document.getElementById('confirmTradeBtn');
+            
+            if (type === 'buy') {
+                buyTab.classList.add('active');
+                sellTab.classList.remove('active');
+                confirmBtn.textContent = '确认买入';
+                confirmBtn.style.background = '#28a745';
+            } else {
+                sellTab.classList.add('active');
+                buyTab.classList.remove('active');
+                confirmBtn.textContent = '确认卖出';
+                confirmBtn.style.background = '#dc3545';
+            }
+            
+            // Update order type options based on trading direction
+            const orderType = document.getElementById('orderType');
+            if (orderType) {
+                orderType.addEventListener('change', function() {
+                    const limitPriceGroup = document.getElementById('limitPriceGroup');
+                    if (this.value === 'limit' || this.value === 'stop') {
+                        limitPriceGroup.style.display = 'block';
+                    } else {
+                        limitPriceGroup.style.display = 'none';
+                    }
+                });
+            }
+        }
+        
+        function setQuickAmount(percentage) {
+            const availableShares = parseInt(document.getElementById('availableShares').textContent) || 1000;
+            const shareAmount = Math.floor(availableShares * percentage / 100);
+            document.getElementById('shareAmount').value = shareAmount;
+            calculateTotalAmount();
+        }
+        
+        function confirmTrade() {
+            const shareAmount = document.getElementById('shareAmount').value;
+            const totalAmount = document.getElementById('totalAmount').value;
+            const orderType = document.getElementById('orderType').value;
+            const isActive = document.getElementById('buyTab').classList.contains('active');
+            const action = isActive ? '买入' : '卖出';
+            
+            if (!shareAmount || shareAmount <= 0) {
+                alert('请输入有效的交易份额');
+                return;
+            }
+            
+            // 模拟交易确认
+            alert(`${action}确认:\n交易类型: ${orderType}\n份额: ${shareAmount}\n总金额: ${totalAmount}\n\n交易提交成功！`);
+            closeTradingModal();
+        }
+        
+        // Asset Detail Modal Functions
+        function closeAssetDetailModal() {
+            document.getElementById('assetDetailModal').style.display = 'none';
+        }
+        
+        function openTradingFromDetail() {
+            closeAssetDetailModal();
+            openTradingModal();
+        }
+        
+        function switchDetailTab(tabName) {
+            // Remove active class from all tabs and panes
+            document.querySelectorAll('.detail-tab').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.tab-pane').forEach(pane => pane.classList.remove('active'));
+            
+            // Add active class to selected tab and pane
+            event.target.classList.add('active');
+            document.getElementById(tabName + '-tab').classList.add('active');
+            
+            // Load content based on tab
+            loadTabContent(tabName);
+        }
+        
+        function loadTabContent(tabName) {
+            const contentMap = {
+                'overview': `
+                    <div style="line-height: 1.6;">
+                        <h4 style="color: #2c3e50; margin-bottom: 15px;">项目背景</h4>
+                        <p style="margin-bottom: 15px;">该项目位于核心商业区，具有优越的地理位置和巨大的增值潜力。项目总投资额为5000万元，预计年化收益率为8-12%。</p>
+                        
+                        <h4 style="color: #2c3e50; margin-bottom: 15px;">投资亮点</h4>
+                        <ul style="margin-bottom: 15px; padding-left: 20px;">
+                            <li>地理位置优越，位于城市核心商业区</li>
+                            <li>稳定的租金收入，长期租约保障</li>
+                            <li>专业的资产管理团队</li>
+                            <li>透明的收益分配机制</li>
+                        </ul>
+                        
+                        <h4 style="color: #2c3e50; margin-bottom: 15px;">风险提示</h4>
+                        <p>投资有风险，过往业绩不代表未来表现。请仔细阅读相关法律文件。</p>
+                    </div>
+                `,
+                'financials': `
+                    <div>
+                        <h4 style="color: #2c3e50; margin-bottom: 15px;">财务概况</h4>
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 20px;">
+                            <div class="metric-card">
+                                <div class="metric-label">总资产价值</div>
+                                <div class="metric-value">¥5,000万</div>
+                            </div>
+                            <div class="metric-card">
+                                <div class="metric-label">年租金收入</div>
+                                <div class="metric-value">¥400万</div>
+                            </div>
+                            <div class="metric-card">
+                                <div class="metric-label">净资产收益率</div>
+                                <div class="metric-value">8.5%</div>
+                            </div>
+                            <div class="metric-card">
+                                <div class="metric-label">负债率</div>
+                                <div class="metric-value">45%</div>
+                            </div>
+                        </div>
+                        
+                        <h4 style="color: #2c3e50; margin-bottom: 15px;">收益分配</h4>
+                        <p>每季度分配一次收益，分配比例为净收入的90%。</p>
+                    </div>
+                `,
+                'documents': `
+                    <div>
+                        <h4 style="color: #2c3e50; margin-bottom: 15px;">相关文档</h4>
+                        <div style="space-y: 10px;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px; border: 1px solid #e9ecef; border-radius: 8px; margin-bottom: 10px;">
+                                <span><i class="fas fa-file-pdf" style="color: #dc3545; margin-right: 10px;"></i>项目说明书</span>
+                                <button class="btn btn-sm btn-outline-primary">下载</button>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px; border: 1px solid #e9ecef; border-radius: 8px; margin-bottom: 10px;">
+                                <span><i class="fas fa-file-pdf" style="color: #dc3545; margin-right: 10px;"></i>法律意见书</span>
+                                <button class="btn btn-sm btn-outline-primary">下载</button>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px; border: 1px solid #e9ecef; border-radius: 8px; margin-bottom: 10px;">
+                                <span><i class="fas fa-file-pdf" style="color: #dc3545; margin-right: 10px;"></i>财务审计报告</span>
+                                <button class="btn btn-sm btn-outline-primary">下载</button>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px; border: 1px solid #e9ecef; border-radius: 8px; margin-bottom: 10px;">
+                                <span><i class="fas fa-file-pdf" style="color: #dc3545; margin-right: 10px;"></i>资产评估报告</span>
+                                <button class="btn btn-sm btn-outline-primary">下载</button>
+                            </div>
+                        </div>
+                    </div>
+                `,
+                'news': `
+                    <div>
+                        <h4 style="color: #2c3e50; margin-bottom: 15px;">最新动态</h4>
+                        <div style="space-y: 15px;">
+                            <div style="border-left: 4px solid #3498db; padding-left: 15px; margin-bottom: 15px;">
+                                <div style="font-weight: 600; color: #2c3e50;">2024年Q1财务报告发布</div>
+                                <div style="color: #6c757d; font-size: 0.9rem; margin: 5px 0;">2024-03-15</div>
+                                <p style="color: #495057;">Q1季度净收入增长15%，超出预期目标。</p>
+                            </div>
+                            <div style="border-left: 4px solid #28a745; padding-left: 15px; margin-bottom: 15px;">
+                                <div style="font-weight: 600; color: #2c3e50;">新租户签约</div>
+                                <div style="color: #6c757d; font-size: 0.9rem; margin: 5px 0;">2024-02-28</div>
+                                <p style="color: #495057;">与知名零售品牌签署10年租约，租金收入稳定增长。</p>
+                            </div>
+                            <div style="border-left: 4px solid #ffc107; padding-left: 15px; margin-bottom: 15px;">
+                                <div style="font-weight: 600; color: #2c3e50;">资产升级改造完成</div>
+                                <div style="color: #6c757d; font-size: 0.9rem; margin: 5px 0;">2024-01-20</div>
+                                <p style="color: #495057;">完成大厅和电梯系统升级，提升资产价值。</p>
+                            </div>
+                        </div>
+                    </div>
+                `
+            };
+            
+            const contentElement = document.getElementById(tabName === 'overview' ? 'projectOverview' : 
+                                                        tabName === 'financials' ? 'financialData' :
+                                                        tabName === 'documents' ? 'projectDocuments' : 'projectNews');
+            if (contentElement) {
+                contentElement.innerHTML = contentMap[tabName] || '内容加载中...';
+            }
+        }
+        
+        // Derivatives Trading Functions
+        function closeDerivativesTradingModal() {
+            document.getElementById('derivativesTradingModal').style.display = 'none';
+        }
+        
+        function confirmDerivativeTrade() {
+            const direction = document.getElementById('derivativeDirection').value;
+            const quantity = document.getElementById('derivativeQuantity').value;
+            const margin = document.getElementById('marginRequirement').value;
+            
+            if (!quantity || quantity <= 0) {
+                alert('请输入有效的合约数量');
+                return;
+            }
+            
+            // 模拟衍生品交易确认
+            alert(`衍生品交易确认:\n交易方向: ${direction}\n合约数量: ${quantity}\n保证金: ${margin}\n\n交易提交成功！`);
+            closeDerivativesTradingModal();
+        }
+
         // Utility function for debouncing
         function debounce(func, wait) {
             let timeout;
@@ -3264,9 +3698,18 @@
 
         // Close modal when clicking outside
         window.addEventListener('click', (e) => {
-            const modal = document.getElementById('tradingModal');
-            if (e.target === modal) {
+            const tradingModal = document.getElementById('tradingModal');
+            const assetDetailModal = document.getElementById('assetDetailModal');
+            const derivativesTradingModal = document.getElementById('derivativesTradingModal');
+            
+            if (e.target === tradingModal) {
                 closeTradingModal();
+            }
+            if (e.target === assetDetailModal) {
+                closeAssetDetailModal();
+            }
+            if (e.target === derivativesTradingModal) {
+                closeDerivativesTradingModal();
             }
         });
 
