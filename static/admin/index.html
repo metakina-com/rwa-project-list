@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>后台管理系统 - 元话RWA数字投行</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="../css/admin.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            background: #f8fafc;
+        }
+        .sidebar {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            width: 250px;
+            position: fixed;
+            left: 0;
+            top: 0;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+        .main-content {
+            margin-left: 250px;
+            min-height: 100vh;
+        }
+        .nav-item {
+            transition: all 0.3s ease;
+        }
+        .nav-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateX(5px);
+        }
+        .nav-item.active {
+            background: rgba(255, 255, 255, 0.2);
+            border-right: 4px solid #fff;
+        }
+        .card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+        }
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        .stat-card-green {
+            background: linear-gradient(135deg, #4ade80 0%, #22c55e 100%);
+        }
+        .stat-card-orange {
+            background: linear-gradient(135deg, #fb923c 0%, #f97316 100%);
+        }
+        .stat-card-red {
+            background: linear-gradient(135deg, #f87171 0%, #ef4444 100%);
+        }
+    </style>
+</head>
+<body>
+    <!-- 登录页面 -->
+    <div id="login-page" class="admin-login">
+        <div class="login-container">
+            <div class="login-header">
+                <h1>后台管理系统</h1>
+                <p>元话RWA数字投行管理平台</p>
+            </div>
+            <form id="login-form">
+                <div class="form-group">
+                    <label for="username">用户名</label>
+                    <input type="text" id="username" class="form-control" placeholder="请输入用户名" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">密码</label>
+                    <input type="password" id="password" class="form-control" placeholder="请输入密码" required>
+                </div>
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" id="remember"> 记住我
+                    </label>
+                </div>
+                <button type="submit" class="btn btn-primary">
+                    <span id="login-text">登录</span>
+                    <span id="login-loading" class="loading" style="display: none;"></span>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- 主管理界面 -->
+    <div id="admin-panel" class="admin-layout" style="display: none;">
+        <!-- 侧边栏 -->
+        <div class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <h2>管理后台</h2>
+                <p>元话RWA数字投行</p>
+            </div>
+            <nav class="sidebar-nav">
+                <div class="nav-item">
+                    <a href="#" class="nav-link active" data-section="dashboard">
+                        <i class="fas fa-tachometer-alt"></i>仪表板
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="#" class="nav-link" data-section="users">
+                        <i class="fas fa-users"></i>用户管理
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="#" class="nav-link" data-section="projects">
+                        <i class="fas fa-project-diagram"></i>项目管理
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="#" class="nav-link" data-section="tenants">
+                        <i class="fas fa-building"></i>租户管理
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="#" class="nav-link" data-section="fees">
+                        <i class="fas fa-money-bill-wave"></i>手续费管理
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="#" class="nav-link" data-section="functions">
+                        <i class="fas fa-cogs"></i>功能管理
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="#" class="nav-link" data-section="courses">
+                        <i class="fas fa-graduation-cap"></i>课程管理
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="#" class="nav-link" data-section="resources">
+                        <i class="fas fa-folder"></i>资源库
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="#" class="nav-link" data-section="files">
+                        <i class="fas fa-file"></i>文件管理
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="#" class="nav-link" data-section="settings">
+                        <i class="fas fa-cog"></i>系统设置
+                    </a>
+                </div>
+            </nav>
+        </div>
+
+        <!-- 主内容区域 -->
+        <div class="main-content">
+            <!-- 顶部导航栏 -->
+            <div class="top-navbar">
+                <h1 class="page-title" id="page-title">仪表板</h1>
+                <div class="user-menu">
+                    <div class="dropdown">
+                        <div class="user-avatar" onclick="toggleDropdown(this)">
+                            A
+                        </div>
+                        <div class="dropdown-menu">
+                            <a href="#" class="dropdown-item">个人资料</a>
+                            <a href="#" class="dropdown-item">设置</a>
+                            <a href="#" class="dropdown-item" onclick="logout()">退出登录</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 内容区域 -->
+            <div class="content-area" id="main-content">
+                <!-- 仪表板内容 -->
+                <div id="dashboard-section" class="section-content">
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon users">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <div class="stat-content">
+                                <h3>1,234</h3>
+                                <p>总用户数</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon projects">
+                                <i class="fas fa-project-diagram"></i>
+                            </div>
+                            <div class="stat-content">
+                                <h3>56</h3>
+                                <p>活跃项目</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon revenue">
+                                <i class="fas fa-dollar-sign"></i>
+                            </div>
+                            <div class="stat-content">
+                                <h3>¥2.3M</h3>
+                                <p>总收入</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon growth">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <div class="stat-content">
+                                <h3>+12.5%</h3>
+                                <p>月增长率</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 最近活动 -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">最近活动</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="activity-list">
+                                <div class="activity-item">
+                                    <div class="activity-icon">
+                                        <i class="fas fa-user"></i>
+                                    </div>
+                                    <div class="activity-content">
+                                        <p>新用户注册 <strong>张三</strong></p>
+                                        <span class="activity-time">2小时前</span>
+                                    </div>
+                                </div>
+                                <div class="activity-item">
+                                    <div class="activity-icon">
+                                        <i class="fas fa-project-diagram"></i>
+                                    </div>
+                                    <div class="activity-content">
+                                        <p>新项目创建 <strong>智能制造项目</strong></p>
+                                        <span class="activity-time">4小时前</span>
+                                    </div>
+                                </div>
+                                <div class="activity-item">
+                                    <div class="activity-icon">
+                                        <i class="fas fa-dollar-sign"></i>
+                                    </div>
+                                    <div class="activity-content">
+                                        <p>收到投资 <strong>¥50,000</strong></p>
+                                        <span class="activity-time">6小时前</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 其他部分的内容将通过JavaScript动态加载 -->
+                <div id="users-section" class="section-content" style="display: none;"></div>
+                <div id="projects-section" class="section-content" style="display: none;"></div>
+                <div id="tenants-section" class="section-content" style="display: none;"></div>
+                <div id="fees-section" class="section-content" style="display: none;"></div>
+                <div id="functions-section" class="section-content" style="display: none;"></div>
+                <div id="courses-section" class="section-content" style="display: none;"></div>
+                <div id="resources-section" class="section-content" style="display: none;"></div>
+                <div id="files-section" class="section-content" style="display: none;"></div>
+                <div id="settings-section" class="section-content" style="display: none;"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 通用模态框 -->
+    <div id="modal" class="modal">
+        <div class="modal-dialog">
+            <div class="modal-header">
+                <h3 class="modal-title" id="modal-title">标题</h3>
+                <button class="modal-close" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body" id="modal-body">
+                <!-- 模态框内容 -->
+            </div>
+            <div class="modal-footer" id="modal-footer">
+                <button class="btn btn-secondary" onclick="closeModal()">取消</button>
+                <button class="btn btn-primary" id="modal-confirm">确定</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/admin.js"></script>
+</body>
+</html>
