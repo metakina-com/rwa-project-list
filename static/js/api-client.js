@@ -208,57 +208,136 @@ function showNotification(message, type = 'info', duration = 3000) {
     // 创建通知元素
     const notification = document.createElement('div');
     notification.className = `notification notification-${type}`;
+    
+    // 创建图标
+    const icon = document.createElement('div');
+    icon.className = 'notification-icon';
+    const icons = {
+        success: '✓',
+        error: '✕',
+        warning: '⚠',
+        info: 'ℹ'
+    };
+    icon.textContent = icons[type] || icons.info;
+    
+    // 创建消息容器
+    const messageContainer = document.createElement('div');
+    messageContainer.className = 'notification-message';
+    messageContainer.textContent = message;
+    
+    // 创建关闭按钮
+    const closeButton = document.createElement('button');
+    closeButton.className = 'notification-close';
+    closeButton.innerHTML = '×';
+    closeButton.onclick = () => hideNotification(notification);
+    
+    notification.appendChild(icon);
+    notification.appendChild(messageContainer);
+    notification.appendChild(closeButton);
+    
     notification.style.cssText = `
         position: fixed;
         top: 20px;
         right: 20px;
-        padding: 15px 20px;
-        border-radius: 8px;
+        padding: 16px 20px;
+        border-radius: 12px;
         color: white;
         font-weight: 500;
-        z-index: 10000;
-        max-width: 400px;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-        transform: translateX(100%);
-        transition: transform 0.3s ease;
+        z-index: 10001;
+        max-width: 420px;
+        min-width: 300px;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+        transform: translateX(calc(100% + 20px));
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        font-size: 14px;
+        line-height: 1.4;
     `;
     
-    // 设置背景色
+    // 设置背景色和渐变
     const colors = {
-        success: '#10b981',
-        error: '#ef4444',
-        warning: '#f59e0b',
-        info: '#3b82f6'
+        success: 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
+        error: 'linear-gradient(135deg, #ef4444 0%, #dc2626 100%)',
+        warning: 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)',
+        info: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'
     };
-    notification.style.backgroundColor = colors[type] || colors.info;
+    notification.style.background = colors[type] || colors.info;
     
-    notification.textContent = message;
-    document.body.appendChild(notification);
+    // 图标样式
+    icon.style.cssText = `
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 14px;
+        font-weight: bold;
+        flex-shrink: 0;
+    `;
     
-    // 显示动画
-    setTimeout(() => {
-        notification.style.transform = 'translateX(0)';
-    }, 100);
+    // 消息样式
+    messageContainer.style.cssText = `
+        flex: 1;
+        margin: 0;
+    `;
     
-    // 自动隐藏
-    setTimeout(() => {
-        notification.style.transform = 'translateX(100%)';
+    // 关闭按钮样式
+    closeButton.style.cssText = `
+        background: rgba(255, 255, 255, 0.2);
+        border: none;
+        color: white;
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 16px;
+        font-weight: bold;
+        transition: all 0.2s ease;
+        flex-shrink: 0;
+    `;
+    
+    closeButton.onmouseover = () => {
+        closeButton.style.background = 'rgba(255, 255, 255, 0.3)';
+        closeButton.style.transform = 'scale(1.1)';
+    };
+    
+    closeButton.onmouseout = () => {
+        closeButton.style.background = 'rgba(255, 255, 255, 0.2)';
+        closeButton.style.transform = 'scale(1)';
+    };
+    
+    // 隐藏通知的函数
+    function hideNotification(notificationElement) {
+        notificationElement.style.transform = 'translateX(calc(100% + 20px))';
+        notificationElement.style.opacity = '0';
         setTimeout(() => {
-            if (notification.parentNode) {
-                notification.parentNode.removeChild(notification);
+            if (notificationElement.parentNode) {
+                notificationElement.parentNode.removeChild(notificationElement);
             }
-        }, 300);
-    }, duration);
-    
-    // 点击关闭
-    notification.addEventListener('click', () => {
-        notification.style.transform = 'translateX(100%)';
-        setTimeout(() => {
-            if (notification.parentNode) {
-                notification.parentNode.removeChild(notification);
-            }
-        }, 300);
-    });
+        }, 400);
+    }
+     
+     document.body.appendChild(notification);
+     
+     // 显示动画
+     setTimeout(() => {
+         notification.style.transform = 'translateX(0)';
+         notification.style.opacity = '1';
+     }, 100);
+      
+      // 自动隐藏
+      setTimeout(() => {
+          hideNotification(notification);
+      }, duration);
 }
 
 // 加载状态管理
