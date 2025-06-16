@@ -110,14 +110,37 @@ CREATE TABLE IF NOT EXISTS investments (
     FOREIGN KEY (project_id) REFERENCES projects(id)
 );
 
+-- 上传文件信息表
+CREATE TABLE IF NOT EXISTS uploaded_files (
+    id TEXT PRIMARY KEY,
+    original_name TEXT NOT NULL,
+    file_name TEXT NOT NULL,
+    file_size INTEGER NOT NULL,
+    file_type TEXT NOT NULL,
+    category TEXT NOT NULL,
+    project_id TEXT,
+    upload_time TEXT NOT NULL,
+    status TEXT DEFAULT 'uploaded',
+    url TEXT NOT NULL,
+    deleted_time TEXT,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
 -- AI风险评估表
 CREATE TABLE IF NOT EXISTS risk_assessments (
     id TEXT PRIMARY KEY,
     project_id TEXT NOT NULL,
     risk_score DECIMAL(5,2),
     risk_level TEXT,
+    market_risk DECIMAL(5,2),
+    liquidity_risk DECIMAL(5,2),
+    compliance_risk DECIMAL(5,2),
+    document_risk DECIMAL(5,2),
+    feasibility_score DECIMAL(5,2),
+    confidence_level DECIMAL(5,2),
     assessment_data TEXT, -- JSON格式存储详细评估数据
     ai_model_version TEXT,
+    recommendations TEXT, -- JSON格式存储AI建议
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (project_id) REFERENCES projects(id)
 );
@@ -127,7 +150,11 @@ CREATE INDEX IF NOT EXISTS idx_projects_status ON projects(status);
 CREATE INDEX IF NOT EXISTS idx_projects_type ON projects(type);
 CREATE INDEX IF NOT EXISTS idx_investments_user ON investments(user_id);
 CREATE INDEX IF NOT EXISTS idx_investments_project ON investments(project_id);
+CREATE INDEX IF NOT EXISTS idx_uploaded_files_project_id ON uploaded_files(project_id);
+CREATE INDEX IF NOT EXISTS idx_uploaded_files_category ON uploaded_files(category);
+CREATE INDEX IF NOT EXISTS idx_uploaded_files_status ON uploaded_files(status);
 CREATE INDEX IF NOT EXISTS idx_risk_assessments_project ON risk_assessments(project_id);
+CREATE INDEX IF NOT EXISTS idx_risk_assessments_created_at ON risk_assessments(created_at);
 CREATE INDEX IF NOT EXISTS idx_users_email ON users(email);
 CREATE INDEX IF NOT EXISTS idx_users_wallet ON users(wallet_address);
 

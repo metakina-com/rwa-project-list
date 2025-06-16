@@ -15,6 +15,12 @@ database_id = "bb36b797-31e6-481f-a299-87582530a68a"
 [ai]
 binding = "AI"
 
+# R2 Storage binding for file uploads
+[[r2_buckets]]
+binding = "R2_BUCKET"
+bucket_name = "rwa-project-files"
+preview_bucket_name = "rwa-project-files-preview"
+
 # KV namespace for caching
 [[kv_namespaces]]
 binding = "CACHE"
