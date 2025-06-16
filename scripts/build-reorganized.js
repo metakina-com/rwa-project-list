@@ -20,6 +20,14 @@ function buildReorganizedProject() {
         console.log('✓ 页面文件已复制');
     }
     
+    // Also copy the user flow page to root for easy access
+    const userFlowSrc = path.join(__dirname, '..', 'src', 'pages', 'user_flow.html');
+    const userFlowDest = path.join(distDir, 'user_flow.html');
+    if (fs.existsSync(userFlowSrc)) {
+        fs.copyFileSync(userFlowSrc, userFlowDest);
+        console.log('Copied user_flow.html to root for easy access');
+    }
+    
     // 复制脚本文件
     const srcScriptsDir = path.join(__dirname, '..', 'src', 'scripts');
     const distScriptsDir = path.join(distDir, 'scripts');
