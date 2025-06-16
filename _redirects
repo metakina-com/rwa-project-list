@@ -1,0 +1,22 @@
+# Cloudflare Pages Redirects Configuration
+# URL重写和路由规则
+
+# API路由重定向到Functions
+/api/projects/* /api/projects/:splat 200
+/api/ai-risk-assessment/* /api/ai-risk-assessment/:splat 200
+/api/users/* /api/users/:splat 200
+/api/investments/* /api/investments/:splat 200
+
+# 页面路由
+/marketplace /rwa_marketplace.html 200
+/client-form /rwa_client_form.html 200
+/smart-form /rwa_smart_form.html 200
+/asset-management /asset_management.html 200
+/nft-marketplace /nft_marketplace.html 200
+/project/:id /project_detail.html 200
+
+# 根路径重定向
+/ /index.html 200
+
+# 404处理
+/* /index.html 404

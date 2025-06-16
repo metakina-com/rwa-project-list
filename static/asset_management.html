@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RWA资产管理中心 - 智慧商业综合体</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link rel="stylesheet" href="asset_management.css">
+    <link rel="stylesheet" href="css/asset_management.css">
     <style>
         /* Critical CSS inline - only essential styles for above-the-fold content */
         * {
@@ -556,13 +556,41 @@
                         <i class="icon fas fa-warehouse"></i>
                         <h2>实物资产管理</h2>
                         <div class="header-actions">
-                            <button class="btn btn-sm btn-secondary">
+                            <button class="btn btn-sm btn-secondary" onclick="filterAssets()">
                                 <i class="fas fa-filter"></i> 筛选
                             </button>
-                            <button class="btn btn-sm btn-primary">
+                            <button class="btn btn-sm btn-primary" onclick="addNewAsset()">
                                 <i class="fas fa-plus"></i> 新增资产
                             </button>
+                            <button class="btn btn-sm btn-info" onclick="showAssetMap()">
+                                <i class="fas fa-map-marked-alt"></i> 资产地图
+                            </button>
+                            <button class="btn btn-sm btn-warning" onclick="scheduleInspection()">
+                                <i class="fas fa-calendar-check"></i> 安排检查
+                            </button>
                         </div>
+                    </div>
+                    
+                    <!-- 快速操作按钮 -->
+                    <div class="action-buttons">
+                        <button class="btn btn-primary" onclick="batchImportAssets()">
+                            <i class="fas fa-upload"></i> 批量导入
+                        </button>
+                        <button class="btn btn-success" onclick="exportAssetData()">
+                            <i class="fas fa-download"></i> 导出数据
+                        </button>
+                        <button class="btn btn-info" onclick="generateAssetReport()">
+                            <i class="fas fa-chart-bar"></i> 生成报告
+                        </button>
+                        <button class="btn btn-warning" onclick="assetValuation()">
+                            <i class="fas fa-calculator"></i> 资产评估
+                        </button>
+                        <button class="btn btn-danger" onclick="riskAssessment()">
+                            <i class="fas fa-exclamation-triangle"></i> 风险评估
+                        </button>
+                        <button class="btn btn-secondary" onclick="maintenanceSchedule()">
+                            <i class="fas fa-tools"></i> 维护计划
+                        </button>
                     </div>
                     
                     <!-- 资产档案管理 -->
@@ -707,10 +735,38 @@
                         <i class="icon fas fa-coins"></i>
                         <h2>代币化管理</h2>
                         <div class="header-actions">
-                            <button class="btn btn-sm btn-primary">
+                            <button class="btn btn-sm btn-primary" onclick="createTokenizationProject()">
                                 <i class="fas fa-plus"></i> 新代币化项目
                             </button>
+                            <button class="btn btn-sm btn-info" onclick="viewTokenMetrics()">
+                                <i class="fas fa-chart-line"></i> 代币指标
+                            </button>
+                            <button class="btn btn-sm btn-warning" onclick="manageCompliance()">
+                                <i class="fas fa-shield-alt"></i> 合规管理
+                            </button>
                         </div>
+                    </div>
+                    
+                    <!-- 代币化操作按钮 -->
+                    <div class="action-buttons">
+                        <button class="btn btn-primary" onclick="batchMintTokens()">
+                            <i class="fas fa-coins"></i> 批量铸造
+                        </button>
+                        <button class="btn btn-success" onclick="publishToMarket()">
+                            <i class="fas fa-store"></i> 发布到市场
+                        </button>
+                        <button class="btn btn-info" onclick="adjustTokenPrice()">
+                            <i class="fas fa-tag"></i> 价格调整
+                        </button>
+                        <button class="btn btn-warning" onclick="pauseTrading()">
+                            <i class="fas fa-pause"></i> 暂停交易
+                        </button>
+                        <button class="btn btn-secondary" onclick="generateTokenReport()">
+                            <i class="fas fa-file-alt"></i> 生成报告
+                        </button>
+                        <button class="btn btn-danger" onclick="emergencyFreeze()">
+                            <i class="fas fa-ban"></i> 紧急冻结
+                        </button>
                     </div>
                     
                     <!-- 代币化流程概览 -->
@@ -786,13 +842,41 @@
                         <i class="icon fas fa-certificate"></i>
                         <h2>数字权益证书</h2>
                         <div class="header-actions">
-                            <button class="btn btn-sm btn-primary">
+                            <button class="btn btn-sm btn-primary" onclick="issueCertificate()">
                                 <i class="fas fa-plus"></i> 发行证书
                             </button>
-                            <button class="btn btn-sm btn-secondary">
+                            <button class="btn btn-sm btn-secondary" onclick="exportCertificateList()">
                                 <i class="fas fa-download"></i> 导出列表
                             </button>
+                            <button class="btn btn-sm btn-info" onclick="verifyCertificate()">
+                                <i class="fas fa-check-circle"></i> 验证证书
+                            </button>
+                            <button class="btn btn-sm btn-warning" onclick="renewCertificates()">
+                                <i class="fas fa-sync-alt"></i> 批量续期
+                            </button>
                         </div>
+                    </div>
+                    
+                    <!-- 证书管理操作按钮 -->
+                    <div class="action-buttons">
+                        <button class="btn btn-primary" onclick="batchIssueCertificates()">
+                            <i class="fas fa-layer-group"></i> 批量发行
+                        </button>
+                        <button class="btn btn-success" onclick="launchCertificateCollection()">
+                            <i class="fas fa-rocket"></i> 发布系列
+                        </button>
+                        <button class="btn btn-info" onclick="setCertificateRoyalty()">
+                            <i class="fas fa-percentage"></i> 设置版税
+                        </button>
+                        <button class="btn btn-warning" onclick="suspendCertificate()">
+                            <i class="fas fa-pause-circle"></i> 暂停证书
+                        </button>
+                        <button class="btn btn-secondary" onclick="auditCertificates()">
+                            <i class="fas fa-search"></i> 审计证书
+                        </button>
+                        <button class="btn btn-danger" onclick="revokeCertificate()">
+                            <i class="fas fa-times-circle"></i> 撤销证书
+                        </button>
                     </div>
                     
                     <!-- 证书统计 -->
@@ -900,13 +984,41 @@
                         <i class="icon fas fa-users-cog"></i>
                         <h2>投资者服务</h2>
                         <div class="header-actions">
-                            <button class="btn btn-sm btn-primary">
+                            <button class="btn btn-sm btn-primary" onclick="addNewInvestor()">
                                 <i class="fas fa-user-plus"></i> 新增投资者
                             </button>
-                            <button class="btn btn-sm btn-secondary">
+                            <button class="btn btn-sm btn-secondary" onclick="exportInvestorData()">
                                 <i class="fas fa-file-export"></i> 导出数据
                             </button>
+                            <button class="btn btn-sm btn-info" onclick="sendNotification()">
+                                <i class="fas fa-bell"></i> 发送通知
+                            </button>
+                            <button class="btn btn-sm btn-warning" onclick="kycVerification()">
+                                <i class="fas fa-id-card"></i> KYC验证
+                            </button>
                         </div>
+                    </div>
+                    
+                    <!-- 投资者服务操作按钮 -->
+                    <div class="action-buttons">
+                        <button class="btn btn-primary" onclick="batchKycReview()">
+                            <i class="fas fa-user-check"></i> 批量审核
+                        </button>
+                        <button class="btn btn-success" onclick="scheduleDividendPayment()">
+                            <i class="fas fa-money-bill-wave"></i> 计划分红
+                        </button>
+                        <button class="btn btn-info" onclick="generateInvestorReport()">
+                            <i class="fas fa-chart-bar"></i> 投资者报告
+                        </button>
+                        <button class="btn btn-warning" onclick="riskProfileUpdate()">
+                            <i class="fas fa-shield-alt"></i> 风险档案
+                        </button>
+                        <button class="btn btn-secondary" onclick="customerSupport()">
+                            <i class="fas fa-headset"></i> 客户支持
+                        </button>
+                        <button class="btn btn-danger" onclick="freezeAccount()">
+                            <i class="fas fa-ban"></i> 冻结账户
+                        </button>
                     </div>
                     
                     <!-- 投资者统计 -->
@@ -1020,13 +1132,41 @@
                         <i class="icon fas fa-shield-alt"></i>
                         <h2>托管服务管理</h2>
                         <div class="header-actions">
-                            <button class="btn btn-sm btn-primary">
+                            <button class="btn btn-sm btn-primary" onclick="createCustodyAccount()">
                                 <i class="fas fa-plus"></i> 新建托管
                             </button>
-                            <button class="btn btn-sm btn-secondary">
+                            <button class="btn btn-sm btn-secondary" onclick="syncCustodyStatus()">
                                 <i class="fas fa-sync-alt"></i> 同步状态
                             </button>
+                            <button class="btn btn-sm btn-info" onclick="custodyAudit()">
+                                <i class="fas fa-search"></i> 托管审计
+                            </button>
+                            <button class="btn btn-sm btn-warning" onclick="keyManagement()">
+                                <i class="fas fa-key"></i> 密钥管理
+                            </button>
                         </div>
+                    </div>
+                    
+                    <!-- 托管服务操作按钮 -->
+                    <div class="action-buttons">
+                        <button class="btn btn-primary" onclick="batchTransfer()">
+                            <i class="fas fa-exchange-alt"></i> 批量转移
+                        </button>
+                        <button class="btn btn-success" onclick="generateCustodyReport()">
+                            <i class="fas fa-file-alt"></i> 托管报告
+                        </button>
+                        <button class="btn btn-info" onclick="securityCheck()">
+                            <i class="fas fa-shield-check"></i> 安全检查
+                        </button>
+                        <button class="btn btn-warning" onclick="emergencyFreeze()">
+                            <i class="fas fa-snowflake"></i> 紧急冻结
+                        </button>
+                        <button class="btn btn-secondary" onclick="backupKeys()">
+                            <i class="fas fa-save"></i> 密钥备份
+                        </button>
+                        <button class="btn btn-danger" onclick="revokeAccess()">
+                            <i class="fas fa-ban"></i> 撤销权限
+                        </button>
                     </div>
                     
                     <!-- 托管统计 -->
@@ -1355,13 +1495,41 @@
                         <i class="icon fas fa-project-diagram"></i>
                         <h2>资产生命周期管理</h2>
                         <div class="header-actions">
-                            <button class="btn btn-sm btn-primary">
+                            <button class="btn btn-sm btn-primary" onclick="createMilestone()">
                                 <i class="fas fa-plus"></i> 创建里程碑
                             </button>
-                            <button class="btn btn-sm btn-secondary">
+                            <button class="btn btn-sm btn-secondary" onclick="showGanttChart()">
                                 <i class="fas fa-chart-gantt"></i> 甘特图
                             </button>
+                            <button class="btn btn-sm btn-info" onclick="projectTemplate()">
+                                <i class="fas fa-copy"></i> 项目模板
+                            </button>
+                            <button class="btn btn-sm btn-warning" onclick="riskAssessment()">
+                                <i class="fas fa-exclamation-triangle"></i> 风险评估
+                            </button>
                         </div>
+                    </div>
+                    
+                    <!-- 生命周期管理操作按钮 -->
+                    <div class="action-buttons">
+                        <button class="btn btn-primary" onclick="batchUpdateStatus()">
+                            <i class="fas fa-tasks"></i> 批量更新
+                        </button>
+                        <button class="btn btn-success" onclick="generateLifecycleReport()">
+                            <i class="fas fa-chart-line"></i> 生命周期报告
+                        </button>
+                        <button class="btn btn-info" onclick="scheduleReview()">
+                            <i class="fas fa-calendar-check"></i> 计划审查
+                        </button>
+                        <button class="btn btn-warning" onclick="delayAlert()">
+                            <i class="fas fa-bell"></i> 延期预警
+                        </button>
+                        <button class="btn btn-secondary" onclick="archiveProject()">
+                            <i class="fas fa-archive"></i> 项目归档
+                        </button>
+                        <button class="btn btn-danger" onclick="terminateProject()">
+                            <i class="fas fa-stop-circle"></i> 终止项目
+                        </button>
                     </div>
                     
                     <!-- 项目概览 -->
@@ -1497,13 +1665,41 @@
                         <i class="icon fas fa-brain"></i>
                         <h2>AI智能运营</h2>
                         <div class="header-actions">
-                            <button class="btn btn-sm btn-primary">
+                            <button class="btn btn-sm btn-primary" onclick="trainAIModel()">
                                 <i class="fas fa-robot"></i> 训练模型
                             </button>
-                            <button class="btn btn-sm btn-secondary">
+                            <button class="btn btn-sm btn-secondary" onclick="configureStrategy()">
                                 <i class="fas fa-cog"></i> 配置策略
                             </button>
+                            <button class="btn btn-sm btn-info" onclick="aiDashboard()">
+                                <i class="fas fa-tachometer-alt"></i> AI仪表板
+                            </button>
+                            <button class="btn btn-sm btn-warning" onclick="modelValidation()">
+                                <i class="fas fa-check-circle"></i> 模型验证
+                            </button>
                         </div>
+                    </div>
+                    
+                    <!-- AI智能运营操作按钮 -->
+                    <div class="action-buttons">
+                        <button class="btn btn-primary" onclick="autoOptimization()">
+                            <i class="fas fa-magic"></i> 自动优化
+                        </button>
+                        <button class="btn btn-success" onclick="predictiveAnalysis()">
+                            <i class="fas fa-crystal-ball"></i> 预测分析
+                        </button>
+                        <button class="btn btn-info" onclick="anomalyDetection()">
+                            <i class="fas fa-search"></i> 异常检测
+                        </button>
+                        <button class="btn btn-warning" onclick="riskPrediction()">
+                            <i class="fas fa-exclamation-triangle"></i> 风险预测
+                        </button>
+                        <button class="btn btn-secondary" onclick="aiRecommendation()">
+                            <i class="fas fa-lightbulb"></i> 智能推荐
+                        </button>
+                        <button class="btn btn-danger" onclick="emergencyShutdown()">
+                            <i class="fas fa-power-off"></i> 紧急停止
+                        </button>
                     </div>
                     
                     <!-- AI助手面板 -->
@@ -1630,6 +1826,42 @@
                     <div class="section-header">
                         <i class="icon fas fa-cogs"></i>
                         <h2>系统设置</h2>
+                        <div class="header-actions">
+                            <button class="btn btn-sm btn-primary" onclick="backupSystem()">
+                                <i class="fas fa-download"></i> 系统备份
+                            </button>
+                            <button class="btn btn-sm btn-secondary" onclick="importSettings()">
+                                <i class="fas fa-upload"></i> 导入配置
+                            </button>
+                            <button class="btn btn-sm btn-info" onclick="systemDiagnostics()">
+                                <i class="fas fa-stethoscope"></i> 系统诊断
+                            </button>
+                            <button class="btn btn-sm btn-warning" onclick="resetToDefault()">
+                                <i class="fas fa-undo"></i> 恢复默认
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- 系统设置操作按钮 -->
+                    <div class="action-buttons">
+                        <button class="btn btn-primary" onclick="updateSystem()">
+                            <i class="fas fa-sync-alt"></i> 系统更新
+                        </button>
+                        <button class="btn btn-success" onclick="performanceTuning()">
+                            <i class="fas fa-tachometer-alt"></i> 性能调优
+                        </button>
+                        <button class="btn btn-info" onclick="securityScan()">
+                            <i class="fas fa-shield-alt"></i> 安全扫描
+                        </button>
+                        <button class="btn btn-warning" onclick="maintenanceMode()">
+                            <i class="fas fa-tools"></i> 维护模式
+                        </button>
+                        <button class="btn btn-secondary" onclick="exportLogs()">
+                            <i class="fas fa-file-export"></i> 导出日志
+                        </button>
+                        <button class="btn btn-danger" onclick="emergencyShutdown()">
+                            <i class="fas fa-power-off"></i> 紧急关闭
+                        </button>
                     </div>
                     
                     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px;">
@@ -1930,6 +2162,7 @@
         
         // Mock functions for UI interactions
         const mockFunctions = {
+            // 原有功能
             exportReport: () => showNotification('报告导出功能开发中...', 'info'),
             publishToMarket: () => showNotification('发布到市场功能开发中...', 'info'),
             adjustPrice: () => showNotification('价格调整功能开发中...', 'info'),
@@ -1943,11 +2176,103 @@
             exportCompliance: () => showNotification('导出合规数据功能开发中...', 'info'),
             generateAnalytics: () => showNotification('生成分析功能开发中...', 'info'),
             customReport: () => showNotification('自定义报告功能开发中...', 'info'),
-            scheduleReport: () => showNotification('定时报告功能开发中...', 'info')
+            scheduleReport: () => showNotification('定时报告功能开发中...', 'info'),
+            
+            // 实物资产管理功能
+            filterAssets: () => showNotification('正在筛选资产...', 'info'),
+            addNewAsset: () => showNotification('添加新资产功能已启动', 'success'),
+            showAssetMap: () => showNotification('资产地图视图已打开', 'info'),
+            scheduleInspection: () => showNotification('已安排资产检查', 'success'),
+            batchImportAssets: () => showNotification('批量导入资产功能启动', 'info'),
+            exportAssetData: () => showNotification('正在导出资产数据...', 'info'),
+            generateAssetReport: () => showNotification('正在生成资产报告...', 'info'),
+            assetValuation: () => showNotification('资产估值功能已启动', 'success'),
+            assetRiskAssessment: () => showNotification('风险评估分析中...', 'warning'),
+            maintenanceSchedule: () => showNotification('维护计划已更新', 'success'),
+            
+            // 代币化管理功能
+            createTokenProject: () => showNotification('创建代币化项目...', 'info'),
+            viewTokenMetrics: () => showNotification('代币指标面板已打开', 'info'),
+            manageCompliance: () => showNotification('合规管理界面已启动', 'info'),
+            pauseTrading: () => showNotification('交易已暂停', 'warning'),
+            emergencyFreeze: () => showNotification('紧急冻结已执行', 'error'),
+            
+            // 数字权益证书功能
+            issueCertificate: () => showNotification('正在发行数字证书...', 'info'),
+            exportCertList: () => showNotification('正在导出证书列表...', 'info'),
+            verifyCertificate: () => showNotification('证书验证功能已启动', 'info'),
+            batchRenewCert: () => showNotification('批量续期功能启动', 'info'),
+            batchIssueCert: () => showNotification('批量发行证书中...', 'info'),
+            setRoyalties: () => showNotification('版税设置已更新', 'success'),
+            suspendCertificate: () => showNotification('证书已暂停', 'warning'),
+            auditCertificate: () => showNotification('证书审计功能启动', 'info'),
+            revokeCertificate: () => showNotification('证书已撤销', 'error'),
+            
+            // 投资者服务功能
+            addNewInvestor: () => showNotification('添加新投资者功能启动', 'info'),
+            exportInvestorData: () => showNotification('正在导出投资者数据...', 'info'),
+            sendNotification: () => showNotification('通知已发送给投资者', 'success'),
+            kycVerification: () => showNotification('KYC验证流程已启动', 'info'),
+            batchKycReview: () => showNotification('批量KYC审核中...', 'info'),
+            scheduleDividendPayment: () => showNotification('分红计划已安排', 'success'),
+            generateInvestorReport: () => showNotification('正在生成投资者报告...', 'info'),
+            riskProfileUpdate: () => showNotification('风险档案更新中...', 'info'),
+            customerSupport: () => showNotification('客户支持系统已启动', 'info'),
+            freezeAccount: () => showNotification('账户已冻结', 'error'),
+            
+            // 托管服务管理功能
+            createCustodyAccount: () => showNotification('创建托管账户...', 'info'),
+            syncCustodyStatus: () => showNotification('正在同步托管状态...', 'info'),
+            custodyAudit: () => showNotification('托管审计功能启动', 'info'),
+            keyManagement: () => showNotification('密钥管理界面已打开', 'info'),
+            batchTransfer: () => showNotification('批量转移功能启动', 'info'),
+            generateCustodyReport: () => showNotification('正在生成托管报告...', 'info'),
+            securityCheck: () => showNotification('安全检查进行中...', 'warning'),
+            backupKeys: () => showNotification('密钥备份已完成', 'success'),
+            revokeAccess: () => showNotification('访问权限已撤销', 'error'),
+            
+            // 生命周期管理功能
+            createMilestone: () => showNotification('创建项目里程碑...', 'info'),
+            showGanttChart: () => showNotification('甘特图视图已打开', 'info'),
+            projectTemplate: () => showNotification('项目模板库已打开', 'info'),
+            riskAssessment: () => showNotification('风险评估分析中...', 'warning'),
+            batchUpdateStatus: () => showNotification('批量状态更新中...', 'info'),
+            generateLifecycleReport: () => showNotification('正在生成生命周期报告...', 'info'),
+            scheduleReview: () => showNotification('审查计划已安排', 'success'),
+            delayAlert: () => showNotification('延期预警系统已激活', 'warning'),
+            archiveProject: () => showNotification('项目已归档', 'info'),
+            terminateProject: () => showNotification('项目已终止', 'error'),
+            
+            // AI智能运营功能
+            trainAIModel: () => showNotification('AI模型训练已启动...', 'info'),
+            configureStrategy: () => showNotification('策略配置界面已打开', 'info'),
+            aiDashboard: () => showNotification('AI仪表板已加载', 'info'),
+            modelValidation: () => showNotification('模型验证进行中...', 'info'),
+            autoOptimization: () => showNotification('自动优化功能已启动', 'success'),
+            predictiveAnalysis: () => showNotification('预测分析正在运行...', 'info'),
+            anomalyDetection: () => showNotification('异常检测系统已激活', 'warning'),
+            riskPrediction: () => showNotification('风险预测分析中...', 'warning'),
+            aiRecommendation: () => showNotification('AI推荐系统已启动', 'info'),
+            emergencyShutdown: () => showNotification('紧急停止已执行', 'error'),
+            
+            // 系统设置功能
+            backupSystem: () => showNotification('系统备份进行中...', 'info'),
+            importSettings: () => showNotification('配置导入功能启动', 'info'),
+            systemDiagnostics: () => showNotification('系统诊断正在运行...', 'info'),
+            resetToDefault: () => showNotification('系统已恢复默认设置', 'warning'),
+            updateSystem: () => showNotification('系统更新检查中...', 'info'),
+            performanceTuning: () => showNotification('性能调优功能启动', 'info'),
+            securityScan: () => showNotification('安全扫描进行中...', 'warning'),
+            maintenanceMode: () => showNotification('维护模式已启用', 'warning'),
+            exportLogs: () => showNotification('正在导出系统日志...', 'info')
         };
         
         // Assign mock functions to global scope
         Object.assign(window, mockFunctions);
     </script>
+    
+    <!-- API客户端和认证脚本 -->
+    <script src="js/api-client.js"></script>
+    <script src="js/auth.js"></script>
 </body>
 </html>

@@ -7,7 +7,6 @@
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link href="static/css/auth.css" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -109,6 +108,69 @@
         .cta-button:hover {
             transform: translateY(-2px);
             box-shadow: 0 8px 25px rgba(79, 70, 229, 0.4);
+        }
+        
+        .auth-button {
+            background: transparent;
+            color: #4f46e5;
+            border: 2px solid #4f46e5;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .auth-button:hover {
+            background: #4f46e5;
+            color: white;
+        }
+        
+        .user-menu {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #4f46e5;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        
+        .user-dropdown {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            min-width: 150px;
+            z-index: 1000;
+            display: none;
+        }
+        
+        .user-dropdown.show {
+            display: block;
+        }
+        
+        .user-dropdown a {
+            display: block;
+            padding: 0.75rem 1rem;
+            color: #374151;
+            text-decoration: none;
+            transition: background 0.3s ease;
+        }
+        
+        .user-dropdown a:hover {
+            background: #f3f4f6;
         }
         
         /* Hero Section */
@@ -849,11 +911,105 @@
         window.addEventListener('load', () => {
             document.body.classList.add('loaded');
         });
+        
+        // 初始化用户认证界面
+        document.addEventListener('DOMContentLoaded', function() {
+            // 等待auth.js加载完成后初始化
+            if (typeof AuthService !== 'undefined') {
+                initializeAuth();
+            } else {
+                // 如果auth.js还没加载完成，等待一下
+                setTimeout(() => {
+                    if (typeof AuthService !== 'undefined') {
+                        initializeAuth();
+                    }
+                }, 100);
+            }
+        });
+        
+        function initializeAuth() {
+            const navActions = document.querySelector('.nav-actions');
+            if (!navActions) return;
+            
+            // 创建用户界面容器
+            const userContainer = document.createElement('div');
+            userContainer.id = 'user-auth-container';
+            navActions.appendChild(userContainer);
+            
+            // 检查用户登录状态并更新界面
+            updateAuthUI();
+            
+            // 监听认证状态变化
+            document.addEventListener('authStateChanged', updateAuthUI);
+        }
+        
+        function updateAuthUI() {
+            const container = document.getElementById('user-auth-container');
+            if (!container) return;
+            
+            if (typeof AuthService !== 'undefined' && AuthService.isLoggedIn()) {
+                // 用户已登录，显示用户菜单
+                const user = AuthService.getCurrentUser();
+                container.innerHTML = `
+                    <div class="user-menu">
+                        <div class="user-avatar" onclick="toggleUserDropdown()">
+                            ${user.username ? user.username.charAt(0).toUpperCase() : 'U'}
+                        </div>
+                        <div class="user-dropdown" id="userDropdown">
+                            <a href="#" onclick="showProfile()">个人资料</a>
+                            <a href="asset_management.html">资产管理</a>
+                            <a href="#" onclick="logout()">退出登录</a>
+                        </div>
+                    </div>
+                `;
+            } else {
+                // 用户未登录，显示登录按钮
+                container.innerHTML = `
+                    <button class="auth-button" onclick="showLoginModal()">登录</button>
+                `;
+            }
+        }
+        
+        function toggleUserDropdown() {
+            const dropdown = document.getElementById('userDropdown');
+            if (dropdown) {
+                dropdown.classList.toggle('show');
+            }
+        }
+        
+        function showLoginModal() {
+            // 跳转到RWA市场页面，那里有完整的登录表单
+            window.location.href = 'rwa_marketplace.html';
+        }
+        
+        function showProfile() {
+            // 跳转到资产管理页面查看个人资料
+            window.location.href = 'asset_management.html';
+        }
+        
+        function logout() {
+            if (typeof AuthService !== 'undefined') {
+                AuthService.logout().then(() => {
+                    updateAuthUI();
+                    alert('已成功退出登录');
+                }).catch(error => {
+                    console.error('退出登录失败:', error);
+                });
+            }
+        }
+        
+        // 点击其他地方关闭下拉菜单
+        document.addEventListener('click', function(event) {
+            const userMenu = document.querySelector('.user-menu');
+            const dropdown = document.getElementById('userDropdown');
+            if (userMenu && dropdown && !userMenu.contains(event.target)) {
+                dropdown.classList.remove('show');
+            }
+        });
     </script>
     
-    <!-- API Client and Authentication Scripts -->
-    <script src="static/js/api-client.js"></script>
-    <script src="static/js/auth.js"></script>
-    <script src="demo-script.js"></script>
+    <!-- API客户端脚本 -->
+    <script src="js/api-client.js"></script>
+    <script src="js/auth.js"></script>
 </body>
 </html>

@@ -1,0 +1,3281 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RWA项目发行交易平台 - 元话数字投行</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Header Styles */
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+        }
+
+        .header h1 {
+            color: #2c3e50;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .header-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .stat-card {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            border-left: 4px solid #007bff;
+        }
+
+        .stat-card h3 {
+            color: #495057;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .stat-card .value {
+            color: #2c3e50;
+            font-size: 1.3rem;
+            font-weight: 600;
+        }
+
+        /* Search and Filter Section */
+        .search-section {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+        }
+
+        .search-bar {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .search-input {
+            flex: 1;
+            min-width: 300px;
+            padding: 12px 20px;
+            border: 2px solid #e9ecef;
+            border-radius: 25px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #007bff;
+            box-shadow: 0 0 0 3px rgba(0,123,255,0.1);
+        }
+
+        .filter-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 8px 16px;
+            border: 2px solid #e9ecef;
+            background: white;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .filter-btn:hover,
+        .filter-btn.active {
+            background: #007bff;
+            color: white;
+            border-color: #007bff;
+        }
+
+        /* Asset Grid */
+        .assets-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .asset-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .asset-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+        }
+        
+        .asset-card.primary-market {
+            border-left: 4px solid #007bff;
+        }
+        
+        .asset-card.secondary-market {
+            border-left: 4px solid #28a745;
+        }
+        
+        .asset-card.derivatives {
+            border-left: 4px solid #ffc107;
+            background: linear-gradient(135deg, #fff9e6 0%, #ffffff 100%);
+        }
+        
+        .market-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: white;
+            z-index: 2;
+        }
+        
+        .market-badge.primary {
+            background: #007bff;
+        }
+        
+        .market-badge.secondary {
+            background: #28a745;
+        }
+        
+        .market-badge.derivatives {
+            background: #ffc107;
+            color: #333;
+        }
+        
+        .category-card {
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .category-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+        
+        .category-card.active {
+            border: 2px solid #007bff;
+            background: linear-gradient(135deg, #e3f2fd 0%, #ffffff 100%);
+        }
+
+        .asset-image {
+            height: 200px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 3rem;
+            position: relative;
+        }
+
+        .asset-status {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .status-active {
+            background: rgba(40, 167, 69, 0.9);
+            color: white;
+        }
+
+        .status-pending {
+            background: rgba(255, 193, 7, 0.9);
+            color: #333;
+        }
+
+        .asset-content {
+            padding: 20px;
+        }
+
+        .asset-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        .asset-description {
+            color: #6c757d;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+
+        .asset-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .detail-item {
+            text-align: center;
+        }
+
+        .detail-label {
+            color: #6c757d;
+            font-size: 0.8rem;
+            margin-bottom: 5px;
+        }
+
+        .detail-value {
+            color: #2c3e50;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .asset-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: #007bff;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #0056b3;
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #545b62;
+        }
+
+        /* Multi-Tier Market Navigation */
+        .market-navigation {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+        }
+
+        .market-tabs {
+            display: flex;
+            gap: 0;
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 4px;
+        }
+
+        .market-tab {
+            flex: 1;
+            background: transparent;
+            border: none;
+            padding: 20px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            position: relative;
+        }
+
+        .market-tab.active {
+            background: white;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            color: #007bff;
+        }
+
+        .market-tab i {
+            font-size: 1.5rem;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .market-tab span {
+            font-weight: 600;
+            font-size: 1rem;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .market-tab small {
+            font-size: 0.8rem;
+            color: #6c757d;
+            display: block;
+        }
+
+        .market-tab.active small {
+            color: #007bff;
+        }
+
+        /* Market Content Sections */
+        .market-content {
+            display: none;
+        }
+
+        .market-content.active {
+            display: block;
+        }
+
+        .market-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .market-header h2 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .market-header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        /* IPO Section */
+        .ipo-section, .offerings-section, .trading-section, .derivatives-categories {
+            margin-bottom: 40px;
+        }
+
+        .ipo-section h3, .offerings-section h3 {
+            color: #2c3e50;
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .ipo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .ipo-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            border-left: 4px solid #28a745;
+            transition: transform 0.3s ease;
+        }
+
+        .ipo-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .ipo-card .countdown {
+            background: #28a745;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            display: inline-block;
+            margin-bottom: 15px;
+        }
+
+        /* Market Stats */
+        .market-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .market-stats .stat-card {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .market-stats .stat-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+        }
+
+        .market-stats .stat-info h4 {
+            color: #6c757d;
+            font-size: 0.9rem;
+            margin-bottom: 5px;
+        }
+
+        .market-stats .stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #2c3e50;
+        }
+
+        .market-stats .stat-change {
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-left: 10px;
+        }
+
+        .market-stats .stat-change.positive {
+            color: #28a745;
+        }
+
+        .market-stats .stat-change.negative {
+            color: #dc3545;
+        }
+
+        /* Section Tabs */
+        .section-tabs {
+            display: flex;
+            gap: 0;
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 4px;
+            margin-bottom: 25px;
+        }
+
+        .section-tab {
+            flex: 1;
+            background: transparent;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .section-tab.active {
+            background: white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            color: #007bff;
+        }
+
+        /* Derivatives Categories */
+        .derivatives-categories {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .category-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .category-card:hover {
+            transform: translateY(-5px);
+            border-color: #007bff;
+        }
+
+        .category-card .category-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 15px;
+            color: white;
+            font-size: 1.5rem;
+        }
+
+        .category-card h3 {
+            color: #2c3e50;
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+        }
+
+        .category-card p {
+            color: #6c757d;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+
+        .category-card .category-count {
+            background: #e9ecef;
+            color: #495057;
+            padding: 6px 12px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        /* Enhanced Asset Cards for Different Markets */
+        .asset-card.primary-market {
+            border-left: 4px solid #28a745;
+        }
+
+        .asset-card.secondary-market {
+            border-left: 4px solid #007bff;
+        }
+
+        .asset-card.derivatives {
+            border-left: 4px solid #ffc107;
+        }
+
+        .asset-card .market-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            padding: 4px 8px;
+            border-radius: 10px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .asset-card .market-badge.primary {
+            background: #28a745;
+            color: white;
+        }
+
+        .asset-card .market-badge.secondary {
+            background: #007bff;
+            color: white;
+        }
+
+        .asset-card .market-badge.derivatives {
+            background: #ffc107;
+            color: #212529;
+        }
+
+        /* Advanced Filters Modal */
+        .advanced-filters-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1001;
+            backdrop-filter: blur(5px);
+        }
+
+        .advanced-filters-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .filter-group {
+            margin-bottom: 25px;
+        }
+
+        .filter-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #2c3e50;
+        }
+
+        .filter-range {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .filter-range input {
+            flex: 1;
+            padding: 8px 12px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+        }
+
+        /* Trading Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #6c757d;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #007bff;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .assets-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .search-bar {
+                flex-direction: column;
+            }
+
+            .search-input {
+                min-width: auto;
+            }
+        }
+        \n        /* Additional Responsive Styles for Multi-Tier Market */\n        @media (max-width: 768px) {\n            .market-tabs {\n                flex-direction: column;\n                gap: 4px;\n            }\n            \n            .market-tab {\n                padding: 15px 10px;\n            }\n            \n            .market-tab i {\n                font-size: 1.2rem;\n                margin-bottom: 5px;\n            }\n            \n            .market-tab span {\n                font-size: 0.9rem;\n            }\n            \n            .market-tab small {\n                font-size: 0.7rem;\n            }\n            \n            .market-stats {\n                grid-template-columns: 1fr;\n                gap: 15px;\n            }\n            \n            .derivatives-categories {\n                grid-template-columns: 1fr;\n            }\n            \n            .ipo-grid {\n                grid-template-columns: 1fr;\n            }\n            \n            .section-tabs {\n                flex-wrap: wrap;\n                gap: 4px;\n            }\n            \n            .section-tab {\n                flex: none;\n                min-width: 80px;\n                padding: 10px 15px;\n                font-size: 0.9rem;\n            }\n            \n            .market-header {\n                padding: 20px;\n                text-align: left;\n            }\n            \n            .market-header h2 {\n                font-size: 1.5rem;\n            }\n            \n            .modal-content, .advanced-filters-content {\n                width: 95%;\n                padding: 20px;\n            }\n        }\n    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Navigation Bar -->
+        <div class="nav-bar" style="background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); border-radius: 15px; padding: 15px 25px; margin-bottom: 20px; box-shadow: 0 8px 32px rgba(0,0,0,0.1);">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <a href="index.html" style="font-size: 1.5rem; font-weight: 700; color: #2c3e50; text-decoration: none;">元话RWA</a>
+                <div style="display: flex; gap: 25px; align-items: center;">
+                    <a href="index.html" style="color: #495057; text-decoration: none; font-weight: 500; transition: color 0.3s ease;">首页</a>
+                    <a href="rwa_marketplace.html" style="color: #007bff; text-decoration: none; font-weight: 600;">RWA交易市场</a>
+                    <a href="asset_management.html" style="color: #495057; text-decoration: none; font-weight: 500; transition: color 0.3s ease;">资产管理</a>
+                    <a href="rwa_client_form.html" style="color: #495057; text-decoration: none; font-weight: 500; transition: color 0.3s ease;">项目申请</a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Header Section -->
+        <div class="header">
+            <h1>
+                <i class="fas fa-building"></i>
+                RWA项目发行交易平台
+            </h1>
+            <p style="color: #6c757d; margin-bottom: 20px;">专业的实物资产数字化发行与合规交易平台</p>
+            
+            <div class="header-stats">
+                <div class="stat-card">
+                    <h3>总资产数量</h3>
+                    <div class="value" id="totalAssets">156</div>
+                </div>
+                <div class="stat-card">
+                    <h3>总市值</h3>
+                    <div class="value" id="totalValue">¥2.8亿</div>
+                </div>
+                <div class="stat-card">
+                    <h3>24h交易量</h3>
+                    <div class="value" id="dailyVolume">¥580万</div>
+                </div>
+                <div class="stat-card">
+                    <h3>活跃投资者</h3>
+                    <div class="value" id="activeInvestors">1,234</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Multi-Tier Market Navigation -->
+        <div class="market-navigation">
+            <div class="market-tabs">
+                <button class="market-tab active" onclick="switchMarket('primary')">
+                    <i class="fas fa-rocket"></i>
+                    <span>一级市场</span>
+                    <small>资产发行</small>
+                </button>
+                <button class="market-tab" onclick="switchMarket('secondary')">
+                    <i class="fas fa-exchange-alt"></i>
+                    <span>二级市场</span>
+                    <small>资产交易</small>
+                </button>
+                <button class="market-tab" onclick="switchMarket('derivatives')">
+                    <i class="fas fa-chart-line"></i>
+                    <span>衍生品市场</span>
+                    <small>金融工具</small>
+                </button>
+            </div>
+        </div>
+
+        <!-- Search and Filter Section -->
+        <div class="search-section">
+            <div class="search-bar">
+                <input type="text" class="search-input" placeholder="搜索资产名称、类型或地区..." id="searchInput">
+                <button class="btn btn-primary" onclick="searchAssets()">
+                    <i class="fas fa-search"></i> 搜索
+                </button>
+                <button class="btn btn-secondary" onclick="showAdvancedFilters()">
+                    <i class="fas fa-sliders-h"></i> 高级筛选
+                </button>
+            </div>
+            
+            <div class="filter-buttons">
+                <button class="filter-btn active" data-filter="all">全部</button>
+                <button class="filter-btn" data-filter="real-estate">房地产</button>
+                <button class="filter-btn" data-filter="infrastructure">基础设施</button>
+                <button class="filter-btn" data-filter="energy">能源</button>
+                <button class="filter-btn" data-filter="commodities">大宗商品</button>
+                <button class="filter-btn" data-filter="art">艺术品</button>
+                <button class="filter-btn" data-filter="intellectual">知识产权</button>
+            </div>
+        </div>
+
+        <!-- Primary Market Content -->
+        <div id="primary-market" class="market-content active">
+            <div class="market-header">
+                <h2><i class="fas fa-rocket"></i> 一级市场 - 资产发行</h2>
+                <p>投资新发行的RWA项目，参与资产初始发行</p>
+            </div>
+            
+            <!-- IPO Section -->
+            <div class="ipo-section">
+                <h3><i class="fas fa-calendar-alt"></i> 即将发行</h3>
+                <div class="ipo-grid" id="ipoGrid">
+                    <!-- IPO assets will be loaded here -->
+                </div>
+            </div>
+            
+            <!-- Active Offerings -->
+            <div class="offerings-section">
+                <h3><i class="fas fa-fire"></i> 正在发行</h3>
+                <div class="assets-grid" id="primaryAssetsGrid">
+                    <!-- Primary market assets will be loaded here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Secondary Market Content -->
+        <div id="secondary-market" class="market-content">
+            <div class="market-header">
+                <h2><i class="fas fa-exchange-alt"></i> 二级市场 - 资产交易</h2>
+                <p>交易已发行的RWA资产，提高资产流动性</p>
+            </div>
+            
+            <!-- Market Stats -->
+            <div class="market-stats">
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-chart-line"></i></div>
+                    <div class="stat-info">
+                        <h4>交易量 (24h)</h4>
+                        <span class="stat-value">¥2,340万</span>
+                        <span class="stat-change positive">+12.5%</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-coins"></i></div>
+                    <div class="stat-info">
+                        <h4>活跃资产</h4>
+                        <span class="stat-value">156</span>
+                        <span class="stat-change positive">+8</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-users"></i></div>
+                    <div class="stat-info">
+                        <h4>活跃用户</h4>
+                        <span class="stat-value">2,847</span>
+                        <span class="stat-change positive">+156</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Trading Assets -->
+            <div class="trading-section">
+                <div class="section-tabs">
+                    <button class="section-tab active" onclick="switchSecondaryTab('all')">全部资产</button>
+                    <button class="section-tab" onclick="switchSecondaryTab('trending')">热门交易</button>
+                    <button class="section-tab" onclick="switchSecondaryTab('gainers')">涨幅榜</button>
+                    <button class="section-tab" onclick="switchSecondaryTab('volume')">成交量榜</button>
+                </div>
+                <div class="assets-grid" id="secondaryAssetsGrid">
+                    <!-- Secondary market assets will be loaded here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Derivatives Market Content -->
+        <div id="derivatives-market" class="market-content">
+            <div class="market-header">
+                <h2><i class="fas fa-chart-line"></i> 衍生品市场 - 金融创新</h2>
+                <p>基于RWA资产的衍生金融产品，风险对冲与收益增强</p>
+            </div>
+            
+            <!-- Derivatives Categories -->
+            <div class="derivatives-categories">
+                <div class="category-card" onclick="showDerivativeCategory('futures')">
+                    <div class="category-icon"><i class="fas fa-calendar-check"></i></div>
+                    <h3>期货合约</h3>
+                    <p>标准化的资产期货交易</p>
+                    <span class="category-count">12个产品</span>
+                </div>
+                <div class="category-card" onclick="showDerivativeCategory('options')">
+                    <div class="category-icon"><i class="fas fa-shield-alt"></i></div>
+                    <h3>期权产品</h3>
+                    <p>资产价格波动保护工具</p>
+                    <span class="category-count">8个产品</span>
+                </div>
+                <div class="category-card" onclick="showDerivativeCategory('swaps')">
+                    <div class="category-icon"><i class="fas fa-sync-alt"></i></div>
+                    <h3>收益互换</h3>
+                    <p>定制化收益结构产品</p>
+                    <span class="category-count">6个产品</span>
+                </div>
+                <div class="category-card" onclick="showDerivativeCategory('structured')">
+                    <div class="category-icon"><i class="fas fa-cubes"></i></div>
+                    <h3>结构化产品</h3>
+                    <p>复杂收益结构投资产品</p>
+                    <span class="category-count">15个产品</span>
+                </div>
+            </div>
+            
+            <!-- Derivatives Products -->
+            <div class="derivatives-products">
+                <div class="assets-grid" id="derivativesAssetsGrid">
+                    <!-- Derivatives products will be loaded here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Trading Modal -->
+    <div class="modal" id="tradingModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">购买资产份额</h2>
+                <button class="close-btn" onclick="closeTradingModal()">&times;</button>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">资产名称</label>
+                <input type="text" class="form-input" id="assetName" readonly>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">购买份额</label>
+                <input type="number" class="form-input" id="shareAmount" placeholder="输入购买份额数量" min="1">
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">单价</label>
+                <input type="text" class="form-input" id="sharePrice" readonly>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">总金额</label>
+                <input type="text" class="form-input" id="totalAmount" readonly>
+            </div>
+            
+            <div style="display: flex; gap: 10px; margin-top: 30px;">
+                <button class="btn btn-secondary" onclick="closeTradingModal()">取消</button>
+                <button class="btn btn-primary" onclick="confirmPurchase()">确认购买</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // User authentication check
+        function checkUserAuthentication() {
+            const isLoggedIn = localStorage.getItem('userLoggedIn');
+            const userInfo = JSON.parse(localStorage.getItem('userInfo') || '{}');
+            
+            if (!isLoggedIn || !userInfo.id) {
+                // Redirect to login or show login modal
+                showLoginModal();
+                return false;
+            }
+            
+            // Update header with user info
+            updateUserDisplay(userInfo);
+            return true;
+        }
+        
+        // Show login modal
+        function showLoginModal() {
+            const loginModal = document.createElement('div');
+            loginModal.className = 'modal';
+            loginModal.style.display = 'block';
+            loginModal.innerHTML = `
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h2 class="modal-title">用户登录</h2>
+                    </div>
+                    <p style="margin-bottom: 20px; color: #6c757d;">RWA交易市场仅对注册用户开放，请先登录您的账户。</p>
+                    <div class="form-group">
+                        <label class="form-label">用户名/邮箱</label>
+                        <input type="text" class="form-input" id="loginUsername" placeholder="请输入用户名或邮箱">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">密码</label>
+                        <input type="password" class="form-input" id="loginPassword" placeholder="请输入密码">
+                    </div>
+                    <div style="display: flex; gap: 10px; margin-top: 30px;">
+                        <button class="btn btn-secondary" onclick="simulateLogin()">模拟登录</button>
+                        <button class="btn btn-primary" onclick="performLogin()">登录</button>
+                    </div>
+                    <p style="margin-top: 15px; text-align: center; color: #6c757d; font-size: 0.9rem;">
+                        还没有账户？<a href="rwa_client_form.html" style="color: #007bff;">立即申请RWA项目</a>
+                    </p>
+                </div>
+            `;
+            document.body.appendChild(loginModal);
+        }
+        
+        // Simulate login for demo
+        function simulateLogin() {
+            const userInfo = {
+                id: 'user_' + Date.now(),
+                name: '演示用户',
+                email: 'demo@example.com',
+                role: 'investor',
+                loginTime: new Date().toISOString()
+            };
+            
+            localStorage.setItem('userLoggedIn', 'true');
+            localStorage.setItem('userInfo', JSON.stringify(userInfo));
+            
+            // Remove login modal
+            const modal = document.querySelector('.modal');
+            if (modal) modal.remove();
+            
+            // Update display
+            updateUserDisplay(userInfo);
+            
+            // Show success message
+            alert('登录成功！欢迎来到RWA交易市场');
+        }
+        
+        // Perform actual login
+        function performLogin() {
+            const username = document.getElementById('loginUsername').value;
+            const password = document.getElementById('loginPassword').value;
+            
+            if (!username || !password) {
+                alert('请输入用户名和密码');
+                return;
+            }
+            
+            // Simulate login validation
+            if (username && password) {
+                const userInfo = {
+                    id: 'user_' + username.replace(/[^a-zA-Z0-9]/g, ''),
+                    name: username,
+                    email: username.includes('@') ? username : username + '@example.com',
+                    role: 'investor',
+                    loginTime: new Date().toISOString()
+                };
+                
+                localStorage.setItem('userLoggedIn', 'true');
+                localStorage.setItem('userInfo', JSON.stringify(userInfo));
+                
+                // Remove login modal
+                const modal = document.querySelector('.modal');
+                if (modal) modal.remove();
+                
+                // Update display
+                updateUserDisplay(userInfo);
+                
+                alert('登录成功！');
+            }
+        }
+        
+        // Update user display in header
+        function updateUserDisplay(userInfo) {
+            const header = document.querySelector('.header');
+            const existingUserInfo = header.querySelector('.user-info');
+            
+            if (existingUserInfo) {
+                existingUserInfo.remove();
+            }
+            
+            const userInfoDiv = document.createElement('div');
+            userInfoDiv.className = 'user-info';
+            userInfoDiv.style.cssText = `
+                display: flex;
+                align-items: center;
+                gap: 15px;
+                margin-top: 15px;
+                padding: 10px 15px;
+                background: rgba(0, 123, 255, 0.1);
+                border-radius: 10px;
+                border-left: 4px solid #007bff;
+            `;
+            
+            userInfoDiv.innerHTML = `
+                <div style="flex: 1;">
+                    <div style="font-weight: 600; color: #2c3e50;">👤 ${userInfo.name}</div>
+                    <div style="font-size: 0.9rem; color: #6c757d;">${userInfo.email}</div>
+                </div>
+                <button onclick="logout()" style="
+                    background: #dc3545;
+                    color: white;
+                    border: none;
+                    padding: 5px 10px;
+                    border-radius: 5px;
+                    cursor: pointer;
+                    font-size: 0.8rem;
+                ">退出登录</button>
+            `;
+            
+            header.appendChild(userInfoDiv);
+        }
+        
+        // Logout function
+        function logout() {
+            localStorage.removeItem('userLoggedIn');
+            localStorage.removeItem('userInfo');
+            location.reload();
+        }
+
+        // 获取资产数据（包含示例数据和发行的项目）
+        function getAssetData() {
+            // 示例资产数据
+            const sampleAssets = [
+                // 房地产类
+                {
+                    id: 'asset-001',
+                    name: '上海陆家嘴商业综合体',
+                    type: 'real-estate',
+                    market: 'primary',
+                    description: '位于上海陆家嘴核心区域的高端商业综合体，包含办公楼、购物中心和酒店。',
+                    totalValue: 50000000,
+                    availableShares: 1000,
+                    pricePerShare: 50000,
+                    status: 'active',
+                    location: '上海',
+                    yield: '6.8%',
+                    icon: '🏢',
+                    riskLevel: '中等',
+                    minInvestment: 50000
+                },
+                {
+                    id: 'asset-002',
+                    name: '深圳前海金融中心',
+                    type: 'real-estate',
+                    market: 'secondary',
+                    description: '深圳前海自贸区核心地段的甲级写字楼，租户为知名金融机构。',
+                    totalValue: 80000000,
+                    availableShares: 800,
+                    pricePerShare: 100000,
+                    status: 'active',
+                    location: '深圳',
+                    yield: '7.2%',
+                    icon: '🏦',
+                    riskLevel: '中等',
+                    minInvestment: 100000,
+                    tradingVolume: 2340000,
+                    priceChange: '+2.5%'
+                },
+                {
+                    id: 'asset-003',
+                    name: '北京CBD核心写字楼',
+                    type: 'real-estate',
+                    market: 'secondary',
+                    description: '北京CBD核心区域甲级写字楼，地理位置优越，租金收益稳定。',
+                    totalValue: 120000000,
+                    availableShares: 600,
+                    pricePerShare: 200000,
+                    status: 'active',
+                    location: '北京',
+                    yield: '6.5%',
+                    icon: '🏢',
+                    riskLevel: '低',
+                    minInvestment: 200000,
+                    tradingVolume: 1890000,
+                    priceChange: '+1.8%'
+                },
+                {
+                    id: 'asset-004',
+                    name: '成都天府新区产业园',
+                    type: 'real-estate',
+                    market: 'primary',
+                    description: '成都天府新区高科技产业园区，配套完善，发展潜力巨大。',
+                    totalValue: 35000000,
+                    availableShares: 1400,
+                    pricePerShare: 25000,
+                    status: 'pending',
+                    location: '成都',
+                    yield: '7.8%',
+                    icon: '🏭',
+                    riskLevel: '中高',
+                    minInvestment: 25000
+                },
+                
+                // 基础设施类
+                {
+                    id: 'asset-005',
+                    name: '京沪高铁基础设施',
+                    type: 'infrastructure',
+                    market: 'primary',
+                    description: '京沪高铁沿线基础设施投资项目，包含车站、信号系统等关键设施。',
+                    totalValue: 120000000,
+                    availableShares: 600,
+                    pricePerShare: 200000,
+                    status: 'pending',
+                    location: '北京-上海',
+                    yield: '5.5%',
+                    icon: '🚄',
+                    riskLevel: '低',
+                    minInvestment: 200000
+                },
+                {
+                    id: 'asset-006',
+                    name: '广州港物流仓储',
+                    type: 'infrastructure',
+                    market: 'secondary',
+                    description: '广州港核心区域的现代化物流仓储设施，服务于华南地区进出口贸易。',
+                    totalValue: 45000000,
+                    availableShares: 900,
+                    pricePerShare: 50000,
+                    status: 'active',
+                    location: '广州',
+                    yield: '6.5%',
+                    icon: '🚢',
+                    riskLevel: '中等',
+                    minInvestment: 50000,
+                    tradingVolume: 1560000,
+                    priceChange: '+3.2%'
+                },
+                {
+                    id: 'asset-007',
+                    name: '杭州地铁4号线延伸段',
+                    type: 'infrastructure',
+                    market: 'primary',
+                    description: '杭州地铁4号线延伸段建设项目，连接主城区与萧山机场。',
+                    totalValue: 85000000,
+                    availableShares: 850,
+                    pricePerShare: 100000,
+                    status: 'active',
+                    location: '杭州',
+                    yield: '5.8%',
+                    icon: '🚇',
+                    riskLevel: '低',
+                    minInvestment: 100000
+                },
+                {
+                    id: 'asset-008',
+                    name: '青岛港自动化码头',
+                    type: 'infrastructure',
+                    market: 'secondary',
+                    description: '全球领先的自动化集装箱码头，智能化程度极高。',
+                    totalValue: 95000000,
+                    availableShares: 950,
+                    pricePerShare: 100000,
+                    status: 'active',
+                    location: '青岛',
+                    yield: '6.8%',
+                    icon: '⚓',
+                    riskLevel: '中等',
+                    minInvestment: 100000,
+                    tradingVolume: 2100000,
+                    priceChange: '+4.1%'
+                },
+                
+                // 能源类
+                {
+                    id: 'asset-009',
+                    name: '新疆风电场项目',
+                    type: 'energy',
+                    market: 'primary',
+                    description: '新疆地区大型风力发电场，装机容量200MW，已并网发电。',
+                    totalValue: 60000000,
+                    availableShares: 1200,
+                    pricePerShare: 50000,
+                    status: 'active',
+                    location: '新疆',
+                    yield: '8.1%',
+                    icon: '💨',
+                    riskLevel: '中高',
+                    minInvestment: 50000
+                },
+                {
+                    id: 'asset-010',
+                    name: '内蒙古太阳能发电站',
+                    type: 'energy',
+                    market: 'secondary',
+                    description: '内蒙古大型太阳能发电站，装机容量150MW，绿色清洁能源。',
+                    totalValue: 45000000,
+                    availableShares: 1500,
+                    pricePerShare: 30000,
+                    status: 'active',
+                    location: '内蒙古',
+                    yield: '7.5%',
+                    icon: '☀️',
+                    riskLevel: '中等',
+                    minInvestment: 30000,
+                    tradingVolume: 1800000,
+                    priceChange: '+5.3%'
+                },
+                {
+                    id: 'asset-011',
+                    name: '海南海上风电项目',
+                    type: 'energy',
+                    market: 'primary',
+                    description: '海南省海上风力发电项目，利用海风资源，环保效益显著。',
+                    totalValue: 75000000,
+                    availableShares: 750,
+                    pricePerShare: 100000,
+                    status: 'pending',
+                    location: '海南',
+                    yield: '8.8%',
+                    icon: '🌊',
+                    riskLevel: '高',
+                    minInvestment: 100000
+                },
+                {
+                    id: 'asset-012',
+                    name: '四川水电站群',
+                    type: 'energy',
+                    market: 'secondary',
+                    description: '四川省大渡河流域水电站群，清洁能源，收益稳定。',
+                    totalValue: 180000000,
+                    availableShares: 900,
+                    pricePerShare: 200000,
+                    status: 'active',
+                    location: '四川',
+                    yield: '6.2%',
+                    icon: '⚡',
+                    riskLevel: '低',
+                    minInvestment: 200000,
+                    tradingVolume: 3200000,
+                    priceChange: '+1.5%'
+                },
+                
+                // 大宗商品类
+                {
+                    id: 'asset-013',
+                    name: '黄金储备基金',
+                    type: 'commodities',
+                    market: 'secondary',
+                    description: '实物黄金储备投资基金，由专业机构管理，安全性高。',
+                    totalValue: 30000000,
+                    availableShares: 3000,
+                    pricePerShare: 10000,
+                    status: 'active',
+                    location: '全球',
+                    yield: '4.2%',
+                    icon: '🥇',
+                    riskLevel: '低',
+                    minInvestment: 10000,
+                    tradingVolume: 2800000,
+                    priceChange: '+0.8%'
+                },
+                {
+                    id: 'asset-014',
+                    name: '白银投资组合',
+                    type: 'commodities',
+                    market: 'secondary',
+                    description: '工业白银投资组合，包含实物白银和白银期货合约。',
+                    totalValue: 15000000,
+                    availableShares: 3000,
+                    pricePerShare: 5000,
+                    status: 'active',
+                    location: '全球',
+                    yield: '5.8%',
+                    icon: '🥈',
+                    riskLevel: '中等',
+                    minInvestment: 5000,
+                    tradingVolume: 1200000,
+                    priceChange: '+2.1%'
+                },
+                {
+                    id: 'asset-015',
+                    name: '铜期货仓储基金',
+                    type: 'commodities',
+                    market: 'primary',
+                    description: '工业铜材仓储投资基金，受益于制造业复苏。',
+                    totalValue: 25000000,
+                    availableShares: 2500,
+                    pricePerShare: 10000,
+                    status: 'active',
+                    location: '上海',
+                    yield: '6.5%',
+                    icon: '🔶',
+                    riskLevel: '中高',
+                    minInvestment: 10000
+                },
+                {
+                    id: 'asset-016',
+                    name: '原油储备投资',
+                    type: 'commodities',
+                    market: 'secondary',
+                    description: '战略原油储备投资项目，与国际油价联动。',
+                    totalValue: 80000000,
+                    availableShares: 1600,
+                    pricePerShare: 50000,
+                    status: 'active',
+                    location: '全球',
+                    yield: '7.8%',
+                    icon: '🛢️',
+                    riskLevel: '高',
+                    minInvestment: 50000,
+                    tradingVolume: 4200000,
+                    priceChange: '+6.2%'
+                },
+                
+                // 艺术品类
+                {
+                    id: 'asset-017',
+                    name: '当代艺术品投资基金',
+                    type: 'art',
+                    market: 'secondary',
+                    description: '精选当代知名艺术家作品投资组合，艺术价值与投资价值并重。',
+                    totalValue: 20000000,
+                    availableShares: 400,
+                    pricePerShare: 50000,
+                    status: 'active',
+                    location: '北京',
+                    yield: '12.5%',
+                    icon: '🎨',
+                    riskLevel: '高',
+                    minInvestment: 50000,
+                    tradingVolume: 980000,
+                    priceChange: '+8.7%'
+                },
+                {
+                    id: 'asset-018',
+                    name: '古董文物收藏基金',
+                    type: 'art',
+                    market: 'primary',
+                    description: '中国古董文物收藏投资基金，历史价值与收藏价值兼具。',
+                    totalValue: 35000000,
+                    availableShares: 700,
+                    pricePerShare: 50000,
+                    status: 'pending',
+                    location: '北京',
+                    yield: '15.2%',
+                    icon: '🏺',
+                    riskLevel: '高',
+                    minInvestment: 50000
+                },
+                
+                // 知识产权类
+                {
+                    id: 'asset-019',
+                    name: '5G技术专利组合',
+                    type: 'intellectual',
+                    market: 'primary',
+                    description: '5G通信技术核心专利组合，涵盖基站、芯片等关键技术。',
+                    totalValue: 50000000,
+                    availableShares: 1000,
+                    pricePerShare: 50000,
+                    status: 'active',
+                    location: '深圳',
+                    yield: '9.8%',
+                    icon: '📡',
+                    riskLevel: '中高',
+                    minInvestment: 50000
+                },
+                {
+                    id: 'asset-020',
+                    name: '新能源汽车专利池',
+                    type: 'intellectual',
+                    market: 'secondary',
+                    description: '新能源汽车核心技术专利池，包含电池、电机、电控技术。',
+                    totalValue: 40000000,
+                    availableShares: 800,
+                    pricePerShare: 50000,
+                    status: 'active',
+                    location: '上海',
+                    yield: '11.2%',
+                    icon: '🔋',
+                    riskLevel: '中高',
+                    minInvestment: 50000,
+                    tradingVolume: 1650000,
+                    priceChange: '+7.3%'
+                },
+                
+                // 新增房地产类资产
+                {
+                    id: 'asset-021',
+                    name: '深圳前海金融中心',
+                    type: 'real-estate',
+                    market: 'primary',
+                    description: '深圳前海合作区核心金融办公楼，毗邻香港，区位优势明显。',
+                    totalValue: 280000000,
+                    availableShares: 1400,
+                    pricePerShare: 200000,
+                    status: 'active',
+                    location: '深圳',
+                    yield: '6.8%',
+                    icon: '🏦',
+                    riskLevel: '中等',
+                    minInvestment: 200000
+                },
+                {
+                    id: 'asset-022',
+                    name: '苏州工业园区厂房',
+                    type: 'real-estate',
+                    market: 'secondary',
+                    description: '苏州工业园区标准化厂房，适合高端制造业，租赁需求旺盛。',
+                    totalValue: 65000000,
+                    availableShares: 1300,
+                    pricePerShare: 50000,
+                    status: 'active',
+                    location: '苏州',
+                    yield: '7.1%',
+                    icon: '🏭',
+                    riskLevel: '中等',
+                    minInvestment: 50000,
+                    tradingVolume: 1420000,
+                    priceChange: '+2.8%'
+                },
+                {
+                    id: 'asset-023',
+                    name: '西安高新区研发中心',
+                    type: 'real-estate',
+                    market: 'primary',
+                    description: '西安高新技术产业开发区研发办公楼，科技企业聚集地。',
+                    totalValue: 42000000,
+                    availableShares: 840,
+                    pricePerShare: 50000,
+                    status: 'pending',
+                    location: '西安',
+                    yield: '7.5%',
+                    icon: '🔬',
+                    riskLevel: '中高',
+                    minInvestment: 50000
+                },
+                {
+                    id: 'asset-024',
+                    name: '重庆两江新区商业综合体',
+                    type: 'real-estate',
+                    market: 'secondary',
+                    description: '重庆两江新区大型商业综合体，集购物、餐饮、娱乐于一体。',
+                    totalValue: 95000000,
+                    availableShares: 950,
+                    pricePerShare: 100000,
+                    status: 'active',
+                    location: '重庆',
+                    yield: '6.9%',
+                    icon: '🛍️',
+                    riskLevel: '中等',
+                    minInvestment: 100000,
+                    tradingVolume: 2150000,
+                    priceChange: '+3.5%'
+                },
+                {
+                    id: 'asset-025',
+                    name: '海南自贸港免税商城',
+                    type: 'real-estate',
+                    market: 'primary',
+                    description: '海南自由贸易港免税购物商城，享受政策红利。',
+                    totalValue: 120000000,
+                    availableShares: 600,
+                    pricePerShare: 200000,
+                    status: 'active',
+                    location: '海南',
+                    yield: '8.2%',
+                    icon: '🏪',
+                    riskLevel: '中高',
+                    minInvestment: 200000
+                },
+                
+                // 新增基础设施类资产
+                {
+                    id: 'asset-026',
+                    name: '粤港澳大湾区跨海大桥',
+                    type: 'infrastructure',
+                    market: 'primary',
+                    description: '连接粤港澳大湾区的重要跨海大桥项目，促进区域一体化发展。',
+                    totalValue: 350000000,
+                    availableShares: 1750,
+                    pricePerShare: 200000,
+                    status: 'pending',
+                    location: '广东',
+                    yield: '5.2%',
+                    icon: '🌉',
+                    riskLevel: '低',
+                    minInvestment: 200000
+                },
+                {
+                    id: 'asset-027',
+                    name: '成渝高铁扩容工程',
+                    type: 'infrastructure',
+                    market: 'secondary',
+                    description: '成都至重庆高速铁路扩容改造工程，提升运输能力。',
+                    totalValue: 180000000,
+                    availableShares: 1800,
+                    pricePerShare: 100000,
+                    status: 'active',
+                    location: '四川-重庆',
+                    yield: '5.8%',
+                    icon: '🚄',
+                    riskLevel: '低',
+                    minInvestment: 100000,
+                    tradingVolume: 2800000,
+                    priceChange: '+1.9%'
+                },
+                {
+                    id: 'asset-028',
+                    name: '长三角智慧物流园',
+                    type: 'infrastructure',
+                    market: 'primary',
+                    description: '长三角地区智慧物流园区，采用AI和IoT技术。',
+                    totalValue: 75000000,
+                    availableShares: 1500,
+                    pricePerShare: 50000,
+                    status: 'active',
+                    location: '江苏',
+                    yield: '6.8%',
+                    icon: '📦',
+                    riskLevel: '中等',
+                    minInvestment: 50000
+                },
+                {
+                    id: 'asset-029',
+                    name: '雄安新区数据中心',
+                    type: 'infrastructure',
+                    market: 'secondary',
+                    description: '雄安新区大型云计算数据中心，服务京津冀地区。',
+                    totalValue: 125000000,
+                    availableShares: 1250,
+                    pricePerShare: 100000,
+                    status: 'active',
+                    location: '河北',
+                    yield: '7.2%',
+                    icon: '💾',
+                    riskLevel: '中等',
+                    minInvestment: 100000,
+                    tradingVolume: 1950000,
+                    priceChange: '+4.3%'
+                },
+                {
+                    id: 'asset-030',
+                    name: '西部陆海新通道铁路',
+                    type: 'infrastructure',
+                    market: 'primary',
+                    description: '西部陆海新通道重要铁路段，连接西南与东南亚。',
+                    totalValue: 220000000,
+                    availableShares: 1100,
+                    pricePerShare: 200000,
+                    status: 'pending',
+                    location: '广西',
+                    yield: '5.5%',
+                    icon: '🚂',
+                    riskLevel: '低',
+                    minInvestment: 200000
+                },
+                
+                // 新增能源类资产
+                {
+                    id: 'asset-031',
+                    name: '青海光伏发电基地',
+                    type: 'energy',
+                    market: 'primary',
+                    description: '青海省大型光伏发电基地，装机容量500MW，清洁能源示范项目。',
+                    totalValue: 150000000,
+                    availableShares: 1500,
+                    pricePerShare: 100000,
+                    status: 'active',
+                    location: '青海',
+                    yield: '8.5%',
+                    icon: '☀️',
+                    riskLevel: '中等',
+                    minInvestment: 100000
+                },
+                {
+                    id: 'asset-032',
+                    name: '东海海上风电场',
+                    type: 'energy',
+                    market: 'secondary',
+                    description: '东海海域大型海上风电场，装机容量300MW。',
+                    totalValue: 180000000,
+                    availableShares: 1800,
+                    pricePerShare: 100000,
+                    status: 'active',
+                    location: '江苏',
+                    yield: '8.8%',
+                    icon: '🌊',
+                    riskLevel: '中高',
+                    minInvestment: 100000,
+                    tradingVolume: 3200000,
+                    priceChange: '+5.8%'
+                },
+                {
+                    id: 'asset-033',
+                    name: '山西煤层气开发',
+                    type: 'energy',
+                    market: 'primary',
+                    description: '山西省煤层气开发利用项目，变废为宝，环保效益显著。',
+                    totalValue: 85000000,
+                    availableShares: 1700,
+                    pricePerShare: 50000,
+                    status: 'active',
+                    location: '山西',
+                    yield: '7.8%',
+                    icon: '⛽',
+                    riskLevel: '中高',
+                    minInvestment: 50000
+                },
+                {
+                    id: 'asset-034',
+                    name: '广东核电站扩建',
+                    type: 'energy',
+                    market: 'secondary',
+                    description: '广东省核电站扩建项目，清洁高效能源。',
+                    totalValue: 450000000,
+                    availableShares: 2250,
+                    pricePerShare: 200000,
+                    status: 'active',
+                    location: '广东',
+                    yield: '6.5%',
+                    icon: '⚛️',
+                    riskLevel: '低',
+                    minInvestment: 200000,
+                    tradingVolume: 5400000,
+                    priceChange: '+2.1%'
+                },
+                {
+                    id: 'asset-035',
+                    name: '西藏地热发电项目',
+                    type: 'energy',
+                    market: 'primary',
+                    description: '西藏地热资源开发利用项目，可再生清洁能源。',
+                    totalValue: 65000000,
+                    availableShares: 1300,
+                    pricePerShare: 50000,
+                    status: 'pending',
+                    location: '西藏',
+                    yield: '9.2%',
+                    icon: '🌋',
+                    riskLevel: '高',
+                    minInvestment: 50000
+                },
+                
+                // 新增大宗商品类资产
+                {
+                    id: 'asset-036',
+                    name: '稀土金属储备基金',
+                    type: 'commodities',
+                    market: 'secondary',
+                    description: '稀土金属战略储备投资基金，受益于新能源产业发展。',
+                    totalValue: 120000000,
+                    availableShares: 2400,
+                    pricePerShare: 50000,
+                    status: 'active',
+                    location: '内蒙古',
+                    yield: '12.8%',
+                    icon: '🔮',
+                    riskLevel: '高',
+                    minInvestment: 50000,
+                    tradingVolume: 4800000,
+                    priceChange: '+15.2%'
+                },
+                {
+                    id: 'asset-037',
+                    name: '锂矿开采权投资',
+                    type: 'commodities',
+                    market: 'primary',
+                    description: '锂矿开采权投资项目，新能源汽车产业链核心资源。',
+                    totalValue: 200000000,
+                    availableShares: 1000,
+                    pricePerShare: 200000,
+                    status: 'active',
+                    location: '四川',
+                    yield: '18.5%',
+                    icon: '🔋',
+                    riskLevel: '高',
+                    minInvestment: 200000
+                },
+                {
+                    id: 'asset-038',
+                    name: '钢铁期货仓储',
+                    type: 'commodities',
+                    market: 'secondary',
+                    description: '钢铁期货实物仓储投资，受益于基建需求。',
+                    totalValue: 90000000,
+                    availableShares: 1800,
+                    pricePerShare: 50000,
+                    status: 'active',
+                    location: '河北',
+                    yield: '8.2%',
+                    icon: '🏗️',
+                    riskLevel: '中等',
+                    minInvestment: 50000,
+                    tradingVolume: 2700000,
+                    priceChange: '+3.8%'
+                },
+                {
+                    id: 'asset-039',
+                    name: '农产品期货基金',
+                    type: 'commodities',
+                    market: 'secondary',
+                    description: '大豆、玉米等农产品期货投资基金。',
+                    totalValue: 45000000,
+                    availableShares: 4500,
+                    pricePerShare: 10000,
+                    status: 'active',
+                    location: '东北',
+                    yield: '6.8%',
+                    icon: '🌾',
+                    riskLevel: '中等',
+                    minInvestment: 10000,
+                    tradingVolume: 1350000,
+                    priceChange: '+2.5%'
+                },
+                {
+                    id: 'asset-040',
+                    name: '天然气储备投资',
+                    type: 'commodities',
+                    market: 'primary',
+                    description: '天然气战略储备投资项目，清洁能源储备。',
+                    totalValue: 160000000,
+                    availableShares: 1600,
+                    pricePerShare: 100000,
+                    status: 'active',
+                    location: '新疆',
+                    yield: '9.5%',
+                    icon: '🔥',
+                    riskLevel: '中高',
+                    minInvestment: 100000
+                },
+                
+                // 新增艺术品类资产
+                {
+                    id: 'asset-041',
+                    name: '明清瓷器收藏基金',
+                    type: 'art',
+                    market: 'secondary',
+                    description: '明清时期精品瓷器收藏投资基金，文化价值与投资价值并重。',
+                    totalValue: 80000000,
+                    availableShares: 800,
+                    pricePerShare: 100000,
+                    status: 'active',
+                    location: '北京',
+                    yield: '16.8%',
+                    icon: '🏺',
+                    riskLevel: '高',
+                    minInvestment: 100000,
+                    tradingVolume: 1600000,
+                    priceChange: '+11.2%'
+                },
+                {
+                    id: 'asset-042',
+                    name: '现代雕塑艺术基金',
+                    type: 'art',
+                    market: 'primary',
+                    description: '现代雕塑艺术品投资基金，关注新兴艺术家作品。',
+                    totalValue: 35000000,
+                    availableShares: 700,
+                    pricePerShare: 50000,
+                    status: 'pending',
+                    location: '上海',
+                    yield: '14.5%',
+                    icon: '🗿',
+                    riskLevel: '高',
+                    minInvestment: 50000
+                },
+                {
+                    id: 'asset-043',
+                    name: '书画名作投资组合',
+                    type: 'art',
+                    market: 'secondary',
+                    description: '中国传统书画名作投资组合，传承文化价值。',
+                    totalValue: 150000000,
+                    availableShares: 1500,
+                    pricePerShare: 100000,
+                    status: 'active',
+                    location: '北京',
+                    yield: '13.2%',
+                    icon: '🖼️',
+                    riskLevel: '高',
+                    minInvestment: 100000,
+                    tradingVolume: 2250000,
+                    priceChange: '+9.8%'
+                },
+                {
+                    id: 'asset-044',
+                    name: '珠宝玉石收藏基金',
+                    type: 'art',
+                    market: 'primary',
+                    description: '高端珠宝玉石收藏投资基金，稀缺性资源。',
+                    totalValue: 95000000,
+                    availableShares: 950,
+                    pricePerShare: 100000,
+                    status: 'active',
+                    location: '云南',
+                    yield: '17.5%',
+                    icon: '💎',
+                    riskLevel: '高',
+                    minInvestment: 100000
+                },
+                
+                // 新增知识产权类资产
+                {
+                    id: 'asset-045',
+                    name: '人工智能算法专利',
+                    type: 'intellectual',
+                    market: 'primary',
+                    description: '人工智能核心算法专利组合，涵盖机器学习、深度学习等技术。',
+                    totalValue: 180000000,
+                    availableShares: 1800,
+                    pricePerShare: 100000,
+                    status: 'active',
+                    location: '北京',
+                    yield: '15.8%',
+                    icon: '🤖',
+                    riskLevel: '高',
+                    minInvestment: 100000
+                },
+                {
+                    id: 'asset-046',
+                    name: '生物医药专利池',
+                    type: 'intellectual',
+                    market: 'secondary',
+                    description: '生物医药核心专利池，包含新药研发、基因治疗等技术。',
+                    totalValue: 220000000,
+                    availableShares: 2200,
+                    pricePerShare: 100000,
+                    status: 'active',
+                    location: '上海',
+                    yield: '19.2%',
+                    icon: '💊',
+                    riskLevel: '高',
+                    minInvestment: 100000,
+                    tradingVolume: 4400000,
+                    priceChange: '+12.8%'
+                },
+                {
+                    id: 'asset-047',
+                    name: '区块链技术专利',
+                    type: 'intellectual',
+                    market: 'primary',
+                    description: '区块链底层技术专利组合，数字经济基础设施。',
+                    totalValue: 85000000,
+                    availableShares: 850,
+                    pricePerShare: 100000,
+                    status: 'pending',
+                    location: '深圳',
+                    yield: '22.5%',
+                    icon: '⛓️',
+                    riskLevel: '高',
+                    minInvestment: 100000
+                },
+                {
+                    id: 'asset-048',
+                    name: '半导体芯片专利',
+                    type: 'intellectual',
+                    market: 'secondary',
+                    description: '半导体芯片设计制造专利，科技自主可控核心技术。',
+                    totalValue: 320000000,
+                    availableShares: 1600,
+                    pricePerShare: 200000,
+                    status: 'active',
+                    location: '深圳',
+                    yield: '16.8%',
+                    icon: '💻',
+                    riskLevel: '高',
+                    minInvestment: 200000,
+                    tradingVolume: 6400000,
+                    priceChange: '+8.9%'
+                },
+                {
+                    id: 'asset-049',
+                    name: '量子计算专利组合',
+                    type: 'intellectual',
+                    market: 'primary',
+                    description: '量子计算前沿技术专利组合，未来科技制高点。',
+                    totalValue: 150000000,
+                    availableShares: 750,
+                    pricePerShare: 200000,
+                    status: 'active',
+                    location: '北京',
+                    yield: '25.8%',
+                    icon: '⚛️',
+                    riskLevel: '极高',
+                    minInvestment: 200000
+                },
+                {
+                    id: 'asset-050',
+                    name: '航空航天技术专利',
+                    type: 'intellectual',
+                    market: 'secondary',
+                    description: '航空航天核心技术专利，包含发动机、导航等关键技术。',
+                    totalValue: 280000000,
+                    availableShares: 1400,
+                    pricePerShare: 200000,
+                    status: 'active',
+                    location: '西安',
+                    yield: '14.2%',
+                    icon: '🚀',
+                    riskLevel: '中高',
+                    minInvestment: 200000,
+                    tradingVolume: 3920000,
+                    priceChange: '+6.5%'
+                }
+            ];
+            
+            // 获取从资产管理界面发行的项目
+            const publishedAssets = JSON.parse(localStorage.getItem('publishedAssets') || '[]');
+            
+            // 衍生品市场数据
+            const derivativesData = [
+                // 期货合约
+                {
+                    id: 'derivative-001',
+                    name: '上海房地产指数期货',
+                    type: 'futures',
+                    market: 'derivatives',
+                    category: 'futures',
+                    description: '基于上海核心区域房地产价格指数的标准化期货合约。',
+                    underlyingAsset: '上海房地产指数',
+                    contractSize: '100万元/手',
+                    marginRate: '10%',
+                    maturityDate: '2024-12-15',
+                    currentPrice: 4850,
+                    priceChange: '+2.3%',
+                    volume: 15420,
+                    openInterest: 8960,
+                    status: 'active',
+                    yield: '15.8%',
+                    icon: '📈',
+                    riskLevel: '高',
+                    minInvestment: 48500
+                },
+                {
+                    id: 'derivative-002',
+                    name: '新能源ETF期货',
+                    type: 'futures',
+                    market: 'derivatives',
+                    category: 'futures',
+                    description: '追踪新能源资产组合表现的ETF期货合约。',
+                    underlyingAsset: '新能源资产ETF',
+                    contractSize: '50万元/手',
+                    marginRate: '15%',
+                    maturityDate: '2024-09-20',
+                    currentPrice: 3240,
+                    priceChange: '+4.1%',
+                    volume: 23150,
+                    openInterest: 12340,
+                    status: 'active',
+                    yield: '18.5%',
+                    icon: '⚡',
+                    riskLevel: '高',
+                    minInvestment: 48600
+                },
+                {
+                    id: 'derivative-003',
+                    name: '基础设施债券期货',
+                    type: 'futures',
+                    market: 'derivatives',
+                    category: 'futures',
+                    description: '基于基础设施建设债券的期货合约，收益稳定。',
+                    underlyingAsset: '基础设施债券指数',
+                    contractSize: '200万元/手',
+                    marginRate: '8%',
+                    maturityDate: '2024-11-30',
+                    currentPrice: 9850,
+                    priceChange: '+1.2%',
+                    volume: 8960,
+                    openInterest: 5420,
+                    status: 'active',
+                    yield: '8.9%',
+                    icon: '🏗️',
+                    riskLevel: '中等',
+                    minInvestment: 78800
+                },
+                
+                // 期权产品
+                {
+                    id: 'derivative-004',
+                    name: '黄金看涨期权',
+                    type: 'options',
+                    market: 'derivatives',
+                    category: 'options',
+                    description: '黄金价格看涨期权，提供价格上涨保护。',
+                    underlyingAsset: '实物黄金',
+                    strikePrice: 450,
+                    optionType: '看涨期权',
+                    expiryDate: '2024-08-15',
+                    premium: 25,
+                    currentPrice: 32,
+                    priceChange: '+12.5%',
+                    volume: 5680,
+                    status: 'active',
+                    yield: '28.0%',
+                    icon: '🥇',
+                    riskLevel: '高',
+                    minInvestment: 2500
+                },
+                {
+                    id: 'derivative-005',
+                    name: '房地产看跌期权',
+                    type: 'options',
+                    market: 'derivatives',
+                    category: 'options',
+                    description: '房地产价格看跌期权，对冲房价下跌风险。',
+                    underlyingAsset: '房地产指数',
+                    strikePrice: 4800,
+                    optionType: '看跌期权',
+                    expiryDate: '2024-10-20',
+                    premium: 180,
+                    currentPrice: 165,
+                    priceChange: '-8.3%',
+                    volume: 3420,
+                    status: 'active',
+                    yield: '-8.3%',
+                    icon: '🏠',
+                    riskLevel: '中高',
+                    minInvestment: 16500
+                },
+                {
+                    id: 'derivative-006',
+                    name: '能源价格保护期权',
+                    type: 'options',
+                    market: 'derivatives',
+                    category: 'options',
+                    description: '能源价格波动保护期权组合，双向保护。',
+                    underlyingAsset: '能源价格指数',
+                    strikePrice: 3200,
+                    optionType: '双向期权',
+                    expiryDate: '2024-12-31',
+                    premium: 240,
+                    currentPrice: 285,
+                    priceChange: '+18.8%',
+                    volume: 7890,
+                    status: 'active',
+                    yield: '18.8%',
+                    icon: '⚡',
+                    riskLevel: '中等',
+                    minInvestment: 24000
+                },
+                
+                // 收益互换
+                {
+                    id: 'derivative-007',
+                    name: '房地产-债券收益互换',
+                    type: 'swaps',
+                    market: 'derivatives',
+                    category: 'swaps',
+                    description: '房地产收益与固定利率债券收益的互换合约。',
+                    payLeg: '房地产指数收益',
+                    receiveLeg: '5年期国债+200bp',
+                    notionalAmount: '1000万元',
+                    maturity: '3年',
+                    currentValue: 1050000,
+                    priceChange: '+5.0%',
+                    status: 'active',
+                    yield: '7.2%',
+                    icon: '🔄',
+                    riskLevel: '中等',
+                    minInvestment: 1000000
+                },
+                {
+                    id: 'derivative-008',
+                    name: '商品-股权收益互换',
+                    type: 'swaps',
+                    market: 'derivatives',
+                    category: 'swaps',
+                    description: '大宗商品收益与股权投资收益的互换产品。',
+                    payLeg: '商品指数收益',
+                    receiveLeg: '沪深300指数收益',
+                    notionalAmount: '500万元',
+                    maturity: '2年',
+                    currentValue: 525000,
+                    priceChange: '+5.0%',
+                    status: 'active',
+                    yield: '12.5%',
+                    icon: '🔄',
+                    riskLevel: '中高',
+                    minInvestment: 500000
+                },
+                
+                // 结构化产品
+                {
+                    id: 'derivative-009',
+                    name: '多资产保本结构票据',
+                    type: 'structured',
+                    market: 'derivatives',
+                    category: 'structured',
+                    description: '挂钩多种RWA资产的保本型结构化票据。',
+                    underlyingAssets: ['房地产指数', '基础设施债券', '黄金'],
+                    principalProtection: '100%',
+                    participationRate: '80%',
+                    maturity: '18个月',
+                    currentPrice: 1025,
+                    priceChange: '+2.5%',
+                    status: 'active',
+                    yield: '6.8%',
+                    icon: '🛡️',
+                    riskLevel: '低',
+                    minInvestment: 100000
+                },
+                {
+                    id: 'derivative-010',
+                    name: '高收益增强型票据',
+                    type: 'structured',
+                    market: 'derivatives',
+                    category: 'structured',
+                    description: '基于新能源和科技专利的高收益结构化产品。',
+                    underlyingAssets: ['新能源ETF', '5G专利组合'],
+                    principalProtection: '85%',
+                    participationRate: '120%',
+                    maturity: '2年',
+                    currentPrice: 1180,
+                    priceChange: '+18.0%',
+                    status: 'active',
+                    yield: '22.5%',
+                    icon: '🚀',
+                    riskLevel: '高',
+                    minInvestment: 200000
+                },
+                {
+                    id: 'derivative-011',
+                    name: '艺术品价值增长票据',
+                    type: 'structured',
+                    market: 'derivatives',
+                    category: 'structured',
+                    description: '与艺术品价值增长挂钩的结构化投资产品。',
+                    underlyingAssets: ['当代艺术品指数', '古董文物指数'],
+                    principalProtection: '90%',
+                    participationRate: '100%',
+                    maturity: '3年',
+                    currentPrice: 1320,
+                    priceChange: '+32.0%',
+                    status: 'active',
+                    yield: '35.8%',
+                    icon: '🎨',
+                    riskLevel: '高',
+                    minInvestment: 300000
+                },
+                {
+                    id: 'derivative-012',
+                    name: '智能投顾组合票据',
+                    type: 'structured',
+                    market: 'derivatives',
+                    category: 'structured',
+                    description: 'AI智能投顾管理的多元化RWA资产组合票据。',
+                    underlyingAssets: ['多元化RWA组合'],
+                    principalProtection: '95%',
+                    participationRate: '90%',
+                    maturity: '1年',
+                    currentPrice: 1085,
+                    priceChange: '+8.5%',
+                    status: 'active',
+                    yield: '10.2%',
+                    icon: '🤖',
+                    riskLevel: '中等',
+                    minInvestment: 150000
+                },
+                
+                // 新增期货类衍生品
+                {
+                    id: 'derivative-013',
+                    name: '锂期货合约',
+                    type: 'futures',
+                    market: 'derivatives',
+                    category: 'futures',
+                    description: '锂金属期货合约，新能源产业链核心原料。',
+                    underlyingAsset: '锂金属',
+                    contractSize: '5吨/手',
+                    marginRate: '15%',
+                    maturityDate: '2024-09-30',
+                    currentPrice: 485000,
+                    priceChange: '+12.8%',
+                    volume: 2800,
+                    openInterest: 4200,
+                    status: 'active',
+                    yield: '18.5%',
+                    icon: '🔋',
+                    riskLevel: '高',
+                    minInvestment: 72750
+                },
+                {
+                    id: 'derivative-014',
+                    name: '稀土期货合约',
+                    type: 'futures',
+                    market: 'derivatives',
+                    category: 'futures',
+                    description: '稀土金属期货合约，战略性矿产资源。',
+                    underlyingAsset: '稀土氧化物',
+                    contractSize: '1吨/手',
+                    marginRate: '20%',
+                    maturityDate: '2024-12-31',
+                    currentPrice: 125000,
+                    priceChange: '+15.2%',
+                    volume: 1950,
+                    openInterest: 2850,
+                    status: 'active',
+                    yield: '22.8%',
+                    icon: '🔮',
+                    riskLevel: '极高',
+                    minInvestment: 25000
+                },
+                {
+                    id: 'derivative-015',
+                    name: '碳排放权期货',
+                    type: 'futures',
+                    market: 'derivatives',
+                    category: 'futures',
+                    description: '碳排放权期货合约，绿色金融创新产品。',
+                    underlyingAsset: '碳排放配额',
+                    contractSize: '1万吨CO2当量/手',
+                    marginRate: '10%',
+                    maturityDate: '2024-12-31',
+                    currentPrice: 58.5,
+                    priceChange: '+8.3%',
+                    volume: 3200,
+                    openInterest: 4800,
+                    status: 'active',
+                    yield: '12.3%',
+                    icon: '🌱',
+                    riskLevel: '中高',
+                    minInvestment: 585
+                },
+                {
+                    id: 'derivative-016',
+                    name: '电力期货合约',
+                    type: 'futures',
+                    market: 'derivatives',
+                    category: 'futures',
+                    description: '电力期货合约，能源市场化交易工具。',
+                    underlyingAsset: '电力',
+                    contractSize: '1万千瓦时/手',
+                    marginRate: '8%',
+                    maturityDate: '2024-08-31',
+                    currentPrice: 0.65,
+                    priceChange: '+3.2%',
+                    volume: 5600,
+                    openInterest: 8400,
+                    status: 'active',
+                    yield: '8.8%',
+                    icon: '⚡',
+                    riskLevel: '中等',
+                    minInvestment: 52
+                },
+                {
+                    id: 'derivative-017',
+                    name: '天然气期货合约',
+                    type: 'futures',
+                    market: 'derivatives',
+                    category: 'futures',
+                    description: '天然气期货合约，清洁能源价格发现工具。',
+                    underlyingAsset: '天然气',
+                    contractSize: '1万立方米/手',
+                    marginRate: '12%',
+                    maturityDate: '2024-11-30',
+                    currentPrice: 3.85,
+                    priceChange: '+5.8%',
+                    volume: 4200,
+                    openInterest: 6300,
+                    status: 'active',
+                    yield: '11.2%',
+                    icon: '🔥',
+                    riskLevel: '中高',
+                    minInvestment: 462
+                },
+                {
+                    id: 'derivative-018',
+                    name: '房地产指数期货',
+                    type: 'futures',
+                    market: 'derivatives',
+                    category: 'futures',
+                    description: '房地产价格指数期货，房地产市场风险管理工具。',
+                    underlyingAsset: '房地产价格指数',
+                    contractSize: '100万元/手',
+                    marginRate: '15%',
+                    maturityDate: '2024-12-31',
+                    currentPrice: 1285.6,
+                    priceChange: '+2.8%',
+                    volume: 1800,
+                    openInterest: 2700,
+                    status: 'active',
+                    yield: '6.8%',
+                    icon: '🏠',
+                    riskLevel: '中高',
+                    minInvestment: 192840
+                },
+                
+                // 新增期权类衍生品
+                {
+                    id: 'derivative-019',
+                    name: '新能源汽车股票期权',
+                    type: 'options',
+                    market: 'derivatives',
+                    category: 'options',
+                    description: '新能源汽车龙头股票看涨期权，把握行业发展机遇。',
+                    underlyingAsset: '新能源汽车ETF',
+                    contractSize: '1万份/手',
+                    marginRate: '20%',
+                    maturityDate: '2024-09-20',
+                    currentPrice: 12.8,
+                    priceChange: '+18.5%',
+                    volume: 3500,
+                    openInterest: 5250,
+                    status: 'active',
+                    yield: '25.6%',
+                    icon: '🚗',
+                    riskLevel: '极高',
+                    minInvestment: 2560
+                },
+                {
+                    id: 'derivative-020',
+                    name: '科技股指数期权',
+                    type: 'options',
+                    market: 'derivatives',
+                    category: 'options',
+                    description: '科技股指数看跌期权，科技股下行风险对冲。',
+                    underlyingAsset: '科技股指数',
+                    contractSize: '100万元/手',
+                    marginRate: '18%',
+                    maturityDate: '2024-10-18',
+                    currentPrice: 28.5,
+                    priceChange: '+11.2%',
+                    volume: 2200,
+                    openInterest: 3300,
+                    status: 'active',
+                    yield: '19.8%',
+                    icon: '💻',
+                    riskLevel: '高',
+                    minInvestment: 5130
+                },
+                {
+                    id: 'derivative-021',
+                    name: '医药生物期权',
+                    type: 'options',
+                    market: 'derivatives',
+                    category: 'options',
+                    description: '医药生物板块看涨期权，医疗健康产业投资工具。',
+                    underlyingAsset: '医药生物ETF',
+                    contractSize: '1万份/手',
+                    marginRate: '16%',
+                    maturityDate: '2024-11-15',
+                    currentPrice: 18.9,
+                    priceChange: '+14.8%',
+                    volume: 2800,
+                    openInterest: 4200,
+                    status: 'active',
+                    yield: '21.5%',
+                    icon: '💊',
+                    riskLevel: '高',
+                    minInvestment: 3024
+                },
+                {
+                    id: 'derivative-022',
+                    name: '消费板块期权',
+                    type: 'options',
+                    market: 'derivatives',
+                    category: 'options',
+                    description: '消费板块看涨期权，消费升级主题投资。',
+                    underlyingAsset: '消费ETF',
+                    contractSize: '1万份/手',
+                    marginRate: '14%',
+                    maturityDate: '2024-12-20',
+                    currentPrice: 15.2,
+                    priceChange: '+9.8%',
+                    volume: 3100,
+                    openInterest: 4650,
+                    status: 'active',
+                    yield: '16.8%',
+                    icon: '🛍️',
+                    riskLevel: '中高',
+                    minInvestment: 2128
+                },
+                {
+                    id: 'derivative-023',
+                    name: '金融板块期权',
+                    type: 'options',
+                    market: 'derivatives',
+                    category: 'options',
+                    description: '金融板块看跌期权，金融风险对冲工具。',
+                    underlyingAsset: '金融ETF',
+                    contractSize: '1万份/手',
+                    marginRate: '12%',
+                    maturityDate: '2024-08-16',
+                    currentPrice: 9.8,
+                    priceChange: '+6.5%',
+                    volume: 4200,
+                    openInterest: 6300,
+                    status: 'active',
+                    yield: '13.2%',
+                    icon: '🏦',
+                    riskLevel: '中等',
+                    minInvestment: 1176
+                },
+                {
+                    id: 'derivative-024',
+                    name: '人工智能期权',
+                    type: 'options',
+                    market: 'derivatives',
+                    category: 'options',
+                    description: '人工智能概念股看涨期权，AI产业投资机会。',
+                    underlyingAsset: 'AI概念ETF',
+                    contractSize: '1万份/手',
+                    marginRate: '25%',
+                    maturityDate: '2024-10-25',
+                    currentPrice: 32.5,
+                    priceChange: '+22.8%',
+                    volume: 1800,
+                    openInterest: 2700,
+                    status: 'active',
+                    yield: '35.8%',
+                    icon: '🤖',
+                    riskLevel: '极高',
+                    minInvestment: 8125
+                },
+                
+                // 新增掉期类衍生品
+                {
+                    id: 'derivative-025',
+                    name: '利率掉期合约',
+                    type: 'swaps',
+                    market: 'derivatives',
+                    category: 'swaps',
+                    description: '固定利率与浮动利率掉期合约，对冲利率风险。',
+                    payLeg: '固定利率4.5%',
+                    receiveLeg: '浮动利率(SHIBOR+1%)',
+                    notionalAmount: '1000万元',
+                    maturity: '3年',
+                    currentValue: 1025000,
+                    priceChange: '+2.5%',
+                    status: 'active',
+                    yield: '4.2%',
+                    icon: '🔄',
+                    riskLevel: '中等',
+                    minInvestment: 500000
+                },
+                {
+                    id: 'derivative-026',
+                    name: '货币掉期合约',
+                    type: 'swaps',
+                    market: 'derivatives',
+                    category: 'swaps',
+                    description: '人民币与美元货币掉期合约，对冲汇率风险。',
+                    payLeg: 'USD固定利率3.5%',
+                    receiveLeg: 'CNY浮动利率',
+                    notionalAmount: '500万美元',
+                    maturity: '2年',
+                    currentValue: 3625000,
+                    priceChange: '+3.8%',
+                    status: 'active',
+                    yield: '3.8%',
+                    icon: '💱',
+                    riskLevel: '中高',
+                    minInvestment: 400000
+                },
+                {
+                    id: 'derivative-027',
+                    name: '信用违约掉期',
+                    type: 'swaps',
+                    market: 'derivatives',
+                    category: 'swaps',
+                    description: '企业债券信用违约掉期，信用风险保护工具。',
+                    payLeg: '信用保护费0.8%',
+                    receiveLeg: '违约损失补偿',
+                    notionalAmount: '2000万元',
+                    maturity: '5年',
+                    currentValue: 1976000,
+                    priceChange: '-1.2%',
+                    status: 'active',
+                    yield: '6.5%',
+                    icon: '🛡️',
+                    riskLevel: '高',
+                    minInvestment: 2000000
+                },
+                {
+                    id: 'derivative-028',
+                    name: '商品价格掉期',
+                    type: 'swaps',
+                    market: 'derivatives',
+                    category: 'swaps',
+                    description: '大宗商品价格掉期合约，商品价格风险管理。',
+                    payLeg: '固定价格',
+                    receiveLeg: '商品指数浮动价格',
+                    notionalAmount: '5000万元',
+                    maturity: '18个月',
+                    currentValue: 5290000,
+                    priceChange: '+5.8%',
+                    status: 'active',
+                    yield: '7.8%',
+                    icon: '📊',
+                    riskLevel: '中高',
+                    minInvestment: 5000000
+                },
+                {
+                    id: 'derivative-029',
+                    name: '股权收益掉期',
+                    type: 'swaps',
+                    market: 'derivatives',
+                    category: 'swaps',
+                    description: '股权收益掉期合约，股票投资风险转移工具。',
+                    payLeg: '固定收益6%',
+                    receiveLeg: '沪深300指数收益',
+                    notionalAmount: '3000万元',
+                    maturity: '2年',
+                    currentValue: 2946000,
+                    priceChange: '-1.8%',
+                    status: 'active',
+                    yield: '9.5%',
+                    icon: '📈',
+                    riskLevel: '中高',
+                    minInvestment: 2400000
+                },
+                {
+                    id: 'derivative-030',
+                    name: '通胀掉期合约',
+                    type: 'swaps',
+                    market: 'derivatives',
+                    category: 'swaps',
+                    description: '通胀掉期合约，通胀风险对冲工具。',
+                    payLeg: '固定通胀率2.5%',
+                    receiveLeg: 'CPI实际通胀率',
+                    notionalAmount: '1000万元',
+                    maturity: '5年',
+                    currentValue: 1015000,
+                    priceChange: '+1.5%',
+                    status: 'active',
+                    yield: '5.2%',
+                    icon: '📊',
+                    riskLevel: '中等',
+                    minInvestment: 600000
+                },
+                
+                // 新增结构化产品
+                {
+                    id: 'derivative-031',
+                    name: '绿色能源主题票据',
+                    type: 'structured',
+                    market: 'derivatives',
+                    category: 'structured',
+                    description: '挂钩绿色能源资产的ESG主题结构化票据。',
+                    underlyingAssets: ['光伏ETF', '风电指数', '新能源汽车'],
+                    principalProtection: '90%',
+                    participationRate: '110%',
+                    maturity: '2年',
+                    currentPrice: 1245,
+                    priceChange: '+24.5%',
+                    status: 'active',
+                    yield: '28.8%',
+                    icon: '🌿',
+                    riskLevel: '中高',
+                    minInvestment: 250000
+                },
+                {
+                    id: 'derivative-032',
+                    name: '科技创新增强票据',
+                    type: 'structured',
+                    market: 'derivatives',
+                    category: 'structured',
+                    description: '基于科技创新专利和AI技术的高增长票据。',
+                    underlyingAssets: ['AI专利组合', '半导体ETF', '5G技术指数'],
+                    principalProtection: '80%',
+                    participationRate: '150%',
+                    maturity: '18个月',
+                    currentPrice: 1385,
+                    priceChange: '+38.5%',
+                    status: 'active',
+                    yield: '42.8%',
+                    icon: '🚀',
+                    riskLevel: '高',
+                    minInvestment: 500000
+                },
+                {
+                    id: 'derivative-033',
+                    name: '大湾区基建票据',
+                    type: 'structured',
+                    market: 'derivatives',
+                    category: 'structured',
+                    description: '粤港澳大湾区基础设施建设主题票据。',
+                    underlyingAssets: ['大湾区基建指数', '交通运输ETF'],
+                    principalProtection: '95%',
+                    participationRate: '85%',
+                    maturity: '3年',
+                    currentPrice: 1125,
+                    priceChange: '+12.5%',
+                    status: 'active',
+                    yield: '15.2%',
+                    icon: '🌉',
+                    riskLevel: '中等',
+                    minInvestment: 300000
+                },
+                {
+                    id: 'derivative-034',
+                    name: '文化产业价值票据',
+                    type: 'structured',
+                    market: 'derivatives',
+                    category: 'structured',
+                    description: '文化创意产业和艺术品投资组合票据。',
+                    underlyingAssets: ['艺术品指数', '文化产业ETF', '知识产权组合'],
+                    principalProtection: '85%',
+                    participationRate: '120%',
+                    maturity: '2.5年',
+                    currentPrice: 1465,
+                    priceChange: '+46.5%',
+                    status: 'active',
+                    yield: '52.8%',
+                    icon: '🎭',
+                    riskLevel: '高',
+                    minInvestment: 400000
+                },
+                {
+                    id: 'derivative-035',
+                    name: '一带一路主题票据',
+                    type: 'structured',
+                    market: 'derivatives',
+                    category: 'structured',
+                    description: '一带一路沿线国家基础设施投资票据。',
+                    underlyingAssets: ['一带一路指数', '海外基建ETF'],
+                    principalProtection: '88%',
+                    participationRate: '95%',
+                    maturity: '4年',
+                    currentPrice: 1195,
+                    priceChange: '+19.5%',
+                    status: 'active',
+                    yield: '22.8%',
+                    icon: '🌍',
+                    riskLevel: '中高',
+                    minInvestment: 600000
+                }
+            ];
+            
+            // 合并数据，发行的项目显示在前面
+            return {
+                assets: [...publishedAssets, ...sampleAssets],
+                derivatives: derivativesData
+            };
+        }
+
+        let currentAssets = getAssetData().assets;
+        let currentDerivatives = getAssetData().derivatives;
+        let selectedAsset = null;
+        let currentMarket = 'primary';
+
+        // Initialize the marketplace
+        function initMarketplace() {
+            // Check user authentication first
+            if (!checkUserAuthentication()) {
+                return; // Stop initialization if user is not logged in
+            }
+            
+            const data = getAssetData();
+            currentAssets = data.assets;
+            currentDerivatives = data.derivatives;
+            
+            // Setup market tabs
+            setupMarketTabs();
+            
+            // Initialize with primary market
+            switchMarket('primary');
+            setupFilterButtons();
+            setupSearchInput();
+        }
+        
+        // Setup market tabs
+        function setupMarketTabs() {
+            const marketTabs = document.querySelectorAll('.market-tab');
+            marketTabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    const market = tab.dataset.market || tab.getAttribute('onclick').match(/'([^']+)'/)[1];
+                    switchMarket(market);
+                });
+            });
+        }
+        
+        // Switch between markets
+        function switchMarket(market) {
+            currentMarket = market;
+            
+            // Update tab active state
+            document.querySelectorAll('.market-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Update content visibility
+            document.querySelectorAll('.market-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            // Show selected market content
+            const targetContent = document.getElementById(market + '-market');
+            if (targetContent) {
+                targetContent.classList.add('active');
+            }
+            
+            // Update active tab
+            const activeTab = document.querySelector(`[onclick*="'${market}'"]`) || 
+                             document.querySelector(`[data-market="${market}"]`);
+            if (activeTab) {
+                activeTab.classList.add('active');
+            }
+            
+            // Render appropriate content
+            if (market === 'derivatives') {
+                renderDerivatives(currentDerivatives);
+            } else {
+                const filteredAssets = currentAssets.filter(asset => 
+                    asset.market === market || !asset.market
+                );
+                renderMarketAssets(filteredAssets, market);
+            }
+        }
+
+        // Render assets grid (legacy function for compatibility)
+        function renderAssets(assets) {
+            renderMarketAssets(assets, 'primary');
+        }
+        
+        // Render market-specific assets
+        function renderMarketAssets(assets, market) {
+            let gridId = 'assetsGrid';
+            if (market === 'primary') {
+                gridId = 'primaryAssetsGrid';
+            } else if (market === 'secondary') {
+                gridId = 'secondaryAssetsGrid';
+            }
+            
+            const grid = document.getElementById(gridId);
+            if (!grid) return;
+            
+            if (assets.length === 0) {
+                grid.innerHTML = `
+                    <div style="grid-column: 1 / -1; text-align: center; padding: 50px; color: #6c757d;">
+                        <i class="fas fa-search" style="font-size: 3rem; margin-bottom: 20px;"></i>
+                        <h3>未找到匹配的资产</h3>
+                        <p>请尝试调整搜索条件或筛选器</p>
+                    </div>
+                `;
+                return;
+            }
+
+            grid.innerHTML = assets.map(asset => {
+                const marketBadge = asset.market === 'primary' ? 'primary' : 
+                                   asset.market === 'secondary' ? 'secondary' : 'primary';
+                const priceDisplay = asset.pricePerShare ? 
+                    `¥${(asset.pricePerShare / 10000).toFixed(1)}万` : 
+                    '面议';
+                const changeDisplay = asset.priceChange ? 
+                    `<div class="detail-item">
+                        <div class="detail-label">价格变动</div>
+                        <div class="detail-value" style="color: ${asset.priceChange.startsWith('+') ? '#28a745' : '#dc3545'}">${asset.priceChange}</div>
+                    </div>` : '';
+                
+                return `
+                    <div class="asset-card ${asset.market || 'primary'}-market" onclick="openAssetDetail('${asset.id}')">
+                        <div class="asset-image">
+                            <span>${asset.icon}</span>
+                            <div class="asset-status ${asset.status === 'active' ? 'status-active' : 'status-pending'}">
+                                ${asset.status === 'active' ? '可投资' : '待上线'}
+                            </div>
+                            <div class="market-badge ${marketBadge}">
+                                ${market === 'primary' ? '一级' : '二级'}
+                            </div>
+                        </div>
+                        <div class="asset-content">
+                            <h3 class="asset-title">${asset.name}</h3>
+                            <p class="asset-description">${asset.description}</p>
+                            
+                            <div class="asset-details">
+                                <div class="detail-item">
+                                    <div class="detail-label">预期收益率</div>
+                                    <div class="detail-value">${asset.yield}</div>
+                                </div>
+                                <div class="detail-item">
+                                    <div class="detail-label">单价</div>
+                                    <div class="detail-value">${priceDisplay}</div>
+                                </div>
+                                ${changeDisplay}
+                            </div>
+                            
+                            <div class="asset-actions">
+                                <button class="btn btn-primary" onclick="event.stopPropagation(); openTradingModal('${asset.id}')" ${asset.status !== 'active' ? 'disabled' : ''}>
+                                    <i class="fas fa-shopping-cart"></i> 立即投资
+                                </button>
+                                <a href="project_detail.html?projectId=${asset.id}" class="btn btn-secondary" onclick="event.stopPropagation()">
+                                    <i class="fas fa-info-circle"></i> 详情
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+        
+        // Render derivatives products
+        function renderDerivatives(derivatives) {
+            const grid = document.getElementById('derivativesAssetsGrid');
+            if (!grid) return;
+            
+            if (derivatives.length === 0) {
+                grid.innerHTML = `
+                    <div style="grid-column: 1 / -1; text-align: center; padding: 50px; color: #6c757d;">
+                        <i class="fas fa-chart-line" style="font-size: 3rem; margin-bottom: 20px;"></i>
+                        <h3>暂无衍生品产品</h3>
+                        <p>敬请期待更多金融创新产品</p>
+                    </div>
+                `;
+                return;
+            }
+
+            grid.innerHTML = derivatives.map(derivative => {
+                let detailsHtml = '';
+                
+                if (derivative.category === 'futures') {
+                    detailsHtml = `
+                        <div class="detail-item">
+                            <div class="detail-label">合约规模</div>
+                            <div class="detail-value">${derivative.contractSize}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">保证金率</div>
+                            <div class="detail-value">${derivative.marginRate}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">到期日</div>
+                            <div class="detail-value">${derivative.maturityDate}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">价格变动</div>
+                            <div class="detail-value" style="color: ${derivative.priceChange.startsWith('+') ? '#28a745' : '#dc3545'}">${derivative.priceChange}</div>
+                        </div>
+                    `;
+                } else if (derivative.category === 'options') {
+                    detailsHtml = `
+                        <div class="detail-item">
+                            <div class="detail-label">期权类型</div>
+                            <div class="detail-value">${derivative.optionType}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">行权价</div>
+                            <div class="detail-value">¥${derivative.strikePrice}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">到期日</div>
+                            <div class="detail-value">${derivative.expiryDate}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">价格变动</div>
+                            <div class="detail-value" style="color: ${derivative.priceChange.startsWith('+') ? '#28a745' : '#dc3545'}">${derivative.priceChange}</div>
+                        </div>
+                    `;
+                } else if (derivative.category === 'swaps') {
+                    detailsHtml = `
+                        <div class="detail-item">
+                            <div class="detail-label">名义本金</div>
+                            <div class="detail-value">${derivative.notionalAmount}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">期限</div>
+                            <div class="detail-value">${derivative.maturity}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">当前价值</div>
+                            <div class="detail-value">¥${(derivative.currentValue / 10000).toFixed(1)}万</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">价格变动</div>
+                            <div class="detail-value" style="color: ${derivative.priceChange.startsWith('+') ? '#28a745' : '#dc3545'}">${derivative.priceChange}</div>
+                        </div>
+                    `;
+                } else if (derivative.category === 'structured') {
+                    detailsHtml = `
+                        <div class="detail-item">
+                            <div class="detail-label">本金保护</div>
+                            <div class="detail-value">${derivative.principalProtection}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">参与率</div>
+                            <div class="detail-value">${derivative.participationRate}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">期限</div>
+                            <div class="detail-value">${derivative.maturity}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">价格变动</div>
+                            <div class="detail-value" style="color: ${derivative.priceChange.startsWith('+') ? '#28a745' : '#dc3545'}">${derivative.priceChange}</div>
+                        </div>
+                    `;
+                }
+                
+                return `
+                    <div class="asset-card derivatives" onclick="openDerivativeDetail('${derivative.id}')">
+                        <div class="asset-image">
+                            <span>${derivative.icon}</span>
+                            <div class="asset-status ${derivative.status === 'active' ? 'status-active' : 'status-pending'}">
+                                ${derivative.status === 'active' ? '可交易' : '待上线'}
+                            </div>
+                            <div class="market-badge derivatives">
+                                衍生品
+                            </div>
+                        </div>
+                        <div class="asset-content">
+                            <h3 class="asset-title">${derivative.name}</h3>
+                            <p class="asset-description">${derivative.description}</p>
+                            
+                            <div class="asset-details" style="grid-template-columns: 1fr 1fr; gap: 10px;">
+                                ${detailsHtml}
+                            </div>
+                            
+                            <div class="asset-actions">
+                                <button class="btn btn-primary" onclick="event.stopPropagation(); openDerivativeTradingModal('${derivative.id}')" ${derivative.status !== 'active' ? 'disabled' : ''}>
+                                    <i class="fas fa-chart-line"></i> 立即交易
+                                </button>
+                                <button class="btn btn-secondary" onclick="event.stopPropagation(); openDerivativeDetail('${derivative.id}')">
+                                    <i class="fas fa-info-circle"></i> 详情
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Setup filter buttons
+        function setupFilterButtons() {
+            const filterButtons = document.querySelectorAll('.filter-btn');
+            filterButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    // Remove active class from all buttons
+                    filterButtons.forEach(b => b.classList.remove('active'));
+                    // Add active class to clicked button
+                    btn.classList.add('active');
+                    
+                    const filter = btn.dataset.filter;
+                    filterAssets(filter);
+                });
+            });
+        }
+
+        // Setup search input
+        function setupSearchInput() {
+            const searchInput = document.getElementById('searchInput');
+            searchInput.addEventListener('input', debounce(searchAssets, 300));
+        }
+
+        // Filter assets by type
+        function filterAssets(type) {
+            const allAssets = getAssetData();
+            if (type === 'all') {
+                currentAssets = [...allAssets];
+            } else {
+                currentAssets = allAssets.filter(asset => asset.type === type);
+            }
+            
+            // Apply current search if any
+            const searchTerm = document.getElementById('searchInput').value;
+            if (searchTerm) {
+                searchAssets();
+            } else {
+                renderAssets(currentAssets);
+            }
+        }
+
+        // Search assets
+        function searchAssets() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            
+            if (!searchTerm) {
+                renderAssets(currentAssets);
+                return;
+            }
+            
+            const filteredAssets = currentAssets.filter(asset => 
+                asset.name.toLowerCase().includes(searchTerm) ||
+                asset.description.toLowerCase().includes(searchTerm) ||
+                asset.location.toLowerCase().includes(searchTerm)
+            );
+            
+            renderAssets(filteredAssets);
+        }
+
+        // Open asset detail
+        function openAssetDetail(assetId) {
+            window.open(`project_detail.html?projectId=${assetId}`, '_blank');
+        }
+
+        // Open trading modal
+        function openTradingModal(assetId) {
+            selectedAsset = getAssetData().find(asset => asset.id === assetId);
+            if (!selectedAsset) return;
+            
+            document.getElementById('assetName').value = selectedAsset.name;
+            document.getElementById('sharePrice').value = `¥${selectedAsset.pricePerShare.toLocaleString()}`;
+            document.getElementById('shareAmount').value = '';
+            document.getElementById('totalAmount').value = '';
+            
+            document.getElementById('tradingModal').style.display = 'block';
+            
+            // Setup share amount input listener
+            const shareAmountInput = document.getElementById('shareAmount');
+            shareAmountInput.addEventListener('input', calculateTotal);
+        }
+
+        // Close trading modal
+        function closeTradingModal() {
+            document.getElementById('tradingModal').style.display = 'none';
+            selectedAsset = null;
+        }
+
+        // Calculate total amount
+        function calculateTotal() {
+            const shareAmount = parseInt(document.getElementById('shareAmount').value) || 0;
+            const total = shareAmount * selectedAsset.pricePerShare;
+            document.getElementById('totalAmount').value = total > 0 ? `¥${total.toLocaleString()}` : '';
+        }
+
+        // Confirm purchase
+        function confirmPurchase() {
+            const shareAmount = parseInt(document.getElementById('shareAmount').value);
+            
+            if (!shareAmount || shareAmount <= 0) {
+                alert('请输入有效的购买份额数量');
+                return;
+            }
+            
+            if (shareAmount > selectedAsset.availableShares) {
+                alert('购买份额超过可用数量');
+                return;
+            }
+            
+            // Simulate purchase process
+            alert(`购买成功！\n资产：${selectedAsset.name}\n份额：${shareAmount}\n总金额：¥${(shareAmount * selectedAsset.pricePerShare).toLocaleString()}`);
+            
+            closeTradingModal();
+        }
+
+        // Open derivative detail
+        function openDerivativeDetail(derivativeId) {
+            const derivative = currentDerivatives.find(d => d.id === derivativeId);
+            if (!derivative) return;
+            
+            alert(`衍生品详情：\n\n名称：${derivative.name}\n类型：${derivative.category}\n描述：${derivative.description}\n\n详细信息页面开发中...`);
+        }
+        
+        // Open derivative trading modal
+        function openDerivativeTradingModal(derivativeId) {
+            const derivative = currentDerivatives.find(d => d.id === derivativeId);
+            if (!derivative) return;
+            
+            // For now, show a simple alert. In a real application, this would open a sophisticated trading interface
+            let tradingInfo = '';
+            
+            if (derivative.category === 'futures') {
+                tradingInfo = `合约规模：${derivative.contractSize}\n保证金率：${derivative.marginRate}\n到期日：${derivative.maturityDate}`;
+            } else if (derivative.category === 'options') {
+                tradingInfo = `期权类型：${derivative.optionType}\n行权价：¥${derivative.strikePrice}\n到期日：${derivative.expiryDate}`;
+            } else if (derivative.category === 'swaps') {
+                tradingInfo = `名义本金：${derivative.notionalAmount}\n期限：${derivative.maturity}\n当前价值：¥${(derivative.currentValue / 10000).toFixed(1)}万`;
+            } else if (derivative.category === 'structured') {
+                tradingInfo = `本金保护：${derivative.principalProtection}\n参与率：${derivative.participationRate}\n期限：${derivative.maturity}`;
+            }
+            
+            alert(`衍生品交易：\n\n${derivative.name}\n${tradingInfo}\n\n专业交易界面开发中...\n请联系客户经理进行交易。`);
+        }
+        
+        // Show derivative category
+        function showDerivativeCategory(category) {
+            const filteredDerivatives = currentDerivatives.filter(d => d.category === category);
+            renderDerivatives(filteredDerivatives);
+            
+            // Update category cards visual state
+            document.querySelectorAll('.category-card').forEach(card => {
+                card.classList.remove('active');
+            });
+            event.target.closest('.category-card').classList.add('active');
+        }
+        
+        // Switch secondary market tabs
+        function switchSecondaryTab(tabType) {
+            let filteredAssets = currentAssets.filter(asset => asset.market === 'secondary');
+            
+            switch(tabType) {
+                case 'trending':
+                    // Show assets with high trading volume
+                    filteredAssets = filteredAssets.filter(asset => asset.tradingVolume && parseInt(asset.tradingVolume.replace(/[^\d]/g, '')) > 1000);
+                    break;
+                case 'gainers':
+                    // Show assets with positive price change
+                    filteredAssets = filteredAssets.filter(asset => asset.priceChange && asset.priceChange.startsWith('+'));
+                    break;
+                case 'volume':
+                    // Sort by trading volume
+                    filteredAssets.sort((a, b) => {
+                        const volumeA = parseInt((a.tradingVolume || '0').replace(/[^\d]/g, ''));
+                        const volumeB = parseInt((b.tradingVolume || '0').replace(/[^\d]/g, ''));
+                        return volumeB - volumeA;
+                    });
+                    break;
+                default:
+                    // Show all secondary market assets
+                    break;
+            }
+            
+            renderMarketAssets(filteredAssets, 'secondary');
+            
+            // Update tab visual state
+            document.querySelectorAll('.section-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            event.target.classList.add('active');
+        }
+        
+        // Utility function for debouncing
+        function debounce(func, wait) {
+            let timeout;
+            return function executedFunction(...args) {
+                const later = () => {
+                    clearTimeout(timeout);
+                    func(...args);
+                };
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+            };
+        }
+
+        // Close modal when clicking outside
+        window.addEventListener('click', (e) => {
+            const modal = document.getElementById('tradingModal');
+            if (e.target === modal) {
+                closeTradingModal();
+            }
+        });
+
+        // Initialize marketplace when page loads
+        document.addEventListener('DOMContentLoaded', initMarketplace);
+    </script>
+    
+    <!-- API客户端和认证脚本 -->
+    <script src="js/api-client.js"></script>
+    <script src="js/auth.js"></script>
+</body>
+</html>

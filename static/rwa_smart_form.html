@@ -1289,7 +1289,7 @@
         </div>
     </div>
 
-    <script src="ai_risk_engine.js"></script>
+    <script src="js/ai_risk_engine.js"></script>
     <script>
         // Global state management
         let currentTab = 'basic';
@@ -1449,28 +1449,27 @@
         }
         
         async function triggerAIAnalysis() {
-            if (!riskEngine) return;
-            
             // Show AI analysis panel
             document.getElementById('aiAnalysisBasic').style.display = 'block';
             
             // Collect current form data
-            const assetData = {
-                type: document.getElementById('projectType').value,
-                region: document.getElementById('projectRegion').value,
-                value: parseFloat(document.getElementById('projectValue').value) * 10000 || 0,
-                name: document.getElementById('projectName').value
-            };
-            
             const projectData = {
-                applicant: {
-                    name: document.getElementById('applicantName').value,
-                    email: document.getElementById('applicantEmail').value
-                }
+                name: document.getElementById('projectName')?.value || '',
+                assetType: getSelectedAssetType(),
+                assetValue: parseFloat(document.getElementById('assetValue')?.value) || 0,
+                annualReturn: parseFloat(document.getElementById('annualReturn')?.value) || 0,
+                operationPeriod: parseInt(document.getElementById('operationPeriod')?.value) || 1,
+                location: document.getElementById('projectLocation')?.value || '',
+                description: document.getElementById('projectDescription')?.value || '',
+                // 添加文件数据
+                uploadedFiles: window.uploadedFiles || [],
+                fileCategories: categorizeUploadedFiles(),
+                totalFileSize: calculateTotalFileSize()
             };
             
-            if (!assetData.type || !assetData.region || !assetData.value) {
-                return; // 需要基本信息才能进行分析
+            if (!projectData.name || !projectData.assetType || !projectData.assetValue) {
+                alert('请先填写项目基本信息');
+                return;
             }
             
             try {
@@ -1480,41 +1479,55 @@
                 document.getElementById('complianceScore').textContent = '...';
                 document.getElementById('riskScore').textContent = '...';
                 
-                // 进行AI风险评估
-                const riskAssessment = await riskEngine.assessRisk(assetData, projectData);
-                aiAnalysisResults = riskAssessment;
+                // 显示文件分析结果
+                displayFileAnalysisResults(projectData);
                 
-                // 更新UI显示结果
-                setTimeout(() => {
-                    const feasibilityScore = Math.max(0, 100 - riskAssessment.overall.score);
-                    document.getElementById('feasibilityScore').textContent = feasibilityScore;
-                }, 1000);
+                // 调用后端AI风险评估API
+                const response = await fetch('/api/ai-risk-assessment', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        projectId: `project_${Date.now()}`,
+                        projectData: projectData
+                    })
+                });
                 
-                setTimeout(() => {
-                    const marketScore = Math.max(0, 100 - riskAssessment.factors.market.score);
-                    document.getElementById('marketScore').textContent = marketScore;
-                }, 1500);
+                const result = await response.json();
                 
-                setTimeout(() => {
-                    const complianceScore = Math.max(0, 100 - riskAssessment.factors.compliance.score);
-                    document.getElementById('complianceScore').textContent = complianceScore;
-                }, 2000);
-                
-                setTimeout(() => {
-                    const riskLevel = riskAssessment.overall.level;
-                    const riskLevelMap = {
-                        'low': '低',
-                        'medium': '中',
-                        'high': '高',
-                        'critical': '极高'
-                    };
-                    document.getElementById('riskScore').textContent = riskLevelMap[riskLevel] || '中';
-                }, 2500);
-                
-                // 显示详细的AI分析结果
-                setTimeout(() => {
-                    showDetailedAnalysis(riskAssessment);
-                }, 3000);
+                if (result.success) {
+                    const assessment = result.data;
+                    aiAnalysisResults = assessment;
+                    
+                    // 更新UI显示结果
+                    setTimeout(() => {
+                        const feasibilityScore = Math.max(0, Math.round(100 - assessment.riskScore * 10));
+                        document.getElementById('feasibilityScore').textContent = feasibilityScore;
+                    }, 1000);
+                    
+                    setTimeout(() => {
+                        const marketScore = Math.max(0, Math.round(85 - assessment.riskScore * 5));
+                        document.getElementById('marketScore').textContent = marketScore;
+                    }, 1500);
+                    
+                    setTimeout(() => {
+                        const complianceScore = Math.max(0, Math.round(90 - assessment.riskScore * 3));
+                        document.getElementById('complianceScore').textContent = complianceScore;
+                    }, 2000);
+                    
+                    setTimeout(() => {
+                        document.getElementById('riskScore').textContent = assessment.riskLevel;
+                    }, 2500);
+                    
+                    // 显示详细的AI分析结果
+                    setTimeout(() => {
+                        displayAIAnalysisResults(assessment);
+                    }, 3000);
+                    
+                } else {
+                    throw new Error(result.error || 'AI分析失败');
+                }
                 
             } catch (error) {
                 console.error('AI Analysis failed:', error);
@@ -1523,60 +1536,238 @@
                     document.getElementById('feasibilityScore').textContent = '85';
                     document.getElementById('marketScore').textContent = '78';
                     document.getElementById('complianceScore').textContent = '92';
-                    document.getElementById('riskScore').textContent = '中';
+                    document.getElementById('riskScore').textContent = '中等风险';
                 }, 1000);
+                
+                // 显示错误信息但继续流程
+                alert('AI分析服务暂时不可用，使用默认评估结果');
             }
         }
         
-        function showDetailedAnalysis(riskAssessment) {
-            // 在合规检查标签页显示详细分析
-            const analysisPanel = document.createElement('div');
-            analysisPanel.className = 'ai-analysis-panel';
-            analysisPanel.style.marginTop = '20px';
-            analysisPanel.innerHTML = `
-                <div class="ai-analysis-header">
-                    <div class="ai-icon">
-                        <i class="fas fa-brain"></i>
+        // 分类已上传的文件
+        function categorizeUploadedFiles() {
+            if (!window.uploadedFiles || window.uploadedFiles.length === 0) {
+                return {
+                    asset_docs: [],
+                    financial_docs: [],
+                    legal_docs: [],
+                    other: []
+                };
+            }
+            
+            const categories = {
+                asset_docs: [],
+                financial_docs: [],
+                legal_docs: [],
+                other: []
+            };
+            
+            window.uploadedFiles.forEach(file => {
+                const category = file.category || 'other';
+                if (categories[category]) {
+                    categories[category].push({
+                        id: file.id,
+                        name: file.originalName,
+                        size: file.fileSize,
+                        type: file.fileType,
+                        url: file.url
+                    });
+                }
+            });
+            
+            return categories;
+        }
+        
+        // 计算总文件大小
+        function calculateTotalFileSize() {
+            if (!window.uploadedFiles || window.uploadedFiles.length === 0) {
+                return 0;
+            }
+            
+            return window.uploadedFiles.reduce((total, file) => {
+                return total + (file.fileSize || 0);
+            }, 0);
+        }
+        
+        // 显示文件分析结果
+        function displayFileAnalysisResults(projectData) {
+            const fileCategories = projectData.fileCategories;
+            const totalFiles = (projectData.uploadedFiles || []).length;
+            const totalSize = projectData.totalFileSize || 0;
+            
+            // 计算文件完整性评分
+            let completenessScore = 0;
+            if (fileCategories.asset_docs?.length > 0) completenessScore += Math.min(fileCategories.asset_docs.length * 1.5, 3);
+            if (fileCategories.financial_docs?.length > 0) completenessScore += Math.min(fileCategories.financial_docs.length * 1.25, 2.5);
+            if (fileCategories.legal_docs?.length > 0) completenessScore += Math.min(fileCategories.legal_docs.length * 1.25, 2.5);
+            if (fileCategories.other?.length > 0) completenessScore += Math.min(fileCategories.other.length * 1, 2);
+            completenessScore = Math.min(Math.round(completenessScore), 10);
+            
+            // 创建文件分析面板
+            const fileAnalysisPanel = document.createElement('div');
+            fileAnalysisPanel.className = 'file-analysis-panel';
+            fileAnalysisPanel.style.cssText = `
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                color: white;
+                padding: 20px;
+                border-radius: 10px;
+                margin: 20px 0;
+                box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            `;
+            
+            fileAnalysisPanel.innerHTML = `
+                <h3 style="margin: 0 0 15px 0; display: flex; align-items: center;">
+                    <i class="fas fa-file-alt" style="margin-right: 10px;"></i>
+                    文件分析报告
+                </h3>
+                <div class="file-stats" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 15px;">
+                    <div class="stat-item">
+                        <div style="font-size: 24px; font-weight: bold;">${totalFiles}</div>
+                        <div style="opacity: 0.9;">总文件数</div>
                     </div>
-                    <div>
-                        <h3>AI详细风险分析报告</h3>
-                        <p>基于您的项目信息生成的综合风险评估</p>
+                    <div class="stat-item">
+                        <div style="font-size: 24px; font-weight: bold;">${(totalSize / 1024 / 1024).toFixed(1)}MB</div>
+                        <div style="opacity: 0.9;">总大小</div>
+                    </div>
+                    <div class="stat-item">
+                        <div style="font-size: 24px; font-weight: bold; color: ${completenessScore >= 7 ? '#4CAF50' : completenessScore >= 4 ? '#FF9800' : '#F44336'};">${completenessScore}/10</div>
+                        <div style="opacity: 0.9;">完整性评分</div>
                     </div>
                 </div>
-                <div class="analysis-results">
-                    <div class="analysis-card">
-                        <div class="analysis-score">${riskAssessment.factors.market.score}</div>
-                        <div class="analysis-label">市场风险评分</div>
+                <div class="file-categories" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px;">
+                    <div class="category-item" style="background: rgba(255,255,255,0.1); padding: 10px; border-radius: 5px; text-align: center;">
+                        <div style="font-weight: bold;">${fileCategories.asset_docs?.length || 0}</div>
+                        <div style="font-size: 12px; opacity: 0.9;">资产证明</div>
                     </div>
-                    <div class="analysis-card">
-                        <div class="analysis-score">${riskAssessment.factors.liquidity.score}</div>
-                        <div class="analysis-label">流动性风险</div>
+                    <div class="category-item" style="background: rgba(255,255,255,0.1); padding: 10px; border-radius: 5px; text-align: center;">
+                        <div style="font-weight: bold;">${fileCategories.financial_docs?.length || 0}</div>
+                        <div style="font-size: 12px; opacity: 0.9;">财务文件</div>
                     </div>
-                    <div class="analysis-card">
-                        <div class="analysis-score">${riskAssessment.factors.compliance.score}</div>
-                        <div class="analysis-label">合规风险</div>
+                    <div class="category-item" style="background: rgba(255,255,255,0.1); padding: 10px; border-radius: 5px; text-align: center;">
+                        <div style="font-weight: bold;">${fileCategories.legal_docs?.length || 0}</div>
+                        <div style="font-size: 12px; opacity: 0.9;">法律文件</div>
                     </div>
-                    <div class="analysis-card">
-                        <div class="analysis-score">${riskAssessment.overall.confidence}%</div>
-                        <div class="analysis-label">分析置信度</div>
+                    <div class="category-item" style="background: rgba(255,255,255,0.1); padding: 10px; border-radius: 5px; text-align: center;">
+                        <div style="font-weight: bold;">${fileCategories.other?.length || 0}</div>
+                        <div style="font-size: 12px; opacity: 0.9;">其他文件</div>
                     </div>
-                </div>
-                <div style="margin-top: 20px; padding: 20px; background: rgba(255,255,255,0.1); border-radius: 10px;">
-                    <h4>关键建议：</h4>
-                    <ul style="margin-top: 10px; padding-left: 20px;">
-                        ${riskAssessment.summary.recommendations.map(rec => `<li>${rec}</li>`).join('')}
-                    </ul>
                 </div>
             `;
             
-            // 将分析面板添加到基础信息标签页
+            // 将文件分析面板添加到基础信息标签页
             const basicContent = document.getElementById('basic');
-            const existingPanel = basicContent.querySelector('.ai-analysis-panel:last-child');
-            if (existingPanel) {
-                existingPanel.replaceWith(analysisPanel);
+            const existingFilePanel = basicContent.querySelector('.file-analysis-panel');
+            if (existingFilePanel) {
+                existingFilePanel.replaceWith(fileAnalysisPanel);
             } else {
-                basicContent.appendChild(analysisPanel);
+                // 在AI分析面板之前插入
+                const aiPanel = basicContent.querySelector('.ai-analysis-panel');
+                if (aiPanel) {
+                    basicContent.insertBefore(fileAnalysisPanel, aiPanel);
+                } else {
+                    basicContent.appendChild(fileAnalysisPanel);
+                }
             }
+        }
+        
+        // 显示AI分析结果
+        function displayAIAnalysisResults(assessment) {
+            // 创建详细分析面板
+            const detailPanel = document.createElement('div');
+            detailPanel.className = 'detailed-analysis-panel';
+            detailPanel.style.cssText = `
+                background: white;
+                border: 1px solid #e0e0e0;
+                border-radius: 8px;
+                padding: 20px;
+                margin-top: 20px;
+                box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            `;
+            
+            detailPanel.innerHTML = `
+                <h3 style="margin: 0 0 15px 0; color: #333; display: flex; align-items: center;">
+                    <i class="fas fa-robot" style="margin-right: 10px; color: #4CAF50;"></i>
+                    AI智能分析报告
+                </h3>
+                <div class="analysis-content">
+                    <div class="assessment-summary" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; text-align: center;">
+                            <div>
+                                <div style="font-size: 28px; font-weight: bold;">${assessment.riskScore || 'N/A'}</div>
+                                <div style="opacity: 0.9;">风险评分</div>
+                            </div>
+                            <div>
+                                <div style="font-size: 28px; font-weight: bold;">${assessment.riskLevel || '中等风险'}</div>
+                                <div style="opacity: 0.9;">风险等级</div>
+                            </div>
+                            <div>
+                                <div style="font-size: 28px; font-weight: bold;">${assessment.feasibilityScore || 'N/A'}</div>
+                                <div style="opacity: 0.9;">可行性评分</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="risk-dimensions" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; margin-bottom: 20px;">
+                        <div class="dimension-card" style="background: #f8f9fa; padding: 15px; border-radius: 6px; border-left: 4px solid #007bff;">
+                            <h4 style="margin: 0 0 10px 0; color: #007bff;">市场风险</h4>
+                            <p style="margin: 0; color: #666; font-size: 14px;">${assessment.marketRisk || '市场环境良好，需关注行业变化趋势'}</p>
+                        </div>
+                        <div class="dimension-card" style="background: #f8f9fa; padding: 15px; border-radius: 6px; border-left: 4px solid #28a745;">
+                            <h4 style="margin: 0 0 10px 0; color: #28a745;">合规风险</h4>
+                            <p style="margin: 0; color: #666; font-size: 14px;">${assessment.complianceRisk || '合规性良好，建议持续关注法规变化'}</p>
+                        </div>
+                        <div class="dimension-card" style="background: #f8f9fa; padding: 15px; border-radius: 6px; border-left: 4px solid #ffc107;">
+                            <h4 style="margin: 0 0 10px 0; color: #ffc107;">流动性风险</h4>
+                            <p style="margin: 0; color: #666; font-size: 14px;">${assessment.liquidityRisk || '流动性适中，建议优化资金配置'}</p>
+                        </div>
+                        <div class="dimension-card" style="background: #f8f9fa; padding: 15px; border-radius: 6px; border-left: 4px solid #dc3545;">
+                            <h4 style="margin: 0 0 10px 0; color: #dc3545;">文档风险</h4>
+                            <p style="margin: 0; color: #666; font-size: 14px;">${assessment.documentRisk || '文档完整性有待提升，建议补充相关材料'}</p>
+                        </div>
+                    </div>
+                    
+                    <div class="ai-recommendations" style="background: #e8f5e8; padding: 15px; border-radius: 6px; border-left: 4px solid #4CAF50; margin-bottom: 15px;">
+                        <h4 style="margin: 0 0 10px 0; color: #4CAF50; display: flex; align-items: center;">
+                            <i class="fas fa-lightbulb" style="margin-right: 8px;"></i>
+                            AI智能建议
+                        </h4>
+                        <div style="color: #333; line-height: 1.6;">${assessment.recommendations || '建议完善项目文档，关注市场变化，确保合规性要求。'}</div>
+                    </div>
+                    
+                    <div class="document-suggestions" style="background: #fff3cd; padding: 15px; border-radius: 6px; border-left: 4px solid #ffc107; margin-bottom: 15px;">
+                        <h4 style="margin: 0 0 10px 0; color: #856404; display: flex; align-items: center;">
+                            <i class="fas fa-file-alt" style="margin-right: 8px;"></i>
+                            文档建议
+                        </h4>
+                        <div style="color: #856404; line-height: 1.6;">${assessment.documentSuggestions || '建议补充资产证明文件、财务报表和法律合规文档，以提高项目可信度。'}</div>
+                    </div>
+                    
+                    <div class="overall-assessment" style="background: #f0f8ff; padding: 15px; border-radius: 6px; border-left: 4px solid #2196F3;">
+                        <h4 style="margin: 0 0 10px 0; color: #2196F3;">综合评估</h4>
+                        <p style="margin: 0; color: #333; line-height: 1.6;">${assessment.overallAssessment || '基于AI分析，项目具有一定的投资价值。建议在完善相关文档和风险控制措施后，可考虑进入下一阶段的评估流程。'}</p>
+                    </div>
+                    
+                    <div class="analysis-metadata" style="margin-top: 15px; padding: 10px; background: #f8f9fa; border-radius: 4px; font-size: 12px; color: #666;">
+                        <div>分析时间: ${new Date().toLocaleString('zh-CN')}</div>
+                        <div>分析ID: ${assessment.assessmentId || 'N/A'}</div>
+                        <div>AI模型: Cloudflare Workers AI</div>
+                    </div>
+                </div>
+            `;
+            
+            // 将详细分析面板添加到基础信息标签页
+            const basicContent = document.getElementById('basic');
+            const existingDetailPanel = basicContent.querySelector('.detailed-analysis-panel');
+            if (existingDetailPanel) {
+                existingDetailPanel.replaceWith(detailPanel);
+            } else {
+                basicContent.appendChild(detailPanel);
+            }
+        }
+        
+        // 兼容旧版本的函数名
+        function showDetailedAnalysis(riskAssessment) {
+            displayAIAnalysisResults(riskAssessment);
         }
         
         // Asset type selection
@@ -1588,20 +1779,143 @@
         }
         
         // File upload handling
-        function handleFileUpload(input) {
+        async function handleFileUpload(input) {
             const files = input.files;
             const uploadedFilesDiv = document.getElementById('uploadedFiles');
-            uploadedFilesDiv.innerHTML = '';
             
-            Array.from(files).forEach(file => {
-                const fileDiv = document.createElement('div');
-                fileDiv.style.cssText = 'display: flex; align-items: center; justify-content: space-between; padding: 10px; background: #f8f9fa; border-radius: 5px; margin-bottom: 10px;';
-                fileDiv.innerHTML = `
-                    <span><i class="fas fa-file"></i> ${file.name} (${(file.size / 1024 / 1024).toFixed(2)} MB)</span>
-                    <span class="status-indicator status-success"><i class="fas fa-check"></i> 已上传</span>
-                `;
-                uploadedFilesDiv.appendChild(fileDiv);
-            });
+            if (!files || files.length === 0) {
+                return;
+            }
+            
+            // 显示上传进度
+            const progressDiv = document.createElement('div');
+            progressDiv.className = 'upload-progress';
+            progressDiv.style.cssText = 'margin: 10px 0; padding: 10px; background: #f8f9fa; border-radius: 5px;';
+            progressDiv.innerHTML = '<div class="progress-text">正在上传文件...</div>';
+            uploadedFilesDiv.appendChild(progressDiv);
+            
+            const projectId = document.getElementById('projectName')?.value ? 
+                `project_${Date.now()}` : null;
+            
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+                
+                try {
+                    // 验证文件大小 (10MB)
+                    if (file.size > 10 * 1024 * 1024) {
+                        throw new Error(`文件 ${file.name} 大小超过10MB限制`);
+                    }
+                    
+                    // 验证文件类型
+                    const allowedTypes = [
+                        'application/pdf',
+                        'image/jpeg', 'image/png', 'image/gif',
+                        'application/msword',
+                        'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+                        'application/vnd.ms-excel',
+                        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+                        'text/plain'
+                    ];
+                    
+                    if (!allowedTypes.includes(file.type)) {
+                        throw new Error(`文件 ${file.name} 类型不支持`);
+                    }
+                    
+                    // 创建FormData
+                    const formData = new FormData();
+                    formData.append('file', file);
+                    formData.append('category', 'asset_docs');
+                    if (projectId) {
+                        formData.append('projectId', projectId);
+                    }
+                    
+                    // 上传文件
+                    const response = await fetch('/api/upload', {
+                        method: 'POST',
+                        body: formData
+                    });
+                    
+                    const result = await response.json();
+                    
+                    if (!result.success) {
+                        throw new Error(result.error || '上传失败');
+                    }
+                    
+                    // 显示上传成功的文件
+                    const fileDiv = document.createElement('div');
+                    fileDiv.className = 'uploaded-file';
+                    fileDiv.style.cssText = 'display: flex; align-items: center; justify-content: space-between; padding: 10px; background: #f8f9fa; border-radius: 5px; margin-bottom: 10px; border-left: 4px solid #28a745;';
+                    fileDiv.innerHTML = `
+                        <div class="file-info">
+                            <span class="file-name"><i class="fas fa-file"></i> ${file.name}</span>
+                            <span class="file-size">(${(file.size / 1024 / 1024).toFixed(2)} MB)</span>
+                        </div>
+                        <div class="file-actions">
+                            <span class="status-indicator status-success"><i class="fas fa-check"></i> 已上传</span>
+                            <button type="button" class="btn-remove" onclick="removeUploadedFile('${result.data.id}', this)" 
+                                    style="margin-left: 10px; background: #dc3545; color: white; border: none; padding: 5px 10px; border-radius: 3px; cursor: pointer;">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    `;
+                    
+                    // 存储文件信息到全局变量
+                    if (!window.uploadedFiles) {
+                        window.uploadedFiles = [];
+                    }
+                    window.uploadedFiles.push(result.data);
+                    
+                    uploadedFilesDiv.appendChild(fileDiv);
+                    
+                } catch (error) {
+                    console.error('文件上传失败:', error);
+                    
+                    // 显示错误信息
+                    const errorDiv = document.createElement('div');
+                    errorDiv.className = 'upload-error';
+                    errorDiv.style.cssText = 'display: flex; align-items: center; justify-content: space-between; padding: 10px; background: #f8d7da; border-radius: 5px; margin-bottom: 10px; border-left: 4px solid #dc3545; color: #721c24;';
+                    errorDiv.innerHTML = `
+                        <span><i class="fas fa-exclamation-triangle"></i> ${error.message}</span>
+                        <button type="button" onclick="this.parentElement.remove()" 
+                                style="background: none; border: none; color: #721c24; cursor: pointer;">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    `;
+                    uploadedFilesDiv.appendChild(errorDiv);
+                }
+            }
+            
+            // 移除进度提示
+            progressDiv.remove();
+            
+            // 清空文件输入
+            input.value = '';
+        }
+        
+        // 删除已上传的文件
+        async function removeUploadedFile(fileId, buttonElement) {
+            try {
+                const response = await fetch(`/api/upload/${fileId}`, {
+                    method: 'DELETE'
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    // 从DOM中移除文件元素
+                    buttonElement.closest('.uploaded-file').remove();
+                    
+                    // 从全局变量中移除文件信息
+                    if (window.uploadedFiles) {
+                        window.uploadedFiles = window.uploadedFiles.filter(file => file.id !== fileId);
+                    }
+                } else {
+                    alert('删除文件失败: ' + (result.error || '未知错误'));
+                }
+            } catch (error) {
+                console.error('删除文件失败:', error);
+                alert('删除文件失败，请重试');
+            }
         }
         
         // Compliance checking simulation
@@ -1870,5 +2184,14 @@
             }, 300000); // 5 minutes
         });
     </script>
+    
+    <!-- API客户端和表单处理脚本 -->
+    <script src="js/api-client.js"></script>
+    <script src="js/form_validator.js"></script>
+    <script src="js/form_ui_updater.js"></script>
+    <script src="js/project_data_generator.js"></script>
+    <script src="js/project_data_manager.js"></script>
+    <script src="js/form_handler.js"></script>
+    <script src="js/form_processor.js"></script>
 </body>
 </html>

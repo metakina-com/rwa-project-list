@@ -1,0 +1,44 @@
+{
+  "name": "rwa-project-platform",
+  "version": "1.0.0",
+  "description": "RWA数字投行合作平台 - 基于Cloudflare技术栈",
+  "main": "index.js",
+  "scripts": {
+    "dev": "wrangler pages dev static --compatibility-date=2024-01-01",
+    "build": "npm run build:static && npm run build:functions",
+    "build:static": "node scripts/build-static.js",
+    "build:functions": "node scripts/build-functions.js",
+    "deploy": "wrangler pages deploy static",
+    "db:create": "wrangler d1 create rwa-database",
+    "db:migrate": "wrangler d1 migrations apply rwa-database",
+    "db:seed": "wrangler d1 execute rwa-database --file=./database/seed.sql",
+    "preview": "wrangler pages dev static --local",
+    "lint": "eslint . --ext .js,.html",
+    "format": "prettier --write ."
+  },
+  "keywords": [
+    "rwa",
+    "blockchain",
+    "real-world-assets",
+    "cloudflare",
+    "web3",
+    "defi"
+  ],
+  "author": "元话数字投行",
+  "license": "MIT",
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20231218.0",
+    "wrangler": "^3.22.1",
+    "eslint": "^8.56.0",
+    "prettier": "^3.1.1",
+    "typescript": "^5.3.3"
+  },
+  "dependencies": {
+    "@cloudflare/ai": "^1.0.0",
+    "hono": "^3.12.0",
+    "zod": "^3.22.4"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
