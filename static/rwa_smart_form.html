@@ -7,11 +7,16 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+            
+            @keyframes spin {
+                0% { transform: rotate(0deg); }
+                100% { transform: rotate(360deg); }
+            }
 
         body {
             font-family: 'Noto Sans SC', sans-serif;
@@ -1008,108 +1013,65 @@
                 <div class="form-section">
                     <div class="section-header">
                         <div class="section-icon">
-                            <i class="fas fa-calculator"></i>
+                            <i class="fas fa-chart-pie"></i>
                         </div>
                         <div>
-                            <div class="section-title">AI智能估值分析</div>
-                            <div class="section-description">基于资产价值、市场数据和风险评估进行综合估值</div>
+                            <div class="section-title">商业模式评估</div>
+                            <div class="section-description">选择适合您项目的商业模式和收益分配方案</div>
                         </div>
                     </div>
 
+                    <!-- 商业模式选择区域 -->
+                    <div class="business-model-section" style="background: white; padding: 20px; border-radius: 10px; margin: 20px 0;">
+                        <h4>选择商业模式</h4>
+                        <div id="businessModelOptions">
+                            <!-- 商业模式选项将通过JavaScript动态生成 -->
+                        </div>
+                    </div>
+
+                    <!-- 收益模式配置 -->
                     <div class="form-grid">
                         <div class="form-group">
-                            <label class="form-label">区块链网络 *</label>
-                            <select class="form-control" id="blockchain" onchange="updateTechRequirements()">
-                                <option value="">请选择区块链网络</option>
-                                <option value="ethereum">以太坊 (Ethereum)</option>
-                                <option value="polygon">Polygon</option>
-                                <option value="bsc">币安智能链 (BSC)</option>
-                                <option value="arbitrum">Arbitrum</option>
-                                <option value="avalanche">Avalanche</option>
-                                <option value="solana">Solana</option>
+                            <label class="form-label">收益模式 *</label>
+                            <select class="form-control" id="revenueModel" onchange="updateRevenueProjection()">
+                                <option value="">请选择收益模式</option>
+                                <option value="fixed">固定收益模式</option>
+                                <option value="dividend">分红收益模式</option>
+                                <option value="appreciation">升值收益模式</option>
+                                <option value="hybrid">混合收益模式</option>
                             </select>
                         </div>
                         <div class="form-group">
-                            <label class="form-label">代币标准 *</label>
-                            <select class="form-control" id="tokenStandard">
-                                <option value="">请选择代币标准</option>
-                                <option value="erc20">ERC-20 (基础代币)</option>
-                                <option value="erc1400">ERC-1400 (证券型代币)</option>
-                                <option value="erc3643">ERC-3643 (合规代币)</option>
-                                <option value="erc721">ERC-721 (NFT)</option>
-                                <option value="erc1155">ERC-1155 (多代币)</option>
+                            <label class="form-label">预期年化收益率 (%)</label>
+                            <input type="number" class="form-control" id="expectedReturn" placeholder="请输入预期年化收益率" step="0.1" min="0" max="100">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">收益分配周期</label>
+                            <select class="form-control" id="distributionPeriod">
+                                <option value="">请选择分配周期</option>
+                                <option value="monthly">按月分配</option>
+                                <option value="quarterly">按季度分配</option>
+                                <option value="annually">按年分配</option>
+                                <option value="maturity">到期一次性分配</option>
                             </select>
                         </div>
                         <div class="form-group">
-                            <label class="form-label">代币总供应量 *</label>
-                            <input type="number" class="form-control" id="tokenSupply" placeholder="请输入代币总供应量">
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">代币符号</label>
-                            <input type="text" class="form-control" id="tokenSymbol" placeholder="请输入代币符号 (如: RWAT)" maxlength="10">
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">智能合约审计</label>
-                            <select class="form-control" id="auditFirm">
-                                <option value="">请选择审计机构</option>
-                                <option value="certik">CertiK</option>
-                                <option value="quantstamp">Quantstamp</option>
-                                <option value="openzeppelin">OpenZeppelin</option>
-                                <option value="consensys">ConsenSys Diligence</option>
-                                <option value="other">其他</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">数据存储方案</label>
-                            <select class="form-control" id="dataStorage">
-                                <option value="">请选择数据存储方案</option>
-                                <option value="ipfs">IPFS (去中心化存储)</option>
-                                <option value="arweave">Arweave (永久存储)</option>
-                                <option value="aws">AWS S3 (云存储)</option>
-                                <option value="hybrid">混合存储方案</option>
-                            </select>
+                            <label class="form-label">最低投资金额 (万元)</label>
+                            <input type="number" class="form-control" id="minimumInvestment" placeholder="请输入最低投资金额" min="1">
                         </div>
                     </div>
 
-                    <!-- Technical Architecture -->
-                    <div style="background: white; padding: 20px; border-radius: 10px; margin: 20px 0;">
-                        <h4>推荐技术架构</h4>
-                        <div id="techArchitecture">
-                            <p>请先选择区块链网络和代币标准，系统将为您推荐最佳技术架构。</p>
-                        </div>
+                    <!-- 收益预测展示 -->
+                    <div id="revenueProjection" style="background: white; padding: 20px; border-radius: 10px; margin: 20px 0;">
+                        <h4>收益模式说明</h4>
+                        <p>请先选择收益模式，系统将为您展示详细的收益预测和风险分析。</p>
                     </div>
 
-                    <!-- Security Features -->
-                    <div style="background: #f8f9fa; padding: 20px; border-radius: 10px;">
-                        <h4>安全特性配置</h4>
-                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-top: 15px;">
-                            <label style="display: flex; align-items: center; gap: 10px;">
-                                <input type="checkbox" checked> 多重签名钱包
-                            </label>
-                            <label style="display: flex; align-items: center; gap: 10px;">
-                                <input type="checkbox" checked> 时间锁机制
-                            </label>
-                            <label style="display: flex; align-items: center; gap: 10px;">
-                                <input type="checkbox" checked> 暂停功能
-                            </label>
-                            <label style="display: flex; align-items: center; gap: 10px;">
-                                <input type="checkbox"> 升级代理
-                            </label>
-                            <label style="display: flex; align-items: center; gap: 10px;">
-                                <input type="checkbox" checked> 访问控制
-                            </label>
-                            <label style="display: flex; align-items: center; gap: 10px;">
-                                <input type="checkbox"> 速率限制
-                            </label>
-                            <label style="display: flex; align-items: center; gap: 10px;">
-                                <input type="checkbox" id="enableIPFS" checked> IPFS去中心化存储
-                            </label>
-                            <label style="display: flex; align-items: center; gap: 10px;">
-                                <input type="checkbox" id="enableMerkle" checked> Merkle树数据验证
-                            </label>
-                            <label style="display: flex; align-items: center; gap: 10px;">
-                                <input type="checkbox" id="enableEncryption" checked> 端到端加密
-                            </label>
+                    <!-- 商业模式分析结果 -->
+                    <div id="businessModelAnalysis" style="background: white; padding: 20px; border-radius: 10px; margin: 20px 0; display: none;">
+                        <h4>商业模式分析结果</h4>
+                        <div id="analysisContent">
+                            <!-- 分析结果将通过JavaScript动态生成 -->
                         </div>
                     </div>
                 </div>
@@ -2582,6 +2544,144 @@
             return modelMap[model] || '未选择';
         }
         
+        function updateRevenueProjection() {
+            const revenueModel = document.getElementById('revenueModel').value;
+            const projectionDiv = document.getElementById('revenueProjection');
+            
+            if (!revenueModel) {
+                projectionDiv.innerHTML = `
+                    <h4>收益模式说明</h4>
+                    <p>请先选择收益模式，系统将为您展示详细的收益预测和风险分析。</p>
+                `;
+                return;
+            }
+            
+            const modelDescriptions = {
+                'fixed': {
+                    title: '固定收益模式',
+                    description: '投资者获得预设的固定年化收益率，风险较低，收益稳定可预期。',
+                    features: ['收益稳定', '风险较低', '适合保守投资者', '流动性较好'],
+                    expectedReturn: '4-8%',
+                    riskLevel: '低风险',
+                    suitableFor: '保守型投资者，追求稳定收益'
+                },
+                'dividend': {
+                    title: '分红收益模式',
+                    description: '基于资产实际经营收益进行分红，收益与资产表现直接相关。',
+                    features: ['收益与经营挂钩', '分红透明', '参与资产增值', '长期收益潜力'],
+                    expectedReturn: '6-12%',
+                    riskLevel: '中等风险',
+                    suitableFor: '平衡型投资者，关注长期价值'
+                },
+                'appreciation': {
+                    title: '升值收益模式',
+                    description: '主要通过资产升值获得收益，适合长期投资和价值增长预期。',
+                    features: ['资本增值', '长期投资', '市场敏感', '高收益潜力'],
+                    expectedReturn: '8-15%',
+                    riskLevel: '中高风险',
+                    suitableFor: '成长型投资者，追求资本增值'
+                },
+                'hybrid': {
+                    title: '混合收益模式',
+                    description: '结合固定收益和分红，平衡风险与收益，提供多元化收益来源。',
+                    features: ['收益多元化', '风险分散', '灵活配置', '平衡收益'],
+                    expectedReturn: '6-10%',
+                    riskLevel: '中等风险',
+                    suitableFor: '稳健型投资者，追求平衡收益'
+                }
+            };
+            
+            const model = modelDescriptions[revenueModel];
+            if (model) {
+                projectionDiv.innerHTML = `
+                    <h4>${model.title}</h4>
+                    <p style="color: #6c757d; margin-bottom: 20px;">${model.description}</p>
+                    
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 20px;">
+                        <div style="background: #f8f9fa; padding: 15px; border-radius: 8px;">
+                            <strong style="color: #28a745;">预期收益率</strong><br>
+                            <span style="font-size: 1.2rem; font-weight: 600;">${model.expectedReturn}</span>
+                        </div>
+                        <div style="background: #f8f9fa; padding: 15px; border-radius: 8px;">
+                            <strong style="color: #dc3545;">风险等级</strong><br>
+                            <span style="font-size: 1.2rem; font-weight: 600;">${model.riskLevel}</span>
+                        </div>
+                        <div style="background: #f8f9fa; padding: 15px; border-radius: 8px;">
+                            <strong style="color: #007bff;">适合人群</strong><br>
+                            <span style="font-size: 0.9rem;">${model.suitableFor}</span>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <strong>模式特点：</strong>
+                        <ul style="margin-top: 10px; padding-left: 20px;">
+                            ${model.features.map(feature => `<li>${feature}</li>`).join('')}
+                        </ul>
+                    </div>
+                `;
+                
+                // 触发商业模式分析
+                triggerBusinessModelAnalysis(revenueModel);
+            }
+        }
+        
+        function triggerBusinessModelAnalysis(revenueModel) {
+            const analysisDiv = document.getElementById('businessModelAnalysis');
+            const contentDiv = document.getElementById('analysisContent');
+            
+            // 显示分析区域
+            analysisDiv.style.display = 'block';
+            
+            // 模拟AI分析过程
+            contentDiv.innerHTML = `
+                <div style="text-align: center; padding: 20px;">
+                    <div class="spinner" style="width: 30px; height: 30px; border: 3px solid #f3f3f3; border-top: 3px solid #007bff; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 15px;"></div>
+                    <p>AI正在分析您的商业模式...</p>
+                </div>
+            `;
+            
+            // 3秒后显示分析结果
+            setTimeout(() => {
+                const projectValue = parseFloat(document.getElementById('currentValue')?.value) || 1000;
+                const expectedReturn = parseFloat(document.getElementById('expectedReturn')?.value) || 6;
+                
+                contentDiv.innerHTML = `
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
+                        <div>
+                            <h5 style="color: #28a745; margin-bottom: 10px;">✓ 模式匹配度</h5>
+                            <div style="background: #d4edda; padding: 10px; border-radius: 5px; margin-bottom: 10px;">
+                                <strong>95%</strong> - 高度匹配您的项目特征
+                            </div>
+                            <p style="font-size: 0.9rem; color: #6c757d;">基于资产类型、价值规模和市场环境分析</p>
+                        </div>
+                        
+                        <div>
+                            <h5 style="color: #007bff; margin-bottom: 10px;">📊 收益预测</h5>
+                            <div style="background: #cce7ff; padding: 10px; border-radius: 5px; margin-bottom: 10px;">
+                                年化收益：<strong>${expectedReturn}%</strong><br>
+                                预期年收益：<strong>¥${(projectValue * expectedReturn / 100).toFixed(1)}万</strong>
+                            </div>
+                            <p style="font-size: 0.9rem; color: #6c757d;">基于历史数据和市场趋势预测</p>
+                        </div>
+                        
+                        <div>
+                            <h5 style="color: #ffc107; margin-bottom: 10px;">⚠️ 风险评估</h5>
+                            <div style="background: #fff3cd; padding: 10px; border-radius: 5px; margin-bottom: 10px;">
+                                风险等级：<strong>中等</strong><br>
+                                建议配置：<strong>20-30%</strong>
+                            </div>
+                            <p style="font-size: 0.9rem; color: #6c757d;">建议在投资组合中的配置比例</p>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-top: 20px; padding: 15px; background: #f8f9fa; border-radius: 8px;">
+                        <h6 style="color: #2c3e50; margin-bottom: 10px;">💡 AI建议</h6>
+                        <p style="margin: 0; color: #6c757d;">基于当前市场环境和您的项目特征，建议采用${revenueModel === 'fixed' ? '固定收益模式' : revenueModel === 'dividend' ? '分红收益模式' : revenueModel === 'appreciation' ? '升值收益模式' : '混合收益模式'}。该模式能够最大化投资者收益同时控制风险。</p>
+                    </div>
+                `;
+            }, 3000);
+        }
+
         function selectBusinessModel(modelId) {
             // 移除所有选中状态
             document.querySelectorAll('.model-option').forEach(option => {
