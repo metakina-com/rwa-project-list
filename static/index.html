@@ -855,6 +855,26 @@
             line-height: 1.6;
         }
         
+        .feature-link {
+            display: inline-block;
+            margin-top: 1rem;
+            padding: 0.5rem 1rem;
+            background: linear-gradient(135deg, #4f46e5, #7c3aed);
+            color: white;
+            text-decoration: none;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 10px rgba(79, 70, 229, 0.2);
+        }
+        
+        .feature-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(79, 70, 229, 0.3);
+            color: white;
+        }
+        
         /* Knowledge Section Button Styles */
         .feature-card .btn-secondary {
             background: #4f46e5;
@@ -1270,6 +1290,14 @@
                     </div>
                     <h3>端到端风险管理</h3>
                     <p>全流程风险监控和管理体系，确保您的资产安全和投资收益的稳定性。</p>
+                </div>
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">
+                        <i class="fas fa-network-wired"></i>
+                    </div>
+                    <h3>去中心化安全存储</h3>
+                    <p>基于IPFS和区块链技术的去中心化数据存储，确保资产数据的安全性、完整性和可信度。</p>
+                    <a href="decentralized_security_demo.html" class="feature-link">体验演示</a>
                 </div>
             </div>
         </div>
