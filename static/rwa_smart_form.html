@@ -319,6 +319,11 @@
             50% { opacity: 0.7; }
         }
 
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
         .analysis-results {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -566,6 +571,18 @@
             color: #667eea;
         }
 
+        .alert {
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+
+        .alert-info {
+            background: #d1ecf1;
+            border: 1px solid #bee5eb;
+            color: #0c5460;
+        }
+
         /* Responsive */
         @media (max-width: 768px) {
             .platform-container {
@@ -617,11 +634,14 @@
             <button class="nav-tab" onclick="switchTab('compliance')">
                 <i class="fas fa-shield-check"></i> 合规检查
             </button>
-            <button class="nav-tab" onclick="switchTab('technical')">
-                <i class="fas fa-cogs"></i> 技术方案
-            </button>
             <button class="nav-tab" onclick="switchTab('business')">
-                <i class="fas fa-chart-line"></i> 商业模式
+                <i class="fas fa-chart-pie"></i> 商业模式评估
+            </button>
+            <button class="nav-tab" onclick="switchTab('valuation')">
+                <i class="fas fa-calculator"></i> AI估值
+            </button>
+            <button class="nav-tab" onclick="switchTab('tokenization')">
+                <i class="fas fa-coins"></i> 代币化方案
             </button>
             <button class="nav-tab" onclick="switchTab('review')">
                 <i class="fas fa-eye"></i> 审核提交
@@ -634,7 +654,7 @@
             <div class="progress-indicator">
                 <div class="progress-steps">
                     <div class="progress-line"></div>
-                    <div class="progress-line-active" id="progressLine" style="width: 16.67%"></div>
+                    <div class="progress-line-active" id="progressLine" style="width: 14.28%"></div>
                     
                     <div class="step active">
                         <div class="step-circle">1</div>
@@ -650,14 +670,18 @@
                     </div>
                     <div class="step">
                         <div class="step-circle">4</div>
-                        <div class="step-label">技术方案</div>
-                    </div>
-                    <div class="step">
-                        <div class="step-circle">5</div>
                         <div class="step-label">商业模式</div>
                     </div>
                     <div class="step">
+                        <div class="step-circle">5</div>
+                        <div class="step-label">AI估值</div>
+                    </div>
+                    <div class="step">
                         <div class="step-circle">6</div>
+                        <div class="step-label">代币化方案</div>
+                    </div>
+                    <div class="step">
+                        <div class="step-circle">7</div>
                         <div class="step-label">审核提交</div>
                     </div>
                 </div>
@@ -973,22 +997,22 @@
                     <button class="btn btn-outline" onclick="prevTab('asset')">
                         <i class="fas fa-arrow-left"></i> 上一步
                     </button>
-                    <button class="btn btn-primary" onclick="nextTab('technical')" id="complianceNextBtn" disabled>
-                        下一步：技术方案 <i class="fas fa-arrow-right"></i>
+                    <button class="btn btn-primary" onclick="nextTab('business')" id="complianceNextBtn" disabled>
+                        下一步：商业模式评估 <i class="fas fa-arrow-right"></i>
                     </button>
                 </div>
             </div>
 
-            <!-- Tab 4: Technical Solution -->
-            <div id="technical" class="tab-content">
+            <!-- Tab 4: Business Model & Valuation -->
+            <div id="business" class="tab-content">
                 <div class="form-section">
                     <div class="section-header">
                         <div class="section-icon">
-                            <i class="fas fa-cogs"></i>
+                            <i class="fas fa-calculator"></i>
                         </div>
                         <div>
-                            <div class="section-title">技术实施方案</div>
-                            <div class="section-description">选择适合的区块链技术和代币化方案</div>
+                            <div class="section-title">AI智能估值分析</div>
+                            <div class="section-description">基于资产价值、市场数据和风险评估进行综合估值</div>
                         </div>
                     </div>
 
@@ -1094,121 +1118,148 @@
                     <button class="btn btn-outline" onclick="prevTab('compliance')">
                         <i class="fas fa-arrow-left"></i> 上一步
                     </button>
-                    <button class="btn btn-primary" onclick="nextTab('business')">
-                        下一步：商业模式 <i class="fas fa-arrow-right"></i>
+                    <button class="btn btn-primary" onclick="nextTab('valuation')">
+                        下一步：AI估值 <i class="fas fa-arrow-right"></i>
                     </button>
                 </div>
             </div>
 
-            <!-- Tab 5: Business Model -->
-            <div id="business" class="tab-content">
+            <!-- Tab 5: AI Valuation -->
+            <div id="valuation" class="tab-content">
                 <div class="form-section">
                     <div class="section-header">
                         <div class="section-icon">
-                            <i class="fas fa-chart-line"></i>
+                            <i class="fas fa-calculator"></i>
                         </div>
                         <div>
-                            <div class="section-title">商业模式设计</div>
-                            <div class="section-description">设计您的RWA项目商业模式和收益分配机制</div>
+                            <div class="section-title">AI智能估值分析</div>
+                            <div class="section-description">基于资产价值、市场数据和风险评估进行综合估值</div>
                         </div>
                     </div>
 
-                    <div class="form-grid">
-                        <div class="form-group">
-                            <label class="form-label">收益分配模式 *</label>
-                            <select class="form-control" id="revenueModel" onchange="updateRevenueCalculation()">
-                                <option value="">请选择收益分配模式</option>
-                                <option value="fixed">固定收益模式</option>
-                                <option value="dividend">分红模式</option>
-                                <option value="appreciation">升值收益模式</option>
-                                <option value="hybrid">混合收益模式</option>
-                            </select>
+                    <!-- AI估值面板 -->
+                    <div class="ai-valuation-panel" style="background: linear-gradient(135deg, #667eea, #764ba2); color: white; padding: 25px; border-radius: 15px; margin: 25px 0;">
+                        <div class="valuation-header" style="display: flex; align-items: center; margin-bottom: 20px;">
+                            <div class="ai-icon" style="width: 40px; height: 40px; background: rgba(255, 255, 255, 0.2); border-radius: 10px; display: flex; align-items: center; justify-content: center; margin-right: 15px; animation: pulse 2s infinite;">
+                                <i class="fas fa-brain"></i>
+                            </div>
+                            <div>
+                                <h3>AI智能估值分析</h3>
+                                <p>正在分析您的项目数据...</p>
+                            </div>
+                            <button class="btn btn-light" onclick="triggerAIValuation()" style="margin-left: auto;">
+                                <i class="fas fa-sync-alt"></i> 重新分析
+                            </button>
                         </div>
-                        <div class="form-group">
-                            <label class="form-label">分红频率</label>
-                            <select class="form-control" id="dividendFrequency">
-                                <option value="">请选择分红频率</option>
-                                <option value="monthly">月度分红</option>
-                                <option value="quarterly">季度分红</option>
-                                <option value="semiannual">半年度分红</option>
-                                <option value="annual">年度分红</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">管理费率（%）</label>
-                            <input type="number" class="form-control" id="managementFee" placeholder="请输入年化管理费率" step="0.01" max="5">
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">最小投资额（万元）</label>
-                            <input type="number" class="form-control" id="minInvestment" placeholder="请输入最小投资额">
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">锁定期（月）</label>
-                            <input type="number" class="form-control" id="lockupPeriod" placeholder="请输入投资锁定期">
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">治理权配置</label>
-                            <select class="form-control" id="governance">
-                                <option value="">请选择治理模式</option>
-                                <option value="proportional">按投资比例投票</option>
-                                <option value="equal">一人一票</option>
-                                <option value="delegated">委托治理</option>
-                                <option value="none">无治理权</option>
-                            </select>
+                        
+                        <div class="valuation-results" id="valuationResults" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-top: 20px;">
+                            <div class="valuation-card" style="background: rgba(255, 255, 255, 0.1); padding: 15px; border-radius: 10px; text-align: center;">
+                                <div class="valuation-label" style="font-size: 0.9rem; opacity: 0.9;">基础资产估值</div>
+                                <div class="valuation-value" id="baseAssetValue" style="font-size: 2rem; font-weight: 700; margin-bottom: 5px;">分析中...</div>
+                            </div>
+                            <div class="valuation-card" style="background: rgba(255, 255, 255, 0.1); padding: 15px; border-radius: 10px; text-align: center;">
+                                <div class="valuation-label" style="font-size: 0.9rem; opacity: 0.9;">代币化溢价</div>
+                                <div class="valuation-value" id="tokenizationPremium" style="font-size: 2rem; font-weight: 700; margin-bottom: 5px;">分析中...</div>
+                            </div>
+                            <div class="valuation-card" style="background: rgba(255, 255, 255, 0.1); padding: 15px; border-radius: 10px; text-align: center;">
+                                <div class="valuation-label" style="font-size: 0.9rem; opacity: 0.9;">整体项目估值</div>
+                                <div class="valuation-value" id="totalValuation" style="font-size: 2rem; font-weight: 700; margin-bottom: 5px;">分析中...</div>
+                            </div>
+                            <div class="valuation-card" style="background: rgba(255, 255, 255, 0.1); padding: 15px; border-radius: 10px; text-align: center;">
+                                <div class="valuation-label" style="font-size: 0.9rem; opacity: 0.9;">建议发行规模</div>
+                                <div class="valuation-value" id="recommendedIssuance" style="font-size: 2rem; font-weight: 700; margin-bottom: 5px;">分析中...</div>
+                            </div>
                         </div>
                     </div>
 
-                    <!-- Revenue Projection -->
-                    <div style="background: white; padding: 20px; border-radius: 10px; margin: 20px 0;">
-                        <h4>收益预测模型</h4>
-                        <div id="revenueProjection">
-                            <p>请填写上述信息，系统将自动生成收益预测模型。</p>
-                        </div>
-                    </div>
-
-                    <!-- Exit Mechanism -->
-                    <div style="background: #f8f9fa; padding: 20px; border-radius: 10px;">
-                        <h4>退出机制设计</h4>
-                        <div class="form-grid">
-                            <div class="form-group">
-                                <label class="form-label">退出条件</label>
-                                <select class="form-control" id="exitCondition">
-                                    <option value="">请选择退出条件</option>
-                                    <option value="anytime">随时可退出</option>
-                                    <option value="lockup">锁定期后可退出</option>
-                                    <option value="milestone">达到特定条件后退出</option>
-                                    <option value="vote">投票决定退出</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label">退出手续费（%）</label>
-                                <input type="number" class="form-control" id="exitFee" placeholder="请输入退出手续费率" step="0.01" max="10">
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label">流动性提供方案</label>
-                                <select class="form-control" id="liquidityProvider">
-                                    <option value="">请选择流动性方案</option>
-                                    <option value="amm">自动做市商(AMM)</option>
-                                    <option value="orderbook">订单簿交易</option>
-                                    <option value="otc">场外交易(OTC)</option>
-                                    <option value="redemption">赎回机制</option>
-                                </select>
-                            </div>
+                    <!-- 估值详细分析 -->
+                    <div class="valuation-analysis" style="background: white; padding: 20px; border-radius: 10px; margin: 20px 0;">
+                        <h4>估值分析报告</h4>
+                        <div id="valuationAnalysisContent">
+                            <p>AI正在分析您的项目数据，请稍候...</p>
                         </div>
                     </div>
                 </div>
 
                 <div class="action-bar">
-                    <button class="btn btn-outline" onclick="prevTab('technical')">
+                    <button class="btn btn-outline" onclick="prevTab('business')">
                         <i class="fas fa-arrow-left"></i> 上一步
                     </button>
-                    <button class="btn btn-primary" onclick="nextTab('review')">
-                        下一步：审核提交 <i class="fas fa-arrow-right"></i>
+                    <button class="btn btn-primary" onclick="nextTab('tokenization')" id="proceedToTokenization" disabled>
+                        下一步：代币化方案 <i class="fas fa-arrow-right"></i>
                     </button>
                 </div>
             </div>
 
-            <!-- Tab 6: Review and Submit -->
+            <!-- Tab 6: Tokenization Plan -->
+            <div id="tokenization" class="tab-content">
+                <div class="form-section">
+                    <div class="section-header">
+                        <div class="section-icon">
+                            <i class="fas fa-coins"></i>
+                        </div>
+                        <div>
+                            <div class="section-title">代币化方案生成</div>
+                            <div class="section-description">基于AI估值结果自动生成NFT和代币发行方案</div>
+                        </div>
+                    </div>
+
+                    <!-- 方案生成状态 -->
+                    <div class="generation-status" id="generationStatus" style="background: linear-gradient(135deg, #28a745, #20c997); color: white; padding: 20px; border-radius: 10px; margin: 20px 0;">
+                        <div style="display: flex; align-items: center;">
+                            <div class="spinner" style="width: 30px; height: 30px; border: 3px solid rgba(255,255,255,0.3); border-top: 3px solid white; border-radius: 50%; animation: spin 1s linear infinite; margin-right: 15px;"></div>
+                            <div>
+                                <h4>正在生成代币化方案...</h4>
+                                <p id="generationProgress">分析项目数据和估值结果</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 自动生成的方案展示 -->
+                    <div class="generated-plan" id="generatedPlan" style="display: none;">
+                        <!-- NFT发行方案 -->
+                        <div class="plan-section" style="background: white; padding: 20px; border-radius: 10px; margin: 20px 0;">
+                            <h4><i class="fas fa-image"></i> NFT发行方案</h4>
+                            <div id="nftPlanDisplay"></div>
+                        </div>
+
+                        <!-- 代币发行方案 -->
+                        <div class="plan-section" style="background: white; padding: 20px; border-radius: 10px; margin: 20px 0;">
+                            <h4><i class="fas fa-coins"></i> 代币发行方案</h4>
+                            <div id="tokenPlanDisplay"></div>
+                        </div>
+
+                        <!-- 分配方案 -->
+                        <div class="plan-section" style="background: white; padding: 20px; border-radius: 10px; margin: 20px 0;">
+                            <h4><i class="fas fa-chart-pie"></i> 分配方案</h4>
+                            <div id="distributionPlanDisplay"></div>
+                        </div>
+                    </div>
+
+                    <!-- 可编辑表单区域 -->
+        <div class="editable-form" id="editableTokenizationForm" style="display: none;">
+            <div class="alert alert-info">
+                <i class="fas fa-info-circle"></i>
+                <strong>方案已自动生成</strong><br>
+                系统已根据您的项目信息自动生成NFT和代币发行方案。您可以根据需要调整以下参数。
+            </div>
+            
+            <!-- 这里将包含可编辑的表单字段 -->
+            <div id="editableFormContent"></div>
+        </div>
+                </div>
+
+                <div class="action-bar">
+                    <button class="btn btn-outline" onclick="prevTab('valuation')">
+                        <i class="fas fa-arrow-left"></i> 上一步
+                    </button>
+                    <button class="btn btn-primary" onclick="nextTab('review')" id="proceedToReview" disabled>
+                        提交审核 <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Tab 7: Review and Submit -->
             <div id="review" class="tab-content">
                 <div class="form-section">
                     <div class="section-header">
@@ -1283,7 +1334,7 @@
                             <i class="fas fa-save"></i> 保存草稿
                         </button>
                         <button class="btn btn-success" id="submitBtn" onclick="submitApplication()" disabled>
-                            <i class="fas fa-paper-plane"></i> 提交申请
+                            <i class="fas fa-paper-plane"></i> 提交审核
                         </button>
                     </div>
                 </div>
@@ -1336,9 +1387,43 @@
             updateProgress();
         }
         
-        function nextTab(tabName) {
-            if (validateCurrentTab()) {
-                switchTab(tabName);
+        function nextTab(targetTab) {
+            const currentTabElement = document.querySelector('.nav-tab.active');
+            const currentTabMatch = currentTabElement.getAttribute('onclick').match(/switchTab\('(.+?)'\)/);
+            const currentTab = currentTabMatch ? currentTabMatch[1] : 'basic';
+            
+            // 定义正确的流程顺序
+            const flowOrder = ['basic', 'asset', 'compliance', 'business', 'valuation', 'tokenization', 'review'];
+            const currentIndex = flowOrder.indexOf(currentTab);
+            const targetIndex = flowOrder.indexOf(targetTab);
+            
+            // 验证当前标签页
+            if (!validateCurrentTab()) {
+                return;
+            }
+            
+            // 确保按顺序进行
+            if (targetIndex === currentIndex + 1) {
+                // 执行特定的流程触发
+                switch(targetTab) {
+                    case 'business':
+                        // 合规检查完成，触发商业模式评估
+                        triggerBusinessModelEvaluation();
+                        break;
+                    case 'valuation':
+                        // 商业模式选择完成，触发AI估值
+                        triggerAIValuation();
+                        break;
+                    case 'tokenization':
+                        // AI估值完成，触发代币化方案生成
+                        triggerTokenizationPlanGeneration();
+                        break;
+                    case 'review':
+                        // 代币化方案完成，准备审核提交
+                        prepareReviewSubmission();
+                        break;
+                }
+                switchTab(targetTab);
             }
         }
         
@@ -1348,7 +1433,7 @@
         
         // Progress management
         function updateProgress() {
-            const tabs = ['basic', 'asset', 'compliance', 'technical', 'business', 'review'];
+            const tabs = ['basic', 'asset', 'compliance', 'business', 'valuation', 'tokenization', 'review'];
             const currentIndex = tabs.indexOf(currentTab);
             const progressPercentage = ((currentIndex + 1) / tabs.length) * 100;
             
@@ -1374,10 +1459,12 @@
                     return validateAssetInfo();
                 case 'compliance':
                     return validateCompliance();
-                case 'technical':
-                    return validateTechnical();
                 case 'business':
                     return validateBusiness();
+                case 'valuation':
+                    return validateValuation();
+                case 'tokenization':
+                    return validateTokenization();
                 default:
                     return true;
             }
@@ -1404,16 +1491,21 @@
             return document.getElementById('complianceNextBtn').disabled === false;
         }
         
-        function validateTechnical() {
-            const required = ['blockchain', 'tokenStandard', 'tokenSupply'];
+        function validateBusiness() {
+            const required = ['revenueModel'];
             return required.every(field => {
                 const element = document.getElementById(field);
                 return element && element.value.trim() !== '';
             });
         }
         
-        function validateBusiness() {
-            const required = ['revenueModel'];
+        function validateValuation() {
+            // AI估值页面通常不需要用户输入验证
+            return true;
+        }
+        
+        function validateTokenization() {
+            const required = ['blockchain', 'tokenStandard', 'tokenSupply'];
             return required.every(field => {
                 const element = document.getElementById(field);
                 return element && element.value.trim() !== '';
@@ -1952,8 +2044,8 @@
                         element.innerHTML = '<i class="fas fa-check"></i>';
                         
                         if (check.id === 'assetCheck') {
-                            document.getElementById('complianceNextBtn').disabled = false;
-                            simulateRiskAssessment();
+                            document.getElementById('complianceNextBtn').disabled = !allPassed;
+                        simulateRiskAssessment();
                         }
                     }, check.delay);
                 });
@@ -2002,6 +2094,10 @@
                         const allPassed = checks.slice(0, 3).every(c => c.pass);
                         document.getElementById('complianceNextBtn').disabled = !allPassed;
                         simulateRiskAssessment();
+                        // 合规检查完成后，准备进入商业模式评估
+                        setTimeout(() => {
+                            console.log('合规检查完成，可以进入商业模式评估阶段');
+                        }, 1000);
                     }
                 }, check.delay);
             });
@@ -2124,6 +2220,409 @@
             }
         }
         
+        // 新增流程触发函数
+        async function triggerBusinessModelEvaluation() {
+            // 基于合规检查结果进行商业模式评估
+            console.log('触发商业模式评估...');
+            
+            try {
+                const projectData = collectProjectData();
+                const complianceResults = aiAnalysisResults;
+                
+                // 调用商业模式评估API
+                const response = await fetch('/api/business-model-evaluation', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ projectData, complianceResults })
+                });
+                
+                const result = await response.json();
+                if (result.success) {
+                    displayBusinessModelOptions(result.data);
+                } else {
+                    throw new Error(result.error || '商业模式评估失败');
+                }
+            } catch (error) {
+                console.error('商业模式评估失败:', error);
+                // 降级到默认选项
+                generateDefaultBusinessModelOptions();
+            }
+        }
+        
+        async function triggerAIValuation() {
+            // 调用AI估值API
+            try {
+                const projectData = collectProjectData();
+                const businessModel = formData.selectedBusinessModel;
+                
+                if (!businessModel) {
+                    alert('请先选择商业模式');
+                    return;
+                }
+                
+                const response = await fetch('/api/ai-valuation', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ projectData, businessModel })
+                });
+                
+                const result = await response.json();
+                if (result.success) {
+                    displayValuationResults(result.data);
+                    document.getElementById('proceedToTokenization') && (document.getElementById('proceedToTokenization').disabled = false);
+                } else {
+                    throw new Error(result.error || 'AI估值失败');
+                }
+            } catch (error) {
+                console.error('AI估值失败:', error);
+                // 降级到模拟数据
+                displayMockValuationResults();
+            }
+        }
+        
+        async function triggerTokenizationPlanGeneration() {
+            // 生成代币化方案
+            try {
+                const projectData = collectProjectData();
+                const valuationResults = getValuationResults();
+                
+                const response = await fetch('/api/tokenization-plan', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ projectData, valuationResults })
+                });
+                
+                const result = await response.json();
+                if (result.success) {
+                    displayTokenizationPlan(result.data);
+                    autoFillTokenizationForm(result.data);
+                    document.getElementById('proceedToReview') && (document.getElementById('proceedToReview').disabled = false);
+                } else {
+                    throw new Error(result.error || '代币化方案生成失败');
+                }
+            } catch (error) {
+                console.error('代币化方案生成失败:', error);
+                // 降级到默认方案
+                generateDefaultTokenizationPlan();
+            }
+        }
+        
+        function prepareReviewSubmission() {
+            // 准备最终审核提交
+            const finalData = collectAllFormData();
+            displayReviewSummary(finalData);
+            generateInformationSummary(finalData);
+        }
+        
+        // AI驱动的商业模式评估和估值
+        async function triggerBusinessValuation() {
+            try {
+                // 收集项目数据
+                const projectData = {
+                    assetValue: parseFloat(document.getElementById('currentValue')?.value) || 0,
+                    assetType: getSelectedAssetType(),
+                    location: document.getElementById('assetLocation')?.value || '',
+                    annualReturn: parseFloat(document.getElementById('annualReturn')?.value) || 0,
+                    riskLevel: aiAnalysisResults?.riskLevel || 'medium',
+                    complianceScore: aiAnalysisResults?.complianceScore || 75
+                };
+                
+                // 调用AI估值API
+                const response = await fetch('/api/ai-valuation', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        projectId: `project_${Date.now()}`,
+                        projectData: projectData
+                    })
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    displayValuationResults(result.data);
+                    generateBusinessModelOptions(result.data);
+                } else {
+                    throw new Error(result.error || 'AI估值失败');
+                }
+                
+            } catch (error) {
+                console.error('AI Valuation failed:', error);
+                // 降级到模拟数据
+                displayMockValuationResults();
+            }
+        }
+        
+        function displayValuationResults(valuationData) {
+            setTimeout(() => {
+                document.getElementById('baseAssetValue').textContent = `¥${(valuationData.baseAssetValue / 10000).toFixed(0)}万`;
+            }, 1000);
+            
+            setTimeout(() => {
+                document.getElementById('tokenizationPremium').textContent = `${valuationData.tokenizationPremium}%`;
+            }, 1500);
+            
+            setTimeout(() => {
+                document.getElementById('totalValuation').textContent = `¥${(valuationData.totalValuation / 10000).toFixed(0)}万`;
+            }, 2000);
+            
+            setTimeout(() => {
+                document.getElementById('recommendedIssuance').textContent = `${valuationData.recommendedTokens}万枚`;
+            }, 2500);
+        }
+        
+        function displayMockValuationResults() {
+            const assetValue = parseFloat(document.getElementById('currentValue')?.value) || 1000;
+            
+            setTimeout(() => {
+                document.getElementById('baseAssetValue').textContent = `¥${assetValue}万`;
+            }, 1000);
+            
+            setTimeout(() => {
+                document.getElementById('tokenizationPremium').textContent = '15%';
+            }, 1500);
+            
+            setTimeout(() => {
+                document.getElementById('totalValuation').textContent = `¥${(assetValue * 1.15).toFixed(0)}万`;
+            }, 2000);
+            
+            setTimeout(() => {
+                document.getElementById('recommendedIssuance').textContent = `${(assetValue * 100).toFixed(0)}万枚`;
+            }, 2500);
+        }
+        
+        function generateBusinessModelOptions(valuationData) {
+            const optionsDiv = document.getElementById('businessModelOptions');
+            
+            const models = [
+                {
+                    id: 'equity-sharing',
+                    title: '股权分享模式',
+                    description: '投资者持有代币即享有对应资产的收益权和部分决策权',
+                    suitability: '适合：房地产、基础设施项目',
+                    expectedReturn: '6-10%',
+                    riskLevel: '中等风险'
+                },
+                {
+                    id: 'rental-income',
+                    title: '租金收益模式',
+                    description: '定期分配资产产生的租金或使用费收益',
+                    suitability: '适合：商业地产、设备租赁',
+                    expectedReturn: '4-8%',
+                    riskLevel: '低风险'
+                },
+                {
+                    id: 'appreciation-model',
+                    title: '增值收益模式',
+                    description: '主要通过资产升值获得收益，适合长期投资',
+                    suitability: '适合：艺术品、稀有资产',
+                    expectedReturn: '8-15%',
+                    riskLevel: '中高风险'
+                }
+            ];
+            
+            optionsDiv.innerHTML = models.map(model => `
+                <div class="model-option" style="border: 2px solid #e9ecef; border-radius: 10px; padding: 20px; margin: 10px 0; cursor: pointer; transition: all 0.3s ease;" 
+                     onclick="selectBusinessModel('${model.id}')" data-model="${model.id}">
+                    <h5 style="color: #2c3e50; margin-bottom: 10px;">${model.title}</h5>
+                    <p style="color: #6c757d; margin-bottom: 15px;">${model.description}</p>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; font-size: 0.9rem;">
+                        <div><strong>适用范围：</strong> ${model.suitability}</div>
+                        <div><strong>预期收益：</strong> ${model.expectedReturn}</div>
+                        <div><strong>风险等级：</strong> ${model.riskLevel}</div>
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        function generateDefaultBusinessModelOptions() {
+            // 生成默认的商业模式选项
+            generateBusinessModelOptions(null);
+        }
+        
+        function collectProjectData() {
+            return {
+                projectName: document.getElementById('projectName')?.value || '',
+                projectType: document.getElementById('projectType')?.value || '',
+                projectValue: parseFloat(document.getElementById('projectValue')?.value) || 0,
+                assetType: getSelectedAssetType(),
+                assetName: document.getElementById('assetName')?.value || '',
+                assetLocation: document.getElementById('assetLocation')?.value || '',
+                currentValue: parseFloat(document.getElementById('currentValue')?.value) || 0,
+                annualReturn: parseFloat(document.getElementById('annualReturn')?.value) || 0,
+                revenueModel: document.getElementById('revenueModel')?.value || '',
+                blockchain: document.getElementById('blockchain')?.value || '',
+                tokenStandard: document.getElementById('tokenStandard')?.value || '',
+                tokenSupply: parseFloat(document.getElementById('tokenSupply')?.value) || 0,
+                uploadedFiles: window.uploadedFiles || [],
+                aiAnalysisResults: aiAnalysisResults
+            };
+        }
+        
+        function getValuationResults() {
+            return {
+                baseAssetValue: document.getElementById('baseAssetValue')?.textContent || '',
+                tokenizationPremium: document.getElementById('tokenizationPremium')?.textContent || '',
+                totalValuation: document.getElementById('totalValuation')?.textContent || '',
+                recommendedIssuance: document.getElementById('recommendedIssuance')?.textContent || ''
+            };
+        }
+        
+        function displayTokenizationPlan(planData) {
+            // 显示代币化方案
+            console.log('显示代币化方案:', planData);
+        }
+        
+        function autoFillTokenizationForm(planData) {
+            // 自动填充代币化表单
+            if (planData.recommendedBlockchain) {
+                const blockchainSelect = document.getElementById('blockchain');
+                if (blockchainSelect) {
+                    blockchainSelect.value = planData.recommendedBlockchain;
+                    updateTechRequirements();
+                }
+            }
+            
+            if (planData.recommendedTokenStandard) {
+                const tokenStandardSelect = document.getElementById('tokenStandard');
+                if (tokenStandardSelect) {
+                    tokenStandardSelect.value = planData.recommendedTokenStandard;
+                }
+            }
+            
+            if (planData.recommendedTokenSupply) {
+                const tokenSupplyInput = document.getElementById('tokenSupply');
+                if (tokenSupplyInput) {
+                    tokenSupplyInput.value = planData.recommendedTokenSupply;
+                }
+            }
+        }
+        
+        function generateDefaultTokenizationPlan() {
+            // 生成默认的代币化方案
+            const defaultPlan = {
+                recommendedBlockchain: 'ethereum',
+                recommendedTokenStandard: 'erc1400',
+                recommendedTokenSupply: 1000000
+            };
+            autoFillTokenizationForm(defaultPlan);
+        }
+        
+        function displayReviewSummary(finalData) {
+            // 显示审核摘要
+            console.log('显示审核摘要:', finalData);
+        }
+        
+        function generateInformationSummary(finalData) {
+            const summaryDiv = document.getElementById('summaryContent');
+            if (!summaryDiv) return;
+            
+            summaryDiv.innerHTML = `
+                <div class="summary-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
+                    <div class="summary-section">
+                        <h5 style="color: #2c3e50; margin-bottom: 10px; border-bottom: 2px solid #667eea; padding-bottom: 5px;">项目基础信息</h5>
+                        <div class="summary-item"><strong>项目名称：</strong> ${finalData.projectName || '未填写'}</div>
+                        <div class="summary-item"><strong>项目类型：</strong> ${getProjectTypeText(finalData.projectType)}</div>
+                        <div class="summary-item"><strong>项目估值：</strong> ¥${finalData.projectValue || '0'}万</div>
+                        <div class="summary-item"><strong>申请人：</strong> ${finalData.applicantName || '未填写'}</div>
+                    </div>
+                    <div class="summary-section">
+                        <h5 style="color: #2c3e50; margin-bottom: 10px; border-bottom: 2px solid #28a745; padding-bottom: 5px;">资产详情</h5>
+                        <div class="summary-item"><strong>资产名称：</strong> ${finalData.assetName || '未填写'}</div>
+                        <div class="summary-item"><strong>资产类型：</strong> ${getAssetTypeText(finalData.assetType)}</div>
+                        <div class="summary-item"><strong>当前市值：</strong> ¥${finalData.currentValue || '0'}万</div>
+                        <div class="summary-item"><strong>年化收益率：</strong> ${finalData.annualReturn || '0'}%</div>
+                    </div>
+                    <div class="summary-section">
+                        <h5 style="color: #2c3e50; margin-bottom: 10px; border-bottom: 2px solid #ffc107; padding-bottom: 5px;">代币化方案</h5>
+                        <div class="summary-item"><strong>区块链网络：</strong> ${getBlockchainText(finalData.blockchain)}</div>
+                        <div class="summary-item"><strong>代币标准：</strong> ${finalData.tokenStandard || '未选择'}</div>
+                        <div class="summary-item"><strong>代币供应量：</strong> ${finalData.tokenSupply ? finalData.tokenSupply.toLocaleString() : '0'}枚</div>
+                        <div class="summary-item"><strong>收益模式：</strong> ${getRevenueModelText(finalData.revenueModel)}</div>
+                    </div>
+                </div>
+            `;
+        }
+        
+        function getProjectTypeText(type) {
+            const typeMap = {
+                'real-estate': '房地产',
+                'art': '艺术品收藏',
+                'equity': '股权投资',
+                'bonds': '债券',
+                'commodities': '大宗商品',
+                'intellectual': '知识产权',
+                'infrastructure': '基础设施',
+                'other': '其他'
+            };
+            return typeMap[type] || '未选择';
+        }
+        
+        function getBlockchainText(blockchain) {
+            const blockchainMap = {
+                'ethereum': '以太坊 (Ethereum)',
+                'polygon': 'Polygon',
+                'bsc': '币安智能链 (BSC)',
+                'arbitrum': 'Arbitrum',
+                'avalanche': 'Avalanche',
+                'solana': 'Solana'
+            };
+            return blockchainMap[blockchain] || '未选择';
+        }
+        
+        function getRevenueModelText(model) {
+            const modelMap = {
+                'fixed': '固定收益模式',
+                'dividend': '分红模式',
+                'appreciation': '升值收益模式',
+                'hybrid': '混合收益模式'
+            };
+            return modelMap[model] || '未选择';
+        }
+        
+        function selectBusinessModel(modelId) {
+            // 移除所有选中状态
+            document.querySelectorAll('.model-option').forEach(option => {
+                option.style.borderColor = '#e9ecef';
+                option.style.background = 'white';
+            });
+            
+            // 选中当前模式
+            const selectedOption = document.querySelector(`[data-model="${modelId}"]`);
+            selectedOption.style.borderColor = '#667eea';
+            selectedOption.style.background = 'linear-gradient(135deg, #f8f9ff, #e6e9ff)';
+            
+            // 存储选择
+            formData.selectedBusinessModel = modelId;
+        }
+        
+        function generateTokenizationPlan() {
+            if (!formData.selectedBusinessModel) {
+                alert('请先选择一个商业模式');
+                return;
+            }
+            
+            // 跳转到代币化方案页面
+            nextTab('tokenization');
+        }
+        
+        function getSelectedAssetType() {
+            const selectedCard = document.querySelector('.asset-type-card.selected');
+            if (selectedCard) {
+                const title = selectedCard.querySelector('.asset-title').textContent;
+                const typeMap = {
+                    '房地产': 'real-estate',
+                    '艺术品': 'art',
+                    '股权': 'equity',
+                    '大宗商品': 'commodity'
+                };
+                return typeMap[title] || 'other';
+            }
+            return document.getElementById('projectType')?.value || 'other';
+        }
+        
         // Final submission
         function updateSubmitButton() {
             const agreeTerms = document.getElementById('agreeTerms').checked;
@@ -2142,21 +2641,223 @@
         }
         
         function submitApplication() {
-            // Collect all form data
+            // 收集所有表单数据
+            const formData = collectAllFormData();
+            
+            // 验证必填字段
+            if (!validateFinalSubmission(formData)) {
+                alert('请完善所有必填信息');
+                return;
+            }
+            
+            // 显示提交确认对话框
+            showSubmissionConfirmation(formData);
+        }
+        
+        function showSubmissionConfirmation(formData) {
+            const modal = document.createElement('div');
+            modal.className = 'submission-modal';
+            modal.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.5);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                z-index: 1000;
+            `;
+            modal.innerHTML = `
+                <div class="modal-content" style="
+                    background: white;
+                    border-radius: 15px;
+                    padding: 0;
+                    max-width: 600px;
+                    width: 90%;
+                    max-height: 80vh;
+                    overflow-y: auto;
+                    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+                ">
+                    <div class="modal-header" style="
+                        background: linear-gradient(135deg, #667eea, #764ba2);
+                        color: white;
+                        padding: 20px;
+                        border-radius: 15px 15px 0 0;
+                    ">
+                        <h3 style="margin: 0; display: flex; align-items: center; gap: 10px;">
+                            <i class="fas fa-check-circle"></i> 提交审核确认
+                        </h3>
+                    </div>
+                    <div class="modal-body" style="padding: 20px;">
+                        <div class="submission-summary" style="margin-bottom: 25px;">
+                            <h4 style="color: #2c3e50; margin-bottom: 15px;">申请摘要</h4>
+                            <div class="summary-item" style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #f0f0f0;">
+                                <span class="label" style="font-weight: 500; color: #6c757d;">项目名称：</span>
+                                <span class="value" style="color: #2c3e50;">${formData.projectName || '未填写'}</span>
+                            </div>
+                            <div class="summary-item" style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #f0f0f0;">
+                                <span class="label" style="font-weight: 500; color: #6c757d;">项目估值：</span>
+                                <span class="value" style="color: #2c3e50;">¥${formData.totalValuation ? formData.totalValuation.toLocaleString() : '待评估'}万</span>
+                            </div>
+                            <div class="summary-item" style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #f0f0f0;">
+                                <span class="label" style="font-weight: 500; color: #6c757d;">资产类型：</span>
+                                <span class="value" style="color: #2c3e50;">${getAssetTypeText(formData.assetType)}</span>
+                            </div>
+                            <div class="summary-item" style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #f0f0f0;">
+                                <span class="label" style="font-weight: 500; color: #6c757d;">代币发行量：</span>
+                                <span class="value" style="color: #2c3e50;">${formData.tokenSupply ? formData.tokenSupply.toLocaleString() : '未设定'}枚</span>
+                            </div>
+                        </div>
+                        
+                        <div class="review-timeline" style="background: #f8f9fa; padding: 20px; border-radius: 10px;">
+                            <h4 style="color: #2c3e50; margin-bottom: 15px;">预计审核流程</h4>
+                            <div class="timeline-item" style="display: flex; align-items: center; margin-bottom: 15px;">
+                                <div class="timeline-icon" style="
+                                    width: 30px;
+                                    height: 30px;
+                                    background: #667eea;
+                                    color: white;
+                                    border-radius: 50%;
+                                    display: flex;
+                                    align-items: center;
+                                    justify-content: center;
+                                    font-weight: bold;
+                                    margin-right: 15px;
+                                ">1</div>
+                                <div class="timeline-content">
+                                    <div class="timeline-title" style="font-weight: 600; color: #2c3e50;">初步审核</div>
+                                    <div class="timeline-desc" style="color: #6c757d; font-size: 0.9rem;">1-2个工作日，检查基础信息完整性</div>
+                                </div>
+                            </div>
+                            <div class="timeline-item" style="display: flex; align-items: center; margin-bottom: 15px;">
+                                <div class="timeline-icon" style="
+                                    width: 30px;
+                                    height: 30px;
+                                    background: #28a745;
+                                    color: white;
+                                    border-radius: 50%;
+                                    display: flex;
+                                    align-items: center;
+                                    justify-content: center;
+                                    font-weight: bold;
+                                    margin-right: 15px;
+                                ">2</div>
+                                <div class="timeline-content">
+                                    <div class="timeline-title" style="font-weight: 600; color: #2c3e50;">专业评估</div>
+                                    <div class="timeline-desc" style="color: #6c757d; font-size: 0.9rem;">3-5个工作日，进行详细的风险和价值评估</div>
+                                </div>
+                            </div>
+                            <div class="timeline-item" style="display: flex; align-items: center;">
+                                <div class="timeline-icon" style="
+                                    width: 30px;
+                                    height: 30px;
+                                    background: #ffc107;
+                                    color: white;
+                                    border-radius: 50%;
+                                    display: flex;
+                                    align-items: center;
+                                    justify-content: center;
+                                    font-weight: bold;
+                                    margin-right: 15px;
+                                ">3</div>
+                                <div class="timeline-content">
+                                    <div class="timeline-title" style="font-weight: 600; color: #2c3e50;">最终审批</div>
+                                    <div class="timeline-desc" style="color: #6c757d; font-size: 0.9rem;">1-2个工作日，最终审批决定</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer" style="
+                        padding: 20px;
+                        border-top: 1px solid #e9ecef;
+                        display: flex;
+                        justify-content: flex-end;
+                        gap: 10px;
+                    ">
+                        <button class="btn btn-outline" onclick="closeSubmissionModal()" style="
+                            padding: 10px 20px;
+                            border: 2px solid #6c757d;
+                            background: transparent;
+                            color: #6c757d;
+                            border-radius: 5px;
+                            cursor: pointer;
+                        ">取消</button>
+                        <button class="btn btn-success" onclick="confirmSubmission()" style="
+                            padding: 10px 20px;
+                            border: none;
+                            background: #28a745;
+                            color: white;
+                            border-radius: 5px;
+                            cursor: pointer;
+                        ">确认提交</button>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+        }
+        
+        function closeSubmissionModal() {
+            const modal = document.querySelector('.submission-modal');
+            if (modal) {
+                modal.remove();
+            }
+        }
+        
+        function confirmSubmission() {
+            // 关闭确认对话框
+            closeSubmissionModal();
+            
+            // 收集所有表单数据
             collectFormData();
             
-            // Show loading state
+            // 显示加载状态
             const submitBtn = document.getElementById('submitBtn');
             submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 提交中...';
             submitBtn.disabled = true;
             
-            // Simulate submission
+            // 模拟提交过程
             setTimeout(() => {
                 alert('申请提交成功！我们将在2-5个工作日内完成初步审核，并通过邮件通知您审核结果。');
                 
-                // Reset form or redirect
+                // 重置表单或重定向
                 window.location.href = 'index.html';
             }, 2000);
+        }
+        
+        function collectAllFormData() {
+            const data = {
+                projectName: document.getElementById('projectName')?.value || '',
+                projectType: document.getElementById('projectType')?.value || '',
+                projectValue: document.getElementById('projectValue')?.value || '',
+                assetType: getSelectedAssetType(),
+                assetName: document.getElementById('assetName')?.value || '',
+                currentValue: document.getElementById('currentValue')?.value || '',
+                tokenSupply: document.getElementById('tokenSupply')?.value || '',
+                blockchain: document.getElementById('blockchain')?.value || '',
+                revenueModel: document.getElementById('revenueModel')?.value || '',
+                totalValuation: parseFloat(document.getElementById('totalValuation')?.textContent?.replace(/[^\d.]/g, '')) || 0
+            };
+            return data;
+        }
+        
+        function validateFinalSubmission(formData) {
+            const requiredFields = ['projectName', 'projectType', 'projectValue', 'assetName', 'currentValue'];
+            return requiredFields.every(field => formData[field] && formData[field].trim() !== '');
+        }
+        
+        function getAssetTypeText(assetType) {
+            const typeMap = {
+                'real-estate': '房地产',
+                'art': '艺术品',
+                'equity': '股权',
+                'commodity': '大宗商品',
+                'property': '房地产',
+                'other': '其他'
+            };
+            return typeMap[assetType] || '未选择';
         }
         
         function collectFormData() {
