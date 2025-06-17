@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>用户个人中心 - 元话RWA数字投行</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .user-center-container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            margin: 2rem;
+            overflow: hidden;
+        }
+        
+        .sidebar {
+            background: linear-gradient(135deg, #4f46e5, #7c3aed);
+            color: white;
+            min-height: 600px;
+        }
+        
+        .nav-item {
+            padding: 1rem 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-left: 4px solid transparent;
+        }
+        
+        .nav-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-left-color: white;
+        }
+        
+        .nav-item.active {
+            background: rgba(255, 255, 255, 0.2);
+            border-left-color: white;
+        }
+        
+        .content-section {
+            display: none;
+        }
+        
+        .content-section.active {
+            display: block;
+        }
+        
+        .stat-card {
+            background: linear-gradient(135deg, #4f46e5, #7c3aed);
+            color: white;
+            border-radius: 15px;
+            padding: 1.5rem;
+            text-align: center;
+        }
+        
+        .investment-card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .investment-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #4f46e5, #7c3aed);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 25px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(79, 70, 229, 0.3);
+        }
+        
+        .form-control {
+            border: 2px solid #e5e7eb;
+            border-radius: 10px;
+            padding: 0.75rem;
+            transition: all 0.3s ease;
+        }
+        
+        .form-control:focus {
+            border-color: #4f46e5;
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+            outline: none;
+        }
+        
+        .avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #4f46e5, #7c3aed);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 2rem;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mx-auto py-8">
+        <div class="user-center-container">
+            <div class="flex">
+                <!-- 侧边栏 -->
+                <div class="sidebar w-1/4">
+                    <div class="p-6 border-b border-white border-opacity-20">
+                        <h2 class="text-xl font-bold">个人中心</h2>
+                        <p class="text-sm opacity-80">用户管理面板</p>
+                    </div>
+                    <nav class="py-4">
+                        <div class="nav-item active" data-section="dashboard">
+                            <i class="fas fa-tachometer-alt mr-3"></i>概览
+                        </div>
+                        <div class="nav-item" data-section="profile">
+                            <i class="fas fa-user mr-3"></i>个人资料
+                        </div>
+                        <div class="nav-item" data-section="investments">
+                            <i class="fas fa-chart-line mr-3"></i>我的投资
+                        </div>
+                        <div class="nav-item" data-section="orders">
+                            <i class="fas fa-shopping-cart mr-3"></i>订单管理
+                        </div>
+                        <div class="nav-item" data-section="wallet">
+                            <i class="fas fa-wallet mr-3"></i>钱包管理
+                        </div>
+                        <div class="nav-item" data-section="security">
+                            <i class="fas fa-shield-alt mr-3"></i>安全设置
+                        </div>
+                        <div class="nav-item" data-section="notifications">
+                            <i class="fas fa-bell mr-3"></i>消息通知
+                        </div>
+                    </nav>
+                </div>
+                
+                <!-- 主内容区 -->
+                <div class="flex-1 p-6">
+                    <!-- 概览页面 -->
+                    <div id="dashboard-section" class="content-section active">
+                        <div class="mb-6">
+                            <h1 class="text-2xl font-bold text-gray-800 mb-2">欢迎回来！</h1>
+                            <p class="text-gray-600">这里是您的投资概览</p>
+                        </div>
+                        
+                        <!-- 统计卡片 -->
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                            <div class="stat-card">
+                                <div class="text-3xl font-bold mb-2" id="totalInvestment">¥0</div>
+                                <div class="text-sm opacity-80">总投资金额</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="text-3xl font-bold mb-2" id="totalReturn">¥0</div>
+                                <div class="text-sm opacity-80">总收益</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="text-3xl font-bold mb-2" id="activeInvestments">0</div>
+                                <div class="text-sm opacity-80">活跃投资</div>
+                            </div>
+                        </div>
+                        
+                        <!-- 最近投资 -->
+                        <div class="bg-white rounded-15 p-6 shadow-lg">
+                            <h3 class="text-lg font-semibold mb-4">最近投资</h3>
+                            <div id="recentInvestments">
+                                <!-- 动态加载投资列表 -->
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 个人资料页面 -->
+                    <div id="profile-section" class="content-section">
+                        <div class="mb-6">
+                            <h1 class="text-2xl font-bold text-gray-800 mb-2">个人资料</h1>
+                            <p class="text-gray-600">管理您的个人信息</p>
+                        </div>
+                        
+                        <div class="bg-white rounded-15 p-6 shadow-lg">
+                            <div class="flex items-center mb-6">
+                                <div class="avatar mr-4" id="userAvatar">U</div>
+                                <div>
+                                    <h3 class="text-lg font-semibold" id="userName">用户名</h3>
+                                    <p class="text-gray-600" id="userEmail">user@example.com</p>
+                                </div>
+                            </div>
+                            
+                            <form id="profileForm">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">姓名</label>
+                                        <input type="text" id="fullName" class="form-control w-full" placeholder="请输入姓名">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">手机号</label>
+                                        <input type="tel" id="phone" class="form-control w-full" placeholder="请输入手机号">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">身份证号</label>
+                                        <input type="text" id="idCard" class="form-control w-full" placeholder="请输入身份证号">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">职业</label>
+                                        <input type="text" id="occupation" class="form-control w-full" placeholder="请输入职业">
+                                    </div>
+                                </div>
+                                <div class="mt-6">
+                                    <button type="submit" class="btn-primary">保存更改</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    
+                    <!-- 我的投资页面 -->
+                    <div id="investments-section" class="content-section">
+                        <div class="mb-6">
+                            <h1 class="text-2xl font-bold text-gray-800 mb-2">我的投资</h1>
+                            <p class="text-gray-600">查看和管理您的投资组合</p>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <div class="flex space-x-4">
+                                <button class="btn-primary" onclick="showAllInvestments()">全部</button>
+                                <button class="btn btn-outline" onclick="filterInvestments('active')">进行中</button>
+                                <button class="btn btn-outline" onclick="filterInvestments('completed')">已完成</button>
+                                <button class="btn btn-outline" onclick="filterInvestments('cancelled')">已取消</button>
+                            </div>
+                        </div>
+                        
+                        <div id="investmentsList">
+                            <!-- 动态加载投资列表 -->
+                        </div>
+                    </div>
+                    
+                    <!-- 订单管理页面 -->
+                    <div id="orders-section" class="content-section">
+                        <div class="mb-6">
+                            <h1 class="text-2xl font-bold text-gray-800 mb-2">订单管理</h1>
+                            <p class="text-gray-600">查看您的购买订单</p>
+                        </div>
+                        
+                        <div id="ordersList">
+                            <!-- 动态加载订单列表 -->
+                        </div>
+                    </div>
+                    
+                    <!-- 钱包管理页面 -->
+                    <div id="wallet-section" class="content-section">
+                        <div class="mb-6">
+                            <h1 class="text-2xl font-bold text-gray-800 mb-2">钱包管理</h1>
+                            <p class="text-gray-600">管理您的数字钱包</p>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="bg-white rounded-15 p-6 shadow-lg">
+                                <h3 class="text-lg font-semibold mb-4">钱包余额</h3>
+                                <div class="text-3xl font-bold text-green-600 mb-4" id="walletBalance">¥0</div>
+                                <div class="space-y-2">
+                                    <button class="btn-primary w-full" onclick="showDepositModal()">充值</button>
+                                    <button class="btn btn-outline w-full" onclick="showWithdrawModal()">提现</button>
+                                </div>
+                            </div>
+                            
+                            <div class="bg-white rounded-15 p-6 shadow-lg">
+                                <h3 class="text-lg font-semibold mb-4">交易记录</h3>
+                                <div id="transactionHistory">
+                                    <!-- 动态加载交易记录 -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 安全设置页面 -->
+                    <div id="security-section" class="content-section">
+                        <div class="mb-6">
+                            <h1 class="text-2xl font-bold text-gray-800 mb-2">安全设置</h1>
+                            <p class="text-gray-600">保护您的账户安全</p>
+                        </div>
+                        
+                        <div class="space-y-6">
+                            <div class="bg-white rounded-15 p-6 shadow-lg">
+                                <h3 class="text-lg font-semibold mb-4">修改密码</h3>
+                                <form id="passwordForm">
+                                    <div class="space-y-4">
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-700 mb-2">当前密码</label>
+                                            <input type="password" id="currentPassword" class="form-control w-full" placeholder="请输入当前密码">
+                                        </div>
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-700 mb-2">新密码</label>
+                                            <input type="password" id="newPassword" class="form-control w-full" placeholder="请输入新密码">
+                                        </div>
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-700 mb-2">确认新密码</label>
+                                            <input type="password" id="confirmPassword" class="form-control w-full" placeholder="请确认新密码">
+                                        </div>
+                                        <button type="submit" class="btn-primary">修改密码</button>
+                                    </div>
+                                </form>
+                            </div>
+                            
+                            <div class="bg-white rounded-15 p-6 shadow-lg">
+                                <h3 class="text-lg font-semibold mb-4">两步验证</h3>
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <p class="text-gray-600">启用两步验证以增强账户安全</p>
+                                    </div>
+                                    <div>
+                                        <label class="switch">
+                                            <input type="checkbox" id="twoFactorAuth">
+                                            <span class="slider"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 消息通知页面 -->
+                    <div id="notifications-section" class="content-section">
+                        <div class="mb-6">
+                            <h1 class="text-2xl font-bold text-gray-800 mb-2">消息通知</h1>
+                            <p class="text-gray-600">查看系统消息和通知</p>
+                        </div>
+                        
+                        <div id="notificationsList">
+                            <!-- 动态加载通知列表 -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 充值模态框 -->
+    <div id="depositModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+        <div class="bg-white rounded-20 p-6 w-96">
+            <h3 class="text-lg font-semibold mb-4">钱包充值</h3>
+            <form id="depositForm">
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">充值金额</label>
+                    <input type="number" id="depositAmount" class="form-control w-full" placeholder="请输入充值金额">
+                </div>
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">支付方式</label>
+                    <select id="paymentMethod" class="form-control w-full">
+                        <option value="bank">银行卡</option>
+                        <option value="alipay">支付宝</option>
+                        <option value="wechat">微信支付</option>
+                    </select>
+                </div>
+                <div class="flex space-x-4">
+                    <button type="submit" class="btn-primary flex-1">确认充值</button>
+                    <button type="button" class="btn btn-outline flex-1" onclick="hideDepositModal()">取消</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <script src="js/api-client.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/user_center.js"></script>
+</body>
+</html>
