@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RWA SaaS 平台收费方案 | 现实世界资产代币化解决方案</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 50px;
+            padding: 40px 0;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .pricing-section {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 40px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+
+        .section-title {
+            font-size: 2rem;
+            color: #2c3e50;
+            margin-bottom: 30px;
+            text-align: center;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 2px;
+        }
+
+        .pricing-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+
+        .pricing-card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            border: 2px solid #e9ecef;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .pricing-card.popular {
+            border-color: #667eea;
+            transform: scale(1.05);
+            box-shadow: 0 15px 30px rgba(102, 126, 234, 0.2);
+        }
+
+        .pricing-card.popular::before {
+            content: '最受欢迎';
+            position: absolute;
+            top: 20px;
+            right: -30px;
+            background: #667eea;
+            color: white;
+            padding: 5px 40px;
+            transform: rotate(45deg);
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .pricing-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+
+        .card-header {
+            margin-bottom: 25px;
+        }
+
+        .card-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .card-subtitle {
+            color: #6c757d;
+            font-size: 0.9rem;
+        }
+
+        .card-price {
+            margin: 25px 0;
+        }
+
+        .price-amount {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        .price-period {
+            color: #6c757d;
+            font-size: 0.9rem;
+        }
+
+        .price-note {
+            color: #28a745;
+            font-size: 0.8rem;
+            margin-top: 5px;
+        }
+
+        .features-list {
+            text-align: left;
+            margin: 25px 0;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 12px;
+            font-size: 0.9rem;
+        }
+
+        .feature-item i {
+            margin-right: 10px;
+            width: 20px;
+        }
+
+        .feature-available {
+            color: #28a745;
+        }
+
+        .feature-unavailable {
+            color: #dc3545;
+        }
+
+        .cta-button {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .project-services {
+            margin-top: 50px;
+        }
+
+        .services-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 30px;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .services-table th,
+        .services-table td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .services-table th {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            font-weight: bold;
+        }
+
+        .services-table tr:hover {
+            background: #f8f9fa;
+        }
+
+        .phase-header {
+            background: #e9ecef;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        .additional-services {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .service-card {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .service-card h4 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+        }
+
+        .service-card p {
+            color: #6c757d;
+            margin-bottom: 10px;
+        }
+
+        .promotions {
+            background: linear-gradient(135deg, #28a745, #20c997);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            margin-top: 40px;
+        }
+
+        .promotions h3 {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .promo-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+        }
+
+        .promo-item {
+            background: rgba(255,255,255,0.1);
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .pricing-cards {
+                grid-template-columns: 1fr;
+            }
+            
+            .pricing-card.popular {
+                transform: none;
+            }
+            
+            .services-table {
+                font-size: 0.8rem;
+            }
+            
+            .services-table th,
+            .services-table td {
+                padding: 10px 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1><i class="fas fa-coins"></i> RWA SaaS 平台收费方案</h1>
+            <p>灵活的定价方案，满足您的所有需求。从个人投资者到大型金融机构，我们提供从SaaS平台订阅到端到端项目制的全方位解决方案，为您的RWA（现实世界资产）代币化之旅提供专业、合规、高效的服务。</p>
+        </div>
+
+        <div class="pricing-section">
+            <h2 class="section-title">SaaS 平台订阅方案</h2>
+            <p style="text-align: center; color: #6c757d; margin-bottom: 40px;">适合需要持续使用平台工具、数据和AI分析功能的用户</p>
+            
+            <div class="pricing-cards">
+                <!-- 免费版 -->
+                <div class="pricing-card">
+                    <div class="card-header">
+                        <div class="card-icon">💎</div>
+                        <h3 class="card-title">免费版 (Starter)</h3>
+                        <p class="card-subtitle">适合个人、初创企业、概念验证</p>
+                    </div>
+                    <div class="card-price">
+                        <div class="price-amount">免费</div>
+                        <div class="price-period">永远免费</div>
+                    </div>
+                    <div class="features-list">
+                        <div class="feature-item feature-available">
+                            <i class="fas fa-check"></i>
+                            基础RWA项目浏览 (10个)
+                        </div>
+                        <div class="feature-item feature-unavailable">
+                            <i class="fas fa-times"></i>
+                            AI估值与预测
+                        </div>
+                        <div class="feature-item feature-available">
+                            <i class="fas fa-check"></i>
+                            简单估值计算器
+                        </div>
+                        <div class="feature-item feature-unavailable">
+                            <i class="fas fa-times"></i>
+                            API 访问
+                        </div>
+                        <div class="feature-item feature-available">
+                            <i class="fas fa-check"></i>
+                            社区论坛访问
+                        </div>
+                        <div class="feature-item feature-available">
+                            <i class="fas fa-check"></i>
+                            标准NFT展示
+                        </div>
+                    </div>
+                    <button class="cta-button">立即开始</button>
+                </div>
+
+                <!-- 专业版 -->
+                <div class="pricing-card popular">
+                    <div class="card-header">
+                        <div class="card-icon">🚀</div>
+                        <h3 class="card-title">专业版 (Professional)</h3>
+                        <p class="card-subtitle">适合专业投资机构、交易员</p>
+                    </div>
+                    <div class="card-price">
+                        <div class="price-amount">HK$2,888</div>
+                        <div class="price-period">/月</div>
+                        <div class="price-note">年付 HK$28,888 (节省17%)</div>
+                    </div>
+                    <div class="features-list">
+                        <div class="feature-item feature-available">
+                            <i class="fas fa-check"></i>
+                            包含所有免费版功能
+                        </div>
+                        <div class="feature-item feature-available">
+                            <i class="fas fa-check"></i>
+                            "元启"AI估值引擎 & "元策"AI预测
+                        </div>
+                        <div class="feature-item feature-available">
+                            <i class="fas fa-check"></i>
+                            高级分析工具与实时数据
+                        </div>
+                        <div class="feature-item feature-available">
+                            <i class="fas fa-check"></i>
+                            基础API访问 & 数据导出
+                        </div>
+                        <div class="feature-item feature-available">
+                            <i class="fas fa-check"></i>
+                            香港合规报告模板
+                        </div>
+                        <div class="feature-item feature-available">
+                            <i class="fas fa-check"></i>
+                            投资组合管理与风险报告
+                        </div>
+                    </div>
+                    <button class="cta-button">选择专业版</button>
+                </div>
+
+                <!-- 企业版 -->
+                <div class="pricing-card">
+                    <div class="card-header">
+                        <div class="card-icon">🏢</div>
+                        <h3 class="card-title">企业版 (Enterprise)</h3>
+                        <p class="card-subtitle">适合需要高级平台功能的大型机构</p>
+                    </div>
+                    <div class="card-price">
+                        <div class="price-amount">HK$58,888</div>
+                        <div class="price-period">/月 起</div>
+                        <div class="price-note">根据需求定制</div>
+                    </div>
+                    <div class="features-list">
+                        <div class="feature-item feature-available">
+                            <i class="fas fa-check"></i>
+                            包含所有专业版功能
+                        </div>
+                        <div class="feature-item feature-available">
+                            <i class="fas fa-check"></i>
+                            定制化AI模型训练
+                        </div>
+                        <div class="feature-item feature-available">
+                            <i class="fas fa-check"></i>
+                            白标解决方案
+                        </div>
+                        <div class="feature-item feature-available">
+                            <i class="fas fa-check"></i>
+                            无限API调用
+                        </div>
+                        <div class="feature-item feature-available">
+                            <i class="fas fa-check"></i>
+                            24/7专属客服 & 客户经理
+                        </div>
+                        <div class="feature-item feature-available">
+                            <i class="fas fa-check"></i>
+                            香港金管局合规咨询
+                        </div>
+                    </div>
+                    <button class="cta-button">咨询方案</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="pricing-section project-services">
+            <h2 class="section-title">RWA 项目全景规划方案 (项目制)</h2>
+            <p style="text-align: center; color: #6c757d; margin-bottom: 30px;">适合需要对特定资产进行代币化、发行和上市全流程服务的企业客户</p>
+            
+            <table class="services-table">
+                <thead>
+                    <tr>
+                        <th>阶段</th>
+                        <th>服务项目</th>
+                        <th>费用 (¥)</th>
+                        <th>预计周期</th>
+                        <th>CEX路径</th>
+                        <th>DEX路径</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="phase-header">
+                        <td rowspan="4">第一阶段<br>咨询/规划</td>
+                        <td>RWA 项目咨询与可行性分析</td>
+                        <td>20,000</td>
+                        <td rowspan="4">2-4 周</td>
+                        <td>✅</td>
+                        <td>✅</td>
+                    </tr>
+                    <tr>
+                        <td>资产与法律尽调</td>
+                        <td>30,000</td>
+                        <td>✅</td>
+                        <td>建议</td>
+                    </tr>
+                    <tr>
+                        <td>代币化商业模式设计</td>
+                        <td>30,000</td>
+                        <td>✅</td>
+                        <td>✅</td>
+                    </tr>
+                    <tr>
+                        <td>代币经济学设计</td>
+                        <td>20,000</td>
+                        <td>✅</td>
+                        <td>技术非必要</td>
+                    </tr>
+                    
+                    <tr class="phase-header">
+                        <td rowspan="6">第二阶段<br>技术/代币化</td>
+                        <td>技术方案设计与区块链选择</td>
+                        <td>-</td>
+                        <td rowspan="6">6-12 周</td>
+                        <td>✅</td>
+                        <td>✅</td>
+                    </tr>
+                    <tr>
+                        <td>智能合约开发</td>
+                        <td>100,000</td>
+                        <td>✅</td>
+                        <td>✅</td>
+                    </tr>
+                    <tr>
+                        <td>整合链下资产审计与协调</td>
+                        <td>40,000</td>
+                        <td>✅</td>
+                        <td>✅</td>
+                    </tr>
+                    <tr>
+                        <td>RWA 数据上链与验证机制</td>
+                        <td>80,000</td>
+                        <td>强烈建议</td>
+                        <td>强烈建议</td>
+                    </tr>
+                    <tr>
+                        <td>代币化平台/系统开发</td>
+                        <td>90,000</td>
+                        <td>强烈建议</td>
+                        <td>强烈建议</td>
+                    </tr>
+                    <tr>
+                        <td>代币铸造与部署</td>
+                        <td>20,000</td>
+                        <td>✅</td>
+                        <td>✅</td>
+                    </tr>
+                    
+                    <tr class="phase-header">
+                        <td rowspan="4">第三阶段<br>发行/上市</td>
+                        <td>一级市场发售策略</td>
+                        <td>80,000</td>
+                        <td rowspan="4">募资 + 1-2个月</td>
+                        <td>✅</td>
+                        <td>✅</td>
+                    </tr>
+                    <tr>
+                        <td>市场营销与 PR</td>
+                        <td>60,000</td>
+                        <td>✅</td>
+                        <td>✅</td>
+                    </tr>
+                    <tr>
+                        <td>二级市场 (交易所) 上币协调</td>
+                        <td>120,000</td>
+                        <td>✅</td>
+                        <td>❌ 不适用</td>
+                    </tr>
+                    <tr>
+                        <td>流动性策略与做市商对接</td>
+                        <td>40,000</td>
+                        <td>✅</td>
+                        <td>路径不同</td>
+                    </tr>
+                    
+                    <tr class="phase-header">
+                        <td rowspan="5">第四阶段<br>持续服务</td>
+                        <td>链上资产数据监控与报告</td>
+                        <td>60,000</td>
+                        <td rowspan="5">持续进行</td>
+                        <td>强烈建议</td>
+                        <td>✅</td>
+                    </tr>
+                    <tr>
+                        <td>收益/分红管理技术</td>
+                        <td>50,000</td>
+                        <td>✅</td>
+                        <td>强烈建议</td>
+                    </tr>
+                    <tr>
+                        <td>社区运营与治理支持</td>
+                        <td>25,000</td>
+                        <td>✅</td>
+                        <td>技术非必要</td>
+                    </tr>
+                    <tr>
+                        <td>技术平台安全与性能维护</td>
+                        <td>40,000</td>
+                        <td>✅</td>
+                        <td>✅</td>
+                    </tr>
+                    <tr>
+                        <td>投资者关系与社区管理支持</td>
+                        <td>30,000</td>
+                        <td>✅</td>
+                        <td>✅</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="pricing-section">
+            <h2 class="section-title">香港市场特色服务</h2>
+            <div class="additional-services">
+                <div class="service-card">
+                    <h4><i class="fas fa-shield-alt"></i> 合规优势包</h4>
+                    <p>提供香港证监会(SFC)合规指导、虚拟资产交易平台牌照咨询、AML及KYC集成服务。</p>
+                </div>
+                <div class="service-card">
+                    <h4><i class="fas fa-globe-asia"></i> 亚太市场包</h4>
+                    <p>支持多币种（港币、人民币、美元、日元），多语言界面，及亚太时区实时技术支持。</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="pricing-section">
+            <h2 class="section-title">附加服务费用清单</h2>
+            <table class="services-table">
+                <thead>
+                    <tr>
+                        <th>服务项目</th>
+                        <th>费用 (HK$)</th>
+                        <th>说明</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>数据迁移服务</td>
+                        <td>5,000 - 15,000</td>
+                        <td>一次性费用，根据数据复杂度</td>
+                    </tr>
+                    <tr>
+                        <td>额外存储空间</td>
+                        <td>200 / GB / 月</td>
+                        <td>超出套餐限制部分</td>
+                    </tr>
+                    <tr>
+                        <td>紧急技术支持</td>
+                        <td>1,500 / 小时</td>
+                        <td>非工作时间</td>
+                    </tr>
+                    <tr>
+                        <td>定制报告</td>
+                        <td>3,000 - 8,000 / 份</td>
+                        <td>根据报告复杂度</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="promotions">
+            <h3><i class="fas fa-gift"></i> 限时优惠</h3>
+            <div class="promo-list">
+                <div class="promo-item">
+                    <strong>新用户专享</strong><br>
+                    订阅专业版首月享 <strong>5折</strong> 优惠
+                </div>
+                <div class="promo-item">
+                    <strong>年付优惠</strong><br>
+                    年付用户可额外获赠 <strong>2个月</strong> 服务期
+                </div>
+                <div class="promo-item">
+                    <strong>推荐奖励</strong><br>
+                    成功推荐新客户，奖励 <strong>HK$500</strong> 平台积分
+                </div>
+                <div class="promo-item">
+                    <strong>教育优惠</strong><br>
+                    学术机构与非营利组织可享 <strong>半价折扣</strong>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 添加一些交互效果
+        document.addEventListener('DOMContentLoaded', function() {
+            // 为CTA按钮添加点击效果
+            const ctaButtons = document.querySelectorAll('.cta-button');
+            ctaButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    this.style.transform = 'scale(0.95)';
+                    setTimeout(() => {
+                        this.style.transform = '';
+                    }, 150);
+                });
+            });
+
+            // 添加滚动动画
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+
+            const observer = new IntersectionObserver(function(entries) {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, observerOptions);
+
+            // 观察所有定价卡片
+            const pricingCards = document.querySelectorAll('.pricing-card');
+            pricingCards.forEach(card => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(30px)';
+                card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                observer.observe(card);
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1119,23 +1119,13 @@
             </div>
         </div>
 
-        <!-- Multi-Tier Market Navigation -->
+        <!-- Primary Market Navigation -->
         <div class="market-navigation">
             <div class="market-tabs">
                 <button class="market-tab active" onclick="switchMarket('primary')">
                     <i class="fas fa-rocket"></i>
                     <span>一级市场</span>
                     <small>资产发行</small>
-                </button>
-                <button class="market-tab" onclick="switchMarket('secondary')">
-                    <i class="fas fa-exchange-alt"></i>
-                    <span>二级市场</span>
-                    <small>资产交易</small>
-                </button>
-                <button class="market-tab" onclick="switchMarket('derivatives')">
-                    <i class="fas fa-chart-line"></i>
-                    <span>衍生品市场</span>
-                    <small>金融工具</small>
                 </button>
             </div>
         </div>
@@ -1343,62 +1333,6 @@
                 </div>
             </div>
             
-            <!-- Trading Assets -->
-            <div class="trading-section">
-                <div class="section-tabs">
-                    <button class="section-tab active" onclick="switchSecondaryTab('all')">全部资产</button>
-                    <button class="section-tab" onclick="switchSecondaryTab('trending')">热门交易</button>
-                    <button class="section-tab" onclick="switchSecondaryTab('gainers')">涨幅榜</button>
-                    <button class="section-tab" onclick="switchSecondaryTab('volume')">成交量榜</button>
-                    <button class="section-tab" onclick="switchSecondaryTab('realtime')">实时行情</button>
-                </div>
-                <div class="assets-grid" id="secondaryAssetsGrid">
-                    <!-- Secondary market assets will be loaded here -->
-                </div>
-            </div>
-        </div>
-
-        <!-- Derivatives Market Content -->
-        <div id="derivatives-market" class="market-content">
-            <div class="market-header">
-                <h2><i class="fas fa-chart-line"></i> 衍生品市场 - 金融创新</h2>
-                <p>基于RWA资产的衍生金融产品，风险对冲与收益增强</p>
-            </div>
-            
-            <!-- Derivatives Categories -->
-            <div class="derivatives-categories">
-                <div class="category-card" onclick="showDerivativeCategory('futures')">
-                    <div class="category-icon"><i class="fas fa-calendar-check"></i></div>
-                    <h3>期货合约</h3>
-                    <p>标准化的资产期货交易</p>
-                    <span class="category-count">12个产品</span>
-                </div>
-                <div class="category-card" onclick="showDerivativeCategory('options')">
-                    <div class="category-icon"><i class="fas fa-shield-alt"></i></div>
-                    <h3>期权产品</h3>
-                    <p>资产价格波动保护工具</p>
-                    <span class="category-count">8个产品</span>
-                </div>
-                <div class="category-card" onclick="showDerivativeCategory('swaps')">
-                    <div class="category-icon"><i class="fas fa-sync-alt"></i></div>
-                    <h3>收益互换</h3>
-                    <p>定制化收益结构产品</p>
-                    <span class="category-count">6个产品</span>
-                </div>
-                <div class="category-card" onclick="showDerivativeCategory('structured')">
-                    <div class="category-icon"><i class="fas fa-cubes"></i></div>
-                    <h3>结构化产品</h3>
-                    <p>复杂收益结构投资产品</p>
-                    <span class="category-count">15个产品</span>
-                </div>
-            </div>
-            
-            <!-- Derivatives Products -->
-            <div class="derivatives-products">
-                <div class="assets-grid" id="derivativesAssetsGrid">
-                    <!-- Derivatives products will be loaded here -->
-                </div>
-            </div>
         </div>
     </div>
 
