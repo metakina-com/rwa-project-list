@@ -236,13 +236,39 @@ git push origin main
 
 MIT License - 详见 [LICENSE](LICENSE) 文件
 
+## 🤝 战略合作伙伴
+
+### 香港区块链协会 (HKBA)
+- **官网**: [https://hkba.club/](https://hkba.club/)
+- **合作领域**: 区块链技术标准制定、行业规范建设、项目合规审核
+- **合作价值**: 提供专业的区块链行业指导和合规支持，确保RWA项目符合香港及国际监管要求
+
+### Com2000 AI+Web3加速器
+- **官网**: [https://com2000.org/](https://com2000.org/)
+- **合作领域**: AI技术集成、Web3项目孵化、全球市场拓展
+- **合作价值**: 提供AI+Web3技术支持和全球加速器网络，助力RWA平台的技术创新和国际化发展
+- **覆盖地区**: 东南亚、越南、新加坡、泰国、香港、深圳、瑞士、美国、英国
+
+### DenaTrust 德納資本
+- **网站**: https://www.DenaTrust.com
+- **牌照**: 香港TCSP牌照 (TC009903)
+- **合作领域**: Web3合规咨询、信托服务、数字资产托管、监管政策分析
+- **价值**: 提供专业的Web3合规解决方案和信托服务，确保RWA项目的合规运营
+
 ## 🔗 相关链接
 
+### 技术文档
 - [Cloudflare Pages文档](https://developers.cloudflare.com/pages/)
 - [Cloudflare D1文档](https://developers.cloudflare.com/d1/)
 - [Cloudflare AI文档](https://developers.cloudflare.com/ai/)
 - [Wrangler CLI文档](https://developers.cloudflare.com/workers/wrangler/)
 
+### 合作伙伴
+- [香港区块链协会 HKBA](https://hkba.club/)
+- [Com2000 AI+Web3加速器](https://com2000.org/)
+
 ---
 
 **元话RWA数字投行合作计划** - 让传统资产数字化变得简单高效 🚀
+
+*与香港区块链协会(HKBA)和Com2000达成战略合作，共同推动RWA行业标准化和全球化发展*

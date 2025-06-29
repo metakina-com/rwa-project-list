@@ -1,0 +1,521 @@
+/* ==========================================================================
+   RWA平台响应式设计优化
+   适配PC、平板和移动设备
+   ========================================================================== */
+
+/* 基础响应式设置 */
+* {
+    box-sizing: border-box;
+}
+
+html {
+    font-size: 16px;
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+}
+
+body {
+    overflow-x: hidden;
+}
+
+/* 容器响应式 */
+.container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* 图片响应式 */
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* 表格响应式 */
+.table-responsive {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.table-responsive table {
+    min-width: 600px;
+}
+
+/* 导航栏优化 */
+@media (max-width: 1024px) {
+    .nav-links {
+        gap: 1.5rem;
+    }
+    
+    .nav-links a {
+        font-size: 0.9rem;
+    }
+    
+    .cta-button, .auth-button {
+        padding: 0.6rem 1.2rem;
+        font-size: 0.9rem;
+    }
+}
+
+/* 平板设备优化 (768px - 1024px) */
+@media (max-width: 1024px) and (min-width: 769px) {
+    .container {
+        padding: 0 30px;
+    }
+    
+    .features-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 2rem;
+    }
+    
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+    }
+    
+    .hero h1 {
+        font-size: 3rem;
+    }
+    
+    .section-title {
+        font-size: 2.5rem;
+    }
+}
+
+/* 移动设备优化 (最大768px) */
+@media (max-width: 768px) {
+    /* 基础布局 */
+    .container {
+        padding: 0 15px;
+    }
+    
+    /* 导航栏移动端优化 */
+    .header {
+        padding: 0.5rem 0;
+    }
+    
+    .nav {
+        padding: 0.75rem 0;
+    }
+    
+    .logo {
+        font-size: 1.3rem;
+    }
+    
+    .nav-links {
+        position: fixed;
+        top: 70px;
+        left: -100%;
+        width: 100%;
+        height: calc(100vh - 70px);
+        background: rgba(255, 255, 255, 0.98);
+        backdrop-filter: blur(15px);
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+        padding: 2rem 0;
+        transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        z-index: 999;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    }
+    
+    .nav-links.mobile-active {
+        left: 0;
+    }
+    
+    .nav-links li {
+        width: 100%;
+        text-align: center;
+        margin-bottom: 0.5rem;
+    }
+    
+    .nav-links a {
+        display: block;
+        font-size: 1.1rem;
+        padding: 1rem 2rem;
+        width: 100%;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        transition: all 0.3s ease;
+    }
+    
+    .nav-links a:hover {
+        background: rgba(79, 70, 229, 0.1);
+        transform: none;
+    }
+    
+    .mobile-menu-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        background: transparent;
+        border: none;
+        cursor: pointer;
+        font-size: 1.2rem;
+        color: #374151;
+        transition: all 0.3s ease;
+        border-radius: 8px;
+    }
+    
+    .mobile-menu-btn:hover {
+        background: rgba(79, 70, 229, 0.1);
+        color: #4f46e5;
+    }
+    
+    .nav-actions {
+        gap: 0.5rem;
+    }
+    
+    .wallet-button, .auth-button {
+        padding: 0.5rem 1rem;
+        font-size: 0.85rem;
+    }
+    
+    /* Hero区域优化 */
+    .hero {
+        padding: 120px 0 80px;
+        text-align: center;
+    }
+    
+    .hero h1 {
+        font-size: 2.2rem;
+        line-height: 1.2;
+        margin-bottom: 1rem;
+    }
+    
+    .hero p {
+        font-size: 1rem;
+        line-height: 1.6;
+        margin-bottom: 2rem;
+        max-width: 90%;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    
+    .hero-buttons {
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+    }
+    
+    .btn-primary, .btn-secondary {
+        width: 100%;
+        max-width: 280px;
+        padding: 1rem 2rem;
+        font-size: 1rem;
+        text-align: center;
+    }
+    
+    /* 特性网格优化 */
+    .features-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+    
+    .feature-card {
+        padding: 1.5rem;
+        text-align: center;
+    }
+    
+    .feature-icon {
+        width: 60px;
+        height: 60px;
+        font-size: 1.5rem;
+        margin: 0 auto 1rem;
+    }
+    
+    /* 统计数据优化 */
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+    }
+    
+    .stat-item {
+        text-align: center;
+        padding: 1rem;
+    }
+    
+    .stat-item h3 {
+        font-size: 1.8rem;
+    }
+    
+    /* 表单优化 */
+    .form-row {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    .form-group {
+        margin-bottom: 1rem;
+    }
+    
+    .form-control {
+        padding: 0.875rem;
+        font-size: 1rem;
+    }
+    
+    /* 模态框优化 */
+    .modal-content {
+        width: 95%;
+        max-width: 400px;
+        padding: 1.5rem;
+        margin: 1rem;
+    }
+    
+    .modal-title {
+        font-size: 1.5rem;
+    }
+    
+    /* 卡片优化 */
+    .card {
+        margin-bottom: 1rem;
+    }
+    
+    .asset-card {
+        padding: 1rem;
+    }
+    
+    /* 页脚优化 */
+    .footer-content {
+        grid-template-columns: 1fr;
+        text-align: center;
+        gap: 2rem;
+    }
+    
+    /* 标题优化 */
+    .section-title {
+        font-size: 1.8rem;
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+    
+    .cta-section h2 {
+        font-size: 1.8rem;
+    }
+}
+
+/* 小屏移动设备优化 (最大480px) */
+@media (max-width: 480px) {
+    .container {
+        padding: 0 12px;
+    }
+    
+    .hero {
+        padding: 100px 0 60px;
+    }
+    
+    .hero h1 {
+        font-size: 1.8rem;
+        line-height: 1.3;
+    }
+    
+    .hero p {
+        font-size: 0.95rem;
+    }
+    
+    .btn-primary, .btn-secondary {
+        padding: 0.875rem 1.5rem;
+        font-size: 0.95rem;
+    }
+    
+    .stats-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    .feature-icon {
+        width: 50px;
+        height: 50px;
+        font-size: 1.2rem;
+    }
+    
+    .feature-card {
+        padding: 1.25rem;
+    }
+    
+    .feature-card h3 {
+        font-size: 1.1rem;
+    }
+    
+    .modal-content {
+        width: 98%;
+        padding: 1.25rem;
+    }
+    
+    .section-title {
+        font-size: 1.6rem;
+    }
+    
+    .nav-links a {
+        font-size: 1rem;
+        padding: 0.875rem 1.5rem;
+    }
+    
+    .wallet-button, .auth-button {
+        padding: 0.5rem 0.875rem;
+        font-size: 0.8rem;
+    }
+}
+
+/* 超小屏设备优化 (最大360px) */
+@media (max-width: 360px) {
+    .container {
+        padding: 0 10px;
+    }
+    
+    .hero h1 {
+        font-size: 1.6rem;
+    }
+    
+    .hero p {
+        font-size: 0.9rem;
+    }
+    
+    .btn-primary, .btn-secondary {
+        padding: 0.75rem 1.25rem;
+        font-size: 0.9rem;
+    }
+    
+    .feature-card {
+        padding: 1rem;
+    }
+    
+    .section-title {
+        font-size: 1.4rem;
+    }
+}
+
+/* 横屏模式优化 */
+@media (max-height: 500px) and (orientation: landscape) {
+    .hero {
+        padding: 80px 0 40px;
+    }
+    
+    .hero h1 {
+        font-size: 2rem;
+    }
+    
+    .nav-links {
+        height: calc(100vh - 60px);
+        top: 60px;
+    }
+}
+
+/* 触摸设备优化 */
+@media (hover: none) and (pointer: coarse) {
+    .btn, .button, .cta-button, .auth-button {
+        min-height: 44px;
+        min-width: 44px;
+    }
+    
+    .nav-links a {
+        min-height: 44px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .mobile-menu-btn {
+        min-height: 44px;
+        min-width: 44px;
+    }
+}
+
+/* 高分辨率屏幕优化 */
+@media (min-resolution: 2dppx) {
+    .feature-icon, .stat-item h3 {
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+}
+
+/* 打印样式 */
+@media print {
+    .header, .footer, .mobile-menu-btn, .nav-actions {
+        display: none !important;
+    }
+    
+    .hero {
+        padding: 20px 0;
+    }
+    
+    .container {
+        max-width: none;
+        padding: 0;
+    }
+    
+    .features-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* 可访问性优化 */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* 深色模式支持 */
+@media (prefers-color-scheme: dark) {
+    .nav-links {
+        background: rgba(17, 24, 39, 0.98);
+        color: #f9fafb;
+    }
+    
+    .nav-links a {
+        color: #f9fafb;
+        border-bottom-color: rgba(255, 255, 255, 0.1);
+    }
+    
+    .nav-links a:hover {
+        background: rgba(79, 70, 229, 0.2);
+    }
+}
+
+/* 工具类 */
+.hide-mobile {
+    display: block;
+}
+
+.show-mobile {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    .hide-mobile {
+        display: none;
+    }
+    
+    .show-mobile {
+        display: block;
+    }
+}
+
+.text-center-mobile {
+    text-align: left;
+}
+
+@media (max-width: 768px) {
+    .text-center-mobile {
+        text-align: center;
+    }
+}
+
+/* 性能优化 */
+.gpu-accelerated {
+    transform: translateZ(0);
+    will-change: transform;
+}
+
+/* 滚动优化 */
+.smooth-scroll {
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+}

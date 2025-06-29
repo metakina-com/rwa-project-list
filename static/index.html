@@ -7,6 +7,7 @@
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="css/responsive.css" rel="stylesheet">
     <!-- ThirdWeb SDK -->
     <script src="https://unpkg.com/@thirdweb-dev/sdk@latest/dist/browser.js"></script>
     <style>
@@ -397,6 +398,36 @@
         .asset-card:hover {
             transform: translateY(-2px);
         }
+        
+        /* Partner Cards Styles */
+        .partner-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15) !important;
+        }
+        
+        .partner-link:hover {
+            transform: translateX(5px);
+        }
+        
+        @media (max-width: 768px) {
+            .partners-grid {
+                grid-template-columns: 1fr !important;
+            }
+            
+            .partner-card {
+                padding: 1.5rem !important;
+            }
+            
+            .partner-header {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .partner-logo {
+                 margin-right: 0 !important;
+                 margin-bottom: 1rem !important;
+             }
+         }
         
         .asset-balance {
             font-size: 1.5rem;
@@ -1232,6 +1263,7 @@
                     <li><a href="#venture-database">创投数据库</a></li>
                     <li><a href="#solutions">解决方案</a></li>
                     <li><a href="#about">关于我们</a></li>
+                    <li><a href="#partners">合作伙伴</a></li>
                     <li><a href="#contact">联系我们</a></li>
                     <li><a href="admin/" class="admin-link" title="运营管理系统"><i class="fas fa-cog"></i> 管理后台</a></li>
                 </ul>
@@ -1542,6 +1574,123 @@
         </div>
     </section>
 
+    <!-- Strategic Partners Section -->
+    <section id="partners" class="features" style="background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);">
+        <div class="container">
+            <h2 class="section-title fade-in">战略合作伙伴</h2>
+            <p class="section-subtitle fade-in" style="text-align: center; color: #64748b; margin-bottom: 3rem; font-size: 1.1rem;">与全球领先的区块链和AI技术组织建立战略合作关系，共同推动RWA行业发展</p>
+            
+            <div class="partners-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 2rem; margin-bottom: 3rem;">
+                <!-- HKBA Partner Card -->
+                <div class="partner-card fade-in" style="background: white; border-radius: 20px; padding: 2rem; box-shadow: 0 10px 30px rgba(0,0,0,0.1); border: 1px solid rgba(0,0,0,0.05); transition: all 0.3s ease; position: relative; overflow: hidden;">
+                    <div class="partner-header" style="display: flex; align-items: center; margin-bottom: 1.5rem;">
+                        <div class="partner-logo" style="width: 60px; height: 60px; background: linear-gradient(135deg, #dc2626, #ef4444); border-radius: 15px; display: flex; align-items: center; justify-content: center; margin-right: 1rem; color: white; font-weight: bold; font-size: 1.2rem;">HKBA</div>
+                        <div>
+                            <h3 style="color: #1e293b; margin-bottom: 0.5rem; font-size: 1.3rem;">香港区块链协会</h3>
+                            <p style="color: #64748b; margin: 0; font-size: 0.9rem;">Hong Kong Blockchain Association</p>
+                        </div>
+                    </div>
+                    <div class="partner-content">
+                        <div class="cooperation-areas" style="margin-bottom: 1.5rem;">
+                            <h4 style="color: #374151; margin-bottom: 1rem; font-size: 1rem;">合作领域</h4>
+                            <div class="tags" style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
+                                <span class="tag" style="background: rgba(220, 38, 38, 0.1); color: #dc2626; padding: 0.3rem 0.8rem; border-radius: 15px; font-size: 0.8rem; font-weight: 500;">技术标准制定</span>
+                                <span class="tag" style="background: rgba(220, 38, 38, 0.1); color: #dc2626; padding: 0.3rem 0.8rem; border-radius: 15px; font-size: 0.8rem; font-weight: 500;">行业规范建设</span>
+                                <span class="tag" style="background: rgba(220, 38, 38, 0.1); color: #dc2626; padding: 0.3rem 0.8rem; border-radius: 15px; font-size: 0.8rem; font-weight: 500;">合规审核</span>
+                            </div>
+                        </div>
+                        <p style="color: #64748b; line-height: 1.6; margin-bottom: 1.5rem;">提供专业的区块链行业指导和合规支持，确保RWA项目符合香港及国际监管要求。</p>
+                        <a href="https://hkba.club/" target="_blank" class="partner-link" style="display: inline-flex; align-items: center; color: #dc2626; text-decoration: none; font-weight: 500; transition: all 0.3s ease;">
+                            <span>访问官网</span>
+                            <i class="fas fa-external-link-alt" style="margin-left: 0.5rem; font-size: 0.8rem;"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Com2000 Partner Card -->
+                <div class="partner-card fade-in" style="background: white; border-radius: 20px; padding: 2rem; box-shadow: 0 10px 30px rgba(0,0,0,0.1); border: 1px solid rgba(0,0,0,0.05); transition: all 0.3s ease; position: relative; overflow: hidden;">
+                    <div class="partner-header" style="display: flex; align-items: center; margin-bottom: 1.5rem;">
+                        <div class="partner-logo" style="width: 60px; height: 60px; background: linear-gradient(135deg, #4f46e5, #7c3aed); border-radius: 15px; display: flex; align-items: center; justify-content: center; margin-right: 1rem; color: white; font-weight: bold; font-size: 0.9rem;">C2000</div>
+                        <div>
+                            <h3 style="color: #1e293b; margin-bottom: 0.5rem; font-size: 1.3rem;">Com2000 加速器</h3>
+                            <p style="color: #64748b; margin: 0; font-size: 0.9rem;">AI+Web3 Accelerator</p>
+                        </div>
+                    </div>
+                    <div class="partner-content">
+                        <div class="cooperation-areas" style="margin-bottom: 1.5rem;">
+                            <h4 style="color: #374151; margin-bottom: 1rem; font-size: 1rem;">合作领域</h4>
+                            <div class="tags" style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
+                                <span class="tag" style="background: rgba(79, 70, 229, 0.1); color: #4f46e5; padding: 0.3rem 0.8rem; border-radius: 15px; font-size: 0.8rem; font-weight: 500;">AI技术集成</span>
+                                <span class="tag" style="background: rgba(79, 70, 229, 0.1); color: #4f46e5; padding: 0.3rem 0.8rem; border-radius: 15px; font-size: 0.8rem; font-weight: 500;">项目孵化</span>
+                                <span class="tag" style="background: rgba(79, 70, 229, 0.1); color: #4f46e5; padding: 0.3rem 0.8rem; border-radius: 15px; font-size: 0.8rem; font-weight: 500;">全球拓展</span>
+                            </div>
+                        </div>
+                        <p style="color: #64748b; line-height: 1.6; margin-bottom: 1.5rem;">提供AI+Web3技术支持和全球加速器网络，助力RWA平台的技术创新和国际化发展。</p>
+                        <a href="https://com2000.org/" target="_blank" class="partner-link" style="display: inline-flex; align-items: center; color: #4f46e5; text-decoration: none; font-weight: 500; transition: all 0.3s ease;">
+                            <span>访问官网</span>
+                            <i class="fas fa-external-link-alt" style="margin-left: 0.5rem; font-size: 0.8rem;"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- DenaTrust Partner Card -->
+                <div class="partner-card fade-in" style="background: white; border-radius: 20px; padding: 2rem; box-shadow: 0 10px 30px rgba(0,0,0,0.1); border: 1px solid rgba(0,0,0,0.05); transition: all 0.3s ease; position: relative; overflow: hidden;">
+                    <div class="partner-header" style="display: flex; align-items: center; margin-bottom: 1.5rem;">
+                        <div class="partner-logo" style="width: 60px; height: 60px; background: linear-gradient(135deg, #10b981, #059669); border-radius: 15px; display: flex; align-items: center; justify-content: center; margin-right: 1rem; color: white; font-weight: bold; font-size: 0.8rem;">DENA</div>
+                        <div>
+                            <h3 style="color: #1e293b; margin-bottom: 0.5rem; font-size: 1.3rem;">DenaTrust 德納資本</h3>
+                            <p style="color: #64748b; margin: 0; font-size: 0.9rem;">Web3合规咨询 | TCSP牌照: TC009903</p>
+                        </div>
+                    </div>
+                    <div class="partner-content">
+                        <div class="cooperation-areas" style="margin-bottom: 1.5rem;">
+                            <h4 style="color: #374151; margin-bottom: 1rem; font-size: 1rem;">合作领域</h4>
+                            <div class="tags" style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
+                                <span class="tag" style="background: rgba(16, 185, 129, 0.1); color: #10b981; padding: 0.3rem 0.8rem; border-radius: 15px; font-size: 0.8rem; font-weight: 500;">合规咨询</span>
+                                <span class="tag" style="background: rgba(16, 185, 129, 0.1); color: #10b981; padding: 0.3rem 0.8rem; border-radius: 15px; font-size: 0.8rem; font-weight: 500;">信托服务</span>
+                                <span class="tag" style="background: rgba(16, 185, 129, 0.1); color: #10b981; padding: 0.3rem 0.8rem; border-radius: 15px; font-size: 0.8rem; font-weight: 500;">数字资产托管</span>
+                                <span class="tag" style="background: rgba(16, 185, 129, 0.1); color: #10b981; padding: 0.3rem 0.8rem; border-radius: 15px; font-size: 0.8rem; font-weight: 500;">RWA代币化</span>
+                            </div>
+                        </div>
+                        <p style="color: #64748b; line-height: 1.6; margin-bottom: 1.5rem;">提供专业的Web3合规解决方案和信托服务，确保RWA项目的合规运营和用户资产安全保护。</p>
+                        <a href="https://www.DenaTrust.com" target="_blank" class="partner-link" style="display: inline-flex; align-items: center; color: #10b981; text-decoration: none; font-weight: 500; transition: all 0.3s ease;">
+                            <span>访问官网</span>
+                            <i class="fas fa-external-link-alt" style="margin-left: 0.5rem; font-size: 0.8rem;"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Partnership Benefits -->
+            <div class="partnership-benefits fade-in" style="background: white; border-radius: 20px; padding: 2rem; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
+                <h3 style="text-align: center; color: #1e293b; margin-bottom: 2rem; font-size: 1.5rem;">合作协同效应</h3>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem;">
+                    <div class="benefit-item" style="text-align: center;">
+                        <div style="width: 60px; height: 60px; background: linear-gradient(135deg, #10b981, #059669); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; color: white;">
+                            <i class="fas fa-shield-alt" style="font-size: 1.5rem;"></i>
+                        </div>
+                        <h4 style="color: #374151; margin-bottom: 0.5rem;">技术与合规并重</h4>
+                        <p style="color: #64748b; font-size: 0.9rem;">确保RWA项目既具备技术先进性，又符合监管要求</p>
+                    </div>
+                    <div class="benefit-item" style="text-align: center;">
+                        <div style="width: 60px; height: 60px; background: linear-gradient(135deg, #f59e0b, #d97706); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; color: white;">
+                            <i class="fas fa-globe" style="font-size: 1.5rem;"></i>
+                        </div>
+                        <h4 style="color: #374151; margin-bottom: 0.5rem;">全球市场覆盖</h4>
+                        <p style="color: #64748b; font-size: 0.9rem;">实现区域深度与全球广度的有机结合</p>
+                    </div>
+                    <div class="benefit-item" style="text-align: center;">
+                        <div style="width: 60px; height: 60px; background: linear-gradient(135deg, #8b5cf6, #7c3aed); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; color: white;">
+                            <i class="fas fa-rocket" style="font-size: 1.5rem;"></i>
+                        </div>
+                        <h4 style="color: #374151; margin-bottom: 0.5rem;">创新融合发展</h4>
+                        <p style="color: #64748b; font-size: 0.9rem;">推动传统资产数字化的创新实践</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Contact Section -->
     <section id="contact" class="features">
         <div class="container">
@@ -1672,33 +1821,85 @@
             }
         });
 
-        // Mobile menu toggle
+        // Enhanced Mobile menu toggle
         const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
         const navLinks = document.querySelector('.nav-links');
+        const body = document.body;
         
-        if (mobileMenuBtn && navLinks) {
-            mobileMenuBtn.addEventListener('click', () => {
-                navLinks.classList.toggle('mobile-active');
-                const icon = mobileMenuBtn.querySelector('i');
+        function toggleMobileMenu() {
+            if (!navLinks) return;
+            
+            const isActive = navLinks.classList.contains('mobile-active');
+            navLinks.classList.toggle('mobile-active');
+            
+            // Toggle body scroll
+            if (isActive) {
+                body.style.overflow = '';
+            } else {
+                body.style.overflow = 'hidden';
+            }
+            
+            // Toggle icon
+            const icon = mobileMenuBtn?.querySelector('i');
+            if (icon) {
                 if (icon.classList.contains('fa-bars')) {
                     icon.classList.replace('fa-bars', 'fa-times');
                 } else {
                     icon.classList.replace('fa-times', 'fa-bars');
                 }
+            }
+        }
+        
+        function closeMobileMenu() {
+            if (!navLinks) return;
+            
+            navLinks.classList.remove('mobile-active');
+            body.style.overflow = '';
+            
+            const icon = mobileMenuBtn?.querySelector('i');
+            if (icon) {
+                icon.classList.replace('fa-times', 'fa-bars');
+            }
+        }
+        
+        if (mobileMenuBtn && navLinks) {
+            // Click event for menu button
+            mobileMenuBtn.addEventListener('click', toggleMobileMenu);
+            
+            // Touch events for better mobile experience
+            mobileMenuBtn.addEventListener('touchstart', (e) => {
+                e.preventDefault();
+                toggleMobileMenu();
             });
         }
         
         // Close mobile menu when clicking on links
         document.querySelectorAll('.nav-links a').forEach(link => {
-            link.addEventListener('click', () => {
-                if (navLinks) {
-                    navLinks.classList.remove('mobile-active');
-                    const icon = mobileMenuBtn?.querySelector('i');
-                    if (icon) {
-                        icon.classList.replace('fa-times', 'fa-bars');
-                    }
+            link.addEventListener('click', closeMobileMenu);
+            link.addEventListener('touchstart', closeMobileMenu);
+        });
+        
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', (e) => {
+            if (navLinks && navLinks.classList.contains('mobile-active')) {
+                if (!navLinks.contains(e.target) && !mobileMenuBtn?.contains(e.target)) {
+                    closeMobileMenu();
                 }
-            });
+            }
+        });
+        
+        // Close mobile menu on escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && navLinks?.classList.contains('mobile-active')) {
+                closeMobileMenu();
+            }
+        });
+        
+        // Handle window resize
+        window.addEventListener('resize', () => {
+            if (window.innerWidth > 768 && navLinks?.classList.contains('mobile-active')) {
+                closeMobileMenu();
+            }
         });
         
         // Performance optimization: Lazy loading for images

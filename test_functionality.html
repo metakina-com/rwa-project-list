@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RWA平台功能测试</title>
+    <style>
+        body {
+            font-family: 'Microsoft YaHei', sans-serif;
+            margin: 20px;
+            background: #f5f5f5;
+        }
+        .test-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .test-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+        }
+        .test-section h2 {
+            color: #333;
+            border-bottom: 2px solid #4f46e5;
+            padding-bottom: 10px;
+        }
+        .test-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            margin: 5px 0;
+            background: #f9f9f9;
+            border-radius: 5px;
+        }
+        .test-link {
+            color: #4f46e5;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .test-link:hover {
+            text-decoration: underline;
+        }
+        .status {
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        .status.success {
+            background: #d4edda;
+            color: #155724;
+        }
+        .status.error {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        .status.pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+        .test-button {
+            background: #4f46e5;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+        .test-button:hover {
+            background: #3730a3;
+        }
+        .summary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+        .summary h1 {
+            margin: 0 0 10px 0;
+        }
+        .progress-bar {
+            background: rgba(255,255,255,0.3);
+            height: 10px;
+            border-radius: 5px;
+            overflow: hidden;
+            margin-top: 15px;
+        }
+        .progress-fill {
+            background: white;
+            height: 100%;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <div class="summary">
+            <h1>🧪 RWA平台功能测试中心</h1>
+            <p>系统性测试所有页面链接和功能的可用性</p>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <p id="progressText">准备开始测试...</p>
+        </div>
+
+        <div class="test-section">
+            <h2>🏠 主页导航链接测试</h2>
+            <div class="test-item">
+                <span>主页</span>
+                <div>
+                    <a href="index.html" class="test-link" target="_blank">index.html</a>
+                    <button class="test-button" onclick="testLink('index.html', this)">测试</button>
+                    <span class="status pending" id="status-index">待测试</span>
+                </div>
+            </div>
+            <div class="test-item">
+                <span>RWA交易市场</span>
+                <div>
+                    <a href="rwa_marketplace.html" class="test-link" target="_blank">rwa_marketplace.html</a>
+                    <button class="test-button" onclick="testLink('rwa_marketplace.html', this)">测试</button>
+                    <span class="status pending" id="status-rwa_marketplace">待测试</span>
+                </div>
+            </div>
+            <div class="test-item">
+                <span>资产管理</span>
+                <div>
+                    <a href="asset_management.html" class="test-link" target="_blank">asset_management.html</a>
+                    <button class="test-button" onclick="testLink('asset_management.html', this)">测试</button>
+                    <span class="status pending" id="status-asset_management">待测试</span>
+                </div>
+            </div>
+            <div class="test-item">
+                <span>投资产品</span>
+                <div>
+                    <a href="investment_products.html" class="test-link" target="_blank">investment_products.html</a>
+                    <button class="test-button" onclick="testLink('investment_products.html', this)">测试</button>
+                    <span class="status pending" id="status-investment_products">待测试</span>
+                </div>
+            </div>
+            <div class="test-item">
+                <span>个人中心</span>
+                <div>
+                    <a href="user_center.html" class="test-link" target="_blank">user_center.html</a>
+                    <button class="test-button" onclick="testLink('user_center.html', this)">测试</button>
+                    <span class="status pending" id="status-user_center">待测试</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="test-section">
+            <h2>📋 功能页面测试</h2>
+            <div class="test-item">
+                <span>登录/注册</span>
+                <div>
+                    <a href="auth.html" class="test-link" target="_blank">auth.html</a>
+                    <button class="test-button" onclick="testLink('auth.html', this)">测试</button>
+                    <span class="status pending" id="status-auth">待测试</span>
+                </div>
+            </div>
+            <div class="test-item">
+                <span>智能申请表单</span>
+                <div>
+                    <a href="rwa_smart_form.html" class="test-link" target="_blank">rwa_smart_form.html</a>
+                    <button class="test-button" onclick="testLink('rwa_smart_form.html', this)">测试</button>
+                    <span class="status pending" id="status-rwa_smart_form">待测试</span>
+                </div>
+            </div>
+            <div class="test-item">
+                <span>客户申请表单</span>
+                <div>
+                    <a href="rwa_client_form.html" class="test-link" target="_blank">rwa_client_form.html</a>
+                    <button class="test-button" onclick="testLink('rwa_client_form.html', this)">测试</button>
+                    <span class="status pending" id="status-rwa_client_form">待测试</span>
+                </div>
+            </div>
+            <div class="test-item">
+                <span>去中心化安全演示</span>
+                <div>
+                    <a href="decentralized_security_demo.html" class="test-link" target="_blank">decentralized_security_demo.html</a>
+                    <button class="test-button" onclick="testLink('decentralized_security_demo.html', this)">测试</button>
+                    <span class="status pending" id="status-decentralized_security_demo">待测试</span>
+                </div>
+            </div>
+            <div class="test-item">
+                <span>项目详情</span>
+                <div>
+                    <a href="project_detail.html" class="test-link" target="_blank">project_detail.html</a>
+                    <button class="test-button" onclick="testLink('project_detail.html', this)">测试</button>
+                    <span class="status pending" id="status-project_detail">待测试</span>
+                </div>
+            </div>
+            <div class="test-item">
+                <span>NFT市场</span>
+                <div>
+                    <a href="nft_marketplace.html" class="test-link" target="_blank">nft_marketplace.html</a>
+                    <button class="test-button" onclick="testLink('nft_marketplace.html', this)">测试</button>
+                    <span class="status pending" id="status-nft_marketplace">待测试</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="test-section">
+            <h2>⚙️ 管理后台测试</h2>
+            <div class="test-item">
+                <span>管理后台</span>
+                <div>
+                    <a href="admin/index.html" class="test-link" target="_blank">admin/index.html</a>
+                    <button class="test-button" onclick="testLink('admin/index.html', this)">测试</button>
+                    <span class="status pending" id="status-admin">待测试</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="test-section">
+            <h2>🔧 批量测试操作</h2>
+            <button class="test-button" onclick="testAllLinks()" style="background: #10b981; margin-right: 10px;">🚀 测试所有链接</button>
+            <button class="test-button" onclick="resetTests()" style="background: #f59e0b;">🔄 重置测试</button>
+            <button class="test-button" onclick="generateReport()" style="background: #8b5cf6; margin-left: 10px;">📊 生成报告</button>
+        </div>
+    </div>
+
+    <script>
+        let testResults = {};
+        let totalTests = 0;
+        let completedTests = 0;
+
+        function updateProgress() {
+            const progress = totalTests > 0 ? (completedTests / totalTests) * 100 : 0;
+            document.getElementById('progressFill').style.width = progress + '%';
+            document.getElementById('progressText').textContent = 
+                `测试进度: ${completedTests}/${totalTests} (${Math.round(progress)}%)`;
+        }
+
+        function testLink(url, button) {
+            const statusId = 'status-' + url.replace(/[/.]/g, '_').replace('html', '').replace('_', '');
+            const statusElement = document.getElementById(statusId);
+            
+            button.disabled = true;
+            button.textContent = '测试中...';
+            statusElement.className = 'status pending';
+            statusElement.textContent = '测试中...';
+
+            // 创建一个隐藏的iframe来测试页面加载
+            const iframe = document.createElement('iframe');
+            iframe.style.display = 'none';
+            iframe.src = url;
+            
+            const timeout = setTimeout(() => {
+                document.body.removeChild(iframe);
+                testResults[url] = false;
+                statusElement.className = 'status error';
+                statusElement.textContent = '加载超时';
+                button.disabled = false;
+                button.textContent = '重新测试';
+                completedTests++;
+                updateProgress();
+            }, 10000);
+
+            iframe.onload = function() {
+                clearTimeout(timeout);
+                document.body.removeChild(iframe);
+                testResults[url] = true;
+                statusElement.className = 'status success';
+                statusElement.textContent = '✅ 正常';
+                button.disabled = false;
+                button.textContent = '重新测试';
+                completedTests++;
+                updateProgress();
+            };
+
+            iframe.onerror = function() {
+                clearTimeout(timeout);
+                document.body.removeChild(iframe);
+                testResults[url] = false;
+                statusElement.className = 'status error';
+                statusElement.textContent = '❌ 错误';
+                button.disabled = false;
+                button.textContent = '重新测试';
+                completedTests++;
+                updateProgress();
+            };
+
+            document.body.appendChild(iframe);
+        }
+
+        function testAllLinks() {
+            const links = [
+                'index.html',
+                'rwa_marketplace.html', 
+                'asset_management.html',
+                'investment_products.html',
+                'user_center.html',
+                'auth.html',
+                'rwa_smart_form.html',
+                'rwa_client_form.html',
+                'decentralized_security_demo.html',
+                'project_detail.html',
+                'nft_marketplace.html',
+                'admin/index.html'
+            ];
+            
+            totalTests = links.length;
+            completedTests = 0;
+            updateProgress();
+            
+            links.forEach((link, index) => {
+                setTimeout(() => {
+                    const button = document.querySelector(`button[onclick*="${link}"]`);
+                    if (button) {
+                        testLink(link, button);
+                    }
+                }, index * 1000); // 每秒测试一个链接
+            });
+        }
+
+        function resetTests() {
+            testResults = {};
+            totalTests = 0;
+            completedTests = 0;
+            updateProgress();
+            
+            document.querySelectorAll('.status').forEach(status => {
+                status.className = 'status pending';
+                status.textContent = '待测试';
+            });
+            
+            document.querySelectorAll('.test-button').forEach(button => {
+                if (button.textContent !== '测试所有链接' && button.textContent !== '重置测试' && button.textContent !== '生成报告') {
+                    button.disabled = false;
+                    button.textContent = '测试';
+                }
+            });
+        }
+
+        function generateReport() {
+            const total = Object.keys(testResults).length;
+            const passed = Object.values(testResults).filter(result => result).length;
+            const failed = total - passed;
+            
+            const report = `
+=== RWA平台功能测试报告 ===
+测试时间: ${new Date().toLocaleString()}
+总测试数: ${total}
+通过: ${passed}
+失败: ${failed}
+成功率: ${total > 0 ? Math.round((passed/total)*100) : 0}%
+
+详细结果:
+${Object.entries(testResults).map(([url, result]) => 
+    `${result ? '✅' : '❌'} ${url}`
+).join('\n')}
+            `;
+            
+            alert(report);
+            console.log(report);
+        }
+
+        // 初始化
+        updateProgress();
+    </script>
+</body>
+</html>

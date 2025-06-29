@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RWA项目提交云平台 - Metakina</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f0f2f5; color: #333; margin: 0; padding: 20px; display: flex; justify-content: center; align-items: flex-start; min-height: 100vh; }
+        .container { background-color: #fff; border-radius: 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.1); width: 100%; max-width: 900px; overflow: hidden; }
+        .header { background: linear-gradient(135deg, #1a237e, #3949ab); color: white; padding: 25px 30px; text-align: center; border-bottom: 5px solid #ffc107; }
+        .header h1 { margin: 0; font-size: 2em; font-weight: 600; }
+        .header p { margin: 5px 0 0; font-size: 1.1em; opacity: 0.9; }
+        .main-content { padding: 30px; }
+        .progress-indicator { display: flex; justify-content: space-between; margin-bottom: 30px; padding: 0; list-style: none; position: relative; }
+        .progress-indicator::before { content: ''; position: absolute; top: 50%; left: 0; width: 100%; height: 4px; background-color: #e0e0e0; transform: translateY(-50%); z-index: 1; }
+        .progress-indicator li { flex: 1; text-align: center; position: relative; z-index: 2; }
+        .progress-indicator .step { display: flex; flex-direction: column; align-items: center; color: #9e9e9e; font-weight: 500; }
+        .progress-indicator .step-icon { width: 40px; height: 40px; border-radius: 50%; background-color: #e0e0e0; color: white; display: flex; justify-content: center; align-items: center; font-size: 1.2em; margin-bottom: 10px; border: 4px solid #f0f2f5; transition: all 0.3s ease; }
+        .progress-indicator .step-label { font-size: 0.9em; }
+        .progress-indicator .active .step-icon { background-color: #3949ab; }
+        .progress-indicator .active .step-label { color: #3949ab; font-weight: 600; }
+        .form-step { display: none; animation: fadeIn 0.5s; }
+        .form-step.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .form-section { margin-bottom: 25px; }
+        .form-section h3 { font-size: 1.5em; color: #1a237e; border-bottom: 2px solid #ffc107; padding-bottom: 10px; margin-bottom: 20px; }
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; font-weight: 600; margin-bottom: 8px; color: #555; }
+        .form-group input, .form-group textarea, .form-group select { width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box; font-size: 1em; transition: border-color 0.3s; }
+        .form-group input:focus, .form-group textarea:focus, .form-group select:focus { border-color: #3949ab; outline: none; box-shadow: 0 0 0 2px rgba(57, 73, 171, 0.2); }
+        .form-group textarea { resize: vertical; min-height: 120px; }
+        .button-group { display: flex; justify-content: space-between; margin-top: 30px; }
+        .btn { padding: 12px 25px; border: none; border-radius: 6px; font-size: 1em; font-weight: 600; cursor: pointer; transition: all 0.3s ease; text-transform: uppercase; letter-spacing: 0.5px; }
+        .btn-primary { background-color: #3949ab; color: white; }
+        .btn-primary:hover { background-color: #1a237e; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+        .btn-secondary { background-color: #e0e0e0; color: #333; }
+        .btn-secondary:hover { background-color: #bdbdbd; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>RWA项目提交云平台</h1>
+            <p>Metakina - 链接现实资产与数字未来</p>
+        </div>
+        <div class="main-content">
+            <ul class="progress-indicator">
+                <li class="active" data-step="1"><div class="step"><span class="step-icon">1</span><span class="step-label">项目信息</span></div></li>
+                <li data-step="2"><div class="step"><span class="step-icon">2</span><span class="step-label">资产详情</span></div></li>
+                <li data-step="3"><div class="step"><span class="step-icon">3</span><span class="step-label">法律合规</span></div></li>
+                <li data-step="4"><div class="step"><span class="step-icon">4</span><span class="step-label">融资方案</span></div></li>
+                <li data-step="5"><div class="step"><span class="step-icon">5</span><span class="step-label">联系审核</span></div></li>
+            </ul>
+
+            <form id="rwa-form">
+                <!-- Step 1: Project Information -->
+                <div class="form-step active" id="step-1">
+                    <div class="form-section">
+                        <h3>第一步：项目基本信息</h3>
+                        <div class="form-group">
+                            <label for="project-name">项目名称</label>
+                            <input type="text" id="project-name" name="projectName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="project-summary">项目简介 (一句话描述)</label>
+                            <input type="text" id="project-summary" name="projectSummary" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="project-description">项目详细介绍</label>
+                            <textarea id="project-description" name="projectDescription" required></textarea>
+                        </div>
+                    </div>
+                    <div class="button-group">
+                        <button type="button" class="btn btn-primary" onclick="nextStep(2)">下一步</button>
+                    </div>
+                </div>
+
+                <!-- Step 2: Asset Details -->
+                <div class="form-step" id="step-2">
+                    <div class="form-section">
+                        <h3>第二步：资产详情与估值</h3>
+                        <div class="form-group">
+                            <label for="asset-type">资产类型 (如：房地产、艺术品、私募股权)</label>
+                            <input type="text" id="asset-type" name="assetType" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="asset-valuation">资产估值 (USD)</label>
+                            <input type="number" id="asset-valuation" name="assetValuation" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="valuation-report">估值报告/证明文件 (上传)</label>
+                            <input type="file" id="valuation-report" name="valuationReport">
+                        </div>
+                    </div>
+                    <div class="button-group">
+                        <button type="button" class="btn btn-secondary" onclick="prevStep(1)">上一步</button>
+                        <button type="button" class="btn btn-primary" onclick="nextStep(3)">下一步</button>
+                    </div>
+                </div>
+
+                <!-- Step 3: Legal & Compliance -->
+                <div class="form-step" id="step-3">
+                    <div class="form-section">
+                        <h3>第三步：法律与合规文件</h3>
+                        <div class="form-group">
+                            <label for="legal-entity">项目方法律实体名称</label>
+                            <input type="text" id="legal-entity" name="legalEntity" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="jurisdiction">注册地/司法管辖区</label>
+                            <input type="text" id="jurisdiction" name="jurisdiction" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="legal-documents">所有权证明/法律意见书 (上传)</label>
+                            <input type="file" id="legal-documents" name="legalDocuments">
+                        </div>
+                    </div>
+                    <div class="button-group">
+                        <button type="button" class="btn btn-secondary" onclick="prevStep(2)">上一步</button>
+                        <button type="button" class="btn btn-primary" onclick="nextStep(4)">下一步</button>
+                    </div>
+                </div>
+
+                <!-- Step 4: Funding & Tokenization -->
+                <div class="form-step" id="step-4">
+                    <div class="form-section">
+                        <h3>第四步：融资与代币化方案</h3>
+                        <div class="form-group">
+                            <label for="funding-goal">期望融资金额 (USD)</label>
+                            <input type="number" id="funding-goal" name="fundingGoal" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="tokenization-plan">代币化方案简述</label>
+                            <textarea id="tokenization-plan" name="tokenizationPlan"></textarea>
+                        </div>
+                    </div>
+                    <div class="button-group">
+                        <button type="button" class="btn btn-secondary" onclick="prevStep(3)">上一步</button>
+                        <button type="button" class="btn btn-primary" onclick="nextStep(5)">下一步</button>
+                    </div>
+                </div>
+
+                <!-- Step 5: Contact & Review -->
+                <div class="form-step" id="step-5">
+                    <div class="form-section">
+                        <h3>第五步：联系方式与审核</h3>
+                        <div class="form-group">
+                            <label for="contact-name">联系人姓名</label>
+                            <input type="text" id="contact-name" name="contactName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="contact-email">联系邮箱</label>
+                            <input type="email" id="contact-email" name="contactEmail" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="contact-telegram">Telegram/WeChat (选填)</label>
+                            <input type="text" id="contact-telegram" name="contactTelegram">
+                        </div>
+                    </div>
+                    <div class="button-group">
+                        <button type="button" class="btn btn-secondary" onclick="prevStep(4)">上一步</button>
+                        <button type="submit" class="btn btn-primary">提交审核</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        let currentStep = 1;
+
+        function showStep(step) {
+            document.querySelectorAll('.form-step').forEach(el => el.classList.remove('active'));
+            document.querySelector(`#step-${step}`).classList.add('active');
+
+            document.querySelectorAll('.progress-indicator li').forEach(el => el.classList.remove('active'));
+            document.querySelector(`.progress-indicator li[data-step='${step}']`).classList.add('active');
+        }
+
+        function nextStep(step) {
+            currentStep = step;
+            showStep(currentStep);
+        }
+
+        function prevStep(step) {
+            currentStep = step;
+            showStep(currentStep);
+        }
+
+        document.getElementById('rwa-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('项目提交成功！我们的团队将尽快与您联系。');
+            // Here you would typically send the form data to a server
+            // e.g., using fetch() API
+        });
+    </script>
+</body>
+</html>
